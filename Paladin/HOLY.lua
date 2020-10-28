@@ -1771,18 +1771,23 @@ A[3] = function(icon, isMulti)
         end           
 
         -- #3 Special Glimmer of Light Buff spreader (Only Friendly and not Pet)
-        if A.GlimmerofLight:GetAzeriteRank() >= 1 and GlimmerofLightCount < 8 and ForceGlimmerOnMaxUnits then
+       if A.GlimmerofLight:GetAzeriteRank() >= 1 and GlimmerofLightCount < 8 and ForceGlimmerOnMaxUnits then
             if (IsInGroup() or A.IsInPvP or IsInRaid()) then
+                local _, currGUID = HealingEngine.GetTarget()
                 for i = 1, #getmembersAll do 
                     if Unit(getmembersAll[i].Unit):IsPlayer() and not IsUnitEnemy(getmembersAll[i].Unit) and A.HolyShock:IsReadyByPassCastGCD(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):GetRange() <= 40 and Unit(getmembersAll[i].Unit):HasBuffs(A.GlimmerofLightBuff.ID, true) == 0 then 
-                        HealingEngine.SetTarget(getmembersAll[i].Unit) 
-                        -- Notification                    
-                        Action.SendNotification("Spreading " .. A.GetSpellInfo(A.GlimmerofLightBuff.ID), A.GlimmerofLightBuff.ID)        
-                        return A.HolyShock:Show(icon)
+                        if UnitGUID(getmembersAll[i].Unit) ~= currGUID then
+                          HealingEngine.SetTarget(getmembersAll[i].Unit) 
+                          break
+                        else 
+                          -- Notification                    
+                          Action.SendNotification("Spreading " .. A.GetSpellInfo(A.GlimmerofLightBuff.ID), A.GlimmerofLightBuff.ID)        
+                          return A.HolyShock:Show(icon)                            
+                        end                        
                     end                
                 end    
             end
-        end        
+        end       
 
         -- #3.1 Special Holy Shock force as soon as its available MostlyIncDMG
         if A.HolyShock:GetCooldown() == 0 then
