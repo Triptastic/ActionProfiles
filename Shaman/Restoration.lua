@@ -1,6 +1,9 @@
--------------------------------
--- Taste TMW Action Rotation --
--------------------------------
+--#####################################
+--##### TRIP'S RESTORATION SHAMAN #####
+--#####################################
+
+--Full credit to Taste
+
 local _G, setmetatable							= _G, setmetatable
 local TMW                                       = TMW
 local CNDT                                      = TMW.CNDT

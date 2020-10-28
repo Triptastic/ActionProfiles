@@ -1,6 +1,10 @@
--------------------------------
--- Taste TMW Action Rotation --
--------------------------------
+--###############################
+--##### TRIP'S HOLY PALADIN #####
+--###############################
+
+-- Full credit to Taste
+
+
 local _G, setmetatable							= _G, setmetatable
 local TMW                                       = TMW
 local CNDT                                      = TMW.CNDT
@@ -1770,7 +1774,7 @@ A[3] = function(icon, isMulti)
         if A.GlimmerofLight:GetAzeriteRank() >= 1 and GlimmerofLightCount < 8 and ForceGlimmerOnMaxUnits then
             if (IsInGroup() or A.IsInPvP or IsInRaid()) then
                 for i = 1, #getmembersAll do 
-                    if Unit(getmembersAll[i].Unit):IsPlayer() and not IsUnitEnemy(getmembersAll[i].Unit) and A.HolyShock:IsReadyByPassCastGCD(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):GetRange() <= 40 and Unit(getmembersAll[i].Unit):HasBuffs(A♣.GlimmerofLightBuff.ID, true) == 0 then 
+                    if Unit(getmembersAll[i].Unit):IsPlayer() and not IsUnitEnemy(getmembersAll[i].Unit) and A.HolyShock:IsReadyByPassCastGCD(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):GetRange() <= 40 and Unit(getmembersAll[i].Unit):HasBuffs(A.GlimmerofLightBuff.ID, true) == 0 then 
                         HealingEngine.SetTarget(getmembersAll[i].Unit) 
                         -- Notification                    
                         Action.SendNotification("Spreading " .. A.GetSpellInfo(A.GlimmerofLightBuff.ID), A.GlimmerofLightBuff.ID)        

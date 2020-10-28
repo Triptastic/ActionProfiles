@@ -1,5 +1,5 @@
 --############################
---###### TRIP'S PRIEST #######
+--##### TRIP'S PRIESTUI ######
 --############################
 
 -- Full credit to Taste
@@ -31,7 +31,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v5.0.1 (24.10.2020)",
+    DateTime = "v1.0 (28 Oct 2020)",
     [2] = {        
         [ACTION_CONST_PRIEST_SHADOW] = {             
             { -- [1]                            

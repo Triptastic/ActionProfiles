@@ -1,6 +1,9 @@
---------------------------------
--- Taste TMW Action ProfileUI --
---------------------------------
+--############################
+--##### TRIP'S PALADINUI #####
+--############################
+
+-- Full credit to Taste
+
 local TMW											= TMW 
 local CNDT											= TMW.CNDT
 local Env											= CNDT.Env
@@ -24,7 +27,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v4.3.6 (02.08.2020)",
+    DateTime = "v1 (28 Oct 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_PALADIN_RETRIBUTION] = {          
