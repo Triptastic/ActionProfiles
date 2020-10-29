@@ -1,6 +1,9 @@
--------------------------------
--- Taste TMW Action Rotation --
--------------------------------
+--#####################################
+--##### TRIP'S ENHANCEMENT SHAMAN #####
+--#####################################
+
+--Full credit to Taste
+
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
 local Listener									= Action.Listener
@@ -32,6 +35,10 @@ local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
 local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
 local Pet                                       = LibStub("PetLibrary")
+
+--Toaster stuff
+local Toaster																	= _G.Toaster
+local GetSpellTexture 															= _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -766,7 +773,12 @@ A[3] = function(icon, isMulti)
 		local TrinketOnlyBurst = Action.GetToggle(2, "TrinketOnlyBurst")
         -- Trinkets var             
         local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()
-            
+        
+		-- DoT tracking?
+		local AppliedFlameShock = MultiUnits:GetByRangeAppliedDoTs(40, 5, A.FlameShock.ID)
+		local FlameShockToRefresh = MultiUnits:GetByRangeDoTsToRefresh(40, 5, A.FlameShock.ID)
+		local MissingFlameShock = MultiUnits:GetByRangeMissedDoTs(12, 5, A.FlameShock.ID)
+		
     	-- Interrupt
         local Interrupt = Interrupts(unit)
         if Interrupt then 
@@ -857,9 +869,9 @@ A[3] = function(icon, isMulti)
 		if A.LightningShield:IsReady(unit) and ((not inCombat and Unit("player"):HasBuffs(A.LightningShield.ID, true) < 150) or Unit("player"):HasBuffs(A.LightningShield.ID, true) == 0) then
 			return A.LightningShield:Show(icon)
 		end
-	
+			
 		--actions+=/windstrike
-		if A.Windstrike:IsReady(unit) and Unit("player"):HasBuffs(A.AscendanceBuff, true) > 0 then
+		if A.Windstrike:IsReady(unit) and Unit("player"):HasBuffs(A.AscendanceBuff.ID, true) > 0 then
 			return A.Windstrike:Show(icon)
 		end
 		
@@ -904,7 +916,7 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--actions+=/sundering
-		if A.Sundering:IsReady(unit) then
+		if A.Sundering:IsReady(unit) and Unit(unit):GetRange() <= 11 then
 			return A.Sundering:Show(icon)
 		end		
 		
@@ -913,11 +925,12 @@ A[3] = function(icon, isMulti)
 			return A.Ascendance:Show(icon)
 		end	
 
+		
 --#############################
 --######### PRE-COMBAT ########
 --#############################
 
-		local function Precombat()
+		local function Precombat(unit)
 			--actions.precombat+=/windfury_weapon
 			--if A.WindfuryWeapon:IsReady() and not inCombat and 
 			
@@ -935,10 +948,10 @@ A[3] = function(icon, isMulti)
 --#########    AOE     ########
 --#############################
 
-		local function AoERotation()
+		local function AoERotation(unit)
 		
 			--actions.aoe=crash_lightning
-			if A.CrashLightning:IsReady(unit) then
+			if A.CrashLightning:IsReady("player") then
 				return A.CrashLightning:Show(icon)
 			end
 			
@@ -968,7 +981,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.aoe+=/fire_nova,if=active_dot.flame_shock>=3
-			if A.FireNova:IsReady(unit) and A.FlameShock:AuraActiveCount() >= 3 then
+			if A.FireNova:IsReady(unit) and AppliedFlameShock >= 3 then
 				return A.FireNova:Show(icon)
 			end	
 			
@@ -985,11 +998,6 @@ A[3] = function(icon, isMulti)
 			--actions.aoe+=/flame_shock,target_if=refreshable,cycle_targets=1,if=!buff.hailstorm.up
 			if A.FlameShock:IsReady(unit) and (Unit("target"):HasDeBuffs(A.FlameShock.ID, true) == 0 or Unit("target"):HasDeBuffs(A.FlameShock.ID, true) < 4) and Unit("player"):HasBuffs(A.Hailstorm.ID, true) == 0 then
 				return A.FlameShock:Show(icon)
-			end	
-			
-			--actions.aoe+=/frost_shock,if=buff.hailstorm.up
-			if A.FrostShock:IsReady(unit) and Unit("player"):HasBuffs(A.Hailstorm.ID, true) > 0 then
-				return A.FrostShock:Show(icon)
 			end	
 			
 			--actions.aoe+=/frost_shock
@@ -1016,7 +1024,7 @@ A[3] = function(icon, isMulti)
 --####    SINGLE TARGET    ####
 --#############################
 
-		local function SingleRotation()
+		local function SingleRotation(unit)
 			--actions.single=flame_shock,if=!ticking
 			if A.FlameShock:IsReady(unit) and Unit("target"):HasDeBuffs(A.FlameShock.ID, true) == 0 then
 				return A.FlameShock:Show(icon)
@@ -1044,7 +1052,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions.single+=/lava_lash,if=buff.hot_hand.up
 			if A.LavaLash:IsReady(unit) and Unit("player"):HasBuffs(A.HotHandBuff.ID, true) > 0 then
-				return A.LavaLast:Show(icon)
+				return A.LavaLash:Show(icon)
 			end	
 			
 			--actions.single+=/stormstrike
@@ -1063,7 +1071,7 @@ A[3] = function(icon, isMulti)
 			end			
 			
 			--actions.single+=/crash_lightning
-			if A.CrashLightning:IsReady(unit) then
+			if A.CrashLightning:IsReady("player") then
 				return A.CrashLightning:Show(icon)
 			end			
 			
@@ -1083,7 +1091,7 @@ A[3] = function(icon, isMulti)
 			end				
 			
 			--actions.single+=/fire_nova,if=active_dot.flame_shock
-			if A.FireNova:IsReady(unit) and Unit("target"):HasDeBuffs(A.FlameShock.ID, true) > 0 then
+			if A.FireNova:IsReady(unit) and AppliedFlameShock >= 1 then
 				return A.FireNova:Show(icon)
 			end	
 			
@@ -1098,11 +1106,14 @@ A[3] = function(icon, isMulti)
 		
 		--actions+=/call_action_list,name=single,if=active_enemies=1
 		--actions+=/call_action_list,name=aoe,if=active_enemies>1		
-		if (GetByRange(2, 8)) then
-			return AoERotation()
-		else
-			return SingleRotation()
+		if (MultiUnits:GetByRange(8) >= 2) then
+			return AoERotation(unit)
 		end
+		
+		if (MultiUnits:GetByRange(8) <= 1) then
+			return SingleRotation(unit)
+		end
+
 		
     end
     -- End on EnemyRotation()

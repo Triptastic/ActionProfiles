@@ -1,6 +1,9 @@
--------------------------------
--- Taste TMW Action Rotation --
--------------------------------
+--#################################
+--###### TRIP'S FERAL DRUID  ######
+--#################################
+
+-- Full credit to Taste
+
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
 local Listener									= Action.Listener
@@ -42,6 +45,10 @@ local _G, setmetatable                          = _G, setmetatable
 local select, unpack, table, pairs              = select, unpack, table, pairs 
 local CombatLogGetCurrentEventInfo              = _G.CombatLogGetCurrentEventInfo
 local UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower = UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower
+
+--Toaster stuff
+local Toaster																	= _G.Toaster
+local GetSpellTexture 															= _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -281,6 +288,24 @@ local Temp = {
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
 local player = "player"
+
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+	local title, message, spellID = ...
+	toast:SetTitle(title or "nil")
+	toast:SetText(message or "nil")
+	if spellID then 
+		if type(spellID) ~= "number" then 
+			error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+			toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+		else 
+			toast:SetIconTexture((GetSpellTexture(spellID)))
+		end 
+	else 
+		toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+	end 
+	toast:SetUrgencyLevel("normal") 
+end)
 
 local function IsSchoolFree()
     return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "NATURE") == 0
@@ -579,7 +604,6 @@ A[3] = function(icon)
 	local IsInTravelForm = IsInTravelForm()
 	local IsInMoonkinForm = IsInMoonkinForm()
 	local IsInHumanForm = IsInHumanForm()
-	local MassEntanglementThingFromBeyond = GetToggle(2, "MassEntanglementThingFromBeyond")
     local AoEMode = A.GetToggle(2, "AoEMode")        
     local BloodoftheEnemySyncAoE = Action.GetToggle(2, "BloodoftheEnemySyncAoE")
     local BloodoftheEnemyAoETTD = Action.GetToggle(2, "BloodoftheEnemyAoETTD")
@@ -628,6 +652,7 @@ A[3] = function(icon)
 	
 	VarNoBT = (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 and A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4 and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 and A.Shred:GetSpellTimeSinceLastCast() > 4)
 
+	VarTwoBT = (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.ThrashCat:GetSpellTimeSinceLastCast() > 4) or (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.SwipeCat:GetSpellTimeSinceLastCast() > 4) or (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.Shred:GetSpellTimeSinceLastCast() > 4) or (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4) or (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4) or (A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.SwipeCat:GetSpellTimeSinceLastCast() > 4) or (A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.Shred:GetSpellTimeSinceLastCast() > 4) or (A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4) or (A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4) or (A.SwipeCat:GetSpellTimeSinceLastCast() > 4 and A.Shred:GetSpellTimeSinceLastCast() > 4)
 	
 local function EnemyRotation(unit)
 
@@ -645,7 +670,7 @@ local function BloodtalonsRotation(unit)
 	end	
 	
 	--actions.bloodtalons+=/lunar_inspiration,target_if=refreshable&buff.bt_moonfire.down
-	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true < 4) or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 then
+	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.MoonfireCat:Show(icon)
 	end
@@ -663,7 +688,7 @@ local function BloodtalonsRotation(unit)
 	end
 	
 	--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down&spell_targets.swipe_cat>1
-	if A.SwipeCat:IsReady(unit) and (GetByRange(8, 2) or (A.BalanceAffinity:IsSpellLearned() and GetByRange(11, 2))) and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 then
+	if A.SwipeCat:IsReady(unit) and (MultiUnits:GetByRange(8) > 1) and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.SwipeCat:Show(icon)
 	end
@@ -769,13 +794,13 @@ local function Filler(unit)
 	
 	
 	--actions.filler+=/lunar_inspiration,if=variable.filler=3
-	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true < 4) or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) then
+	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) <= 4 or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) then
 	return
 		A.Moonfire:Show(icon)
 	end
 	
 	--actions.filler+=/swipe,if=variable.filler=4
-	if A.SwipeCat:IsReady(unit) and (GetByRange(8, 2) or (A.BalanceAffinity:IsSpellLearned() and GetByRange(11, 2))) then
+	if A.SwipeCat:IsReady(unit) and (MultiUnits:GetByRange(8) > 2) then
 	return
 		A.SwipeCat:Show(icon)
 	end
@@ -800,7 +825,7 @@ local function Finisher(unit)
 	end
 
 	--actions.finisher+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>(variable.rip_ticks>?variable.best_rip)|spell_targets.primal_wrath>(3+1*talent.sabertooth.enabled)
-	if A.PrimalWrath:IsReady(unit) and (GetByRange(3, 8) or (GetByRange(3, 11) and A.BalanceAffinity:IsSpellLearned())) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
+	if A.PrimalWrath:IsReady(unit) and (MultiUnits:GetByRange(8) > 3) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
 	return
 		A.PrimalWrath:Show(icon)
 	end
@@ -851,13 +876,13 @@ end
 	end
 
 	--actions.precombat+=/variable,name=filler,value=1
-	if A.Rake:IsReady(player) and not inCombat then
+	if A.Rake:IsReady(unit) and not inCombat then
 	return
 		A.Rake:Show(icon)
 	end
 
 	--actions+=/call_action_list,name=cooldown
-    if BurstIsON(unit) and inCombat then
+    if BurstIsON(unit) and inCombat and (A.Berserk:IsReady(unit) or A.Incarnation:IsReady(unit) or A.TigersFury:IsReady(unit) or A.Berserking:IsReady(unit)) then
         return Cooldowns()
     end	
 	
@@ -869,44 +894,45 @@ end
 --actions+=/run_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
 
 --actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))>=(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
-	if A.Bloodtalons:IsSpellLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and Player:EnergyDeficitPredicted() >= 20 and VarNoBT then
+	if A.Bloodtalons:IsSpellLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and Player:EnergyDeficit() >= 20 and VarNoBT then
+		A.Toaster:SpawnByTimer("TripToast", 0, "Pooling for Bloodtalons!", "Saving up energy so we can spam GCDs!", A.PoolResource.ID)		
 		return A.PoolResource:Show(icon)
 	end
 
 --actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&(buff.bloodtalons.down|active_bt_triggers=2)
-	if A.Bloodtalons:IsSpellLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0) then
+	if A.Bloodtalons:IsSpellLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) then
 		return BloodtalonsRotation()
 	end
 	
 --actions+=/rake,target_if=refreshable|persistent_multiplier>dot.rake.pmultiplier
-	if A.Rake:IsReady() and (Unit("target"):HasDeBuffs(A.Rake.ID, true) <= 3 or Unit("target"):HasDeBuffs(A.Rake.ID, true) == 0) then
+	if A.Rake:IsReady(unit) and (Unit("target"):HasDeBuffs(A.Rake.ID, true) <= 3 or Unit("target"):HasDeBuffs(A.Rake.ID, true) == 0) then
 		return A.Rake:Show(icon)
 	end
 
 --actions+=/feral_frenzy,if=combo_points=0
-	if A.FeralFrenzy:IsReady() and Player:ComboPoints() == 0 then
+	if A.FeralFrenzy:IsReady(unit) and Player:ComboPoints() == 0 then
 		return A.FeralFrenzy:Show(icon)
 	end
 
 --actions+=/moonfire_cat,target_if=refreshable
-	if A.MoonfireCat:IsReady() and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) <= 3 or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) then
+	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) then
 		return A.Moonfire:Show(icon)
 	end
 
 --actions+=/thrash_cat,if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks
-	if A.ThrashCat:IsReady() and (Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) <= 3 or Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) == 0) then
+	if A.ThrashCat:IsReady(unit) and (Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) <= 3 or Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) == 0) then
 		return A.ThrashCat:Show(icon)
 	end
 
 --actions+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 
 --actions+=/swipe_cat,if=spell_targets.swipe_cat>2
-	if A.SwipeCat:IsReady() and (GetByRange(2, 8) or (GetByRange(2, 11) and A.BalanceAffinity:IsSpellLearned())) then
+	if A.SwipeCat:IsReady(unit) and MultiUnits:GetByRange(8, 2) > 2 then
 		return A.SwipeCat:Show(icon)
 	end
 	
 --actions+=/shred,if=buff.clearcasting.up
-	if A.Shred:IsReady() and Unit(player):HasBuffs(A.ClearcastingBuff.ID, true) > 0 then
+	if A.Shred:IsReady(unit) and Unit(player):HasBuffs(A.ClearcastingBuff.ID, true) > 0 then
 		return A.Shred:Show(icon)
 	end
 	

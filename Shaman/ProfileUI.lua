@@ -272,68 +272,6 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },    
-            { -- [7]  CrashLightning
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(187874) .. " -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row                 
-                
-                {
-                    E = "Slider",                                                     
-                    MIN = 3, 
-                    MAX = 10,                            
-                    DB = "CrashLightningAreaTTD",
-                    DBV = 5, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(187874) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for all units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the minimum Time To Die for all units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                        frFR = "Set the minimum Time To Die for all units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.",  
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 10,                            
-                    DB = "CrashLightningRange",
-                    DBV = 8, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(187874) .. " range",
-                    },
-                    TT = { 
-                        enUS = "Set the maximum range to search for enemies around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the maximum range to search for enemies around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                        frFR = "Set the maximum range to search for enemies around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "CrashLightningUnits",
-                    DBV = 2, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(187874) .. " units",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum number of units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the minimum number of units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.",
-                        frFR = "Set the minimum number of units around before using " .. GetSpellInfo(187874) .. " \nDoes not apply to Boss.",
-                    },                     
-                    M = {},
-                },                 
-            },
             -- Counterstrike Totem
             { -- [7] 
                 {
@@ -424,205 +362,6 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },                
-            -- Totem Mastery
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(262395) .. " -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UseTotemMastery",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto " .. GetSpellInfo(262395), 
-                        ruRU = "Авто " .. GetSpellInfo(262395), 
-                        frFR = "Auto " .. GetSpellInfo(262395), 
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(262395) .. " if talent learned.", 
-                        ruRU = "Automatically use " .. GetSpellInfo(262395) .. " if talent learned.",  
-                        frFR = "Automatically use " .. GetSpellInfo(262395) .. " if talent learned.",   
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "TotemMasteryRefresh",
-                    DBV = 5, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(262395) .. " refresh",
-                    },
-                    TT = { 
-                        enUS = GetSpellInfo(262395) .. " refresh value in seconds.", 
-                        ruRU = GetSpellInfo(262395) .. " refresh value in seconds.",
-                        frFR = GetSpellInfo(262395) .. " refresh value in seconds.",
-                    },                     
-                    M = {},
-                },
-            },
-            { -- [7]  Azerite Beam settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(295258) .. " -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row                 
-                
-                {
-                    E = "Slider",                                                     
-                    MIN = 3, 
-                    MAX = 50,                            
-                    DB = "FocusedAzeriteBeamTTD",
-                    DBV = 10, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FocusedAzeriteBeamUnits",
-                    DBV = 3, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " units",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                        frFR = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                    },                     
-                    M = {},
-                },                 
-            },
-            { -- [7] UnbridledFury 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(300714) .. " -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryAuto",
-                    DBV = false,
-                    L = { 
-                        enUS = "Burst Potion", 
-                        ruRU = "Burst Potion",
-                        frFR = "Burst Potion",
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots depending of the settings of this section", 
-                        ruRU = "If activated, will auto re pots depending of the settings of this section", 
-                        frFR = "If activated, will auto re pots depending of the settings of this section", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithExecute",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync execute phase", 
-                        ruRU = "Sync execute phase",
-                        frFR = "Sync execute phase",   
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        frFR = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 40,                          
-                    DB = "UnbridledFuryTTD",
-                    DBV = 40, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
-                    },                     
-                    M = {},
-                },                
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithBloodlust",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync Bloodlust", 
-                        ruRU = "Sync Bloodlust", 
-                        frFR = "Sync Bloodlust",  
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Bloodlust is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Bloodlust is detected.",
-                        frFR = "If activated, will auto re pots as soon as Bloodlust is detected.",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithSecondAscendance",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync Ascendance", 
-                        ruRU = "Sync Ascendance", 
-                        frFR = "Sync Ascendance",  
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Ascendance is detected.\nOnly work if Ascendance talent is learned.", 
-                        ruRU = "If activated, will auto re pots as soon as Ascendance is detected.\nOnly work if Ascendance talent is learned.", 
-                        frFR = "If activated, will auto re pots as soon as Ascendance is detected.\nOnly work if Ascendance talent is learned.", 
-                    }, 
-                    M = {},
-                },                 
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 100,                          
-                    DB = "UnbridledFuryHP",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " HP",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                        ruRU = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".",  
-                        frFR = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                    },                     
-                    M = {},
-                },
-            },    
             -- EarthElemental
             { -- [7] 
                 {
@@ -681,6 +420,21 @@ A.Data.ProfileUI = {
                         enUS = GetSpellInfo(198103) .. " if player is taking damage and HP lost per seconds >= value.", 
                         ruRU = GetSpellInfo(198103) .. " if player is taking damage and HP lost per seconds >= value.", 
                         frFR = GetSpellInfo(198103) .. " if player is taking damage and HP lost per seconds >= value.", 
+                    },                     
+                    M = {},
+                },
+				{
+                    E = "Checkbox",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "EarthElementalDPS",
+                    DBV = 30, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = GetSpellInfo(198103) .. " for DPS.",
+                    },
+                    TT = { 
+                        ANY = GetSpellInfo(198103) .. " as a DPS cooldown.",
                     },                     
                     M = {},
                 },
