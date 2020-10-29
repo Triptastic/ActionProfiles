@@ -625,6 +625,8 @@ A[3] = function(icon)
     if not CanCast then
         return A.PoolResource:Show(icon)
     end
+	
+	VarNoBT = (A.Rake:GetSpellTimeSinceLastCast() > 4 and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 and A.ThrashCat:GetSpellTimeSinceLastCast() > 4 and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4 and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 and A.Shred:GetSpellTimeSinceLastCast() > 4)
 
 	
 local function EnemyRotation(unit)
@@ -636,72 +638,50 @@ local function EnemyRotation(unit)
 local function BloodtalonsRotation(unit)
 
 
-local btcount = {}
-
-	if Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and
-		if Player:PrevGCD(1, A.Rake) then
-			table.insert(btcount, "Rake")
-		elseif Player:PrevGCD(1, A.ThrashCat) then
-			table.insert(btcount, "ThrashCat")
-		elseif Player:PrevGCD(1, A.BrutalSlash) then
-			table.insert(btcount, "BrutalSlash")
-		elseif Player:PrevGCD(1, A.SwipeCat) then
-			table.insert(btcount, "SwipeCat")
-		elseif Player:PrevGCD(1, A.Shred) then
-			table.insert(btcount, "Shred")
-		elseif Player:PrevGCD(1, A.MoonfireCat) then
-			table.insert(btcount, "MoonfireCat")
-		end
-	end
-	
-	if Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) > 0 then
-		btcount = {}
-	end
-
 	--actions.bloodtalons=rake,target_if=(!ticking|(refreshable&persistent_multiplier>dot.rake.pmultiplier))&buff.bt_rake.down&druid.rake.ticks_gained_on_refresh>=2
-	if A.Rake:IsReady(unit) and (Unit("target"):HasDeBuffs(A.RakeDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.RakeDebuff.ID, true) == 0) and not btcount["Rake"] then
+	if A.Rake:IsReady(unit) and (Unit("target"):HasDeBuffs(A.RakeDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.RakeDebuff.ID, true) == 0) and A.Rake:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.Rake:Show(icon)
 	end	
 	
 	--actions.bloodtalons+=/lunar_inspiration,target_if=refreshable&buff.bt_moonfire.down
-	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true < 4) or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) and not btcount["MoonfireCat"] then
+	if A.MoonfireCat:IsReady(unit) and A.LunarInspiration:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true < 4) or Unit("target"):HasDeBuffs(A.MoonfireCatDebuff.ID, true) == 0) and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.MoonfireCat:Show(icon)
 	end
 	
 	--actions.bloodtalons+=/thrash_cat,target_if=refreshable&buff.bt_thrash.down&druid.thrash_cat.ticks_gained_on_refresh>8
-	if A.ThrashCat:IsReady(unit) and (Unit("target"):HasDeBuffs(A.ThrashCat.ID, true) < 4 or Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) == 0) and not btcount["ThrashCat"] then
+	if A.ThrashCat:IsReady(unit) and (Unit("target"):HasDeBuffs(A.ThrashCat.ID, true) < 4 or Unit("target"):HasDeBuffs(A.ThrashCatDebuff.ID, true) == 0) and A.ThrashCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.ThrashCat:Show(icon)
 	end	 
 	
 	--actions.bloodtalons+=/brutal_slash,if=buff.bt_brutal_slash.down
-	if A.BrutalSlash:IsReady(unit) and not btcount["BrutalSlash"] then
+	if A.BrutalSlash:IsReady(unit) and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.BrutalSlash:Show(icon)
 	end
 	
 	--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down&spell_targets.swipe_cat>1
-	if A.SwipeCat:IsReady(unit) and (GetByRange(8, 2) or (A.BalanceAffinity:IsSpellLearned() and GetByRange(11, 2))) and not btcount["SwipeCat"] then
+	if A.SwipeCat:IsReady(unit) and (GetByRange(8, 2) or (A.BalanceAffinity:IsSpellLearned() and GetByRange(11, 2))) and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.SwipeCat:Show(icon)
 	end
 	
 	--actions.bloodtalons+=/shred,if=buff.bt_shred.down
-	if A.Shred:IsReady(unit) and not btcount["Shred"] then
+	if A.Shred:IsReady(unit) and A.Shred:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.Shred:Show(icon)
 	end	
 	
 	--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down
-	if A.SwipeCat:IsReady(unit) and not btcount["SwipeCat"] then
+	if A.SwipeCat:IsReady(unit) and A.SwipeCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.SwipeCat:Show(icon)
 	end
 	
 	--actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
-	if A.ThrashCat:IsReady(unit) and not btcount["ThrashCat"] then
+	if A.ThrashCat:IsReady(unit) and A.ThrashCat:GetSpellTimeSinceLastCast() > 4 then
 	return
 		A.ThrashCat:Show(icon)
 	end
@@ -889,12 +869,12 @@ end
 --actions+=/run_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
 
 --actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))>=(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
-	if A.Bloodtalons:IsSpellLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and Player:EnergyDeficitPredicted() >= 20 and btcount[0] then
+	if A.Bloodtalons:IsSpellLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and Player:EnergyDeficitPredicted() >= 20 and VarNoBT then
 		return A.PoolResource:Show(icon)
 	end
 
 --actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&(buff.bloodtalons.down|active_bt_triggers=2)
-	if A.Bloodtalons:IsSpellLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or btcount[2]) then
+	if A.Bloodtalons:IsSpellLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0) then
 		return BloodtalonsRotation()
 	end
 	
