@@ -774,10 +774,10 @@ A[3] = function(icon, isMulti)
         -- Trinkets var             
         local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()
         
-		-- DoT tracking?
+		--[[ DoT tracking?
 		local AppliedFlameShock = MultiUnits:GetByRangeAppliedDoTs(40, 5, A.FlameShock.ID)
 		local FlameShockToRefresh = MultiUnits:GetByRangeDoTsToRefresh(40, 5, A.FlameShock.ID)
-		local MissingFlameShock = MultiUnits:GetByRangeMissedDoTs(12, 5, A.FlameShock.ID)
+		local MissingFlameShock = MultiUnits:GetByRangeMissedDoTs(12, 5, A.FlameShock.ID)]]
 		
     	-- Interrupt
         local Interrupt = Interrupts(unit)
@@ -981,7 +981,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.aoe+=/fire_nova,if=active_dot.flame_shock>=3
-			if A.FireNova:IsReady(unit) and AppliedFlameShock >= 3 then
+			if A.FireNova:IsReady("player") and Unit("target"):HasDeBuffs(A.FlameShock.ID, true) > 0 then
 				return A.FireNova:Show(icon)
 			end	
 			
@@ -1091,7 +1091,7 @@ A[3] = function(icon, isMulti)
 			end				
 			
 			--actions.single+=/fire_nova,if=active_dot.flame_shock
-			if A.FireNova:IsReady(unit) and AppliedFlameShock >= 1 then
+			if A.FireNova:IsReady("player") and Unit("target"):HasDeBuffs(A.FlameShock.ID, true) > 0 then
 				return A.FireNova:Show(icon)
 			end	
 			
