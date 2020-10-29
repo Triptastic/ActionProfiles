@@ -36,6 +36,10 @@ local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
 local Pet                                       = LibStub("PetLibrary")
 
+--For Toaster
+local Toaster																	= _G.Toaster
+local GetSpellTexture 															= _G.TMW.GetSpellTexture
+
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
@@ -219,6 +223,24 @@ local Temp                                        = {
 
 local IsIndoors, UnitIsUnit = 
 IsIndoors, UnitIsUnit    
+
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+	local title, message, spellID = ...
+	toast:SetTitle(title or "nil")
+	toast:SetText(message or "nil")
+	if spellID then 
+		if type(spellID) ~= "number" then 
+			error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+			toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+		else 
+			toast:SetIconTexture((GetSpellTexture(spellID)))
+		end 
+	else 
+		toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+	end 
+	toast:SetUrgencyLevel("normal") 
+end)
 
 local function InMelee(unit)
     -- @return boolean 
@@ -474,7 +496,7 @@ local function SelfDefensives()
     -- Darkness
     if   AutoDarkness and HandleDarkness and CanDarkness() then 
         -- Notification                    
-        Action.SendNotification("Defensive Darkness", A.Darkness.ID)
+        A.Toaster:SpawnByTimer("TripToast", 0, "Darkness!", "Using Defensive Darkness!", A.Darkness.ID)
         return A.Darkness
     end
     
@@ -511,7 +533,7 @@ local function SelfDefensives()
     ) 
     then 
         -- Notification                    
-        Action.SendNotification("Defensive Netherwalk", A.Netherwalk.ID)
+        A.Toaster:SpawnByTimer("TripToast", 0, "Netherwalk!", "Using Defensive Netherwalk!", A.Netherwalk.ID)
         return A.Netherwalk
     end
     
@@ -548,7 +570,7 @@ local function SelfDefensives()
     ) 
     then 
         -- Notification                    
-        Action.SendNotification("Defensive Blur", A.Blur.ID)
+        A.Toaster:SpawnByTimer("TripToast", 0, "Blur!", "Using Defensive Blur!", A.Blur.ID)
         return A.Blur
     end
     
@@ -622,21 +644,21 @@ local function Interrupts(unit)
         -- Imprison    
         if useCC and not A.Disrupt:IsReady(unit) and A.Imprison:IsReady(unit) and A.GetToggle(2, "ImprisonAsInterrupt") then 
             -- Notification                    
-            Action.SendNotification("CC : Imprison", A.Imprison.ID)        
+            --Action.SendNotification("CC : Imprison", A.Imprison.ID)        
             return A.Imprison              
         end 
 		
         -- Fel Eruption
         if useCC and A.FelEruption:IsSpellLearned() and A.FelEruption:IsReady(unit) and not A.Disrupt:IsReady(unit) and A.FelEruption:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true) then 
             -- Notification                    
-            Action.SendNotification("CC : Fel Eruption", A.FelEruption.ID)
+            --Action.SendNotification("CC : Fel Eruption", A.FelEruption.ID)
             return A.FelEruption              
         end 
     
         -- Chaos Nova    
         if useCC and not A.Disrupt:IsReady(unit) and A.ChaosNova:IsReady(unit) and GetByRange(2, 13) and A.ChaosNova:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true) then 
             -- Notification                    
-            Action.SendNotification("CC : Chaos Nova", A.ChaosNova.ID)        
+            --Action.SendNotification("CC : Chaos Nova", A.ChaosNova.ID)        
             return A.ChaosNova              
         end 
 		    
@@ -775,7 +797,8 @@ A[3] = function(icon, isMulti)
                 endtimer = TMW.time
                 --ClearTarget() -- Protected ? 
                 -- Notification                    
-                Action.SendNotification(DummyTime .. " Minutes Dummy Test Concluded - Profile Stopped", A.DummyTest.ID)            
+                --Action.SendNotification(DummyTime .. " Minutes Dummy Test Concluded - Profile Stopped", A.DummyTest.ID)
+				A.Toaster:SpawnByTimer("TripToast", 0, "Dummy Test Concluded!", DummyTime .. " minutes passed. Stopping profile.", A.DummyTest.ID)				
                 
                 if endtimer < TMW.time + 5 then
                     profileStop = true
@@ -787,8 +810,11 @@ A[3] = function(icon, isMulti)
     --print(A.DBM_GetTimer("test"))
     if A.DBM_GetTimer("test") > 0 and A.DBM_GetTimer("test") < 5 then
         -- Notification                    
-        Action.SendNotification("DBM Test Adds Spawn in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)    
+        --Action.SendNotification("DBM Test Adds Spawn in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)
+		A.Toaster:SpawnByTimer("TripToast", 0, "DBM Test!", "Adds spawning in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)		
     end
+
+
     
     -- Start Rotation
     local function EnemyRotation(unit)     
@@ -807,12 +833,20 @@ A[3] = function(icon, isMulti)
         VarWaitingForEssenceBreak = A.EssenceBreak:IsSpellLearned() and not VarPoolingForBladeDance and not VarPoolingForMeta and A.EssenceBreak:GetCooldown() == 0          
         -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
         VarWaitingForMomentum = A.Momentum:IsSpellLearned() and Unit(player):HasBuffs(A.MomentumBuff.ID, true) == 0
+		--VengefulRetreat + Fel Rush combo
+		MovementComboReady = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:IsReady("player") and A.FelRush:IsReady("player") and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and A.GetToggle(2, "UseMoves")
+		MovementComboSoon = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:GetCooldown() < 3 and A.FelRush:GetCooldown() < 3 and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and A.GetToggle(2, "UseMoves")
+		
         
-				-- unbound chaos
-		if Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:IsReady("player") and A.FelRush:IsReady("player") and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0 and A.EyeBeam:GetCooldown() > 3 and A.Metamorphosis:GetCooldown() > 5 and A.GetToggle(2, "UseMoves")
+		--Announce Movement Combo soon
+		if MovementComboSoon
 		then
-			--Notification
-			Action.SendNotification("Using Movement Combo!", A.VengefulRetreat.ID)
+			A.Toaster:SpawnByTimer("TripToast", 0, "Movement Combo Ready!", "Get prepared!", A.VengefulRetreat.ID)
+		end
+		
+				-- unbound chaos
+		if MovementComboReady and A.EyeBeam:GetCooldown() > 3 and A.Metamorphosis:GetCooldown() > 5
+		then
 			return A.VengefulRetreat:Show(icon)
 		end	
 		
@@ -853,7 +887,7 @@ A[3] = function(icon, isMulti)
         -- pick_up_fragment,if=fury.deficit>=35&(!azerite.eyes_of_rage.enabled|cooldown.eye_beam.remains>1.4)
         if inCombat and FuryDeficit <= 35 and (A.EyesofRage:GetAzeriteRank() > 0 or A.EyeBeam:GetCooldown() < 1.4) then
             -- Notification                    
-            Action.SendNotification("Don't take Soul Fragment !!!", A.EyesofRage.ID)
+            --Action.SendNotification("Don't take Soul Fragment !!!", A.EyesofRage.ID)
         end
         
         -- Custom Katherine tentacle handler
@@ -886,14 +920,14 @@ A[3] = function(icon, isMulti)
             -- use_item,name=azsharas_font_of_power
             if A.AzsharasFontofPower:IsReady(player) and (Pull > 0.1 and Pull <= AzsharasFontofPowerPrePull) then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Azshara trinket", A.AzsharasFontofPower.ID) 
+			A.Toaster:SpawnByTimer("TripToast", 0, "Movement Combo Ready!", "Get prepared!", A.AzsharasFontofPower.ID) 
                 return A.AzsharasFontofPower:Show(icon)
             end
             
             -- immolation_aura
             if A.ImmolationAura:IsReady(player) and ((Pull > 0.1 and Pull <= ImmolationAuraPrePull) or not Action.GetToggle(1, "BossMods")) then
                 -- Notification                    
-                Action.SendNotification("Prepull: Immolation Aura", A.ImmolationAura.ID) 
+			--A.Toaster:SpawnByTimer("TripToast", 0, "Immolation Aura PrePull!", "Unbound Chaos ready if talented.", A.ImmolationAura.ID)
                 return A.ImmolationAura:Show(icon)
             end    
             
@@ -901,7 +935,7 @@ A[3] = function(icon, isMulti)
             if A.ArcaneTorrent:IsRacialReady(unit) and BurstIsON(unit) and Action.GetToggle(1, "Racial") and (Pull > 0.1 and Pull <= ArcaneTorrentPrePull or not Action.GetToggle(1, "BossMods")) 
             then
                 -- Notification                    
-                Action.SendNotification("Prepull: Arcane Torrent", A.ArcaneTorrent.ID) 
+                --Action.SendNotification("Prepull: Arcane Torrent", A.ArcaneTorrent.ID) 
                 return A.ArcaneTorrent:Show(icon)
             end    
             
@@ -928,7 +962,7 @@ A[3] = function(icon, isMulti)
             -- eye_beam,if=raid_event.adds.up|raid_event.adds.in>25
             if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and A.Demonic:IsSpellLearned() and HandleEyeBeam() and ((Pull > 0.1 and Pull <= 1) or not Action.GetToggle(1, "BossMods")) then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Eye Beam", A.EyeBeam.ID)                 
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
             end            
         end
@@ -1023,7 +1057,7 @@ A[3] = function(icon, isMulti)
             )
             then
                 -- Notification                    
-                Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)                
+                --Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)                
                 return A.Metamorphosis:Show(icon)
             end    
             
@@ -1039,7 +1073,7 @@ A[3] = function(icon, isMulti)
             )
             then
                 -- Notification                    
-                Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)
+                --Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)
                 return A.Metamorphosis:Show(icon)
             end
             
@@ -1057,7 +1091,7 @@ A[3] = function(icon, isMulti)
             and Unit(unit):TimeToDie() > UnbridledFuryTTD
             then
                 -- Notification                    
-                Action.SendNotification("Burst: Potion of Unbridled Fury", A.PotionofUnbridledFury.ID)    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Unbridled Fury!", "Using Unbridled Fury potion!", A.PotionofUnbridledFury.ID)  
                 return A.PotionofUnbridledFury:Show(icon)
             end
             
@@ -1090,14 +1124,14 @@ A[3] = function(icon, isMulti)
             ) 
             then
                 -- Notification                    
-                Action.SendNotification("Trinket: Ashvanes Razor Coral", A.AshvanesRazorCoral.ID)
+                --Action.SendNotification("Trinket: Ashvanes Razor Coral", A.AshvanesRazorCoral.ID)
                 return A.AshvanesRazorCoral:Show(icon)
             end
             
             -- use_item,name=azsharas_font_of_power,if=cooldown.metamorphosis.remains<10|cooldown.metamorphosis.remains>60
             if A.AzsharasFontofPower:IsReady(player) and CanCast and (A.Metamorphosis:GetCooldown() < 10 or A.Metamorphosis:GetCooldown() > 60) then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Azshara trinket", A.AzsharasFontofPower.ID)               
+				A.Toaster:SpawnByTimer("TripToast", 0, "Azshara's Font of Power!", "Stop moving!", A.AzsharasFontofPower.ID)              
                 return A.AzsharasFontofPower:Show(icon)
             end
             
@@ -1160,7 +1194,7 @@ A[3] = function(icon, isMulti)
             ) 
             then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Eye Beam", A.EyeBeam.ID)                 
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                 
                 return A.EyeBeam:Show(icon)
             end    
             
@@ -1301,7 +1335,7 @@ A[3] = function(icon, isMulti)
 			-- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_essence_break&raid_event.adds.in>cooldown
             if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and Unit(unit):GetRange() <= EyeBeamRange and not Unit(unit):IsTotem() and HandleEyeBeam() and (not A.BlindFury:IsSpellLearned() and not VarWaitingForEssenceBreak) then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Eye Beam", A.EyeBeam.ID)                
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                
                 return A.EyeBeam:Show(icon)
             end
             
@@ -1329,7 +1363,7 @@ A[3] = function(icon, isMulti)
             -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
             if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and Unit(unit):GetRange() <= EyeBeamRange and not Unit(unit):IsTotem() and HandleEyeBeam() and A.BlindFury:IsSpellLearned() then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Eye Beam", A.EyeBeam.ID)                
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                
                 return A.EyeBeam:Show(icon)
             end
             
