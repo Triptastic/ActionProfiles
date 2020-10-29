@@ -652,7 +652,8 @@ A[3] = function(icon, isMulti)
 
 		--actions+=/call_action_list,name=cwc
 		--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
-		if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsSpellLearned() and Unit(player):IsCasting(A.MindSear) and MultiUnits:GetActiveEnemies() > 3 or MissingShadowWordPain > 2 then 
+		if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsSpellLearned() and Unit(player):IsCasting(A.MindSear) and MultiUnits:GetActiveEnemies() > 3 -- or  MissingShadowWordPain > 2 
+		then 
 			return A.SearingNightmare:Show(icon)
 		end	
 		
