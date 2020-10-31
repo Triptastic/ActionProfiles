@@ -130,6 +130,7 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
 	TwistofFateBuff						   = Action.Create({ Type = "Spell", ID = 123254, Hidden = true }),
 	TwistofFateTalent					   = Action.Create({ Type = "Spell", ID = 109142, Hidden = true }),
 	ShadowCrashDebuff					   = Action.Create({ Type = "Spell", ID = 342835, Hidden = true }),
+	BodyAndSoul							   = Action.Create({ Type = "Spell", ID = 64129, Hidden = true }),
 --    DevouringPlagueDebuff                  = Action.Create({ Type = "Spell", ID = 335467, Hidden = true}),
     -- PvP   
     Silence                                = Action.Create({ Type = "Spell", ID = 15487 }),    
@@ -514,6 +515,7 @@ A[3] = function(icon, isMulti)
     --- ROTATION VAR ---
     --------------------
     local isMoving = A.Player:IsMoving()
+	local isMovingFor = A.Player:IsMovingTime()	
     local inCombat = Unit(player):CombatTime() > 0
     local combatTime = Unit(player):CombatTime()
     local ShouldStop = Action.ShouldStop()
@@ -530,6 +532,8 @@ A[3] = function(icon, isMulti)
     local UnbridledFuryWithExecute = GetToggle(2, "UnbridledFuryWithExecute")
     local FocusedAzeriteBeamTTD = GetToggle(2, "FocusedAzeriteBeamTTD")
     local FocusedAzeriteBeamUnits = GetToggle(2, "FocusedAzeriteBeamUnits")
+	local PWSMove = GetToggle(2, "PWSMove")
+	local UsePWS = GetToggle(2, "UsePWS")
 	local MultiDotDistance = GetToggle(2, "MultiDotDistance")
     -- Multidots var
     local MissingShadowWordPain = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
@@ -609,9 +613,9 @@ A[3] = function(icon, isMulti)
         
 		--Variables
         -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking
-        VarDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 2 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 2)
+        VarDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4)
 
-        VarAllDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 2 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 2 and Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) > 2)		
+        VarAllDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) > 2)		
 		
 		--Toaster for Unfurling Darkness alert
 		if Unit(player):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 then
@@ -635,7 +639,7 @@ A[3] = function(icon, isMulti)
 		end	]]
 		
 		--MindBlast bypass MindFlay channel
-		if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Unit("player"):HasBuffs(A.DarkThought.ID, true) > 0 then
+		if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Unit("player"):HasBuffs(A.DarkThought.ID, true) > 0 and VarDotsUp and (not A.DevouringPlague:IsReady()) then
 			return A.MindBlast:Show(icon)
 		end
 
@@ -712,7 +716,7 @@ A[3] = function(icon, isMulti)
 		end	
 
 		--actions.main+=/devouring_plague,target_if=(refreshable|insanity>75)&!variable.pi_or_vf_sync_condition&(!talent.searing_nightmare.enabled|(talent.searing_nightmare.enabled&!variable.searing_nightmare_cutoff))
-		if A.DevouringPlague:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and ((Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) < 3 or Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) == 0) or Player:Insanity() > 75) and (A.VoidEruption:GetCooldown() > 0 or VoidFormActive) and (not A.SearingNightmare:IsSpellLearned() or (A.SearingNightmare:IsSpellLearned() and MultiUnits:GetActiveEnemies() <= 3)) then
+		if A.DevouringPlague:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and ((Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) < 3 or Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) == 0) or Player:Insanity() > 75) and ((not A.VoidEruption:IsReady()) or VoidFormActive) and (not A.SearingNightmare:IsSpellLearned() or (A.SearingNightmare:IsSpellLearned() and MultiUnits:GetActiveEnemies() <= 3)) then
 			return A.DevouringPlague:Show(icon)
 		end	
 
@@ -763,12 +767,12 @@ A[3] = function(icon, isMulti)
 		end	
 		
 		--actions.main+=/vampiric_touch,target_if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)|buff.unfurling_darkness.up
-		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
 			return A.VampiricTouch:Show(icon)
 		end
 
 		--actions.main+=/shadow_word_pain,if=refreshable&target.time_to_die>4&!talent.misery.enabled&talent.psychic_link.enabled&spell_targets.mind_sear>2
-		if A.ShadowWordPain:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() and A.PsychicLink:IsSpellLearned() and MultiUnits:GetActiveEnemies() > 2 then
+		if A.ShadowWordPain:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() and A.PsychicLink:IsSpellLearned() and MultiUnits:GetActiveEnemies() > 2 then
 			return	A.ShadowWordPain:Show(icon)
 		end	
 
@@ -789,6 +793,13 @@ A[3] = function(icon, isMulti)
 		if A.ShadowWordDeath:IsReady(unit) and isMoving and inCombat then
 			return A.ShadowWordDeath:Show(icon)
 		end	
+
+		--PWS Moving
+		if isMovingFor > Action.GetToggle(2, "PWSMove") and Unit("player"):HasDeBuffs(A.WeakenedSoulDebuff.ID) == 0 and Action.GetToggle(2, "UsePWS") and A.BodyAndSoul:IsSpellLearned() then
+			-- Notification                    
+			A.Toaster:SpawnByTimer("TripToast", 0, "Speed Boost!", "Using Power Word: Shield!", A.PowerWordShield.ID)
+			return A.PowerWordShield:Show(icon)
+		end
 
 		--actions.main+=/shadow_word_pain
 		if A.ShadowWordPain:IsReady(unit) and isMoving and inCombat then

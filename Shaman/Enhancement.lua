@@ -308,6 +308,24 @@ local Temp = {
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
 local player = "player"
 
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+	local title, message, spellID = ...
+	toast:SetTitle(title or "nil")
+	toast:SetText(message or "nil")
+	if spellID then 
+		if type(spellID) ~= "number" then 
+			error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+			toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+		else 
+			toast:SetIconTexture((GetSpellTexture(spellID)))
+		end 
+	else 
+		toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+	end 
+	toast:SetUrgencyLevel("normal") 
+end)
+
 local function IsSchoolFree()
 	return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "SHADOW") == 0
 end 
@@ -472,21 +490,21 @@ local function Interrupts(unit)
 	    -- WindShear
         if useKick and A.WindShear:IsReady(unit) then 
 	        -- Notification					
-            Action.SendNotification("Wind Shear interrupting on " .. unit, A.WindShear.ID)
+			A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Windshear!", A.Windshear.ID)
             return A.WindShear
         end 
 	
         -- CapacitorTotem
         if useCC and Action.GetToggle(2, "UseCapacitorTotem") and A.WindShear:GetCooldown() > 0 and A.CapacitorTotem:IsReady(player) then 
 			-- Notification					
-            Action.SendNotification("Capacitor Totem interrupting", A.CapacitorTotem.ID)
+            A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Capacitor Totem!", A.CapacitorTotem.ID)
             return A.CapacitorTotem
         end  
     
         -- Hex	
         if useCC and A.Hex:IsReady(unit) and A.Hex:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("incapacitate", 0) then 
 	        -- Notification					
-            Action.SendNotification("Hex interrupting", A.Hex.ID)
+            A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Hex!", A.Hex.ID)
             return A.Hex              
         end  
 		    
@@ -758,7 +776,7 @@ A[3] = function(icon, isMulti)
 		local TotemMasteryRefresh = Action.GetToggle(2, "TotemMasteryRefresh")	
 		local UseTotemMastery = Action.GetToggle(2, "UseTotemMastery")	
 		local FocusedAzeriteBeamTTD = Action.GetToggle(2, "FocusedAzeriteBeamTTD")
-		local FocusedAzeriteBeamUnits = Action.GetToggle(2, "FocusedAzeriteBeamUnits")	
+		local FocusedAzeriteBeamUnits = Action.GetToggle(2, "FocusedAzeriteBeamUnits")
 		local EarthElementalHP = Action.GetToggle(2, "EarthElementalHP")
 		local EarthElementalRange = Action.GetToggle(2, "EarthElementalRange")
 		local EarthElementalUnits = Action.GetToggle(2, "EarthElementalUnits")
@@ -803,12 +821,10 @@ A[3] = function(icon, isMulti)
             return A.Purge:Show(icon)
         end 
 			
-        -- Feral Lunge
-        if (Unit(unit):GetRange() >= 8 and inCombat and Unit(unit):GetRange() <= 25 or Unit(unit):IsMovingOut()) and Unit(unit):HealthPercent() <= Action.GetToggle(2, "FeralLungeHP") and A.FeralLunge:IsReady(unit) and A.FeralLunge:IsSpellLearned() then
-            -- Notification                    
-            Action.SendNotification("Out of range: auto Feral Lunge", A.FeralLunge.ID)
+        --[[Feral Lunge
+        if (Unit(unit):GetRange() >= Action.GetToggle(2, "FeralLungeRange") and inCombat and Unit(unit):GetRange() <= 25 or Unit(unit):IsMovingOut()) and Unit(unit):HealthPercent() <= Action.GetToggle(2, "FeralLungeHP") and A.FeralLunge:IsReady(unit) and A.FeralLunge:IsSpellLearned() then
             return A.FeralLunge:Show(icon)
-        end
+        end]]
 			
 		-- Bloodlust Shamanism PvP
         if A.BloodLust:IsReady(player) and inCombat and A.BurstIsON(unit) and A.Shamanism:IsSpellLearned() then 
@@ -865,6 +881,18 @@ A[3] = function(icon, isMulti)
 --#########  ACTIONS   ########
 --#############################
 
+		--Earth Elemental calls
+		if Unit("player"):HealthPercent() <= EarthElementalHP and GetByRange(EarthElementalUnits, EarthElementalRange) then
+			A.EarthElemental:Show(icon)
+		end
+
+		--Ghost Wolf calls
+		if isMovingFor > Action.GetToggle(2, "GhostWolfTime") and Unit(unit):GetRange() > 8 and A.GhostWolf:IsReady(player) and Action.GetToggle(2, "UseGhostWolf") and Unit(player):HasBuffs(A.GhostWolfBuff.ID, true) == 0 then
+			-- Notification                    
+			A.Toaster:SpawnByTimer("TripToast", 0, "Out of Range!", "Using Ghost Wolf.", A.GhostWolf.ID)
+			return A.GhostWolf:Show(icon)
+		end
+
 		--actions.precombat+=/lightning_shield
 		if A.LightningShield:IsReady(unit) and ((not inCombat and Unit("player"):HasBuffs(A.LightningShield.ID, true) < 150) or Unit("player"):HasBuffs(A.LightningShield.ID, true) == 0) then
 			return A.LightningShield:Show(icon)
@@ -903,7 +931,7 @@ A[3] = function(icon, isMulti)
 		end	
 
 		--actions+=/feral_spirit
-		if A.FeralSpirit:IsReady(unit) and BurstIsON then
+		if A.FeralSpirit:IsReady(unit) and BurstIsON and A.GetToggle(2, "EnableFS") then
 			return A.FeralSpirit:Show(icon)
 		end
 		
@@ -1160,7 +1188,7 @@ local function ArenaRotation(icon, unit)
             -- Hex	
             if useCC and A.Hex:IsReady(unit) and A.Hex:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("incapacitate") then 
 	            -- Notification					
-                Action.SendNotification("Hex on " .. unit, A.Hex.ID)
+                A.Toaster:SpawnByTimer("TripToast", 0, "Hexing!", "Hex on " .. unit, A.Hex.ID)
                 return A.Hex:Show(icon)              
             end
 			
@@ -1202,7 +1230,7 @@ local function ArenaRotation(icon, unit)
     end 
 end 
 
-local function PartyRotation(unit)
+--[[local function PartyRotation(unit)
     if (unit == "party1" and not Action.GetToggle(2, "PartyUnits")[1]) or (unit == "party2" and not Action.GetToggle(2, "PartyUnits")[2]) then 
         return false 
     end
@@ -1211,24 +1239,10 @@ local function PartyRotation(unit)
     --if A.CleanseSpirit:IsReady(unit) and A.CleanseSpirit:AbsentImun(unit, Temp.TotalAndMag) and Action.AuraIsValid(unit, "UseDispel", "Magic") and not Unit(unit):InLOS() then
     --    return A.CleanseSpirit
     --end
-end 
+end ]]
 
-A[6] = function(icon)
-    return ArenaRotation(icon, "arena1")
-end
+A[6] = nil
 
-A[7] = function(icon)
-    local Party = PartyRotation("party1") 
-    if Party then 
-        return Party:Show(icon)
-    end 
-    return ArenaRotation(icon, "arena2")
-end
+A[7] = nil
 
-A[8] = function(icon)
-    local Party = PartyRotation("party2") 
-    if Party then 
-        return Party:Show(icon)
-    end     
-    return ArenaRotation(icon, "arena3")
-end
+A[8] = nil

@@ -422,7 +422,7 @@ local function HandleFelBlade()
         return false
     end
     
-end
+end]]
 
 -- Auto Darkness Handler
 local function CanDarkness()
@@ -737,7 +737,7 @@ A[3] = function(icon, isMulti)
     local inCombat = Unit(player):CombatTime() > 0
     local combatTime = Unit(player):CombatTime()
     local Pull = A.BossMods:GetPullTimer()	
-    local HoABossOnly = A.GetToggle(2, "HoABossOnly")
+--    local HoABossOnly = A.GetToggle(2, "HoABossOnly")
     local EyeBeamTTD = A.GetToggle(2, "EyeBeamTTD")
     local EyeBeamRange = A.GetToggle(2, "EyeBeamRange")
     local FocusedAzeriteBeamTTD = A.GetToggle(2, "FocusedAzeriteBeamTTD")
@@ -920,7 +920,7 @@ A[3] = function(icon, isMulti)
             -- use_item,name=azsharas_font_of_power
             if A.AzsharasFontofPower:IsReady(player) and (Pull > 0.1 and Pull <= AzsharasFontofPowerPrePull) then
                 -- Notification                    
-			A.Toaster:SpawnByTimer("TripToast", 0, "Movement Combo Ready!", "Get prepared!", A.AzsharasFontofPower.ID) 
+			A.Toaster:SpawnByTimer("TripToast", 0, "Azshara's Font of Power!", "Channeling for Pre-Pull!", A.AzsharasFontofPower.ID) 
                 return A.AzsharasFontofPower:Show(icon)
             end
             

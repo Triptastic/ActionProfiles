@@ -823,8 +823,13 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit("player"):CombatTime()
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods:GetPullTimer()
+	local TrinketsAoE = Action.GetToggle(2, "TrinketsAoE")
+	local TrinketsMinTTD = Action.GetToggle(2, "TrinketsMinTTD")
+	local TrinketsUnitsRange = Action.GetToggle(2, "TrinketsUnitsRange")
+	local TrinketsMinUnits = Action.GetToggle(2, "TrinketsMinUnits")	
+	local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()	
     -- Blink Handler
-	local BlinkAny = A.Shimmer:IsSpellLearned() and A.Shimmer or A.Blink
+	local BlinkAny = A.Shimmer:IsSpellLearned() and A.Shimmer or A.Blink	
     
 	-- Rotations Variables
 	local BurnConditions = (Player:ManaPercentageP() >= 50)
@@ -994,6 +999,28 @@ A[3] = function(icon, isMulti)
 		then
             return A.AzsharasFontofPower:Show(icon)
         end
+
+		-- Non SIMC Custom Trinket1
+		if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
+		(
+			TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
+			or
+			not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+		)
+		then 
+			return A.Trinket1:Show(icon)
+		end 		
+				
+		-- Non SIMC Custom Trinket2
+		if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
+		(
+			TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
+			or
+			not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+		)
+		then
+			return A.Trinket2:Show(icon) 	
+		end            
 
         -- Manually added: arcane_barrage,if=cooldown.touch_of_the_magi.up&cooldown.arcane_power.up&buff.arcane_charge.stack>0&cooldown.evocation.remains<=variable.average_burn_length
         if A.ArcaneBarrage:IsReady(unit) and (A.TouchoftheMagi:GetCooldown() == 0 and A.ArcanePower:GetCooldown() == 0 and Player:ArcaneChargesP() > 0 and A.Evocation:GetCooldown() <= VarAverageBurnLength) then

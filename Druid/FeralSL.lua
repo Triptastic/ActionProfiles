@@ -870,10 +870,9 @@ end
 	end
 	
 	--actions+=/prowl
-	if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 then
-	return
-		A.Prowl:Show(icon)
-	end
+    if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 and not Player:IsMounted() and not Player:IsStealthed() and HandleStealth then
+        return A.Prowl:Show(icon)
+    end
 
 	--actions.precombat+=/variable,name=filler,value=1
 	if A.Rake:IsReady(unit) and not inCombat then

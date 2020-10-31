@@ -129,22 +129,6 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
             },    
             { -- [4] 4th Row
                 {
@@ -163,115 +147,7 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "UseSyncCooldowns",
-                    DBV = false,
-                    L = { 
-                        enUS = "Cooldowns Synchronisation", 
-                        ruRU = "Cooldowns Synchronisation",
-                        frFR = "Cooldowns Synchronisation",
-                    }, 
-                    TT = { 
-                        enUS = "Uncheck this if you don't want to synchronize all your cooldowns.\nIf disabled, will use each cooldowns as soon as they are ready !", 
-                        ruRU = "Uncheck this if you don't want to synchronize all your cooldowns.\nIf disabled, will use each cooldowns as soon as they are ready !", 
-                        frFR = "Uncheck this if you don't want to synchronize all your cooldowns.\nIf disabled, will use each cooldowns as soon as they are ready !", 
-                    }, 
-                    M = {},
-                },
-            },            
-            -- Buff refreshs
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Buffs Refresh -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FlametongueRefresh",
-                    Precision = 1,
-                    DBV = 4.5, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(193796) .. " refresh",
-                    },
-                    TT = { 
-                        enUS = GetSpellInfo(193796) .. " refresh value in seconds.", 
-                        ruRU = GetSpellInfo(193796) .. " refresh value in seconds.",
-                        frFR = GetSpellInfo(193796) .. " refresh value in seconds.",
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FrostbrandRefresh",
-                    Precision = 1,
-                    DBV = 4.8, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196834) .. " refresh",
-                    },
-                    TT = { 
-                        enUS = GetSpellInfo(196834) .. " refresh value in seconds.", 
-                        ruRU = GetSpellInfo(196834) .. " refresh value in seconds.",
-                        frFR = GetSpellInfo(196834) .. " refresh value in seconds.",
-                    },                     
-                    M = {},
-                },
-            },
-            -- Feral lunge
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(196884) .." -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "FeralLungeHP",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196884) .. "\ntarget HP",
-                    },
-                    TT = { 
-                        enUS = GetSpellInfo(196884) .. " on low HP target depending of the value you set.", 
-                        ruRU = GetSpellInfo(196884) .. " on low HP target depending of the value you set.", 
-                        frFR = GetSpellInfo(196884) .. " on low HP target depending of the value you set.", 
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 30,                            
-                    DB = "FeralLungeRange",
-                    DBV = 20, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196884) .. "\nrange",
-                    },
-                    TT = { 
-                        enUS = GetSpellInfo(196884) .. " if target range is equal or greater than this value.", 
-                        ruRU = GetSpellInfo(196884) .. " if target range is equal or greater than this value.", 
-                        frFR = GetSpellInfo(196884) .. " if target range is equal or greater than this value.", 
-                    },                     
-                    M = {},
-                },
-            },    
+            },               
             -- Counterstrike Totem
             { -- [7] 
                 {
@@ -578,110 +454,7 @@ A.Data.ProfileUI = {
                     },                     
                     M = {},
                 },
-            },            
-            { -- [4] 4th Row
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },
-            { -- [6]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Party -- ",
-                    },
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@party1", value = 1 },
-                        { text = "@party2", value = 2 },
-                    },
-                    MULT = true,
-                    DB = "PartyUnits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                    }, 
-                    L = { 
-                        ANY = "Party Units",
-                    }, 
-                    TT = { 
-                        enUS = "Enable/Disable relative party passive rotation\nExample : Pet Dispell over party members.", 
-                        ruRU = "Включить/Выключить относительно группы пассивную ротацию\nExample : Pet Dispell over party members.", 
-                        frFR = "Active/Désactive la rotation spécifique aux alliés pour les personnes dans le groupe.\nExemple : Dispell automatique sur les membres du groupe.",
-                    }, 
-                    M = {},
-                },            
-            },             
-            { -- [4] 4th Row
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },            
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    },                     
-                    M = {},
-                },                
-            },    
+            },                
             { -- [4] 4th Row
                 
                 {
@@ -732,23 +505,6 @@ A.Data.ProfileUI = {
                 },
             },
             {
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "FeralLungeHP",
-                    DBV = 60, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196884) .. " enemy HP",
-                    }, 
-                    TT = { 
-                        enUS = "If " .. GetSpellInfo(196884) .. " is talented and ready, will use it if enemy try to move out and got HP value <= this setting.", 
-                        ruRU = "Если " .. GetSpellInfo(196884) .. " талантлив и готов, будет использовать его, если враг попытается выйти и получить значение HP <= этот параметр.", 
-                        frFR = "Si " .. GetSpellInfo(196884) .. " est appris et prêt, l'utilisera si l'ennemi essaie de s'enfuir et a une valeur HP <= ce paramètre.", 
-                    }, 
-                    M = {},
-                },
                 {
                     E = "Checkbox", 
                     DB = "UseCapacitorTotem",
@@ -974,22 +730,6 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
             },                
             { -- [7] 
                 {
@@ -1070,187 +810,6 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            { -- [5] 5th Row     
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "Burst Only", value = 1 },
-                        { text = "Aoe Only", value = 2 },
-                        { text = "Everytime", value = 3 },
-                    },
-                    MULT = true,
-                    DB = "StormkeeperMode",
-                    DBV = {
-                        [1] = true, 
-                        [2] = false,
-                        [3] = false,
-                    }, 
-                    L = { 
-                        ANY = GetSpellInfo(191634) .. " settings",
-                    }, 
-                    TT = { 
-                        enUS = "Customize your Stormkeeper options. Multiple checks possible.", 
-                        ruRU = "Customize your Stormkeeper options. Multiple checks possible.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "FlameShockTTD",
-                    DBV = 100, 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(188389) .. " min TTD",
-                    }, 
-                    TT = { 
-                        enUS = "Customize minimum target health percent to use Flame Shock", 
-                        ruRU = "Customize minimum target health percent to use Flame Shock", 
-                    }, 
-                    M = {},
-                },
-            },
-            
-            { -- [4] 4th Row
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },
-            { -- [7] Multidots settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Multidots settings -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "AutoDot",
-                    DBV = true,
-                    L = { 
-                        enUS = "Enable auto Multidots", 
-                        ruRU = "Использовать auto Multidots", 
-                        frFR = "Activer le Multidots auto", 
-                    }, 
-                    TT = { 
-                        enUS = "Automatically multidots units.\nMake sure to stay front of the enemies nameplate you want the bot to target.\nMake sure you correctly keybinded the TargetEnemy key in both game and GG.",
-                        ruRU = "Автоматически многоточечные юниты.\nУбедитесь, что вы находитесь перед именной табличкой врагов, на которую должен нацелиться бот. \nУбедитесь, что вы правильно связали клавишу TargetEnemy в игре и в GG.",
-                        frFR = "Multidot automatique des unités.\nAssurez-vous de rester en face du nameplate de l'ennemi que le bot doit cibler. \nAssurez-vous que la touche TargetEnemy a été correctement indexée dans le jeu et dans GG.",
-                    }, 
-                    M = {},
-                },
-                {
-                    E         = "Slider",                                                     
-                    MIN     = 1, 
-                    MAX     = 40,                            
-                    DB         = "MultiDotDistance",
-                    DBV     = 25,
-                    ONLYOFF = true,
-                    L         = { 
-                        enUS = "Multidots Range", 
-                        ruRU = "Сфера Multidots", 
-                        frFR = "Portée du Multidots", 
-                    }, 
-                    TT        = { 
-                        enUS = "Choose the range where you want to automatically multidots units.", 
-                        ruRU = "Выберите диапазон, в котором вы хотите автоматически многоточечные единицы.", 
-                        frFR = "Choisissez la portée dans laquelle vous souhaitez multidoter automatiquement les unités.", 
-                    },
-                    M         = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "In Raid", value = "In Raid" },
-                        { text = "In Dungeon", value = "In Dungeon" },
-                        { text = "In PvP", value = "In PvP" },
-                        { text = "Everywhere", value = "Everywhere" },
-                    },
-                    MULT = false,
-                    DB = "AutoDotSelection",
-                    DBV = "In Raid", 
-                    L = { 
-                        enUS = "Multidots where", 
-                        ruRU = "Multidots где", 
-                        frFR = "Multidots où", 
-                    }, 
-                    TT = { 
-                        enUS = "Choose where you want to automatically multidots units.", 
-                        ruRU = "Выберите, где вы хотите автоматически многоточечные единицы.", 
-                        frFR = "Choisissez l'endroit où vous souhaitez multidoter automatiquement les unités.",
-                    }, 
-                    M = {},
-                },                
-            },
-            { -- [4] 4th Row
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },            
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    },                     
-                    M = {},
-                },                
-            },    
             { -- [4] 4th Row
                 
                 {
@@ -1653,37 +1212,9 @@ A.Data.ProfileUI = {
                         ruRU = "Использовать\nЗелье Маны",
                     },
                     M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "StopCastOverHeal",
-                    DBV = true,
-                    L = { 
-                        enUS = "Stop Cast\noverhealing",
-                        ruRU = "Stop Cast\noverhealing",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically stop the current cast to avoid overhealing.",
-                        ruRU = "Enable this option to automatically stop the current cast to avoid overhealing.",
-                    },
-                    M = {},
                 },         
             },
             {            
-                {        
-                    E = "Checkbox", 
-                    DB = "StartByPreCast",
-                    DBV = true,
-                    L = { 
-                        enUS = "Begin Combat\nBy PreCast",
-                        ruRU = "Начинать Бой\nЗаранее произнося", 
-                    },
-                    TT = { 
-                        enUS = "Will start rotation on enemy by available longer\ncasting spell depended on your spec",
-                        ruRU = "Будет начинать ротация на противнике с доступной\nдлинной произносящейся способности в зависимости от спека",
-                    },
-                    M = {},
-                },
                 {
                     E = "Checkbox", 
                     DB = "SpellKick",

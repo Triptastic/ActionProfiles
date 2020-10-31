@@ -36,6 +36,10 @@ local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
 local Pet                                       = LibStub("PetLibrary")
 
+--Toaster stuff
+local Toaster																	= _G.Toaster
+local GetSpellTexture 															= _G.TMW.GetSpellTexture
+
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
@@ -239,6 +243,24 @@ local Temp = {
 }
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
+
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+	local title, message, spellID = ...
+	toast:SetTitle(title or "nil")
+	toast:SetText(message or "nil")
+	if spellID then 
+		if type(spellID) ~= "number" then 
+			error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+			toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+		else 
+			toast:SetIconTexture((GetSpellTexture(spellID)))
+		end 
+	else 
+		toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+	end 
+	toast:SetUrgencyLevel("normal") 
+end)
 
 local function IsSchoolFree()
     return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "SHADOW") == 0
@@ -594,21 +616,21 @@ local function Interrupts(unit)
 	    -- WindShear
         if useKick and A.WindShear:IsReady(unit) then 
 	        -- Notification					
-            Action.SendNotification("Wind Shear interrupting on " .. unit, A.WindShear.ID)
+			A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Windshear!", A.Windshear.ID)
             return A.WindShear
         end 
 	
         -- CapacitorTotem
         if useCC and Action.GetToggle(2, "UseCapacitorTotem") and A.WindShear:GetCooldown() > 0 and A.CapacitorTotem:IsReady(player) then 
 			-- Notification					
-            Action.SendNotification("Capacitor Totem interrupting", A.CapacitorTotem.ID)
+            A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Capacitor Totem!", A.CapacitorTotem.ID)
             return A.CapacitorTotem
         end  
     
         -- Hex	
         if useCC and A.Hex:IsReady(unit) and A.Hex:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("incapacitate", 0) then 
 	        -- Notification					
-            Action.SendNotification("Hex interrupting", A.Hex.ID)
+            A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Hex!", A.Hex.ID)
             return A.Hex              
         end  
 		    
@@ -648,6 +670,10 @@ A[3] = function(icon, isMulti)
     local TrinketsMinTTD = GetToggle(2, "TrinketsMinTTD")
     local TrinketsUnitsRange = GetToggle(2, "TrinketsUnitsRange")
     local TrinketsMinUnits = GetToggle(2, "TrinketsMinUnits")
+	local UseGhostWolf = Action.GetToggle(2, "UseGhostWolf")	
+	local EarthElementalHP = Action.GetToggle(2, "EarthElementalHP")
+	local EarthElementalRange = Action.GetToggle(2, "EarthElementalRange")
+	local EarthElementalUnits = Action.GetToggle(2, "EarthElementalUnits")	
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
@@ -659,15 +685,43 @@ A[3] = function(icon, isMulti)
             return Interrupt:Show(icon)
         end	
 
+		--Earth Elemental calls
+		if not inCombat and Unit("player"):HealthPercent() <= EarthElementalHP and GetByRange(EarthElementalUnits, EarthElementalRange) then
+			A.EarthElemental:Show(icon)
+		end
+
+		--Ghost Wolf calls
+		if not inCombat and UseGhostWolf and isMoving then
+			A.GhostWolf:Show(icon)
+		end	
+
 		-- Lightning Shield
 		if Unit("player"):HasBuffs(A.LightningShield.ID, true) == 0 then
 			return A.LightningShield:Show(icon)
 		end			
 		
+		--Force AoE opener check
+		if A.ChainLightning:IsReady(unit) and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and not inCombat and (A.LastPlayerCastName ~= A.ChainLightning:Info())
+		then
+			return A.ChainLightning:Show(icon)
+		end			
+
+		-- elemental_blast,if=talent.elemental_blast.enabled
+		if A.ElementalBlast:IsReady(unit) and (A.ElementalBlast:IsSpellLearned()) and not A.GetToggle(2, "ForceAoE") and
+		((Pull > 0.1 and Pull <= A.ElementalBlast:GetSpellCastTime()) or not Action.GetToggle(1, "BossMods")) then
+			return A.ElementalBlast:Show(icon)
+		end
+		
+		-- lava_burst,if=!talent.elemental_blast.enabled&spell_targets.chain_lightning<3
+		if A.LavaBurst:IsReady(unit) and (not A.ElementalBlast:IsSpellLearned()) and not A.GetToggle(2, "ForceAoE") and
+		((Pull > 0.1 and Pull <= A.LavaBurst:GetSpellCastTime()) or not Action.GetToggle(1, "BossMods")) then
+			return A.LavaBurst:Show(icon)
+		end
+		
 		--actions+=/flame_shock,if=!ticking
 		if A.FlameShock:IsReady(unit) and Unit("target"):HasDeBuffs(A.FlameShockDebuff.ID, true) == 0 and Unit("target"):TimeToDie() >= 15 then
 			return A.FlameShock:Show(icon)
-		end
+		end	
 		
 		--Static Discharge for whatever reason...
 		if A.StaticDischarge:IsReady(unit) then

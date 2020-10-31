@@ -156,22 +156,6 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
 			},
 			{
                 {
@@ -320,15 +304,6 @@ A.Data.ProfileUI = {
                 {
                     E = "LayoutSpace",                                                                         
                 },
-            },
-			
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
             },				
             { -- [7] 
                 {
@@ -348,18 +323,6 @@ A.Data.ProfileUI = {
                     ONOFF = true,
                     L = { 
                         ANY = A.GetSpellInfo(61336) .. " (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "BearForm",
-                    DBV = 100, -- Set healthpercentage @99% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(5487) .. " (%)",
                     }, 
                     M = {},
                 },

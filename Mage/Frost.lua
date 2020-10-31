@@ -175,10 +175,16 @@ Action[ACTION_CONST_MAGE_FROST] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
+	
+	--Extra as replacement icons until loader updates
+	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for Arcane Explosion
+	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for Mirror Image
+	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Fire Blast
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
 };
 
 -- To create covenant use next code:
---A:CreateCovenantsFor(ACTION_CONST_MAGE_FROST)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
+Action:CreateEssencesFor(ACTION_CONST_MAGE_FROST)
 local A = setmetatable(Action[ACTION_CONST_MAGE_FROST], { __index = Action })
 
 
@@ -459,6 +465,11 @@ A[3] = function(icon, isMulti)
     local HeartOfAzeroth = Action.GetToggle(1, "HeartOfAzeroth")
     local Racial = Action.GetToggle(1, "Racial")
     local Potion = Action.GetToggle(1, "Potion")
+	local TrinketsAoE = Action.GetToggle(2, "TrinketsAoE")
+	local TrinketsMinTTD = Action.GetToggle(2, "TrinketsMinTTD")
+	local TrinketsUnitsRange = Action.GetToggle(2, "TrinketsUnitsRange")
+	local TrinketsMinUnits = Action.GetToggle(2, "TrinketsMinUnits")
+	local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()	
 
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
@@ -629,62 +640,84 @@ A[3] = function(icon, isMulti)
                 return A.BagofTricks:Show(icon)
             end
             
-        end
+        --end
         
-        --[[Essences
-        local function Essences(unit)
+        --Essences
+        --local function Essences(unit)
         
             -- guardian_of_azeroth
             if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.GuardianofAzeroth:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- focused_azerite_beam
             if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.FocusedAzeriteBeam:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- memory_of_lucid_dreams
             if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.MemoryofLucidDreams:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- blood_of_the_enemy
             if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.BloodoftheEnemy:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- purifying_blast
             if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.PurifyingBlast:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
-            -- ripple_in_space
+            --[[ ripple_in_space
             if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.RippleInSpace:Show(icon)
-            end
+                return A.Darkflight:Show(icon)
+            end]]
             
             -- concentrated_flame,line_cd=6
             if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.ConcentratedFlame:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- reaping_flames
             if A.ReapingFlames:IsReady(unit) then
-                return A.ReapingFlames:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- the_unbound_force,if=buff.reckless_force.up
             if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-                return A.TheUnboundForce:Show(icon)
+                return A.Darkflight:Show(icon)
             end
             
             -- worldvein_resonance
             if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.WorldveinResonance:Show(icon)
+                return A.Darkflight:Show(icon)
             end
-            
-        end]]
+			
+			-- Non SIMC Custom Trinket1
+			if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
+			(
+				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
+				or
+				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+			)
+			then 
+				return A.Trinket1:Show(icon)
+			end 		
+					
+			-- Non SIMC Custom Trinket2
+			if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
+			(
+				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
+				or
+				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+			)
+			then
+				return A.Trinket2:Show(icon) 	
+			end            
+			
+        end
         
         --Movement
         local function Movement(unit)
@@ -701,12 +734,12 @@ A[3] = function(icon, isMulti)
             
             -- arcane_explosion,if=mana.pct>30&active_enemies>=2
             if A.ArcaneExplosion:IsReady("player") and Player:ManaPercentageP() > 30 and MultiUnits:GetByRange(10) >= 2 and Action.GetToggle(2, "AoE") then
-                return A.ArcaneExplosion:Show(icon)
+                return A.Regeneratin:Show(icon)
             end
             
             -- fire_blast
             if A.FireBlast:IsReady(unit) then
-                return A.FireBlast:Show(icon)
+                return A.SpatialRift:Show(icon)
             end
             
             -- ice_lance

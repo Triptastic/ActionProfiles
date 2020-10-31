@@ -57,6 +57,10 @@ local wipe                                      = _G.wipe
 local IsUsableSpell                             = IsUsableSpell
 local UnitPowerType                             = UnitPowerType 
 
+--Toaster stuff
+local Toaster																	= _G.Toaster
+local GetSpellTexture 															= _G.TMW.GetSpellTexture
+
 
 -- Spells
 Action[ACTION_CONST_SHAMAN_RESTORATION] = {
@@ -1762,11 +1766,11 @@ A[3] = function(icon, isMulti)
         -- #9 Burst Cooldowns
 		
         -- #9.1 Ascendance
-        if A.Ascendance:IsReady(player) and A.Ascendance:IsSpellLearned() and A.BurstIsON(unit) and
+        if A.Ascendance:IsReady(player) and A.Ascendance:IsSpellLearned() and A.BurstIsON(unit) and combatTime > 5 and 
         (       
             -- HealingEngine conditions for burst raid/party heal
             (
-                AoEON and
+                AoEON and 
                 (
                     (
                         not MouseOver or

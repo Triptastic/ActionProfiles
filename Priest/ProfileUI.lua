@@ -91,16 +91,33 @@ A.Data.ProfileUI                                     = {
                 },         
                 {
                     E = "Checkbox", 
-                    DB = "SpellsTiming",
+                    DB = "UsePWS",
                     DBV = false,
                     L = { 
-                        enUS = "Spells\nVoid Bolt timed",
+                        enUS = "Use Power Word: Shield.",
                     }, 
                     TT = { 
-                        enUS = "Spells will not be used if Void Bolt will be up within next GCD",
+                        enUS = "Use Power Word: Shield for movement.",
                     }, 
                     M = {},
-                },  
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 7,                            
+                    DB = "PWSMove",
+                    DBV = 3, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "PW:S if moving for",
+                    }, 
+                    TT = { 
+                        enUS = "If " .. GetSpellInfo(17) .. " is talented and ready, will use it if moving for set value.", 
+                        ruRU = "Если " .. GetSpellInfo(17) .. " изучен и готов, будет использовать его при переходе на заданное значение.", 
+                        frFR = "Si " .. GetSpellInfo(17) .. " est prêt, l'utilisera s'il se déplace pour la valeur définie.", 
+                    }, 
+                    M = {},
+                },				
             },
             { -- Line Divider
                 {
@@ -138,22 +155,6 @@ A.Data.ProfileUI                                     = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
             },    			
             { -- Line Divider
                 {
@@ -249,74 +250,7 @@ A.Data.ProfileUI                                     = {
                         ANY = "___________________________________",
                     },
                 },
-            }, 
-            { -- [7] UnbridledFuryAuto
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(300714) .. " -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryAuto",
-                    DBV = false,
-                    L = { 
-                        enUS = "Burst Potion", 
-                        ruRU = "Burst Potion",
-                        frFR = "Burst Potion",
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots depending of the settings of this section", 
-                        ruRU = "If activated, will auto re pots depending of the settings of this section", 
-                        frFR = "If activated, will auto re pots depending of the settings of this section", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithExecute",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync execute phase", 
-                        ruRU = "Sync execute phase",
-                        frFR = "Sync execute phase",   
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        frFR = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 60,                          
-                    DB = "UnbridledFuryTTD",
-                    DBV = 40, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
-                    },                     
-                    M = {},
-                },                
             },    
-            { -- Line Divider
-                {
-                    E = "Header",
-                    L = {
-                        ANY = "___________________________________",
-                    },
-                },
-            }, 
             { -- [3]
                 {
                     E = "Header",
@@ -335,18 +269,6 @@ A.Data.ProfileUI                                     = {
                     ONOFF = true,
                     L = { 
                         ANY = GetSpellInfo(15286) .. " (%)",
-                    }, 
-                    M = {},
-                },
-                {                    
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "Dispersion",
-                    DBV = 60, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(47585) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -402,74 +324,7 @@ A.Data.ProfileUI                                     = {
                     },                     
                     M = {},
                 },
-            },
-            { -- Line Divider
-                {
-                    E = "Header",
-                    L = {
-                        ANY = "___________________________________",
-                    },
-                },
-            },          
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    },                     
-                    M = {},
-                },                
-            },    
+            },           
         },
         
         [ACTION_CONST_PRIEST_DISCIPLINE] = {          

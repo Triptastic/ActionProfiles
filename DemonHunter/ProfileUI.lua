@@ -61,7 +61,7 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-                {
+				{
                     E = "Checkbox", 
                     DB = "AoE",
                     DBV = true,
@@ -83,7 +83,7 @@ A.Data.ProfileUI = {
                         TabN = '@number' or nil,                                
                         Print = '@string' or nil,
                     },
-                },    
+                },
                 {
                     E = "Checkbox", 
                     DB = "TasteInterruptList",
@@ -115,22 +115,6 @@ A.Data.ProfileUI = {
                         enUS = "Suggest when Fel Rush & Vengeful Retreat for mobility or for Momentum build.", 
                         ruRU = "Предложите, когда Ослепительная Раш & Мстительное отступление для мобильности или для наращивания Momentum.", 
                         frFR = "Suggère quand utiliser Ruée Fulgurante & Retraite Vengeresse pour la mobilité ou pour la build Momentum",
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "HoABossOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "HoA Boss Only", 
-                        ruRU = "HoA Boss Only",
-                        frFR = "HoA Boss Only", 
-                    }, 
-                    TT = { 
-                        enUS = "Use Hearth of Azeroth only on bosses", 
-                        ruRU = "Используйте очаг Азерота только на боссов", 
-                        frFR = "Utilisez le Coeur d'Azeroth uniquement sur les boss", 
                     }, 
                     M = {},
                 }, 
@@ -179,22 +163,6 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
             },    
             { -- [7]  Azerite Beam settings
                 {
@@ -260,25 +228,7 @@ A.Data.ProfileUI = {
                         frFR = "Set the Pull timer in seconds to use " .. GetSpellInfo(28730) .. ".",  
                     },                     
                     M = {},
-                },    
-                -- UnbridledFury            
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "UnbridledFuryPrePull",
-                    DBV = 2, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " sec",
-                    },
-                    TT = { 
-                        enUS = "Set the Pull timer in seconds to use " .. GetSpellInfo(300714) .. ".", 
-                        ruRU = "Set the Pull timer in seconds to use " .. GetSpellInfo(300714) .. ".", 
-                        frFR = "Set the Pull timer in seconds to use " .. GetSpellInfo(300714) .. ".",  
-                    },                     
-                    M = {},
-                },                
+                },                         
             },
             
             -- FelBlade
@@ -696,51 +646,6 @@ A.Data.ProfileUI = {
                 },
                 
             },
-            { -- [7]  Azerite Beam settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(295258) .. " -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row                 
-                
-                {
-                    E = "Slider",                                                     
-                    MIN = 3, 
-                    MAX = 50,                            
-                    DB = "FocusedAzeriteBeamTTD",
-                    DBV = 10, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FocusedAzeriteBeamUnits",
-                    DBV = 3, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
-                    },                     
-                    M = {},
-                },                 
-            },
             { -- [7] 
                 {
                     E = "Header",
@@ -832,67 +737,7 @@ A.Data.ProfileUI = {
                     },                     
                     M = {},
                 },
-            },
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    },                     
-                    M = {},
-                },                
-            },    
-            
+            },  
             { -- [4] 4th Row
                 
                 {
@@ -1019,7 +864,7 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-                {
+				{
                     E = "Checkbox", 
                     DB = "AoE",
                     DBV = true,
@@ -1041,7 +886,7 @@ A.Data.ProfileUI = {
                         TabN = '@number' or nil,                                
                         Print = '@string' or nil,
                     },
-                },  
+                },
                 {
                     E = "Checkbox", 
                     DB = "TasteInterruptList",
@@ -1057,7 +902,23 @@ A.Data.ProfileUI = {
                         frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
                     }, 
                     M = {},
-                },                
+                },
+				{
+					E = "Checkbox", 
+					DB = "AutoTaunt",
+					DBV = true,
+					L = { 
+						enUS = "Automatic Taunt", 
+						ruRU = "Автоматическая Насмешка", 
+						frFR = "Raillerie automatique",
+					}, 
+					TT = { 
+						enUS = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
+						ruRU = "If activated, will use automatically use Torment if you do not have aggro on your target.",  
+						frFR = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
+					}, 
+					M = {},               
+				},                
             }, 
             { -- [7] Spell Status Frame
                 {
@@ -1087,151 +948,13 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
             },                
-            { -- [2] 2nd Row 
-                {
-                    E = "Checkbox", 
-                    DB = "BrandForDamage",
-                    DBV = true,
-                    L = { 
-                        enUS = "Fiery Brand for DPS", 
-                        ruRU = "Fiery Brand for DPS", 
-                        frFR = "Fiery Brand for DPS",
-                    }, 
-                    TT = { 
-                        enUS = "Use Fiery Brand as a DPS ability when using the Charred Flesh talent.", 
-                        ruRU = "Use Fiery Brand as a DPS ability when using the Charred Flesh talent.", 
-                        frFR = "Use Fiery Brand as a DPS ability when using the Charred Flesh talent.", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "ConserveInfernalStrike",
-                    DBV = true,
-                    L = { 
-                        enUS = "Conserve Infernal Strike", 
-                        ruRU = "Conserve Infernal Strike", 
-                        frFR = "Conserve Infernal Strike",
-                    }, 
-                    TT = { 
-                        enUS = "Save at least 1 Infernal Strike charge for mobility.", 
-                        ruRU = "Save at least 1 Infernal Strike charge for mobility.", 
-                        frFR = "Save at least 1 Infernal Strike charge for mobility.",
-                    }, 
-                    M = {},
-                },    
-                {
-                    E = "Checkbox", 
-                    DB = "AutoTaunt",
-                    DBV = true,
-                    L = { 
-                        enUS = "Automatic Taunt", 
-                        ruRU = "Автоматическая Насмешка", 
-                        frFR = "Raillerie automatique",
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will use automatically use Torment whenever available.", 
-                        ruRU = "If activated, will use automatically use Torment whenever available.",  
-                        frFR = "If activated, will use automatically use Torment whenever available.", 
-                    }, 
-                    M = {},
-                },                
-            },
             { -- [4] 4th Row
                 
                 {
                     E = "LayoutSpace",                                                                         
                 },
             },
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Defensives -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row 
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "MetamorphosisHealthThreshold",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Metamorphosis Health Threshold",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "FieryBrandHealthThreshold",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Fiery Brand Health Threshold",
-                    }, 
-                    M = {},
-                },
-            },
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "DemonSpikesHealthThreshold",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Demon Spikes Health Threshold",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "Blur",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Blur Health Threshold",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "AbyssalHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(301308) .. " (%)",
-                    }, 
-                    M = {},
-                },
-            }, 
             { -- [7]
                 {
                     E = "Header",
