@@ -203,11 +203,12 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
     CalltotheVoidGloves                    = Action.Create({ Type = "Spell", ID = 173244 }),
     CalltotheVoidWrists                    = Action.Create({ Type = "Spell", ID = 173249 }),
     -- Misc
-    Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true }),-- Show an icon during channeling
+    PoolResource                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
     TargetEnemy                            = Action.Create({ Type = "Spell", ID = 44603, Hidden = true }),-- Change Target (Tab button)
     StopCast                               = Action.Create({ Type = "Spell", ID = 61721, Hidden = true }),    -- spell_magic_polymorphrabbit
     DummyTest                              = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
 	ConcentratedFlame					   = Action.Create({ Type = "Spell", ID = 295373, }),
+
 };
 
 -- To create essences use next code:
@@ -677,6 +678,56 @@ A[3] = function(icon, isMulti)
 		if A.ConcentratedFlame:IsReady(unit) and BurstIsON then
 			return A.Darkflight:Show(icon)
 		end
+
+		-- guardian_of_azeroth
+		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- focused_azerite_beam
+		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- memory_of_lucid_dreams
+		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- blood_of_the_enemy
+		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- purifying_blast
+		if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		--[[ ripple_in_space
+		if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+			return A.Darkflight:Show(icon)
+		end]]
+		
+		-- concentrated_flame,line_cd=6
+		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- reaping_flames
+		if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- the_unbound_force,if=buff.reckless_force.up
+		if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- worldvein_resonance
+		if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end		
 			
 		--Trinkets
 			-- Non SIMC Custom Trinket1
