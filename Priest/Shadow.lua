@@ -822,7 +822,7 @@ A[3] = function(icon, isMulti)
 			return A.VampiricTouch:Show(icon)
 		end]]
 		
-		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)))) and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)))) and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
 			return A.VampiricTouch:Show(icon)
 		end
 		
