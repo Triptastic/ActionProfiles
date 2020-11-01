@@ -233,6 +233,7 @@ Action[ACTION_CONST_SHAMAN_ENCHANCEMENT] = {
     BlessingofProtection                   = Create({ Type = "Spell", ID = 1022, Hidden = true     }),	-- Used to check on offensive dispell 
     PoolResource                           = Create({ Type = "Spell", ID = 209274, Hidden = true     }),	
 	DummyTest                              = Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
 };
 
 -- To create essences use next code:
@@ -490,7 +491,7 @@ local function Interrupts(unit)
 	    -- WindShear
         if useKick and A.WindShear:IsReady(unit) then 
 	        -- Notification					
-			A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Windshear!", A.Windshear.ID)
+			A.Toaster:SpawnByTimer("TripToast", 0, "Interrupt!", "Interrupting with Wind Shear!", A.WindShear.ID)
             return A.WindShear
         end 
 	
@@ -933,6 +934,56 @@ A[3] = function(icon, isMulti)
 		--actions+=/feral_spirit
 		if A.FeralSpirit:IsReady(unit) and BurstIsON and A.GetToggle(2, "EnableFS") then
 			return A.FeralSpirit:Show(icon)
+		end
+
+		-- guardian_of_azeroth
+		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- focused_azerite_beam
+		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- memory_of_lucid_dreams
+		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- blood_of_the_enemy
+		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- purifying_blast
+		if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		--[[ ripple_in_space
+		if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+			return A.Darkflight:Show(icon)
+		end]]
+		
+		-- concentrated_flame,line_cd=6
+		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- reaping_flames
+		if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- the_unbound_force,if=buff.reckless_force.up
+		if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
+			return A.Darkflight:Show(icon)
+		end
+		
+		-- worldvein_resonance
+		if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+			return A.Darkflight:Show(icon)
 		end
 		
 		--actions+=/earth_elemental

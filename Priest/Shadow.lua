@@ -645,12 +645,12 @@ A[3] = function(icon, isMulti)
 		end
 
 		-- vampiric_touch
-		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
+		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
 			return A.VampiricTouch:Show(icon)
 		end	
 		
 		--actions.precombat+=/vampiric_touch
-		if A.VampiricTouch:IsReady(unit) and not Unit(player):IsCasting(A.VampiricTouch) and Temp.VampiricTouchDelay == 0 and Unit(player):CombatTime() == 0 and not A.Damnation:IsReady() and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 then
+		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and Unit(player):CombatTime() == 0 and not A.Damnation:IsReady() and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 then
 			return A.VampiricTouch:Show(icon)
 		end
 		
@@ -674,33 +674,33 @@ A[3] = function(icon, isMulti)
 		
 		--actions.main+=/call_action_list,name=cds
 		--Use Silence on CD if legendary equipped
-		--Essence
+		--[[Essence
 		if A.ConcentratedFlame:IsReady(unit) and BurstIsON then
 			return A.Darkflight:Show(icon)
-		end
+		end]]
 
 		-- guardian_of_azeroth
-		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- focused_azerite_beam
-		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- memory_of_lucid_dreams
-		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- blood_of_the_enemy
-		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- purifying_blast
-		if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.PurifyingBlast:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
@@ -710,7 +710,7 @@ A[3] = function(icon, isMulti)
 		end]]
 		
 		-- concentrated_flame,line_cd=6
-		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
@@ -720,12 +720,12 @@ A[3] = function(icon, isMulti)
 		end
 		
 		-- the_unbound_force,if=buff.reckless_force.up
-		if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
+		if A.TheUnboundForce:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- worldvein_resonance
-		if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.WorldveinResonance:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end		
 			
@@ -817,13 +817,23 @@ A[3] = function(icon, isMulti)
 			return A.MindBlast:Show(icon)
 		end	
 		
-		--actions.main+=/vampiric_touch,target_if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)|buff.unfurling_darkness.up
-		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		--[[actions.main+=/vampiric_touch,target_if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)|buff.unfurling_darkness.up
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 and Unit(unit):TimeToDie() > 6 then
+			return A.VampiricTouch:Show(icon)
+		end]]
+		
+		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)))) and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
 			return A.VampiricTouch:Show(icon)
 		end
+		
+		
+		
+		--[[or (A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp) then
+			return A.VampiricTouch:Show(icon)
+		end]]
 
 		--actions.main+=/shadow_word_pain,if=refreshable&target.time_to_die>4&!talent.misery.enabled&talent.psychic_link.enabled&spell_targets.mind_sear>2
-		if A.ShadowWordPain:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() and A.PsychicLink:IsSpellLearned() and MultiUnits:GetActiveEnemies() > 2 then
+		if A.ShadowWordPain:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() then
 			return	A.ShadowWordPain:Show(icon)
 		end	
 
@@ -943,4 +953,3 @@ A[8] = function(icon)
     end     
     return ArenaRotation(icon, "arena3")
 end
-

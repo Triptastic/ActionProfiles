@@ -274,7 +274,7 @@ local function HandlePetChoice()
     return choice
 end
 
--- Multidot Handler UI --
+--[[ Multidot Handler UI --
 local function HandleMultidots()
     local choice = Action.GetToggle(2, "AutoDotSelection")
        
@@ -302,7 +302,7 @@ local function HandleMultidots()
 		return false
     end
 	--print(choice)
-end
+end]]
 
 local function num(val)
     if val then return 1 else return 0 end
@@ -312,12 +312,12 @@ local function bool(val)
     return val ~= 0
 end
 
-local function IsLatenced(self)
+--[[local function IsLatenced(self)
     -- @return boolean 
     return TMW.time - (Temp.CastStartTime[self:Info()] or 0) > GetGCD() + 0.5
-end 
+end ]]
 
-Action.Enum.SpellDuration = {
+--[[Action.Enum.SpellDuration = {
     -- SiphonLife  
     [63106] = {15000, 19500},
     -- Agony
@@ -327,9 +327,9 @@ Action.Enum.SpellDuration = {
     -- Darkglare
     [205180] = {20000, 26000},
 
-}
+}]]
 
--- Base Duration of a dot/hot/channel...
+--[[ Base Duration of a dot/hot/channel...
 local SpellDuration = Action.Enum.SpellDuration
 function Action:BaseDuration()
     local Duration = SpellDuration[self.ID]
@@ -366,7 +366,7 @@ local function TimeToShard()
         return 10000 
     end
     return 1 / (0.16 / math.sqrt(ActiveAgony) * (ActiveAgony == 1 and 1.15 or 1) * ActiveAgony / AgonyTickTime())
-end
+end]]
 
 local function SelfDefensives()
     if Unit("player"):CombatTime() == 0 then 
@@ -546,20 +546,20 @@ A[3] = function(icon, isMulti)
 	--------------------
 	---  VARIABLES   ---
 	--------------------
-    local ActiveAgony = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Agony.ID, 5)
-    local ActiveCorruption = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Corruption.ID, 5)
-    local ActiveSiphonLife = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.SiphonLife.ID, 5)
+--    local ActiveAgony = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Agony.ID, 5)
+--    local ActiveCorruption = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Corruption.ID, 5)
+--    local ActiveSiphonLife = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.SiphonLife.ID, 5)
     local isMoving = A.Player:IsMoving()
 	local inCombat = Unit("player"):CombatTime() > 0
-	local ShouldStop = Action.ShouldStop()
+--	local ShouldStop = Action.ShouldStop()
 	local Pull = Action.BossMods:GetPullTimer()
-    local CanMultidot = HandleMultidots()
-    local time_to_shard = TimeToShard()
-	local PredictSpells = A.GetToggle(2, "PredictSpells")
-	local MultiDotDistance = A.GetToggle(2, "MultiDotDistance")
+--    local CanMultidot = HandleMultidots()
+--    local time_to_shard = TimeToShard()
+--	local PredictSpells = A.GetToggle(2, "PredictSpells")
+--	local MultiDotDistance = A.GetToggle(2, "MultiDotDistance")
 	local profileStop = false	
 		
-	DetermineEssenceRanks()
+--	DetermineEssenceRanks()
 	--[[ Multidots var
 	local MissingCorruption = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.Corruption.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
 	local MissingAgony = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.Agony.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
@@ -573,12 +573,12 @@ A[3] = function(icon, isMulti)
 	--print(VampiricTouchToRefresh)]]
 
 	--Refreshables
-	local SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLife.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLife.ID, true) < 4)
-	local CorruptionRefreshable = (Unit("target"):HasDeBuffs(A.Corruption.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Corruption.ID, true) < 4)
-	local AgonyRefreshable = (Unit("target"):HasDeBuffs(A.Agony.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Agony.ID, true) < 4)	
-	local UARefreshable = (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) == 0 or Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 4)	
+	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLife.ID, true) < 4)
+	CorruptionRefreshable = (Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Corruption.ID, true) < 4)
+	AgonyRefreshable = (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Agony.ID, true) < 4)	
+	UARefreshable = (Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) < 4)	
 
-	local HasAllDots = Unit("target"):HasDeBuffs(A.SiphonLife.ID, true) > 0 and Unit("target"):HasDeBuffs(A.Corruption.ID, true) > 0 and Unit("target"):HasDeBuffs(A.Agony.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0
+	HasAllDots = Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 0
 
     local castName    = Unit("player"):IsCasting()
     -- Log CastStartTime - Latency
@@ -820,12 +820,12 @@ A[3] = function(icon, isMulti)
 			--actions+=/unstable_affliction,if=refreshable
 			if A.UnstableAffliction:IsReady(unit) and UARefreshable then
 				return A.UnstableAffliction:Show(icon)
-			end				
+			end
 			
 			--actions+=/unstable_affliction,if=azerite.cascading_calamity.enabled&buff.cascading_calamity.remains<3
 			if A.UnstableAffliction:IsReady(unit) and A.CascadingCalamity:GetAzeriteRank() > 0 and Unit("player"):HasBuffs(A.CascadingCalamityBuff.ID, true) > 0 then
 				return A.UnstableAffliction:Show(icon)
-			end	
+			end
 			
 			--actions+=/corruption,if=refreshable
 			if A.Corruption:IsReady(unit) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() < 3 then
@@ -842,20 +842,22 @@ A[3] = function(icon, isMulti)
 				return A.Haunt:Show(icon)
 			end
 			
-			--actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
-			if (A.SummonDarkglare:IsReady(unit) or A.SummonDarkglare:GetCooldown() < 2) and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) and A.PrepareDarkglare() then
-				return true
-			end
+			--[[actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
+			if (A.SummonDarkglare:IsReady(unit) or A.SummonDarkglare:GetCooldown() < 2) and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) then
+				if PrepareDarkglare(unit) then
+					return true
+				end
+			end]]
 			
 			--actions+=/dark_soul,if=cooldown.summon_darkglare.remains>time_to_die
 			if A.DarkSoulMisery:IsReady(unit) and A.SummonDarkglare:GetCooldown() > Unit(unit):TimeToDie() then
 				return A.DarkSoulMisery:Show(icon)
 			end	
 			
-			--actions+=/call_action_list,name=cooldowns
+			--[[actions+=/call_action_list,name=cooldowns
 			if BurstIsON and Cooldowns() then
 				return true
-			end
+			end]]
 			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
 			if A.MaleficRapture:IsReady(unit) and Unit(unit):HasDeBuffs(A.VileTaint.ID, true) > 0 then

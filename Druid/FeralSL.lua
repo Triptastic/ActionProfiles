@@ -241,6 +241,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     PoolResource                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
     DummyTest                              = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon   
     GrandDelusionsDebuff                   = Action.Create({ Type = "Spell", ID = 319695, Hidden = true     }), -- Corruption pet chasing you	
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
 }
 
 -- To create essences use next code:
@@ -718,6 +719,56 @@ end
 	###############################]]
     
 local function Cooldowns(unit)
+
+	-- guardian_of_azeroth
+	if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- focused_azerite_beam
+	if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- memory_of_lucid_dreams
+	if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- blood_of_the_enemy
+	if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- purifying_blast
+	if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	--[[ ripple_in_space
+	if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+		return A.Darkflight:Show(icon)
+	end]]
+	
+	-- concentrated_flame,line_cd=6
+	if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- reaping_flames
+	if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- the_unbound_force,if=buff.reckless_force.up
+	if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
+		return A.Darkflight:Show(icon)
+	end
+	
+	-- worldvein_resonance
+	if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		return A.Darkflight:Show(icon)
+	end
 
 	--actions.cooldown=berserk
 	if A.Berserk:IsReady(unit) then

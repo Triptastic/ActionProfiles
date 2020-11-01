@@ -88,24 +88,25 @@ Action[ACTION_CONST_PALADIN_RETRIBUTION] = {
     SeraphimBuff                           = Create({ Type = "Spell", ID = 152262, Hidden = true }),
     BladeofJustice                         = Create({ Type = "Spell", ID = 184575 }),
     Judgment                               = Create({ Type = "Spell", ID = 20271 }),
-    EmpyreanPowerBuff                      = Create({ Type = "Spell", ID = 286393 }),
+    EmpyreanPowerBuff                      = Create({ Type = "Spell", ID = 326733 }),
     JudgmentDebuff                         = Create({ Type = "Spell", ID = 197277 }),
     DivinePurposeBuff                      = Create({ Type = "Spell", ID = 223819 }),
-    ExecutionSentence                      = Create({ Type = "Spell", ID = 267798 }),
-    VanquishersHammer                      = Create({ Type = "Spell", ID = 328204 }),
+    ExecutionSentence                      = Create({ Type = "Spell", ID = 343527 }),
+--    VanquishersHammer                      = Create({ Type = "Spell", ID = 328204 }),
     FinalReckoningDebuff                   = Create({ Type = "Spell", ID = 343721, Hidden = true }),
-    ExecutionSentenceDebuff                = Create({ Type = "Spell", ID = 267799 }),
+    ReckoningDebuff                   	   = Create({ Type = "Spell", ID = 343724, Hidden = true }),
+    ExecutionSentenceDebuff                = Create({ Type = "Spell", ID = 343527, Hidden = true }),
     DivineStorm                            = Create({ Type = "Spell", ID = 53385 }),
-    VanquishersHammerBuff                  = Create({ Type = "Spell", ID = 328204, Hidden = true }),
+--    VanquishersHammerBuff                  = Create({ Type = "Spell", ID = 328204, Hidden = true }),
     TemplarsVerdict                        = Create({ Type = "Spell", ID = 85256 }),
 --    Necrolord                              = Create({ Type = "Spell", ID =  }),
     HolyAvengerBuff                        = Create({ Type = "Spell", ID = 105809, Hidden = true }),
 --    SeethingRageBuff                       = Create({ Type = "Spell", ID =  }),
-    DivineToll                             = Create({ Type = "Spell", ID = 304971 }),
+--    DivineToll                             = Create({ Type = "Spell", ID = 304971 }),
     WakeofAshes                            = Create({ Type = "Spell", ID = 255937 }),
     HammerofWrath                          = Create({ Type = "Spell", ID = 24275 }),
     CrusaderStrike                         = Create({ Type = "Spell", ID = 35395 }),
-    Consecration                           = Create({ Type = "Spell", ID = 205228 }),
+    Consecration                           = Create({ Type = "Spell", ID = 26573 }),
     Rebuke                                 = Create({ Type = "Spell", ID = 96231 }),
     -- Trinkets
 --    TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }), 
@@ -450,7 +451,9 @@ A[3] = function(icon, isMulti)
     local HeartOfAzeroth = Action.GetToggle(1, "HeartOfAzeroth")
     local Racial = Action.GetToggle(1, "Racial")
     local Potion = Action.GetToggle(1, "Potion")
-
+	
+	HPGReady = A.WakeofAshes:IsReady(unit) or A.BladeofJustice:IsReady(unit) or A.HammerofWrath:IsReady(unit) or A.Judgment:IsReady(unit) or A.CrusaderStrike:IsReady(unit)
+	HPGCooldown = A.WakeofAshes:GetCooldown() or A.BladeofJustice:GetCooldown() or A.HammerofWrath:GetCooldown() or A.Judgment:GetCooldown() or A.CrusaderStrike:GetCooldown()
 
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
@@ -495,22 +498,22 @@ A[3] = function(icon, isMulti)
             end
             
             -- avenging_wrath,if=(holy_power>=4&time<5|holy_power>=3&time>5|talent.holy_avenger.enabled&cooldown.holy_avenger.remains=0)&time_to_hpg=0
-            if A.AvengingWrath:IsReady(unit) and A.BurstIsON(unit) and ((Player:HolyPower() >= 4 and Unit("player"):CombatTime() < 5 or Player:HolyPower() >= 3 and Unit("player"):CombatTime() > 5 or A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() == 0) and time_to_hpg == 0) then
+            if A.AvengingWrath:IsReady(unit) and A.BurstIsON(unit) and ((Player:HolyPower() >= 4 and Unit("player"):CombatTime() < 5 or Player:HolyPower() >= 3 and Unit("player"):CombatTime() > 5 or A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() == 0) and HPGReady) then
                 return A.AvengingWrath:Show(icon)
             end
             
             -- crusade,if=(holy_power>=4&time<5|holy_power>=3&time>5|talent.holy_avenger.enabled&cooldown.holy_avenger.remains=0)&time_to_hpg=0
-            if A.Crusade:IsReady(unit) and A.BurstIsON(unit) and ((Player:HolyPower() >= 4 and Unit("player"):CombatTime() < 5 or Player:HolyPower() >= 3 and Unit("player"):CombatTime() > 5 or A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() == 0) and time_to_hpg == 0) then
+            if A.Crusade:IsReady(unit) and A.BurstIsON(unit) and ((Player:HolyPower() >= 4 and Unit("player"):CombatTime() < 5 or Player:HolyPower() >= 3 and Unit("player"):CombatTime() > 5 or A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() == 0) and HPGReady) then
                 return A.Crusade:Show(icon)
             end
             
             -- holy_avenger,if=time_to_hpg=0&((buff.avenging_wrath.up|buff.crusade.up)|(buff.avenging_wrath.down&cooldown.avenging_wrath.remains>40|buff.crusade.down&cooldown.crusade.remains>40))
-            if A.HolyAvenger:IsReady(unit) and (time_to_hpg == 0 and ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true)) or (Unit("player"):HasBuffsDown(A.AvengingWrathBuff.ID, true) and A.AvengingWrath:GetCooldown() > 40 or Unit("player"):HasBuffsDown(A.CrusadeBuff.ID, true) and A.Crusade:GetCooldown() > 40))) then
+            if A.HolyAvenger:IsReady(unit) and (HPGReady and ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true)) or (Unit("player"):HasBuffsDown(A.AvengingWrathBuff.ID, true) and A.AvengingWrath:GetCooldown() > 40 or Unit("player"):HasBuffsDown(A.CrusadeBuff.ID, true) and A.Crusade:GetCooldown() > 40))) then
                 return A.HolyAvenger:Show(icon)
             end
             
             -- final_reckoning,if=holy_power>=3&cooldown.avenging_wrath.remains>gcd&time_to_hpg=0&(!talent.seraphim.enabled|buff.seraphim.up)
-            if A.FinalReckoning:IsReady(unit) and (Player:HolyPower() >= 3 and A.AvengingWrath:GetCooldown() > GetGCD() and time_to_hpg == 0 and (not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true))) then
+            if A.FinalReckoning:IsReady(unit) and (Player:HolyPower() >= 3 and A.AvengingWrath:GetCooldown() > GetGCD() and HPGReady and (not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true))) then
                 return A.FinalReckoning:Show(icon)
             end
             
@@ -550,10 +553,10 @@ A[3] = function(icon, isMulti)
         local function Finishers(unit)
         
             -- variable,name=ds_castable,value=spell_targets.divine_storm>=2|buff.empyrean_power.up&debuff.judgment.down&buff.divine_purpose.down|spell_targets.divine_storm>=2&buff.crusade.up&buff.crusade.stack<10
-            VarDsCastable = num(MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 or Unit("player"):HasBuffs(A.EmpyreanPowerBuff.ID, true) and Unit(unit):HasDeBuffsDown(A.JudgmentDebuff.ID, true) and Unit("player"):HasBuffsDown(A.DivinePurposeBuff.ID, true) or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10)
+            VarDsCastable = A.GetToggle(2, "AoE") and (MultiUnits:GetByRange(8) >= 2 or Unit("player"):HasBuffs(A.EmpyreanPowerBuff.ID, true) > 0 and Unit(unit):HasDeBuffs(A.JudgmentDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.DivinePurposeBuff.ID, true) == 0 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10)
             
             -- seraphim,if=((!talent.crusade.enabled&buff.avenging_wrath.up|cooldown.avenging_wrath.remains>25)|(buff.crusade.up|cooldown.crusade.remains>25))&(!talent.final_reckoning.enabled|cooldown.final_reckoning.remains<10)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains<10)&time_to_hpg=0
-            if A.Seraphim:IsReady(unit) and (((not A.Crusade:IsSpellLearned() and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) or A.AvengingWrath:GetCooldown() > 25) or (Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) or A.Crusade:GetCooldown() > 25)) and (not A.FinalReckoning:IsSpellLearned() or A.FinalReckoning:GetCooldown() < 10) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() < 10) and time_to_hpg == 0) then
+            if A.Seraphim:IsReady(unit) and (((not A.Crusade:IsSpellLearned() and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 or A.AvengingWrath:GetCooldown() > 25) or (Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) > 0 or A.Crusade:GetCooldown() > 25)) and (not A.FinalReckoning:IsSpellLearned() or A.FinalReckoning:GetCooldown() < 10) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() < 10) and HPGReady) then
                 return A.Seraphim:Show(icon)
             end
             
@@ -563,14 +566,14 @@ A[3] = function(icon, isMulti)
             end]]
             
             -- execution_sentence,if=spell_targets.divine_storm<=3&((!talent.crusade.enabled|buff.crusade.down&cooldown.crusade.remains>10)|buff.crusade.stack>=3|cooldown.avenging_wrath.remains>10|debuff.final_reckoning.up)&time_to_hpg=0
-            if A.ExecutionSentence:IsReady(unit) and (MultiUnits:GetByRangeInCombat(8, 5, 10) <= 3 and ((not A.Crusade:IsSpellLearned() or Unit("player"):HasBuffsDown(A.CrusadeBuff.ID, true) and A.Crusade:GetCooldown() > 10) or Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) >= 3 or A.AvengingWrath:GetCooldown() > 10 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true)) and time_to_hpg == 0) then
+            if A.ExecutionSentence:IsReady(unit) and (MultiUnits:GetByRangeInCombat(8, 5, 10) <= 3 and ((not A.Crusade:IsSpellLearned() or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) == 0 and A.Crusade:GetCooldown() > 10) or Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) >= 3 or A.AvengingWrath:GetCooldown() > 10 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true) > 0) and HPGReady) then
                 return A.ExecutionSentence:Show(icon)
             end
             
             -- divine_storm,if=variable.ds_castable&!buff.vanquishers_hammer.up&((!talent.crusade.enabled|cooldown.crusade.remains>gcd*3)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd*3|spell_targets.divine_storm>=3)|spell_targets.divine_storm>=2&(talent.holy_avenger.enabled&cooldown.holy_avenger.remains<gcd*3|buff.crusade.up&buff.crusade.stack<10))
-            if A.DivineStorm:IsReady(unit) and (VarDsCastable and 
+            if A.DivineStorm:IsReady(unit) and VarDsCastable and 
 			--not Unit("player"):HasBuffs(A.VanquishersHammerBuff.ID, true) and 
-			((not A.Crusade:IsSpellLearned() or A.Crusade:GetCooldown() > GetGCD() * 3) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() > GetGCD() * 3 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 3) or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and (A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() < GetGCD() * 3 or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10))) then
+			((not A.Crusade:IsSpellLearned() or A.Crusade:GetCooldown() > GetGCD() * 3) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() > GetGCD() * 3 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 3) or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and (A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() < GetGCD() * 3 or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) > 0 and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10)) then
                 return A.DivineStorm:Show(icon)
             end
             
@@ -601,7 +604,7 @@ A[3] = function(icon, isMulti)
             end]]
             
             -- wake_of_ashes,if=(holy_power=0|holy_power<=2&(cooldown.blade_of_justice.remains>gcd*2|debuff.execution_sentence.up|debuff.final_reckoning.up))&(!raid_event.adds.exists|raid_event.adds.in>20)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>15)&(!talent.final_reckoning.enabled|cooldown.final_reckoning.remains>15)
-            if A.WakeofAshes:IsReady(unit) and ((Player:HolyPower() == 0 or Player:HolyPower() <= 2 and (A.BladeofJustice:GetCooldown() > GetGCD() * 2 or Unit(unit):HasDeBuffs(A.ExecutionSentenceDebuff.ID, true) or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true))) and (not (MultiUnits:GetByRangeInCombat(40, 5, 10) > 1) or IncomingAddsIn > 20) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() > 15) and (not A.FinalReckoning:IsSpellLearned() or A.FinalReckoning:GetCooldown() > 15)) then
+            if A.WakeofAshes:IsReady(unit) and (Player:HolyPower() < 1 or (Player:HolyPower() <= 2 and (A.BladeofJustice:GetCooldown() > GetGCD() * 2))) then
                 return A.WakeofAshes:Show(icon)
             end
             
@@ -648,20 +651,20 @@ A[3] = function(icon, isMulti)
             end
             
             -- consecration,if=time_to_hpg>gcd
-            if A.Consecration:IsReady(unit) and (time_to_hpg > GetGCD()) then
+            if A.Consecration:IsReady(unit) and (HPGCooldown > GetGCD()) then
                 return A.Consecration:Show(icon)
             end
             
         end
         
         
-        -- call precombat
+        --[[ call precombat
         if Precombat(unit) and not inCombat and Unit(unit):IsExists() and unit ~= "mouseover" then 
             return true
-        end
+        end]]
 
         -- In Combat
-        if inCombat and Unit(unit):IsExists() then
+        if Unit(unit):IsExists() then
 
                     -- auto_attack
             --[[ rebuke
