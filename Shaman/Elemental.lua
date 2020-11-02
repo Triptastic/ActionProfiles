@@ -399,15 +399,15 @@ local function HandleStormkeeper()
     if choice[1] then 
         -- also checks AoE
         if choice[2] then
-            return (A.BurstIsON(unit) and MultiUnits:GetActiveEnemies() > 2 and A.GetToggle(2, "AoE")) or false
+            return (BurstIsON(unit) and MultiUnits:GetActiveEnemies() > 2 and A.GetToggle(2, "AoE")) or false
         else
-            return (A.BurstIsON(unit)) or false
+            return (BurstIsON(unit)) or false
         end
         -- AoE Only
     elseif choice[2] then
         -- also checks CDs
         if choice[1] then
-            return (A.BurstIsON(unit) and MultiUnits:GetActiveEnemies() > 2 and A.GetToggle(2, "AoE")) or false
+            return (BurstIsON(unit) and MultiUnits:GetActiveEnemies() > 2 and A.GetToggle(2, "AoE")) or false
         else
             return (MultiUnits:GetActiveEnemies() > 2 and A.GetToggle(2, "AoE")) or false
         end
@@ -731,12 +731,12 @@ A[3] = function(icon, isMulti)
 		end
 	
 		--actions+=/fire_elemental
-		if BurstIsON and A.FireElemental:IsReady(unit) then 
+		if BurstIsON(unit) and A.FireElemental:IsReady(unit) then 
 			return A.FireElemental:Show(icon)
 		end
 		
 		--actions+=/storm_elemental
-		if BurstIsON and A.StormElemental:IsReady(unit) then
+		if BurstIsON(unit) and A.StormElemental:IsReady(unit) then
 			return A.StormElemental:Show(icon)
 		end
 
@@ -764,52 +764,52 @@ A[3] = function(icon, isMulti)
 	    end
 		
 		--actions+=/blood_fury,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.BloodFury:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.BloodFury:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.BloodFury:Show(icon)
 		end
 		
 		--actions+=/berserking,if=!talent.ascendance.enabled|buff.ascendance.up
-		if A.Berserking:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
+		if A.Berserking:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
 			return A.Berserking:Show(icon)
 		end		
 		
 		--actions+=/fireblood,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.Fireblood:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.Fireblood:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.Fireblood:Show(icon)
 		end				
 		
 		--actions+=/ancestral_call,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.AncestralCall:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.AncestralCall:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.AncestralCall:Show(icon)
 		end			
 		
 		--actions+=/bag_of_tricks,if=!talent.ascendance.enabled|!buff.ascendance.up
-		if A.BagofTricks:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) == 0) then
+		if A.BagofTricks:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) == 0) then
 			return A.BagofTricks:Show(icon)
 		end	
 
 		-- guardian_of_azeroth
-		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- focused_azerite_beam
-		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- memory_of_lucid_dreams
-		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- blood_of_the_enemy
-		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- purifying_blast
-		if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
@@ -819,22 +819,12 @@ A[3] = function(icon, isMulti)
 		end]]
 		
 		-- concentrated_flame,line_cd=6
-		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
 		-- reaping_flames
-		if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- the_unbound_force,if=buff.reckless_force.up
-		if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- worldvein_resonance
-		if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+		if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
 			return A.Darkflight:Show(icon)
 		end
 		
@@ -929,7 +919,7 @@ A[3] = function(icon, isMulti)
 				end					
 				
 				--actions.single_target+=/ascendance,if=talent.ascendance.enabled
-				if A.Ascendance:IsReady(unit) and BurstIsON then
+				if A.Ascendance:IsReady(unit) and BurstIsON(unit) then
 					return A.Ascendance:Show(icon)
 				end	
 				

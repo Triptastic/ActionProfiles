@@ -1160,51 +1160,6 @@ A.Data.ProfileUI                                     = {
                     M = {},
                 },
             },
-            { -- [11] Spell Reflect
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "DANGEROUS CAST", value = "DANGEROUS CAST" },
-                        { text = "ON COOLDOWN", value = "ON COOLDOWN" },                    
-                        { text = "OFF", value = "OFF" },
-                    },
-                    DB = "ReflectPvP",
-                    DBV = "DANGEROUS CAST",
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(216890),
-                    }, 
-                    TT = { 
-                        enUS = "@arena1-3, @target, @mouseover, @targettarget\nDANGEROUS CAST - Only if target or arena unit is casting a spell considered as dangerous. (CC or Big damage).\nON COOLDOWN - means will use always on all casts.\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                        ruRU = "@arena1-3, @target, @mouseover, @targettarget\nDANGEROUS CAST - Only if target or arena unit is casting a spell considered as dangerous. (CC or Big damage).\nON COOLDOWN - means will use always on all casts.\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@arena1", value = 1 },
-                        { text = "@arena2", value = 2 },
-                        { text = "@arena3", value = 3 },
-                        { text = "primary", value = 4 },
-                    },
-                    MULT = true,
-                    DB = "ReflectPvPunits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                        [3] = true,
-                        [4] = true,
-                    }, 
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(216890) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
-                        ruRU = "primary - это @target, @mouseover, @targettarget (эти юниты зависят от чекбоксов наверху)", 
-                    }, 
-                    M = {},
-                },
-            },			
         },
         [ACTION_CONST_WARRIOR_PROTECTION] = { 
         LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },		

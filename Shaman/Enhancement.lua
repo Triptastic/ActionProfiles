@@ -123,6 +123,7 @@ Action[ACTION_CONST_SHAMAN_ENCHANCEMENT] = {
 	WindfuryWeapon						   = Create({ Type = "Spell", ID = 33757 }),
 	FlametongueWeapon					   = Create({ Type = "Spell", ID = 318038 }), 
 	WindfuryTotem						   = Create({ Type = "Spell", ID = 8512 }),
+	WindfuryTotemBuff					   = Create({ Type = "Spell", ID = 327942 }),
 	ChainLightning						   = Create({ Type = "Spell", ID = 188443 }),
 	Stormkeeper							   = Create({ Type = "Spell", ID = 320137 }),
 	MaelstromWeapon						   = Create({ Type = "Spell", ID = 187880 , Hidden = true	}), 
@@ -562,7 +563,7 @@ local function SelfDefensives()
     
     -- HealingSurgeHP
     local HealingSurge = Action.GetToggle(2, "HealingSurgeHP")
-    if     HealingSurge >= 0 and A.HealingSurge:IsReady(player) and Player:Maelstrom() > 20 and Unit("player"):CombatTime() > 2  and
+    if     HealingSurge >= 0 and A.HealingSurge:IsReady(player) and Unit("player"):CombatTime() > 2  and
     (
         (     -- Auto 
             HealingSurge >= 100 and 
@@ -828,12 +829,12 @@ A[3] = function(icon, isMulti)
         end]]
 			
 		-- Bloodlust Shamanism PvP
-        if A.BloodLust:IsReady(player) and inCombat and A.BurstIsON(unit) and A.Shamanism:IsSpellLearned() then 
+        if A.BloodLust:IsReady(player) and inCombat and BurstIsON(unit) and A.Shamanism:IsSpellLearned() then 
             return A.BloodLust:Show(icon)
         end 
 			
 		-- Skyfury Totem
-        if A.IsInPvP and A.SkyfuryTotem:IsReady(player) and inCombat and (Unit(unit):HealthPercent() <= SkyfuryTotemHP or Unit(unit):TimeToDie() <= SkyfuryTotemTTD) and A.BurstIsON(unit) and A.SkyfuryTotem:IsSpellLearned() then 
+        if A.IsInPvP and A.SkyfuryTotem:IsReady(player) and inCombat and (Unit(unit):HealthPercent() <= SkyfuryTotemHP or Unit(unit):TimeToDie() <= SkyfuryTotemTTD) and BurstIsON(unit) and A.SkyfuryTotem:IsSpellLearned() then 
             return A.SkyfuryTotem:Show(icon)
         end
 
@@ -857,7 +858,7 @@ A[3] = function(icon, isMulti)
         end
 		
 	   	-- Non SIMC Custom Trinket1
-	    if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
+	    if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and BurstIsON(unit)) or (not TrinketOnlyBurst and not BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
 		(
     		TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 			or
@@ -868,7 +869,7 @@ A[3] = function(icon, isMulti)
    	    end 		
 	        	
 		-- Non SIMC Custom Trinket2
-	    if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
+	    if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and BurstIsON(unit)) or (not TrinketOnlyBurst and not BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
 		(
     		TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 			or
@@ -900,6 +901,9 @@ A[3] = function(icon, isMulti)
 		end
 
 		--Windfury Totem if in group and not Windfury totem buff and timesincelastcast > whatever
+		if A.WindfuryTotem:IsReady("player") and Action.InstanceInfo.GroupSize >= 2 and inCombat and (Unit("player"):HasBuffs(A.WindfuryTotemBuff.ID, true) == 0 or A.WindfuryTotem:GetSpellTimeSinceLastCast() > 90) then
+			return A.WindfuryTotem:Show(icon)
+		end	
 			
 		--actions+=/windstrike
 		if A.Windstrike:IsReady(unit) and Unit("player"):HasBuffs(A.AscendanceBuff.ID, true) > 0 then
@@ -907,87 +911,77 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--actions+=/blood_fury,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.BloodFury:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.BloodFury:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.BloodFury:Show(icon)
 		end
 		
 		--actions+=/berserking,if=!talent.ascendance.enabled|buff.ascendance.up
-		if A.Berserking:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
+		if A.Berserking:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
 			return A.Berserking:Show(icon)
 		end		
 		
 		--actions+=/fireblood,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.Fireblood:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.Fireblood:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.Fireblood:Show(icon)
 		end				
 		
 		--actions+=/ancestral_call,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.AncestralCall:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.AncestralCall:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.AncestralCall:Show(icon)
 		end			
 		
 		--actions+=/bag_of_tricks,if=!talent.ascendance.enabled|!buff.ascendance.up
-		if A.BagofTricks:IsReady(unit) and BurstIsON and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) == 0) then
+		if A.BagofTricks:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) == 0) then
 			return A.BagofTricks:Show(icon)
 		end	
 
 		--actions+=/feral_spirit
-		if A.FeralSpirit:IsReady(unit) and BurstIsON and A.GetToggle(2, "EnableFS") then
+		if A.FeralSpirit:IsReady(unit) and BurstIsON(unit) and A.GetToggle(2, "EnableFS") then
 			return A.FeralSpirit:Show(icon)
 		end
 
-		-- guardian_of_azeroth
-		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- focused_azerite_beam
-		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- memory_of_lucid_dreams
-		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- blood_of_the_enemy
-		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- purifying_blast
-		if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		--[[ ripple_in_space
-		if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-			return A.Darkflight:Show(icon)
-		end]]
-		
-		-- concentrated_flame,line_cd=6
-		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- reaping_flames
-		if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- the_unbound_force,if=buff.reckless_force.up
-		if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- worldvein_resonance
-		if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
 		
 		--actions+=/earth_elemental
-		if A.EarthElemental:IsReady(unit) and BurstIsON and GetToggle(2, "EarthElementalDPS") then
+		if A.EarthElemental:IsReady(unit) and BurstIsON(unit) and GetToggle(2, "EarthElementalDPS") then
 			return A.EarthElemental:Show(icon)
 		end
 		
@@ -1002,7 +996,7 @@ A[3] = function(icon, isMulti)
 		end		
 		
 		--actions+=/ascendance
-		if A.Ascendance:IsReady(unit) and BurstIsON then
+		if A.Ascendance:IsReady(unit) and BurstIsON(unit) then
 			return A.Ascendance:Show(icon)
 		end	
 

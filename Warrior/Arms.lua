@@ -137,6 +137,8 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
+	
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
 };
 
 -- To create covenant use next code:
@@ -465,47 +467,47 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- skullsplitter,if=rage<52&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 52 and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) or Player:Rage() < 20) then
+				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 52 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 or Player:Rage() < 20) then
 					return A.Skullsplitter:Show(icon)
 				end
 				
 				-- ravager,,if=cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2)
-				if A.Ravager:IsReady(unit) and A.BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2)) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2) or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2) then
 					return A.Ravager:Show(icon)
 				end
 				
 				-- colossus_smash,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.ColossusSmash:IsReady(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or A.MemoryofLucidDreams:GetCooldown() > 10)) then
+				if A.ColossusSmash:IsReady(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 10)) then
 					return A.ColossusSmash:Show(icon)
 				end
 				
 				-- warbreaker,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or A.MemoryofLucidDreams:GetCooldown() > 10)) then
+				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 10)) then
 					return A.Warbreaker:Show(icon)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!spell_targets.whirlwind>1&!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and (Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRangeInCombat(8, 5, 10) == 1 or (not MultiUnits:GetByRangeInCombat(8, 5, 10)) > 1 and not A.Cleave:IsSpellLearned())) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and GetByRange(3, 8) or (not GetByRange(2, 8) and not A.Cleave:IsSpellLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=(spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3)|(spell_targets.whirlwind>3)
-				if A.Cleave:IsReady(unit) and ((MultiUnits:GetByRangeInCombat(8, 5, 10) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or (MultiUnits:GetByRangeInCombat(8, 5, 10) > 3)) then
+				if A.Cleave:IsReady(unit) and (GetByRange(3, 8) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or GetByRange(4, 8) then
 					return A.Cleave:Show(icon)
 				end
 				
 				-- bladestorm,if=!buff.memory_of_lucid_dreams.up&buff.test_of_might.up&rage<30&!buff.deadly_calm.up
-				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (not Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) and Player:Rage() < 30 and not Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true)) then
+				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 and Player:Rage() < 30 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) then
 					return A.Bladestorm:Show(icon)
 				end
 				
 				-- execute,if=buff.memory_of_lucid_dreams.up|buff.deadly_calm.up|debuff.colossus_smash.up|buff.test_of_might.up
-				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
+				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) then
 					return A.Execute:Show(icon)
 				end
 				
 				-- slam,if=buff.crushing_assault.up&buff.memory_of_lucid_dreams.down
-				if A.Slam:IsReady(unit) and (Unit("player"):HasBuffs(A.CrushingAssaultBuff.ID, true) and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true)) then
+				if A.Slam:IsReady(unit) and (Unit("player"):HasBuffs(A.CrushingAssaultBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0) then
 					return A.Slam:Show(icon)
 				end
 				
@@ -535,22 +537,22 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- skullsplitter,if=rage<60&buff.deadly_calm.down&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 60 and Unit("player"):HasBuffsDown(A.DeadlyCalmBuff.ID, true) and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) or Player:Rage() < 20) then
+				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 60 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 or Player:Rage() < 20) then
 					return A.Skullsplitter:Show(icon)
 				end
 				
 				-- ravager,if=(cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2))
-				if A.Ravager:IsReady(unit) and A.BurstIsON(unit) and ((A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2))) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2) or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2) then
 					return A.Ravager:Show(icon)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and (Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRangeInCombat(8, 5, 10) == 1 or not A.Cleave:IsSpellLearned())) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (GetByRange(3, 8) or not A.Cleave:IsSpellLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3
-				if A.Cleave:IsReady(unit) and ((MultiUnits:GetByRangeInCombat(8, 5, 10) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or (MultiUnits:GetByRangeInCombat(8, 5, 10) > 3)) then
+				if A.Cleave:IsReady(unit) and (GetByRange(3, 8) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or GetByRange(4, 8) then
 					return A.Cleave:Show(icon)
 				end
 				
@@ -565,22 +567,22 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- execute,if=buff.sudden_death.react
-				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffsStacks(A.SuddenDeathBuff.ID, true)) then
+				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffs(A.SuddenDeathBuff.ID, true) > 0) then
 					return A.Execute:Show(icon)
 				end
 				
 				-- bladestorm,if=cooldown.mortal_strike.remains&debuff.colossus_smash.down&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)&buff.memory_of_lucid_dreams.down&rage<40
-				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (A.MortalStrike:GetCooldown() and Unit(unit):HasDeBuffsDown(A.ColossusSmashDebuff.ID, true) and (not A.DeadlyCalm:IsSpellLearned() or Unit("player"):HasBuffsDown(A.DeadlyCalmBuff.ID, true)) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not A.TestofMight:GetAzeriteRank() > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) and Player:Rage() < 40) then
+				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsSpellLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and not A.TestofMight:GetAzeriteRank() > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Player:Rage() < 40) then
 					return A.Bladestorm:Show(icon)
 				end
 				
 				-- mortal_strike,if=spell_targets.whirlwind=1|!talent.cleave.enabled
-				if A.MortalStrike:IsReady(unit) and (MultiUnits:GetByRangeInCombat(8, 5, 10) == 1 or not A.Cleave:IsSpellLearned()) then
+				if A.MortalStrike:IsReady(unit) and (GetByRange(3, 8) or not A.Cleave:IsSpellLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2
-				if A.Cleave:IsReady(unit) and (MultiUnits:GetByRangeInCombat(8, 5, 10) > 2) then
+				if A.Cleave:IsReady(unit) and GetByRange(3, 8) then
 					return A.Cleave:Show(icon)
 				end
 				
@@ -590,7 +592,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- slam,if=!talent.fervor_of_battle.enabled&(buff.memory_of_lucid_dreams.up|debuff.colossus_smash.up)
-				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsSpellLearned() and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true))) then
+				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsSpellLearned() and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.Slam:Show(icon)
 				end
 				
@@ -626,12 +628,12 @@ A[3] = function(icon, isMulti)
 				
 				-- auto_attack
 				-- blood_fury,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.BloodFury:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true))) then
+				if A.BloodFury:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.BloodFury:Show(icon)
 				end
 				
 				-- berserking,if=buff.memory_of_lucid_dreams.up|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Berserking:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true))) then
+				if A.Berserking:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.Berserking:Show(icon)
 				end
 				
@@ -641,88 +643,73 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- lights_judgment,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffsDown(A.ColossusSmashDebuff.ID, true) and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) and A.MortalStrike:GetCooldown()) then
+				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and not A.MortalStrike:IsReady()) then
 					return A.LightsJudgment:Show(icon)
 				end
 				
 				-- fireblood,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Fireblood:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true))) then
+				if A.Fireblood:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.Fireblood:Show(icon)
 				end
 				
 				-- ancestral_call,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.AncestralCall:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true))) then
+				if A.AncestralCall:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.AncestralCall:Show(icon)
 				end
 				
 				-- bag_of_tricks,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.BagofTricks:IsReady(unit) and (Unit(unit):HasDeBuffsDown(A.ColossusSmashDebuff.ID, true) and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) and A.MortalStrike:GetCooldown()) then
+				if A.BagofTricks:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffsD(A.MemoryofLucidDreams.ID, true) == 0 and not A.MortalStrike:IsReady()) then
 					return A.BagofTricks:Show(icon)
 				end
 				
 				-- avatar,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>45)
-				if A.Avatar:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or A.MemoryofLucidDreams:GetCooldown() > 45)) then
+				if A.Avatar:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) then
 					return A.Avatar:Show(icon)
 				end
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
-				if A.SweepingStrikes:IsReady(unit) and (MultiUnits:GetByRangeInCombat(8, 5, 10) > 1 and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0)) then
+				if A.SweepingStrikes:IsReady(unit) and GetByRange(2, 8) and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0) then
 					return A.SweepingStrikes:Show(icon)
 				end
 				
-				-- blood_of_the_enemy,if=buff.test_of_might.up|(debuff.colossus_smash.up&!azerite.test_of_might.enabled)
-				if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) or (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not A.TestofMight:GetAzeriteRank() > 0)) then
-					return A.BloodoftheEnemy:Show(icon)
+				-- guardian_of_azeroth
+				if A.GuardianofAzeroth:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
 				end
 				
-				-- purifying_blast,if=!debuff.colossus_smash.up&!buff.test_of_might.up
-				if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
-					return A.PurifyingBlast:Show(icon)
+				-- focused_azerite_beam
+				if A.FocusedAzeriteBeam:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
 				end
 				
-				--[[ ripple_in_space,if=!debuff.colossus_smash.up&!buff.test_of_might.up
-				if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
-					return A.RippleInSpace:Show(icon)
+				-- memory_of_lucid_dreams
+				if A.MemoryofLucidDreams:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
+				end
+				
+				-- blood_of_the_enemy
+				if A.BloodoftheEnemy:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
+				end
+				
+				-- purifying_blast
+				if A.PurifyingBlast:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
+				end
+				
+				--[[ ripple_in_space
+				if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+					return A.Darkflight:Show(icon)
 				end]]
 				
-				-- worldvein_resonance,if=!debuff.colossus_smash.up&!buff.test_of_might.up
-				if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
-					return A.WorldveinResonance:Show(icon)
+				-- concentrated_flame,line_cd=6
+				if A.ConcentratedFlame:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
 				end
 				
-				-- focused_azerite_beam,if=!debuff.colossus_smash.up&!buff.test_of_might.up
-				if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
-					return A.FocusedAzeriteBeam:Show(icon)
-				end
-				
-				-- reaping_flames,if=!debuff.colossus_smash.up&!buff.test_of_might.up
-				if A.ReapingFlames:IsReady(unit) and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true)) then
-					return A.ReapingFlames:Show(icon)
-				end
-				
-				-- concentrated_flame,if=!debuff.colossus_smash.up&!buff.test_of_might.up&dot.concentrated_flame_burn.remains=0
-				if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) and not Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) and Unit(unit):HasDeBuffs(A.ConcentratedFlameBurnDebuff.ID, true) == 0) then
-					return A.ConcentratedFlame:Show(icon)
-				end
-				
-				-- the_unbound_force,if=buff.reckless_force.up
-				if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-					return A.TheUnboundForce:Show(icon)
-				end
-				
-				-- guardian_of_azeroth,if=cooldown.colossus_smash.remains<10
-				if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (A.ColossusSmash:GetCooldown() < 10) then
-					return A.GuardianofAzeroth:Show(icon)
-				end
-				
-				-- memory_of_lucid_dreams,if=!talent.warbreaker.enabled&cooldown.colossus_smash.remains<gcd&(target.time_to_die>150|target.health.pct<20)
-				if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not A.Warbreaker:IsSpellLearned() and A.ColossusSmash:GetCooldown() < GetGCD() and (Unit(unit):TimeToDie() > 150 or Unit(unit):HealthPercent() < 20)) then
-					return A.MemoryofLucidDreams:Show(icon)
-				end
-				
-				-- memory_of_lucid_dreams,if=talent.warbreaker.enabled&cooldown.warbreaker.remains<gcd&(target.time_to_die>150|target.health.pct<20)
-				if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < GetGCD() and (Unit(unit):TimeToDie() > 150 or Unit(unit):HealthPercent() < 20)) then
-					return A.MemoryofLucidDreams:Show(icon)
+				-- reaping_flames
+				if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
+					return A.Darkflight:Show(icon)
 				end
 				
 				-- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20

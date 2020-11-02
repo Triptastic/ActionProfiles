@@ -68,22 +68,20 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     GrimoireofSacrifice                  = Action.Create({ Type = "Spell", ID = 108503     }),
     SeedofCorruption                     = Action.Create({ Type = "Spell", ID = 27243      }),
     Haunt                                = Action.Create({ Type = "Spell", ID = 48181      }),
-    ShadowBolt                           = Action.Create({ Type = "Spell", ID = 232670     }),
+    ShadowBolt                           = Action.Create({ Type = "Spell", ID = 686     }),
     DarkSoulMisery                       = Action.Create({ Type = "Spell", ID = 113860     }),
     SummonDarkglare                      = Action.Create({ Type = "Spell", ID = 205180     }),
     SiphonLife                           = Action.Create({ Type = "Spell", ID = 63106      }),
     Agony                                = Action.Create({ Type = "Spell", ID = 980        }),
     Corruption                           = Action.Create({ Type = "Spell", ID = 172        }),
-    CreepingDeath                        = Action.Create({ Type = "Spell", ID = 264000     }),
-    WritheInAgony                        = Action.Create({ Type = "Spell", ID = 196102     }),
+    CreepingDeath                        = Action.Create({ Type = "Spell", ID = 264000, Hidden = true     }),
+    WritheInAgony                        = Action.Create({ Type = "Spell", ID = 196102, Hidden = true     }),
     UnstableAffliction                   = Action.Create({ Type = "Spell", ID = 316099      }),
-    Deathbolt                            = Action.Create({ Type = "Spell", ID = 264106     }),
-    AbsoluteCorruption                   = Action.Create({ Type = "Spell", ID = 196103     }),
+    AbsoluteCorruption                   = Action.Create({ Type = "Spell", ID = 196103, Hidden = true     }),
     DrainLife                            = Action.Create({ Type = "Spell", ID = 234153     }),
     PhantomSingularity                   = Action.Create({ Type = "Spell", ID = 205179     }),
     VileTaint                            = Action.Create({ Type = "Spell", ID = 278350     }),
     DrainSoul                            = Action.Create({ Type = "Spell", ID = 198590     }),
-    ShadowEmbrace                        = Action.Create({ Type = "Spell", ID = 32388      }),
     CascadingCalamity                    = Action.Create({ Type = "Spell", ID = 275372     }),
     SowtheSeeds                          = Action.Create({ Type = "Spell", ID = 196226     }),
     PetKick                              = Action.Create({ Type = "SpellSingleColor", ID = 119910, Color = "RED", Desc = "RED Color for Pet Target kick" }),  
@@ -113,8 +111,6 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     CascadingCalamityBuff                = Action.Create({ Type = "Spell", ID = 275378, Hidden = true     }),
     WrackingBrillianceBuff               = Action.Create({ Type = "Spell", ID = 272891, Hidden = true    }),
     -- Debuffs 
-    ShadowEmbraceDebuff                  = Action.Create({ Type = "Spell", ID = 32390, Hidden = true     }),
-    ShiverVenomDebuff                    = Action.Create({ Type = "Spell", ID = 301624, Hidden = true     }),
     SeedofCorruptionDebuff               = Action.Create({ Type = "Spell", ID = 27243, Hidden = true}),
     HauntDebuff                          = Action.Create({ Type = "Spell", ID = 48181, Hidden = true}),
     UnstableAfflictionDebuff             = Action.Create({ Type = "Spell", ID = 316099, Hidden = true}),
@@ -122,12 +118,6 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     SiphonLifeDebuff                     = Action.Create({ Type = "Spell", ID = 63106, Hidden = true}),
     AgonyDebuff                          = Action.Create({ Type = "Spell", ID = 980, Hidden = true}),
     CorruptionDebuff                     = Action.Create({ Type = "Spell", ID = 146739, Hidden = true     }),
-	--[[ UA Debuff
-    UnstableAfflictionDebuff1             = Action.Create({ Type = "Spell", ID = 233490, Hidden = true}),	
-    UnstableAfflictionDebuff2             = Action.Create({ Type = "Spell", ID = 233496, Hidden = true}),   
-    UnstableAfflictionDebuff3             = Action.Create({ Type = "Spell", ID = 233497, Hidden = true}),  
-    UnstableAfflictionDebuff4             = Action.Create({ Type = "Spell", ID = 233498, Hidden = true}),   
-    UnstableAfflictionDebuff5             = Action.Create({ Type = "Spell", ID = 233499, Hidden = true}),]]
     -- PvP
     NetherWard                           = Action.Create({ Type = "Spell", ID = 212295     }), -- Spell Reflect	
 	DemonArmor                           = Action.Create({ Type = "Spell", ID = 285933     }), -- Demon Armor PvP		
@@ -213,6 +203,10 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     VisionofPerfectionMinor2             = Action.Create({ Type = "Spell", ID = 299367, Hidden = true}),
     VisionofPerfectionMinor3             = Action.Create({ Type = "Spell", ID = 299369, Hidden = true}),
 	DummyTest                            = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
+	
+	-- Extra icons until GG update
+	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Malefic Rapture
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
     -- Here come all the stuff needed by simcraft but not classic spells or items. 
 }
 
@@ -312,10 +306,10 @@ local function bool(val)
     return val ~= 0
 end
 
---[[local function IsLatenced(self)
+local function IsLatenced(self)
     -- @return boolean 
     return TMW.time - (Temp.CastStartTime[self:Info()] or 0) > GetGCD() + 0.5
-end ]]
+end 
 
 --[[Action.Enum.SpellDuration = {
     -- SiphonLife  
@@ -640,9 +634,14 @@ A[3] = function(icon, isMulti)
 		local function Precombat(unit)
 			
 			-- Summon Pet 
-			if SummonPet:IsReady("player") and (not isMoving) and not Pet:IsActive() and not Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) then
+			if SummonPet:IsReady("player") and IsLatenced(SummonPet) and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 then
 				return SummonPet:Show(icon)
-			end			
+			end		
+
+			--Force AoE opener check
+			if A.SeedofCorruption:IsReady(unit) and A.SowtheSeeds:IsSpellLearned() and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and not inCombat then
+				return A.SeedofCorruption:Show(icon)
+			end	
 			
 			--actions.precombat+=/grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
 			if A.GrimoireofSacrifice:IsReady("player") and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and A.GrimoireofSacrifice:IsSpellLearned() then
@@ -676,54 +675,45 @@ A[3] = function(icon, isMulti)
 		
 		local function Cooldowns(unit)
 		
-			--actions.cooldowns=worldvein_resonance
-			if A.WorldveinResonance:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
-				return A.Darkflight:Show(icon)
-			end			
-			--actions.cooldowns+=/memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
 				return A.Darkflight:Show(icon)
 			end
 			
-			--actions.cooldowns+=/blood_of_the_enemy
-			if A.BloodoftheEnemy:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
 				return A.Darkflight:Show(icon)
-			end			
+			end
 			
-			--actions.cooldowns+=/guardian_of_azeroth
-            if A.GuardianofAzeroth:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
-                return A.Darkflight:Show(icon)
-            end			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
 			
-			--actions.cooldowns+=/ripple_in_space
-			if A.RippleinSpace:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
 				return A.Darkflight:Show(icon)
 			end	
-			
-			--actions.cooldowns+=/focused_azerite_beam
-            if A.FocusedAzeriteBeam:IsReady(unit) and not ShouldStop then
-                return A.Darkflight:Show(icon)
-            end			
-			
-			--actions.cooldowns+=/purifying_blast
-            if A.PurifyingBlast:IsReady(unit) and not ShouldStop then
-                return A.Darkflight:Show(icon)
-            end
-			
-			--actions.cooldowns+=/reaping_flames
-            if A.ReapingFlames:AutoHeartOfAzeroth(unit, true) and not ShouldStop then
-                return A.Darkflight:Show(icon)
-            end
-			
-			--actions.cooldowns+=/concentrated_flame
-            if A.ConcentratedFlame:AutoHeartOfAzeroth(unit, true) and not ShouldStop and (Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 and not A.ConcentratedFlame:IsSpellInFlight()) then
-                return A.Darkflight:Show(icon)
-            end
-			
-			--actions.cooldowns+=/the_unbound_force,if=buff.reckless_force.remains
-            if A.TheUnboundForce:AutoHeartOfAzeroth(unit, true) and not ShouldStop and Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true) then
-                return A.Darkflight:Show(icon)
-            end			
 		
 			-- Non SIMC Custom Trinket1
 			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and inCombat and     
@@ -791,12 +781,7 @@ A[3] = function(icon, isMulti)
 		--##### MAIN ROTATION #####
 		--#########################
 		
-			--[[actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
-			if (A.Darkglare:IsReady(unit) or A.Darkglare:GetCooldown() < 2) and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) and HasAllDots then
-				return A.PrepareDarkglare()
-			end]]
-
-			
+		local function Main(unit)
 			--actions=phantom_singularity
 			if A.PhantomSingularity:IsReady(unit) then
 				return A.PhantomSingularity:Show(icon)
@@ -842,12 +827,12 @@ A[3] = function(icon, isMulti)
 				return A.Haunt:Show(icon)
 			end
 			
-			--[[actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
-			if (A.SummonDarkglare:IsReady(unit) or A.SummonDarkglare:GetCooldown() < 2) and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) then
+			--actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
+			if (A.SummonDarkglare:IsReady("player") or A.SummonDarkglare:GetCooldown() < 2) and BurstIsON(unit) and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) then
 				if PrepareDarkglare(unit) then
 					return true
 				end
-			end]]
+			end
 			
 			--actions+=/dark_soul,if=cooldown.summon_darkglare.remains>time_to_die
 			if A.DarkSoulMisery:IsReady(unit) and A.SummonDarkglare:GetCooldown() > Unit(unit):TimeToDie() then
@@ -855,23 +840,86 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--[[actions+=/call_action_list,name=cooldowns
-			if BurstIsON and Cooldowns() then
+			if BurstIsON(unit) then 
+				if Cooldowns(unit) then
 				return true
 			end]]
 			
+				-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady("target") and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end	
+		
+			-- Non SIMC Custom Trinket1
+			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and inCombat and     
+			(
+				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
+				or
+				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")	 					
+			)
+			then 
+				return A.Trinket1:Show(icon)
+			end 		
+			
+			-- Non SIMC Custom Trinket2
+			if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and inCombat and    
+			(
+				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
+				or
+				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")					
+			)
+			then
+				return A.Trinket2:Show(icon) 	
+	   		end 		
+			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
-			if A.MaleficRapture:IsReady(unit) and Unit(unit):HasDeBuffs(A.VileTaint.ID, true) > 0 then
-				return A.MaleficRapture:Show(icon)
+			if A.MaleficRapture:IsReady("player") and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 then
+				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking||cooldown.phantom_singularity.remains>12||soul_shard>3)
-			if A.MaleficRapture:IsReady(unit) and A.PhantomSingularity:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
-				return A.MaleficRapture:Show(icon)
+			if A.MaleficRapture:IsReady("player") and A.PhantomSingularity:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
+				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-			if A.MaleficRapture:IsReady(unit) and A.SowtheSeeds:IsSpellLearned() then
-				return A.MaleficRapture:Show(icon)
+			if A.MaleficRapture:IsReady("player") and A.SowtheSeeds:IsSpellLearned() then
+				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/drain_life,if=buff.inevitable_demise.stack>30
@@ -882,14 +930,14 @@ A[3] = function(icon, isMulti)
 			--actions+=/drain_life,if=buff.inevitable_demise_az.stack>30
 			--actions+=/drain_soul
 			if A.DrainSoul:IsReady(unit) then
-				return A.DrainShow:Show(icon)
+				return A.DrainSoul:Show(icon)
 			end	
 			
 			--actions+=/shadow_bolt
 			if A.ShadowBolt:IsReady(unit) then
 				return A.ShadowBolt:Show(icon)
 			end	
-
+		end
 
         --[[ Mouseover
         if unit == "mouseover" then  -- and not Unit(unit):IsTotem()
@@ -933,10 +981,12 @@ A[3] = function(icon, isMulti)
 				return A.Corruption:Show(icon)
 			end		
 			
-		end]]	
+		end	]]
 		
 		if not inCombat then
 			return Precombat()
+			else
+			return Main()
 		end
 		
 	end

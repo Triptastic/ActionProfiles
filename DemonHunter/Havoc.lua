@@ -57,7 +57,7 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     WarStomp                               = Action.Create({ Type = "Spell", ID = 20549     }),
     BullRush                               = Action.Create({ Type = "Spell", ID = 255654     }),  
     GiftofNaaru                            = Action.Create({ Type = "Spell", ID = 59544    }),
-    Shadowmeld                             = Action.Create({ Type = "Spell", ID = 58984    }), -- usable in Action Core 
+    Shadowmeld                             = Action.Create({ Type = "Spell", ID = 58984    }), -- Used for HoA
     Stoneform                              = Action.Create({ Type = "Spell", ID = 20594    }), 
     BagofTricks                            = Action.Create({ Type = "Spell", ID = 312411    }),
     WilloftheForsaken                      = Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
@@ -198,7 +198,6 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     PoolResource                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
     DummyTest                              = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
 	Quake                                  = Action.Create({ Type = "Spell", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
 }
 
 Action:CreateEssencesFor(ACTION_CONST_DEMONHUNTER_HAVOC)
@@ -423,7 +422,7 @@ local function HandleFelBlade()
         return false
     end
     
-end]]
+end
 
 -- Auto Darkness Handler
 local function CanDarkness()
@@ -967,86 +966,7 @@ A[3] = function(icon, isMulti)
                 return A.EyeBeam:Show(icon)
             end            
         end
-        
-        --[[Essences
-        local function Essences(unit)
-            -- concentrated_flame,if=(!dot.concentrated_flame_burn.ticking&!action.concentrated_flame.in_flight|full_recharge_time<gcd.max)
-            if A.ConcentratedFlame:AutoHeartOfAzeroth(unit, true) and CanCast and UseHeartOfAzeroth 
-            and (
-                (Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 and not A.ConcentratedFlame:IsSpellInFlight() or A.ConcentratedFlame:GetSpellChargesFullRechargeTime() < A.GetGCD())
-            ) then
-                return A.ConcentratedFlame:Show(icon)
-            end
-            
-            -- reaping_flames
-            if A.ReapingFlames:AutoHeartOfAzeroth(unit, true) and UseHeartOfAzeroth then
-                return A.ReapingFlames:Show(icon)
-            end
-            
-            -- moment_of_glory
-            if A.MomentofGlory:AutoHeartOfAzeroth(unit, true) and UseHeartOfAzeroth then
-                return A.MomentofGlory:Show(icon)
-            end
-            
-            -- ReplicaofKnowledge
-            if A.ReplicaofKnowledge:AutoHeartOfAzeroth(unit, true) and UseHeartOfAzeroth then
-                return A.ReplicaofKnowledge:Show(icon)
-            end    
-            
-            -- blood_of_the_enemy,if=buff.metamorphosis.up|target.time_to_die<=10
-            if A.BloodoftheEnemy:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and BurstIsON(unit) and UseHeartOfAzeroth and (Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) or Unit(unit):TimeToDie() <= 10) then
-                -- Notification                    
-                Action.SendNotification("Burst : Blood of the Enemy", A.BloodoftheEnemy.ID)                
-                return A.BloodoftheEnemy:Show(icon)
-            end
-            
-            -- guardian_of_azeroth,if=(buff.metamorphosis.up&cooldown.metamorphosis.ready)|buff.metamorphosis.remains>25|target.time_to_die<=30
-            if A.GuardianofAzeroth:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and BurstIsON(unit) and UseHeartOfAzeroth and 
-            (
-                (Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0 and A.Metamorphosis:GetCooldown() == 0) 
-                or 
-                Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 
-                or
-                A.Metamorphosis:GetCooldown() > ExpectedCombatLength
-                or 
-                Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0 and A.Demonic:IsSpellLearned() and Unit(unit):IsBoss()
-            ) 
-            then
-                -- Notification                    
-                Action.SendNotification("Burst : Guardian of Azeroth", A.GuardianofAzeroth.ID) 
-                return A.GuardianofAzeroth:Show(icon)
-            end
-            
-            -- focused_azerite_beam,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60
-            if A.FocusedAzeriteBeam:AutoHeartOfAzeroth(unit, true) and not ShouldDelayFocusedAzeriteBeam() and CanCast and BurstIsON(unit) and UseHeartOfAzeroth 
-            and (GetByRange(FocusedAzeriteBeamUnits, 20) or Unit(unit):IsBoss()) and Unit(unit):TimeToDie() >= FocusedAzeriteBeamTTD
-            then
-                -- Notification                    
-                Action.SendNotification("Stop moving!! Focused Azerite Beam", A.FocusedAzeriteBeam.ID)                 
-                return A.FocusedAzeriteBeam:Show(icon)
-            end
-            
-            -- purifying_blast,if=spell_targets.blade_dance1>=2|raid_event.adds.in>60
-            if A.PurifyingBlast:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and UseHeartOfAzeroth and GetByRange(2, 8) then
-                return A.PurifyingBlast:Show(icon)
-            end
-            
-            -- the_unbound_force,if=buff.reckless_force.up|buff.reckless_force_counter.stack<10
-            if A.TheUnboundForce:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and UseHeartOfAzeroth and (Unit(player):HasBuffs(A.RecklessForceBuff.ID, true) or Unit(player):HasBuffsStacks(A.RecklessForceCounterBuff.ID, true) < 10) then
-                return A.TheUnboundForce:Show(icon)
-            end
-            
-            -- worldvein_resonance,if=buff.lifeblood.stack<3
-            if A.WorldveinResonance:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and UseHeartOfAzeroth and (Unit(player):HasBuffsStacks(A.LifebloodBuff.ID, true) < 3) then
-                return A.WorldveinResonance:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams,if=fury<40&buff.metamorphosis.up
-            if A.MemoryofLucidDreams:AutoHeartOfAzeroth(unit, true) and ((HoABossOnly and Unit(unit):IsBoss()) or not HoABossOnly) and CanCast and BurstIsON(unit) and UseHeartOfAzeroth and (Fury < 40 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true)) then
-                return A.MemoryofLucidDreams:Show(icon)
-            end
-        end]]
-        
+                
         -- Burst Phase
         if BurstIsON(unit) and unit ~= "mouseover" and inCombat and not profileStop then
             -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|target.time_to_die<25
@@ -1142,55 +1062,46 @@ A[3] = function(icon, isMulti)
                 return true
             end]] 
 			
-            -- guardian_of_azeroth
-            if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- focused_azerite_beam
-            if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams
-            if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- blood_of_the_enemy
-            if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- purifying_blast
-            if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            --[[ ripple_in_space
-            if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.Darkflight:Show(icon)
-            end]]
-            
-            -- concentrated_flame,line_cd=6
-            if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- reaping_flames
-            if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- the_unbound_force,if=buff.reckless_force.up
-            if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- worldvein_resonance
-            if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Shadowmeld:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+
             
             -- bag_of_tricks
             if A.BagofTricks:AutoRacial(unit) and CanCast and Action.GetToggle(1, "Racial") and BurstIsON(unit) then
@@ -1361,7 +1272,7 @@ A[3] = function(icon, isMulti)
             end
  
 			-- glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
-			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and (GetByRange(3,8)) then
+			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and GetByRange(3,8) then
 				return A.GlaiveTempest:Show(icon)
 			end	
             

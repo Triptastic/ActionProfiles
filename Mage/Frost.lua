@@ -175,7 +175,6 @@ Action[ACTION_CONST_MAGE_FROST] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-	
 	--Extra as replacement icons until loader updates
 	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for Arcane Explosion
 	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for Mirror Image
@@ -645,55 +644,45 @@ A[3] = function(icon, isMulti)
         --Essences
         --local function Essences(unit)
         
-            -- guardian_of_azeroth
-            if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- focused_azerite_beam
-            if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams
-            if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- blood_of_the_enemy
-            if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- purifying_blast
-            if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            --[[ ripple_in_space
-            if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.Darkflight:Show(icon)
-            end]]
-            
-            -- concentrated_flame,line_cd=6
-            if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- reaping_flames
-            if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- the_unbound_force,if=buff.reckless_force.up
-            if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- worldvein_resonance
-            if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
 			
 			-- Non SIMC Custom Trinket1
 			if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    

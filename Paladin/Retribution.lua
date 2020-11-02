@@ -151,11 +151,12 @@ Action[ACTION_CONST_PALADIN_RETRIBUTION] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
 };
 
 -- To create covenant use next code:
 
---A:CreateCovenantsFor(ACTION_CONST_PALADIN_RETRIBUTION)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
+Action:CreateEssencesFor(ACTION_CONST_PALADIN_RETRIBUTION)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
 local A = setmetatable(Action[ACTION_CONST_PALADIN_RETRIBUTION], { __index = Action })
 
 
@@ -517,35 +518,45 @@ A[3] = function(icon, isMulti)
                 return A.FinalReckoning:Show(icon)
             end
             
-            --[[ the_unbound_force,if=time<=2|buff.reckless_force.up
-            if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (Unit("player"):CombatTime() <= 2 or Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-                return A.TheUnboundForce:Show(icon)
-            end]]
-            
-            --[[ guardian_of_azeroth,if=!talent.crusade.enabled&(cooldown.avenging_wrath.remains<5&holy_power>=3|cooldown.avenging_wrath.remains>=45)|(talent.crusade.enabled&cooldown.crusade.remains<gcd&holy_power>=4|cooldown.crusade.remains>=45)
-            if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (not A.Crusade:IsSpellLearned() and (A.AvengingWrath:GetCooldown() < 5 and Player:HolyPower() >= 3 or A.AvengingWrath:GetCooldown() >= 45) or (A.Crusade:IsSpellLearned() and A.Crusade:GetCooldown() < GetGCD() and Player:HolyPower() >= 4 or A.Crusade:GetCooldown() >= 45)) then
-                return A.GuardianofAzeroth:Show(icon)
-            end]]
-            
-            --[[ worldvein_resonance,if=cooldown.avenging_wrath.remains<gcd&holy_power>=3|talent.crusade.enabled&cooldown.crusade.remains<gcd&holy_power>=4|cooldown.avenging_wrath.remains>=45|cooldown.crusade.remains>=45
-            if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and (A.AvengingWrath:GetCooldown() < GetGCD() and Player:HolyPower() >= 3 or A.Crusade:IsSpellLearned() and A.Crusade:GetCooldown() < GetGCD() and Player:HolyPower() >= 4 or A.AvengingWrath:GetCooldown() >= 45 or A.Crusade:GetCooldown() >= 45) then
-                return A.WorldveinResonance:Show(icon)
-            end]]
-            
-            --[[focused_azerite_beam,if=(!raid_event.adds.exists|raid_event.adds.in>30|spell_targets.divine_storm>=2)&!(buff.avenging_wrath.up|buff.crusade.up)&(cooldown.blade_of_justice.remains>gcd*3&cooldown.judgment.remains>gcd*3)
-            if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and ((not (MultiUnits:GetByRangeInCombat(40, 5, 10) > 1) or IncomingAddsIn > 30 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2) and not (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true)) and (A.BladeofJustice:GetCooldown() > GetGCD() * 3 and A.Judgment:GetCooldown() > GetGCD() * 3)) then
-                return A.FocusedAzeriteBeam:Show(icon)
-            end]]
-            
-            --[[ memory_of_lucid_dreams,if=(buff.avenging_wrath.up|buff.crusade.up&buff.crusade.stack=10)&holy_power<=3
-            if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) == 10) and Player:HolyPower() <= 3) then
-                return A.MemoryofLucidDreams:Show(icon)
-            end]]
-            
-            --[[ purifying_blast,if=(!raid_event.adds.exists|raid_event.adds.in>30|spell_targets.divine_storm>=2)
-            if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth and ((not (MultiUnits:GetByRangeInCombat(40, 5, 10) > 1) or IncomingAddsIn > 30 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2)) then
-                return A.PurifyingBlast:Show(icon)
-            end]]
+ 			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
             
         end
         
@@ -604,7 +615,7 @@ A[3] = function(icon, isMulti)
             end]]
             
             -- wake_of_ashes,if=(holy_power=0|holy_power<=2&(cooldown.blade_of_justice.remains>gcd*2|debuff.execution_sentence.up|debuff.final_reckoning.up))&(!raid_event.adds.exists|raid_event.adds.in>20)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>15)&(!talent.final_reckoning.enabled|cooldown.final_reckoning.remains>15)
-            if A.WakeofAshes:IsReady(unit) and (Player:HolyPower() < 1 or (Player:HolyPower() <= 2 and (A.BladeofJustice:GetCooldown() > GetGCD() * 2))) then
+            if A.WakeofAshes:IsReady(unit) and Unit(unit):GetRange() <= 12 and (Player:HolyPower() < 1 or (Player:HolyPower() <= 2 and (A.BladeofJustice:GetCooldown() > GetGCD() * 2))) then
                 return A.WakeofAshes:Show(icon)
             end
             
@@ -651,7 +662,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- consecration,if=time_to_hpg>gcd
-            if A.Consecration:IsReady(unit) and (HPGCooldown > GetGCD()) then
+            if A.Consecration:IsReady(unit) and Unit(unit):GetRange() <= 8 and (HPGCooldown > GetGCD()) then
                 return A.Consecration:Show(icon)
             end
             

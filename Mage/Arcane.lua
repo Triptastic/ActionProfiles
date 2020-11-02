@@ -935,55 +935,45 @@ A[3] = function(icon, isMulti)
 
         -- call_action_list,name=essences
 		if Unit("player"):GetLevel() < 60 then
-        -- blood_of_the_enemy,if=burn_phase&buff.arcane_power.down&buff.rune_of_power.down&buff.arcane_charge.stack=buff.arcane_charge.max_stack|time_to_die<cooldown.arcane_power.remains
-        if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (BurnPhase:On() and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Player:ArcaneChargesP() == Player:ArcaneChargesMax() or Unit(unit):TimeToDie() < A.ArcanePower:GetCooldown()) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- concentrated_flame,line_cd=6,if=buff.rune_of_power.down&buff.arcane_power.down&(!burn_phase|time_to_die<cooldown.arcane_power.remains)&mana.time_to_max>=execute_time
-        if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0 and (not BurnPhase:On() or Unit(unit):TimeToDie() < A.ArcanePower:GetCooldown()) and Player:ManaTimeToMax() >= A.ConcentratedFlame:GetSpellCastTime()) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- reaping_flames,if=buff.rune_of_power.down&buff.arcane_power.down&(!burn_phase|time_to_die<cooldown.arcane_power.remains)&mana.time_to_max>=execute_time
-        if A.ReapingFlames:AutoHeartOfAzerothP(unit, true) and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0 and (not BurnPhase:On() or Unit(unit):TimeToDie() < A.ArcanePower:GetCooldown()) and Player:ManaTimeToMax() >= A.ReapingFlames:GetSpellCastTime()) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- focused_azerite_beam,if=buff.rune_of_power.down&buff.arcane_power.down
-        if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- guardian_of_azeroth,if=buff.rune_of_power.down&buff.arcane_power.down
-        if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- purifying_blast,if=buff.rune_of_power.down&buff.arcane_power.down
-        if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- ripple_in_space,if=buff.rune_of_power.down&buff.arcane_power.down
-        if A.RippleinSpace:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- the_unbound_force,if=buff.rune_of_power.down&buff.arcane_power.down
-        if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- memory_of_lucid_dreams,if=!burn_phase&buff.arcane_power.down&cooldown.arcane_power.remains&buff.arcane_charge.stack=buff.arcane_charge.max_stack&(!talent.rune_of_power.enabled|action.rune_of_power.charges)|time_to_die<cooldown.arcane_power.remains
-        if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (not BurnPhase:On() and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0 and bool(A.ArcanePower:GetCooldown()) and Player:ArcaneChargesP() == Player:ArcaneChargesMax() and (not A.RuneofPower:IsSpellLearned() or bool(A.RuneofPower:ChargesP())) or Unit(unit):TimeToDie() < A.ArcanePower:GetCooldown()) then
-            return A.Darkflight:Show(icon)
-        end
-		
-        -- worldvein_resonance,if=burn_phase&buff.arcane_power.down&buff.rune_of_power.down&buff.arcane_charge.stack=buff.arcane_charge.max_stack|time_to_die<cooldown.arcane_power.remains
-        if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (BurnPhase:On() and Unit("player"):HasBuffs(A.ArcanePowerBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and Player:ArcaneChargesP() == Player:ArcaneChargesMax() or Unit(unit):TimeToDie() < A.ArcanePower:GetCooldown()) then
-            return A.Darkflight:Show(icon)
-        end
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON then
+				return A.Darkflight:Show(icon)
+			end
 		end -- level 60 check
 		
         -- use_item,name=azsharas_font_of_power,if=buff.rune_of_power.down&buff.arcane_power.down&(cooldown.arcane_power.remains<=4+10*variable.font_double_on_use&cooldown.evocation.remains<=variable.average_burn_length+4+10*variable.font_double_on_use|time_to_die<cooldown.arcane_power.remains)

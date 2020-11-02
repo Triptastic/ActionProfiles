@@ -721,27 +721,27 @@ end
 local function Cooldowns(unit)
 
 	-- guardian_of_azeroth
-	if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
 	-- focused_azerite_beam
-	if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
 	-- memory_of_lucid_dreams
-	if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
 	-- blood_of_the_enemy
-	if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
 	-- purifying_blast
-	if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
@@ -751,22 +751,12 @@ local function Cooldowns(unit)
 	end]]
 	
 	-- concentrated_flame,line_cd=6
-	if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 	
 	-- reaping_flames
-	if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-		return A.Darkflight:Show(icon)
-	end
-	
-	-- the_unbound_force,if=buff.reckless_force.up
-	if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-		return A.Darkflight:Show(icon)
-	end
-	
-	-- worldvein_resonance
-	if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+	if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
 		return A.Darkflight:Show(icon)
 	end
 

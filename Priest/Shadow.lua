@@ -679,55 +679,45 @@ A[3] = function(icon, isMulti)
 			return A.Darkflight:Show(icon)
 		end]]
 
-		-- guardian_of_azeroth
-		if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- focused_azerite_beam
-		if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- memory_of_lucid_dreams
-		if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- blood_of_the_enemy
-		if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- purifying_blast
-		if A.PurifyingBlast:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		--[[ ripple_in_space
-		if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-			return A.Darkflight:Show(icon)
-		end]]
-		
-		-- concentrated_flame,line_cd=6
-		if A.ConcentratedFlame:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- reaping_flames
-		if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- the_unbound_force,if=buff.reckless_force.up
-		if A.TheUnboundForce:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- worldvein_resonance
-		if A.WorldveinResonance:AutoHeartOfAzerothP(unit) and A.BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end		
+			-- guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			--[[ ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Darkflight:Show(icon)
+			end]]
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end
 			
 		--Trinkets
 			-- Non SIMC Custom Trinket1
@@ -787,7 +777,7 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--actions.main+=/Shadowfiend,if=dot.vampiric_touch.ticking&((talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1))|dot.shadow_word_pain.ticking)
-		if A.Shadowfiend:IsReady(unit) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 then
+		if A.Shadowfiend:IsReady(unit) and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 then
 			return A.Shadowfiend:Show(icon)
 		end	
 		--actions.main+=/void_torrent,target_if=variable.dots_up&target.time_to_die>4&buff.voidform.down&spell_targets.mind_sear<(5+(6*talent.twist_of_fate.enabled))

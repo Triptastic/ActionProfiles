@@ -114,6 +114,7 @@ Action[ACTION_CONST_SHAMAN_RESTORATION] = {
 	CapacitorTotem                         = Action.Create({ Type = "Spell", ID = 192058   }), -- Stun
 	TremorTotem                            = Action.Create({ Type = "Spell", ID = 8143   }), -- Antifear, charm, sleep
 	SkyfuryTotem                           = Action.Create({ Type = "Spell", ID = 204330   }), -- Burst
+	ManaTideTotem						   = Action.Create({ Type = "Spell", ID = 16191   }),
 	-- Talents
 	HighTide                               = Action.Create({ Type = "Spell", ID = 157154, Hidden = true     }),
 	EchooftheElements                      = Action.Create({ Type = "Spell", ID = 108283, Hidden = true     }),
