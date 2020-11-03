@@ -27,7 +27,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.10 (1 Nov 2020)",
+    DateTime = "v1.20 (3 Nov 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_PALADIN_RETRIBUTION] = {          
@@ -144,6 +144,30 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
+                    DB = "FoLHP",
+                    DBV = 50, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(19750) .. " (%)",
+                    }, 
+                    M = {},
+                },	
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "WoGHP",
+                    DBV = 50, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(85673) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
                     DB = "DivineShieldHP",
                     DBV = 100, -- Set healthpercentage @30% life. 
                     ONOFF = true,
@@ -151,7 +175,7 @@ A.Data.ProfileUI = {
                         ANY = A.GetSpellInfo(642) .. " (%)",
                     }, 
                     M = {},
-                },
+                },				
             },
             { -- [4] 4th Row
 

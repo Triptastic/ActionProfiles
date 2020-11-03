@@ -2,8 +2,6 @@
 --##### TRIP'S AFFLICTION WARLOCK #####
 --#####################################
 
---Full credit to Taste
-
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
 local Listener									= Action.Listener
@@ -17,8 +15,6 @@ local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local AuraIsValid								= Action.AuraIsValid
 local InterruptIsValid							= Action.InterruptIsValid
-local FrameHasSpell								= Action.FrameHasSpell
-local Azerite									= LibStub("AzeriteTraits")
 local Utils										= Action.Utils
 local TeamCache									= Action.TeamCache
 local EnemyTeam									= Action.EnemyTeam
@@ -30,9 +26,7 @@ local UnitCooldown								= Action.UnitCooldown
 local Unit										= Action.Unit 
 local IsUnitEnemy								= Action.IsUnitEnemy
 local IsUnitFriendly							= Action.IsUnitFriendly
-local ActiveUnitPlates							= MultiUnits:GetActiveUnitPlates()
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
-local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
 local Pet                                       = LibStub("PetLibrary")
 
@@ -83,7 +77,7 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     VileTaint                            = Action.Create({ Type = "Spell", ID = 278350     }),
     DrainSoul                            = Action.Create({ Type = "Spell", ID = 198590     }),
     CascadingCalamity                    = Action.Create({ Type = "Spell", ID = 275372     }),
-    SowtheSeeds                          = Action.Create({ Type = "Spell", ID = 196226     }),
+    SowtheSeeds                          = Action.Create({ Type = "Spell", ID = 196226, Hidden = true     }),
     PetKick                              = Action.Create({ Type = "SpellSingleColor", ID = 119910, Color = "RED", Desc = "RED Color for Pet Target kick" }),  
     FearGreen                            = Action.Create({ Type = "SpellSingleColor", ID = 5782, Color = "GREEN", Desc = "[2] Kick", Hidden = true, QueueForbidden = true }),	
     Fear                                 = Action.Create({ Type = "Spell", ID = 5782       }),
@@ -92,6 +86,7 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     Shadowfury                           = Action.Create({ Type = "Spell", ID = 30283      }),
     PandemicInvocation                   = Action.Create({ Type = "Spell", ID = 289364     }),
 	MaleficRapture						 = Action.Create({ Type = "Spell", ID = 324536	   }),
+	FelDomination						 = Action.Create({ Type = "Spell", ID = 333889	   }),	
     -- Defensive
     UnendingResolve                      = Action.Create({ Type = "Spell", ID = 104773     }),
 	SingeMagic                           = Action.Create({ Type = "Spell", ID = 89808, Color = "YELLOW", Desc = "YELLOW Color for Pet Target dispel"     }),
@@ -102,7 +97,7 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     BurningRush                          = Action.Create({ Type = "Spell", ID = 278727     }),
     Channeling                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
     --TargetEnemy                          = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
-	--StopCast 				             = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
+	StopCast 				             = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
     -- Buffs
     GrimoireofSacrificeBuff              = Action.Create({ Type = "Spell", ID = 196099, Hidden = true     }),
     ActiveUasBuff                        = Action.Create({ Type = "Spell", ID = 233490, Hidden = true     }),
@@ -207,6 +202,7 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
 	-- Extra icons until GG update
 	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Malefic Rapture
 	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
+	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for Heart of Azeroth	
     -- Here come all the stuff needed by simcraft but not classic spells or items. 
 }
 
@@ -245,7 +241,7 @@ local function IsSchoolFree()
 	return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "SHADOW") == 0
 end 
 
--- Pet Handler UI --
+-- Pet Handler UI (Thanks Taste)--
 local function HandlePetChoice()
     local choice = Action.GetToggle(2, "PetChoice")
     local currentspell = "Spell(688)"
@@ -267,100 +263,6 @@ local function HandlePetChoice()
     end
     return choice
 end
-
---[[ Multidot Handler UI --
-local function HandleMultidots()
-    local choice = Action.GetToggle(2, "AutoDotSelection")
-       
-    if choice == "In Raid" then
-		if IsInRaid() then
-    		return true
-		else
-		    return false
-		end
-    elseif choice == "In Dungeon" then 
-		if IsInGroup() then
-    		return true
-		else
-		    return false
-		end
-	elseif choice == "In PvP" then 	
-		if A.IsInPvP then 
-    		return true
-		else
-		    return false
-		end		
-    elseif choice == "Everywhere" then 
-        return true
-    else
-		return false
-    end
-	--print(choice)
-end]]
-
-local function num(val)
-    if val then return 1 else return 0 end
-end
-
-local function bool(val)
-    return val ~= 0
-end
-
-local function IsLatenced(self)
-    -- @return boolean 
-    return TMW.time - (Temp.CastStartTime[self:Info()] or 0) > GetGCD() + 0.5
-end 
-
---[[Action.Enum.SpellDuration = {
-    -- SiphonLife  
-    [63106] = {15000, 19500},
-    -- Agony
-    [980] = {18000, 23400},
-    --Corruption
-    [146739] = {14000, 18200},
-    -- Darkglare
-    [205180] = {20000, 26000},
-
-}]]
-
---[[ Base Duration of a dot/hot/channel...
-local SpellDuration = Action.Enum.SpellDuration
-function Action:BaseDuration()
-    local Duration = SpellDuration[self.ID]
-    if not Duration or Duration == 0 then 
-	    return 0 
-	end
-    local BaseDuration = Duration[1]
-    return BaseDuration / 1000
-end
-
--- Pandemic Threshold
-function Action:PandemicThreshold()
-    local BaseDuration = self:BaseDuration()
-    if not BaseDuration or BaseDuration == 0 then 
-	    return 0 
-    end
-    return BaseDuration * 0.3
-end
-
--- Agony TickTime 
-local function AgonyTickTime()
-    local BaseTickTime = 2
-    local Hasted = true
-    if Hasted then
-        return BaseTickTime * Player:SpellHaste() 
-	end
-    return BaseTickTime
-end
-
--- "time.to.shard"
-local function TimeToShard()
-    local ActiveAgony = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.AgonyDebuff.ID)
-    if ActiveAgony == 0 then
-        return 10000 
-    end
-    return 1 / (0.16 / math.sqrt(ActiveAgony) * (ActiveAgony == 1 and 1.15 or 1) * ActiveAgony / AgonyTickTime())
-end]]
 
 local function SelfDefensives()
     if Unit("player"):CombatTime() == 0 then 
@@ -413,125 +315,11 @@ local function SelfDefensives()
         return A.Stoneform
     end 
 	
-	    -- HealingPotion
-    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
-    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady("player") and 
-    (
-        (     -- Auto 
-            AbyssalHealingPotion >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
-                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
-                -- TTD 
-                Unit("player"):TimeToDieX(25) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit("player"):UseDeff() or 
-                        (
-                            Unit("player", 5):HasFlags() and 
-                            Unit("player"):GetRealTimeDMG() > 0 and 
-                            Unit("player"):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit("player"):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            AbyssalHealingPotion < 100 and 
-            Unit("player"):HealthPercent() <= AbyssalHealingPotion
-        )
-    ) 
-    then 
-        return A.AbyssalHealingPotion
-    end 
-	
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
--- Non GCD spell check
-local function countInterruptGCD(unit)
-    if not A.PetKick:IsReadyByPassCastGCD(unit) or not A.PetKick:AbsentImun(unit, Temp.TotalAndMagKick) then
-	    return true
-	end
-end
-
--- Interrupts spells
-local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-	    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-	else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
-    
-	if castRemainsTime >= A.GetLatency() then
-        if useKick and A.PetKick:IsReady(unit) and A.PetKick:AbsentImun(unit, Temp.TotalAndMagKick, true) and Unit(unit):IsControlAble("stun", 0) then 
-            return A.PetKick
-        end 
-    
-        if useCC and A.Shadowfury:IsReady(unit) and MultiUnits:GetActiveEnemies() >= 2 and A.Shadowfury:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("stun", 0) then 
-            return A.Shadowfury              
-        end          
-	
-	    if useCC and A.Fear:IsReady(unit) and A.Fear:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("disorient", 75) then 
-            return A.Fear              
-        end
-		    
-   	    if useRacial and A.QuakingPalm:AutoRacial(unit) then 
-   	        return A.QuakingPalm
-   	    end 
-    
-   	    if useRacial and A.Haymaker:AutoRacial(unit) then 
-            return A.Haymaker
-   	    end 
-    
-   	    if useRacial and A.WarStomp:AutoRacial(unit) then 
-            return A.WarStomp
-   	    end 
-    
-   	    if useRacial and A.BullRush:AutoRacial(unit) then 
-            return A.BullRush
-   	    end 
-    end
-end
-
 -- [2] Kick AntiFake Rotation
-A[2] = function(icon)        
-    local unit
-    if A.IsUnitEnemy("mouseover") then 
-        unit = "mouseover"
-    elseif A.IsUnitEnemy("target") then 
-        unit = "target"
-    end 
-    
-    if unit then         
-        local castLeft, _, _, _, notKickAble = Unit(unit):IsCastingRemains()
-        if castLeft > 0 then             
-            if not notKickAble and A.PetKick:IsReady(unit, nil, nil, true) and A.PetKick:AbsentImun(unit, Temp.TotalAndMag, true) then
-                return A.PetKick:Show(icon)                                                  
-            end 
-            
-            -- Racials 
-            if A.QuakingPalm:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.QuakingPalm:Show(icon)
-            end 
-            
-            if A.Haymaker:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.Haymaker:Show(icon)
-            end 
-            
-            if A.WarStomp:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.WarStomp:Show(icon)
-            end 
-            
-            if A.BullRush:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.BullRush:Show(icon)
-            end                         
-        end 
-    end                                                                                 
-end
+A[2] = nil
 
 
 -- [3] Single Rotation
@@ -540,47 +328,21 @@ A[3] = function(icon, isMulti)
 	--------------------
 	---  VARIABLES   ---
 	--------------------
---    local ActiveAgony = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Agony.ID, 5)
---    local ActiveCorruption = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.Corruption.ID, 5)
---    local ActiveSiphonLife = MultiUnits:GetByRangeAppliedDoTs(40, 10, A.SiphonLife.ID, 5)
     local isMoving = A.Player:IsMoving()
 	local inCombat = Unit("player"):CombatTime() > 0
---	local ShouldStop = Action.ShouldStop()
 	local Pull = Action.BossMods:GetPullTimer()
---    local CanMultidot = HandleMultidots()
---    local time_to_shard = TimeToShard()
---	local PredictSpells = A.GetToggle(2, "PredictSpells")
---	local MultiDotDistance = A.GetToggle(2, "MultiDotDistance")
 	local profileStop = false	
-		
---	DetermineEssenceRanks()
-	--[[ Multidots var
-	local MissingCorruption = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.Corruption.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
-	local MissingAgony = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.Agony.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
-    --print(MissingVampiricTouch)
-    local AppliedCorruption = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, 146739) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
- 	local AppliedAgony = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, 980) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
-    --print(AppliedVampiricTouch)
-    local CorruptionToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, 146739, 6, 5)
-    local AgonyToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, 980, 6, 5)
-    --SiphonLifeToRefresh = MultiUnits:GetByRangeDoTsToRefresh(40, 5, 980, 5)
-	--print(VampiricTouchToRefresh)]]
 
 	--Refreshables
-	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLife.ID, true) < 4)
-	CorruptionRefreshable = (Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Corruption.ID, true) < 4)
-	AgonyRefreshable = (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.Agony.ID, true) < 4)	
-	UARefreshable = (Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) < 4)	
+	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) < 6)
+	CorruptionRefreshable = (Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) < 6)
+	AgonyRefreshable = (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) < 6)
+
 
 	HasAllDots = Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 0
 
-    local castName    = Unit("player"):IsCasting()
-    -- Log CastStartTime - Latency
-    if castName then 
-        Temp.CastStartTime[castName] = TMW.time 
-    end 
 	
-	-- Pet Selection Menu
+	-- Pet Selection Menu (Thanks Taste)
     local PetSpell = HandlePetChoice()    
     if PetSpell == "IMP" then
         SummonPet = A.SummonImp    
@@ -594,38 +356,10 @@ A[3] = function(icon, isMulti)
         Action.Print("Error : You have to select Pet in UI Settings.") 
     end	
 	
-	------------------------------------
-	---------- DUMMY DPS TEST ----------
-	------------------------------------
-	local DummyTime = GetToggle(2, "DummyTime")
-	if DummyTime > 0 then
-    	local unit = "target"
-		local endtimer = 0
-		
-    	if Unit(unit):IsExists() and Unit(unit):IsDummy() then
-        	if Unit("player"):CombatTime() >= (DummyTime * 60) then
-            	StopAttack()
-				endtimer = TMW.time
-            	--ClearTarget() -- Protected ? 
-	       	    -- Notification					
-          	    Action.SendNotification(DummyTime .. " Minutes Dummy Test Concluded - Profile Stopped", A.DummyTest.ID)			
-         	    
-				if endtimer < TMW.time + 5 then
-				    profileStop = true
-				    --return A.DummyTest:Show(icon)
-				end
-    	    end
-  	    end
-	end		
 	------------------------------------------------------
 	---------------- ENEMY UNIT ROTATION -----------------
 	------------------------------------------------------
 	local function EnemyRotation(unit)	
-	    
-			-- Interrupt vars		
-	local useKick, useCC, useRacial = Action.InterruptIsValid(unit, "TargetMouseover")  
-	-- Trinkets vars
-	local Trinket1IsAllowed, Trinket2IsAllowed = TR:TrinketIsAllowed()	
 		
 		--#####################
 		--##### PRECOMBAT #####
@@ -634,17 +368,17 @@ A[3] = function(icon, isMulti)
 		local function Precombat(unit)
 			
 			-- Summon Pet 
-			if SummonPet:IsReady("player") and IsLatenced(SummonPet) and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 then
+			if SummonPet:IsReady("player") and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 then
 				return SummonPet:Show(icon)
 			end		
 
 			--Force AoE opener check
-			if A.SeedofCorruption:IsReady(unit) and A.SowtheSeeds:IsSpellLearned() and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and not inCombat then
+			if A.SeedofCorruption:IsReady("target") and A.SowtheSeeds:IsTalentLearned() and not A.IsSpellInCasting(A.SeedofCorruption) and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and A.LastPlayerCastID ~= A.SeedofCorruption.ID and not inCombat then
 				return A.SeedofCorruption:Show(icon)
 			end	
 			
 			--actions.precombat+=/grimoire_of_sacrifice,if=talent.grimoire_of_sacrifice.enabled
-			if A.GrimoireofSacrifice:IsReady("player") and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and A.GrimoireofSacrifice:IsSpellLearned() then
+			if A.GrimoireofSacrifice:IsReady("player") and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and A.GrimoireofSacrifice:IsTalentLearned() then
 				return A.GrimoireofSacrifice:Show(icon)
 			end		
 			
@@ -662,81 +396,13 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.precombat+=/shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3&!equipped.169314
-			if A.ShadowBolt:IsReady(unit) and not A.Haunt:IsSpellLearned() and MultiUnits:GetActiveEnemies() < 3 then
+			if A.ShadowBolt:IsReady(unit) and not A.DrainSoul:IsTalentLearned() and not A.Haunt:IsTalentLearned() and MultiUnits:GetActiveEnemies() < 3 then
 				return A.ShadowBolt:Show(icon)
 			end	
-		
-		end
-		
-		
-		--#####################
-		--##### COOLDOWNS #####
-		--#####################
-		
-		local function Cooldowns(unit)
-		
-			-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end	
-		
-			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and inCombat and     
-			(
-				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
-				or
-				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")	 					
-			)
-			then 
-				return A.Trinket1:Show(icon)
-			end 		
-			
-			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and inCombat and    
-			(
-				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
-				or
-				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")					
-			)
-			then
-				return A.Trinket2:Show(icon) 	
-	   		end 
-			
+
+			if A.Agony:IsReady(unit) and AgonyRefreshable then
+				return A.Agony:Show(icon)
+			end		
 		end
 		
 		--##########################
@@ -782,45 +448,52 @@ A[3] = function(icon, isMulti)
 		--#########################
 		
 		local function Main(unit)
+				
+			--Fel Domination if Pet dies
+			if A.FelDomination:IsReady("player") and not Pet:IsActive() and inCombat then
+				return A.RocketJump:Show(icon)
+			end
+			
+			--Summon Pet with Fel Domination
+			if SummonPet:IsReady("player") and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.FelDomination.ID, true) > 0 then
+				return SummonPet:Show(icon)
+			end		
+			
 			--actions=phantom_singularity
-			if A.PhantomSingularity:IsReady(unit) then
+			if A.PhantomSingularity:IsReady(unit, nil, nil, true) then
 				return A.PhantomSingularity:Show(icon)
 			end
 			
 			--actions+=/vile_taint,if=soul_shard>1
-			if A.VileTaint:IsReady(unit) and Player:SoulShardsP() > 1 then
+			if A.VileTaint:IsReady(unit, nil, nil, true) and not A.IsSpellInCasting(A.VileTaint) and Player:SoulShardsP() > 1 then
 				return A.VileTaint:Show(icon)
 			end
+
+			--actions+=/corruption,if=refreshable (AOE)
+			if A.SeedofCorruption:IsReady("target", nil, nil, true) and not A.IsSpellInCasting(A.SeedofCorruption) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
+				return A.SeedofCorruption:Show(icon)
+			end					
 			
 			--actions+=/siphon_life,if=refreshable
-			if A.SiphonLife:IsReady(unit) and SiphonLifeRefreshable then
+			if A.SiphonLife:IsReady(unit, nil, nil, true) and SiphonLifeRefreshable and Unit("target"):TimeToDie() > 5 then
 				return A.SiphonLife:Show(icon)
 			end	
 			
 			--actions+=/agony,if=refreshable
-			if A.Agony:IsReady(unit) and AgonyRefreshable then
+			if A.Agony:IsReady(unit, nil, nil, true) and AgonyRefreshable and Unit("target"):TimeToDie() > 5 then
 				return A.Agony:Show(icon)
 			end				
 			
 			--actions+=/unstable_affliction,if=refreshable
-			if A.UnstableAffliction:IsReady(unit) and UARefreshable then
+			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and not A.IsSpellInCasting(A.UnstableAffliction) and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
 				return A.UnstableAffliction:Show(icon)
 			end
 			
-			--actions+=/unstable_affliction,if=azerite.cascading_calamity.enabled&buff.cascading_calamity.remains<3
-			if A.UnstableAffliction:IsReady(unit) and A.CascadingCalamity:GetAzeriteRank() > 0 and Unit("player"):HasBuffs(A.CascadingCalamityBuff.ID, true) > 0 then
-				return A.UnstableAffliction:Show(icon)
-			end
 			
 			--actions+=/corruption,if=refreshable
-			if A.Corruption:IsReady(unit) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() < 3 then
+			if A.Corruption:IsReady(unit, nil, nil, true) and CorruptionRefreshable and Unit("target"):TimeToDie() > 5 and  MultiUnits:GetActiveEnemies() < 3 and not A.IsSpellInCasting(A.SeedofCorruption) and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
 				return A.Corruption:Show(icon)
 			end				
-
-			--actions+=/corruption,if=refreshable (AOE)
-			if A.SeedofCorruption:IsReady(unit) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() > 3 and Unit(unit):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 and A.SeedofCorruption:GetSpellTimeSinceLastCast() > 2 then
-				return A.SeedofCorruption:Show(icon)
-			end		
 			
 			--actions+=/haunt
 			if A.Haunt:IsReady(unit) then
@@ -828,14 +501,14 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions+=/call_action_list,name=darkglare_prep,if=cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
-			if (A.SummonDarkglare:IsReady("player") or A.SummonDarkglare:GetCooldown() < 2) and BurstIsON(unit) and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsSpellLearned()) then
+			if (A.SummonDarkglare:IsReady("player") or A.SummonDarkglare:GetCooldown() < 2) and BurstIsON("target") and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 2 or not A.PhantomSingularity:IsTalentLearned()) then
 				if PrepareDarkglare(unit) then
 					return true
 				end
 			end
 			
 			--actions+=/dark_soul,if=cooldown.summon_darkglare.remains>time_to_die
-			if A.DarkSoulMisery:IsReady(unit) and A.SummonDarkglare:GetCooldown() > Unit(unit):TimeToDie() then
+			if A.DarkSoulMisery:IsReady("player") and BurstIsON("target") and A.SummonDarkglare:GetCooldown() > Unit("target"):TimeToDie() then
 				return A.DarkSoulMisery:Show(icon)
 			end	
 			
@@ -846,27 +519,27 @@ A[3] = function(icon, isMulti)
 			end]]
 			
 				-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady("target") and BurstIsON(unit) then
+			if A.GuardianofAzeroth:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
 			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady("target") and BurstIsON(unit) then
+			if A.FocusedAzeriteBeam:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
 			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON(unit) then
+			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
 			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady("target") and BurstIsON(unit) then
+			if A.BloodoftheEnemy:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
 			-- purifying_blast
-			if A.PurifyingBlast:IsReady("target") and BurstIsON(unit) then
+			if A.PurifyingBlast:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
@@ -876,36 +549,24 @@ A[3] = function(icon, isMulti)
 			end]]
 			
 			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and BurstIsON(unit) then
+			if A.ConcentratedFlame:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end
 			
 			-- reaping_flames
-			if A.ReapingFlames:IsReady("target") and BurstIsON(unit) then
+			if A.ReapingFlames:IsReady("target") and BurstIsON("target") then
 				return A.Darkflight:Show(icon)
 			end	
 		
-			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and inCombat and     
-			(
-				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
-				or
-				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")	 					
-			)
-			then 
+			-- Trinket One
+			if A.Trinket1:IsReady("target") and BurstIsON("target") then 
 				return A.Trinket1:Show(icon)
 			end 		
 			
-			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and inCombat and    
-			(
-				A.GetToggle(2, "TrinketsAoE") and GetByRange(A.GetToggle(2, "TrinketsMinUnits"), A.GetToggle(2, "TrinketsUnitsRange")) and Player:AreaTTD(A.GetToggle(2, "TrinketsUnitsRange")) > A.GetToggle(2, "TrinketsMinTTD")	
-				or
-				not A.GetToggle(2, "TrinketsAoE") and Unit(unit):TimeToDie() >= A.GetToggle(2, "TrinketsMinTTD")					
-			)
-			then
-				return A.Trinket2:Show(icon) 	
-	   		end 		
+			-- Trinket Two
+			if A.Trinket1:IsReady("target") and BurstIsON("target") then 
+				return A.Trinket2:Show(icon)
+			end 		
 			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
 			if A.MaleficRapture:IsReady("player") and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 then
@@ -913,12 +574,12 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking||cooldown.phantom_singularity.remains>12||soul_shard>3)
-			if A.MaleficRapture:IsReady("player") and A.PhantomSingularity:IsSpellLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
+			if A.MaleficRapture:IsReady("player") and A.PhantomSingularity:IsTalentLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-			if A.MaleficRapture:IsReady("player") and A.SowtheSeeds:IsSpellLearned() then
+			if A.MaleficRapture:IsReady("player") and A.SowtheSeeds:IsTalentLearned() then
 				return A.SpatialRift:Show(icon)
 			end	
 			
@@ -938,60 +599,18 @@ A[3] = function(icon, isMulti)
 				return A.ShadowBolt:Show(icon)
 			end	
 		end
-
-        --[[ Mouseover
-        if unit == "mouseover" then  -- and not Unit(unit):IsTotem()
-	
-			-- Variables
-		    local useKick, useCC, useRacial = Action.InterruptIsValid(unit, "TargetMouseover") 
-            inRange = A.Agony:IsInRange(unit)
-		
-		    -- PetKick
-            if useKick and A.PetKick:IsReady(unit) then 
-                return A.PetKick:Show(icon)
-            end 
-
-    	    -- SingeMagic
-	        if A.SingeMagic:IsCastable() and not A.IsUnitEnemy("mouseover") and not ShouldStop and Action.AuraIsValid(unit, "UseDispel", "Magic") then
-	            return A.SingeMagic:Show(icon)
-            end		
-	
-			--actions+=/siphon_life,if=refreshable
-			if A.SiphonLife:IsReady() and SiphonLifeRefreshable then
-				return A.SiphonLife:Show(icon)
-			end	
-			
-			--actions+=/agony,if=refreshable
-			if A.Agony:IsReady() and AgonyRefreshable then
-				return A.Agony:Show(icon)
-			end				
-			
-			--actions+=/unstable_affliction,if=refreshable
-			if A.UnstableAffliction:IsReady() and UARefreshable then
-				return A.UnstableAffliction:Show(icon)
-			end				
-			
-			--actions+=/unstable_affliction,if=azerite.cascading_calamity.enabled&buff.cascading_calamity.remains<3
-			if A.UnstableAffliction:IsReady() and A.CascadingCalamity:GetAzeriteRank() > 0 and Unit("player"):HasBuffs(A.CascadingCalamityBuff.ID, true) > 0 then
-				return A.UnstableAffliction:Show(icon)
-			end	
-			
-			--actions+=/corruption,if=refreshable
-			if A.Corruption:IsReady() and CorruptionRefreshable and MultiUnits:GetActiveEnemies() < 3 then
-				return A.Corruption:Show(icon)
-			end		
-			
-		end	]]
 		
 		if not inCombat then
 			return Precombat()
-			else
+		end
+		
+		if inCombat then
 			return Main()
 		end
 		
 	end
 	-- End on EnemyRotation()
-	
+
     -- Defensive
     local SelfDefensive = SelfDefensives()
     if SelfDefensive then 
@@ -1016,61 +635,11 @@ A[3] = function(icon, isMulti)
 end
 -- Finished
 
+A[1] = nil
 
+A[4] = nil
 
--- [4] AoE Rotation
-A[4] = function(icon)
-    return A[3](icon, true)
-end 
-
--- [5] Trinket Rotation
--- No specialization trinket actions 
-
--- Passive 
---[[local function FreezingTrapUsedByEnemy()
-    if     UnitCooldown:GetCooldown("arena", 3355) > UnitCooldown:GetMaxDuration("arena", 3355) - 2 and 
-    UnitCooldown:IsSpellInFly("arena", 3355) and 
-    Unit("player"):GetDR("incapacitate") >= 50 
-    then 
-        local Caster = UnitCooldown:GetUnitID("arena", 3355)
-        if Caster and Unit(Caster):GetRange() <= 40 then 
-            return true 
-        end 
-    end 
-end]]-- 
-
---[[local function ArenaRotation(icon, unit)
-    if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then   
-        local useKick, useCC, useRacial = A.InterruptIsValid(unit, "PvP")    
- 		
-		-- Interrupt
-   		local Interrupt = Interrupts(unit)
-  		if Interrupt then 
-  		    return Interrupt:Show(icon)
-  		end	 
-		
-	    -- Pet Kick
-        if useKick and A.PetKick:IsReady(unit) and A.PetKick:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
-            return A.PetKick:Show(icon)
-        end 
-   
-        -- Shadow Fury   
-        if useCC and A.Shadowfury:IsReady(unit) and MultiUnits:GetByRange(10) >= 2 and A.Shadowfury:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("stun", 0) then 
-            return A.Shadowfury:Show(icon)              
-        end 
-		
-	    -- Fear
-	    if useCC and A.Fear:IsReady(unit) and A.Fear:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("disorient", 0) then 
-            return A.Fear:Show(icon)              
-        end	
-		
-        -- Reflect Casting BreakAble CC
-        if A.NetherWard:IsReady() and A.NetherWard:IsSpellLearned() and Action.ShouldReflect(unit) and EnemyTeam():IsCastingBreakAble(0.25) then 
-            return A.NetherWard:Show(icon)
-        end  
-                        
-    end 
-end ]]
+A[5] = nil
 
 A[6] = nil
 

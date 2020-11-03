@@ -108,6 +108,9 @@ Action[ACTION_CONST_PALADIN_RETRIBUTION] = {
     CrusaderStrike                         = Create({ Type = "Spell", ID = 35395 }),
     Consecration                           = Create({ Type = "Spell", ID = 26573 }),
     Rebuke                                 = Create({ Type = "Spell", ID = 96231 }),
+	DivineShield						   = Create({ Type = "Spell", ID = 642 }),
+	FlashofLight						   = Create({ Type = "Spell", ID = 19750 }),
+	WordofGlory							   = Create({ Type = "Spell", ID = 85673 }),
     -- Trinkets
 --    TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }), 
 --    TrinketTest2                           = Create({ Type = "Trinket", ID = 159611, QueueForbidden = true }), 
@@ -197,6 +200,7 @@ local Temp = {
 }
 
 local IsIndoors, UnitIsUnit = IsIndoors, UnitIsUnit
+local player = "player"
 
 local function IsHolySchoolFree()
     return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "HOLY") == 0
@@ -321,7 +325,7 @@ A[2] = function(icon)
 end
 
 local function SelfDefensives()
-    if Unit(player):CombatTime() == 0 then 
+    if Unit("player"):CombatTime() == 0 then 
         return 
     end 
     
@@ -334,14 +338,50 @@ local function SelfDefensives()
     
     -- DivineShield
     local DivineShield = A.GetToggle(2, "DivineShieldHP")
-    if     DivineShield >= 0 and A.DivineShield:IsReady(player) and 
+    if     DivineShield >= 0 and A.DivineShield:IsReady("player") and 
     (
         (     -- Auto 
             DivineShield >= 100 and 
             (
                 -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 20 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.20 or 
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
+                -- TTD 
+                Unit("player"):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit("player"):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit("player"):HasBuffs("DeffBuffs", true) == 0
+        ) or 
+        (    -- Custom
+            DivineShield < 100 and 
+            Unit("player"):HealthPercent() <= DivineShield
+        )
+    ) 
+    then 
+        -- Notification                    
+        Action.SendNotification("[DEF] Divine Shield", A.DivineShield.ID)
+        return A.DivineShield
+    end
+
+    local WordofGlory = Action.GetToggle(2, "WoGHP")
+    if     WordofGlory >= 0 and A.WordofGlory:IsReady(player) and Unit("player"):CombatTime() > 2  and
+    (
+        (     -- Auto 
+            WordofGlory >= 100 and 
+            (
+                -- HP lose per sec >= 10
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
                 -- TTD 
                 Unit(player):TimeToDieX(25) < 5 or 
                 (
@@ -359,14 +399,46 @@ local function SelfDefensives()
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            DivineShield < 100 and 
-            Unit(player):HealthPercent() <= DivineShield
+            WordofGlory < 100 and 
+            Unit(player):HealthPercent() <= WordofGlory
         )
     ) 
     then 
-        -- Notification                    
-        Action.SendNotification("[DEF] Divine Shield", A.DivineShield.ID)
-        return A.DivineShield
+        return A.WordofGlory
+    end
+
+    local FlashofLight = Action.GetToggle(2, "FoLHP")
+    if     FlashofLight >= 0 and A.FlashofLight:IsReady(player) and Unit("player"):CombatTime() > 2  and
+    (
+        (     -- Auto 
+            FlashofLight >= 100 and 
+            (
+                -- HP lose per sec >= 10
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
+                -- TTD 
+                Unit(player):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit(player):UseDeff() or 
+                        (
+                            Unit(player, 5):HasFlags() and 
+                            Unit(player):GetRealTimeDMG() > 0 and 
+                            Unit(player):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit(player):HasBuffs("DeffBuffs", true) == 0
+        ) or 
+        (    -- Custom
+            FlashofLight < 100 and 
+            Unit(player):HealthPercent() <= FlashofLight
+        )
+    ) 
+    then 
+        return A.FlashofLight
     end
     
     -- Stoneform on self dispel (only PvE)
@@ -673,7 +745,7 @@ A[3] = function(icon, isMulti)
         if Precombat(unit) and not inCombat and Unit(unit):IsExists() and unit ~= "mouseover" then 
             return true
         end]]
-
+		
         -- In Combat
         if Unit(unit):IsExists() then
 
@@ -701,7 +773,7 @@ A[3] = function(icon, isMulti)
     -- End on EnemyRotation()
 
     -- Defensive
-    --local SelfDefensive = SelfDefensives()
+    local SelfDefensive = SelfDefensives()
     if SelfDefensive then 
         return SelfDefensive:Show(icon)
     end 
