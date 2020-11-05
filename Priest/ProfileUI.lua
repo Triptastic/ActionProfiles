@@ -1,6 +1,6 @@
---############################
---##### TRIP'S PRIESTUI ######
---############################
+--#############################
+--##### TRIP'S PRIEST UI ######
+--#############################
 
 -- Full credit to Taste
 
@@ -31,7 +31,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v1.0 (28 Oct 2020)",
+    DateTime = "v1.1 (5 Nov 2020)",
     [2] = {        
         [ACTION_CONST_PRIEST_SHADOW] = {             
             { -- [1]                            
@@ -329,7 +329,7 @@ A.Data.ProfileUI                                     = {
         
         [ACTION_CONST_PRIEST_DISCIPLINE] = {          
             LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
-            { -- [7]
+            { -- General Header
                 {
                     E = "Header",
                     L = {
@@ -337,8 +337,8 @@ A.Data.ProfileUI                                     = {
                     },
                 },
             },
-            { -- [1]                             
-                {
+            { -- General Content			
+                { -- Mouseover Checkbox
                     E = "Checkbox", 
                     DB = "mouseover",
                     DBV = true,
@@ -352,7 +352,7 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 },
-                {
+                { -- TargetTarget Checkbox
                     E = "Checkbox", 
                     DB = "targettarget",
                     DBV = true,
@@ -366,7 +366,7 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 },
-                {
+                { -- AoE Checkbox
                     E = "Checkbox", 
                     DB = "AoE",
                     DBV = true,
@@ -382,22 +382,6 @@ A.Data.ProfileUI                                     = {
                 },  
                 {
                     E = "Checkbox", 
-                    DB = "TasteInterruptList",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
-                    }, 
-                    TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
-                    }, 
-                    M = {},
-                },    
-                {
-                    E = "Checkbox", 
                     DB = "UseRotationPassive",
                     DBV = true,
                     L = { 
@@ -407,159 +391,221 @@ A.Data.ProfileUI                                     = {
                     M = {},
                 },                                  
             },     
-            { -- [7]
+            { -- Header - Healing Engine
                 {
                     E = "Header",
                     L = {
                         ANY = " -- Healing Engine -- ",
                     },
                 },
-            },    
-            { -- [7] 
-                {
+            },
+				{
+					E = "LayoutSpace",
+				},			
+			{ -- Healing Engine Options
+                { -- PW:S Tank
                     E = "Checkbox", 
-                    DB = "ManaManagement",
+                    DB = "ShieldTank",
                     DBV = true,
                     L = { 
-                        enUS = "Boss Fight\nManaSave\n(PvE)", 
-                        ruRU = "Бой с Боссом\nУправление Маной\n(PvE)",
+                        ANY = "PW:S Tank On Cooldown"
+                    },
+                    TT = { 
+						ANY = "Always keep Power Word: Shield active on tank, whenever available.",
+                    },
+                    M = {},
+                },
+                { -- PW:S Dropdown
+                    E = "Dropdown",                                                         
+                    OT = {
+                        { text = "TANK", value = "TANK" },    
+                        { text = "SELF", value = "SELF" },   
+                        { text = "ALL", value = "ALL" },
+                    },					
+                    DB = "PWSWorkMode",
+					DBV = "TANK",
+                    L = { 
+                        ANY = "Power Word: Shield targets",
                     }, 
                     TT = { 
-                        enUS = "Enable to keep small mana save tricks during boss fight\nMana will keep going to save phase if Boss HP >= our Mana", 
-                        ruRU = "Включает сохранение малого количества маны с помощью некоторых манипуляций в течении боя против Босса\nМана будет переходить в фазу сохранения если ХП Босса >= нашей Маны", 
-                    }, 
+                        ANY = "Choose what targets to use Power Word: Shield on. This is ignored when using Rapture or atonement ramps.",
+                    },                    
                     M = {},
-                },             
-                {
-                    E = "Checkbox", 
-                    DB = "ManaPotion",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use\nMana Potion",
-                        ruRU = "Использовать\nЗелье Маны",
-                    },
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "StopCastOverHeal",
-                    DBV = true,
-                    L = { 
-                        enUS = "Stop Cast\noverhealing",
-                        ruRU = "Stop Cast\noverhealing",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically stop the current cast to avoid overhealing.",
-                        ruRU = "Enable this option to automatically stop the current cast to avoid overhealing.",
-                    },
-                    M = {},
-                },         
-            },
-            {            
-                {        
-                    E = "Checkbox", 
-                    DB = "StartByPreCast",
-                    DBV = true,
-                    L = { 
-                        enUS = "Begin Combat\nBy PreCast",
-                        ruRU = "Начинать Бой\nЗаранее произнося", 
-                    },
-                    TT = { 
-                        enUS = "Will start rotation on enemy by available longer\ncasting spell depended on your spec",
-                        ruRU = "Будет начинать ротация на противнике с доступной\nдлинной произносящейся способности в зависимости от спека",
-                    },
-                    M = {},
-                },
-                {        
-                    E = "Checkbox", 
-                    DB = "HE_Absorb",
-                    DBV = true,
-                    L = { 
-                        enUS = "Calculate Absorb",
-                        ruRU = "Calculate Absorb",
-                    },
-                    TT = { 
-                        enUS = "Will auto calculate absorb to avoid wasting of refresh spells if they got absorb superior than spell that gonna be casted",
-                        ruRU = "Will auto calculate absorb to avoid wasting of refresh spells if they got absorb superior than spell that gonna be casted",
-                    },
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "SpellKick",
-                    DBV = true,
-                    L = { 
-                        enUS = "Spell Kick",
-                        ruRU = "Spell Kick",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use your kicking spells.",
-                        ruRU = "Enable this option to automatically use your kicking spells.",
-                    },
-                    M = {},
-                },
-            },
-            {                            
-                {
+                },				
+                { -- Power Word: Shield Slider
                     E = "Slider",                                                     
                     MIN = 1, 
-                    MAX = 10,                            
-                    DB = "SwitchFriendlyTTD",                    
-                    DBV = 4,
-                    ONLYON = true,
-                    L = { 
-                        ANY = "Urgent switch\nto friendly TTD(sec)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
                     MAX = 100,                            
-                    DB = "SwitchFriendlyHP",                    
-                    DBV = 45,
-                    ONLYON = true,
-                    L = { 
-                        ANY = "Urgent switch\nto friendly HP(%)",                        
-                    },                     
-                    M = {},
-                },
-            },    
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Racials -- ",
-                    },
-                },
-            },    
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "RacialBurstHealing",                    
-                    DBV = 100,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Healing HP %)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "RacialBurstDamaging",                    
-                    DBV = 100,
+                    DB = "PowerWordShieldHP",              
+                    DBV = 90,
                     ONOFF = false,
                     L = { 
-                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Damaging HP %)",                        
-                    },                     
+                        ANY = "Power Word: Shield HP %",                        
+                    },   
+                    TT = { 
+                        ANY = "HP % to use Power Word: Shield on group member.",
+                    },                    
                     M = {},
                 },
-            },
-            { -- Trinkets
+			},
+				{
+					E = "LayoutSpace",
+				},
+			{
+                { -- Shadow Mend, No Atonement Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "ShadowMendHPNoAtone",              
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Shadow Mend HP Without Atonement",                        
+                    },   
+                    TT = { 
+                        ANY = "Shadow Mend when target HP % AND they don't currently have atonement.",
+                    },                    
+                    M = {},
+                },
+                { -- Shadow Mend, Atonement Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "ShadowMendHPWithAtone",              
+                    DBV = 70,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Shadow Mend HP With Atonement",                        
+                    },   
+                    TT = { 
+                        ANY = "Shadow Mend when target HP % AND they currently have atonement.",
+                    },                    
+                    M = {},
+                },
+			},
+				{
+					E = "LayoutSpace",
+				},
+			{	
+                { -- Penance Heal Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "PenanceHeal",              
+                    DBV = 60,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Friendly Penance HP %",                        
+                    },   
+                    TT = { 
+                        ANY = "Friendly target HP % to use Penance as a healing spell.",
+                    },                    
+                    M = {},
+                },
+			},
+				{
+					E = "LayoutSpace",
+				},
+			{
+                { -- Power Word: Radiance HP Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "RadianceHP",              
+                    DBV = 90,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Power Word: Radiance HP",                        
+                    },   
+                    TT = { 
+                        ANY = "HP % to use Power Word: Radiance.",
+                    },                    
+                    M = {},
+                },
+                { -- Power Word: Radiance Members Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 5,                            
+                    DB = "RadianceMembers",              
+                    DBV = 4,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Power Word: Radiance Targets",                        
+                    },   
+                    TT = { 
+                        ANY = "Amount of party members to be hurt to use Power Word: Radiance.",
+                    },                    
+                    M = {},
+                },							
+			},
+				{
+					E = "LayoutSpace",
+				},
+			{
+                { -- Shadow Covenant HP
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "ShadowCovHP",              
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Shadow Covenant HP",                        
+                    },   
+                    TT = { 
+                        ANY = "HP % to use Shadow Covenant",
+                    },                    
+                    M = {},
+                },
+                { -- Shadow Covenant Members
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 5,                            
+                    DB = "ShadowCovMembers",              
+                    DBV = 4,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Shadow Covenant Targets",                        
+                    },   
+                    TT = { 
+                        ANY = "Amount of party members to be hurt to use Shadow Covenant.",
+                    },                    
+                    M = {},
+                },	
+                { -- Shadow Covenant Members
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 5,                            
+                    DB = "ShadowCovAtone",              
+                    DBV = 4,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Shadow Covenant Atonements",                        
+                    },   
+                    TT = { 
+                        ANY = "Amount of party members to have the atonement buff before using Shadow Covenant.",
+                    },                    
+                    M = {},
+                },					
+			},
+				{
+					E = "LayoutSpace",
+				},
+			{			
+                { -- Purify Checkbox
+                    E = "Checkbox", 
+                    DB = "UsePurify",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Purify (NOT YET WORKING)"
+                    },
+                    TT = { 
+						ANY = "Uses Purify to cleanse auras listed in the Auras tab.",
+                    },
+                    M = {},
+                },			
+            },   
+            { -- Header - Trinkets
                 {
                     E = "Header",
                     L = {
@@ -567,8 +613,8 @@ A.Data.ProfileUI                                     = {
                     },
                 },
             },    
-            {                 
-                {
+            { -- Trinket Options                
+                { -- How to use trinkets
                     E = "Dropdown",                                                         
                     OT = {
                         { text = "Always", value = "Always" },
@@ -586,7 +632,7 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 },
-                {
+                { -- Trinket Mana
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 100,                            
@@ -599,7 +645,7 @@ A.Data.ProfileUI                                     = {
                     },
                     M = {},
                 },
-                {
+                { -- Trinket Healing
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 100,                            
@@ -613,54 +659,7 @@ A.Data.ProfileUI                                     = {
                     M = {},
                 },        
             },
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Essences -- ",
-                    },
-                },
-            },    
-            {
-                RowOptions = { margin = { top = 10 } },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "LucidDreamManaPercent",                    
-                    DBV = 85,
-                    ONLYON = true,
-                    L = { 
-                        ANY = GetSpellInfo(299374) .. "\nMana %",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 10,                            
-                    DB = "LifeBindersInvocationUnits",                    
-                    DBV = 5,
-                    ONOFF = false,
-                    L = { 
-                        ANY = GetSpellInfo(299944) .. "\nunits number",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "LifeBindersInvocationHP",                    
-                    DBV = 85,
-                    ONOFF = false,
-                    L = { 
-                        ANY = GetSpellInfo(299944) .. "\n(%)",                        
-                    },                     
-                    M = {},
-                },
-            },
-            { -- [7]
+            { -- Header - Mythic+
                 {
                     E = "Header",
                     L = {
@@ -668,8 +667,8 @@ A.Data.ProfileUI                                     = {
                     },
                 },
             },    
-            {
-                {
+            { -- Mythic+ Options
+                { -- MythicPlusLogic
                     E = "Checkbox", 
                     DB = "MythicPlusLogic",
                     DBV = true,
@@ -683,7 +682,7 @@ A.Data.ProfileUI                                     = {
                     },
                     M = {},
                 },    
-                {
+                { -- GrievousWoundsLogic
                     E = "Checkbox", 
                     DB = "GrievousWoundsLogic",
                     DBV = true,
@@ -697,7 +696,7 @@ A.Data.ProfileUI                                     = {
                     },
                     M = {},
                 },
-                {
+                { -- GrievousWoundsMinStacks
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 5,                            
@@ -713,7 +712,7 @@ A.Data.ProfileUI                                     = {
                     },                    
                     M = {},
                 },                
-                {
+                { -- StopCastQuake
                     E = "Checkbox", 
                     DB = "StopCastQuake",
                     DBV = true,
@@ -727,7 +726,7 @@ A.Data.ProfileUI                                     = {
                     },
                     M = {},
                 },    
-                {
+                { -- StopCastQuakeSec
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 3,                            
@@ -745,7 +744,7 @@ A.Data.ProfileUI                                     = {
                     M = {},
                 },
             },
-            { -- Penance
+            { -- Penance Header
                 {
                     E = "Header",
                     L = {
@@ -753,8 +752,8 @@ A.Data.ProfileUI                                     = {
                     },
                 }, 
             },
-            {
-                {
+            { -- Penance Options
+                { -- Penance Dropdown
                     E = "Dropdown",                                                         
                     OT = {
                         { text = "BOTH", value = "BOTH" },
@@ -772,178 +771,32 @@ A.Data.ProfileUI                                     = {
                     },                    
                     M = {},
                 },
-            },     
-            { -- Angelic Feather
+            },
+            { -- Defensives Header
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Utilities -- ",
+                        ANY = " -- Defensives -- ",
                     },
                 }, 
             },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "AngelicFeather",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto\n" .. GetSpellInfo(121536),
-                        ruRU = "Auto\n" .. GetSpellInfo(121536),
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use " .. GetSpellInfo(121536),
-                        ruRU = "Enable this option to automatically use " .. GetSpellInfo(121536),
-                    },
-                    M = {},
-                },    
-                {
-                    E = "Checkbox", 
-                    DB = "LeapofFaith",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto\n" .. GetSpellInfo(73325),
-                        ruRU = "Auto\n" .. GetSpellInfo(73325),
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use " .. GetSpellInfo(73325),
-                        ruRU = "Enable this option to automatically use " .. GetSpellInfo(73325),
-                    },
-                    M = {},
-                },    
-            },                 
-            { -- [6]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Party -- ",
-                    },
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@party1", value = 1 },
-                        { text = "@party2", value = 2 },
-                    },
-                    MULT = true,
-                    DB = "PartyUnits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                    }, 
-                    L = { 
-                        ANY = "Party Units",
-                    }, 
-                    TT = { 
-                        enUS = "Enable/Disable relative party passive rotation", 
-                        ruRU = "Включить/Выключить относительно группы пассивную ротацию", 
-                    }, 
-                    M = {},
-                },  
-                {
-                    E = "Checkbox", 
-                    DB = "Dispel",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto\n" .. GetSpellInfo(528),
-                        ruRU = "Auto\n" .. GetSpellInfo(528),
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use " .. GetSpellInfo(528),
-                        ruRU = "Enable this option to automatically use " .. GetSpellInfo(528),
-                    },
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "MassDispel",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto\n" .. GetSpellInfo(32375),
-                        ruRU = "Auto\n" .. GetSpellInfo(32375),
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use " .. GetSpellInfo(32375),
-                        ruRU = "Enable this option to automatically use " .. GetSpellInfo(32375),
-                    },
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "Purje",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto\n" .. GetSpellInfo(527),
-                        ruRU = "Auto\n" .. GetSpellInfo(527),
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically use " .. GetSpellInfo(527),
-                        ruRU = "Enable this option to automatically use " .. GetSpellInfo(527),
-                    },
-                    M = {},
-                },                
-            },     
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
+            { -- Defensives Options
+				{ -- Desperate Prayer
                     E = "Slider",                                                     
                     MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
+                    MAX = 100,                            
+                    DB = "DesperatePrayer",                    
+                    DBV = 50,
+                    ONOFF = false,
                     L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
+                        ANY = "Desperate Prayer HP %",                        
+                    },   
                     TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    },                     
+                        ANY = "% HP to use Desperate Prayer."
+                    },                    
                     M = {},
-                },                
-            },    
-            
+                }				
+			}
         },
         [ACTION_CONST_PRIEST_HOLY] = {          
             LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    

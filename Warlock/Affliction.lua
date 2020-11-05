@@ -82,19 +82,22 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     FearGreen                            = Action.Create({ Type = "SpellSingleColor", ID = 5782, Color = "GREEN", Desc = "[2] Kick", Hidden = true, QueueForbidden = true }),	
     Fear                                 = Action.Create({ Type = "Spell", ID = 5782       }),
     SpellLock                            = Action.Create({ Type = "Spell", ID = 119898     }),
-    DispellMagic                         = Action.Create({ Type = "Spell", ID = 111400     }),
+    DispellMagic                         = Action.Create({ Type = "Spell", ID = 119905     }),
     Shadowfury                           = Action.Create({ Type = "Spell", ID = 30283      }),
     PandemicInvocation                   = Action.Create({ Type = "Spell", ID = 289364     }),
 	MaleficRapture						 = Action.Create({ Type = "Spell", ID = 324536	   }),
 	FelDomination						 = Action.Create({ Type = "Spell", ID = 333889	   }),	
+	MortalCoil							 = Action.Create({ Type = "Spell", ID = 6789	}),
+	HowlOfTerror						 = Action.Create({ Type = "Spell", ID = 5484	}),
+	DarkPact							 = Action.Create({ Type = "Spell", ID = 108416	}),
     -- Defensive
     UnendingResolve                      = Action.Create({ Type = "Spell", ID = 104773     }),
 	SingeMagic                           = Action.Create({ Type = "Spell", ID = 89808, Color = "YELLOW", Desc = "YELLOW Color for Pet Target dispel"     }),
     -- Utilities
-    DemonicCircle                        = Action.Create({ Type = "Spell", ID = 268358     }),
+    DemonicCircle                        = Action.Create({ Type = "Spell", ID = 48018     }),
     DemonicCircleTeleport                = Action.Create({ Type = "Spell", ID = 48020     }),
 	-- Misc
-    BurningRush                          = Action.Create({ Type = "Spell", ID = 278727     }),
+    BurningRush                          = Action.Create({ Type = "Spell", ID = 111400     }),
     Channeling                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
     --TargetEnemy                          = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
 	StopCast 				             = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
@@ -318,6 +321,7 @@ local function SelfDefensives()
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
+
 -- [2] Kick AntiFake Rotation
 A[2] = nil
 
@@ -373,7 +377,7 @@ A[3] = function(icon, isMulti)
 			end		
 
 			--Force AoE opener check
-			if A.SeedofCorruption:IsReady("target") and A.SowtheSeeds:IsTalentLearned() and not A.IsSpellInCasting(A.SeedofCorruption) and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and A.LastPlayerCastID ~= A.SeedofCorruption.ID and not inCombat then
+			if A.SeedofCorruption:IsReady("target") and A.SowtheSeeds:IsTalentLearned() and (not isMoving) and not A.IsSpellInCasting(A.SeedofCorruption) and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and A.LastPlayerCastID ~= A.SeedofCorruption.ID and not inCombat then
 				return A.SeedofCorruption:Show(icon)
 			end	
 			
@@ -391,16 +395,16 @@ A[3] = function(icon, isMulti)
 			end		
 			
 			--actions.precombat+=/haunt
-			if A.Haunt:IsReady(unit) then
+			if A.Haunt:IsReady(unit) and (not isMoving) then
 				return A.Haunt:Show(icon)
 			end	
 			
 			--actions.precombat+=/shadow_bolt,if=!talent.haunt.enabled&spell_targets.seed_of_corruption_aoe<3&!equipped.169314
-			if A.ShadowBolt:IsReady(unit) and not A.DrainSoul:IsTalentLearned() and not A.Haunt:IsTalentLearned() and MultiUnits:GetActiveEnemies() < 3 then
+			if A.ShadowBolt:IsReady(unit) and (not isMoving) and not A.DrainSoul:IsTalentLearned() and not A.Haunt:IsTalentLearned() and MultiUnits:GetActiveEnemies() < 3 then
 				return A.ShadowBolt:Show(icon)
 			end	
 
-			if A.Agony:IsReady(unit) and AgonyRefreshable then
+			if A.Agony:IsReady(unit) then
 				return A.Agony:Show(icon)
 			end		
 		end
@@ -412,7 +416,7 @@ A[3] = function(icon, isMulti)
 		local function PrepareDarkglare(unit)
 		
 			--actions.darkglare_prep=vile_taint
-			if A.VileTaint:IsReady(unit) then
+			if A.VileTaint:IsReady(unit) and (not isMoving) then
 				return A.VileTaint:Show(icon)
 			end	
 			
@@ -465,12 +469,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions+=/vile_taint,if=soul_shard>1
-			if A.VileTaint:IsReady(unit, nil, nil, true) and not A.IsSpellInCasting(A.VileTaint) and Player:SoulShardsP() > 1 then
+			if A.VileTaint:IsReady(unit, nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.VileTaint) and Player:SoulShardsP() > 1 then
 				return A.VileTaint:Show(icon)
 			end
 
 			--actions+=/corruption,if=refreshable (AOE)
-			if A.SeedofCorruption:IsReady("target", nil, nil, true) and not A.IsSpellInCasting(A.SeedofCorruption) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
+			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.SeedofCorruption) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
 				return A.SeedofCorruption:Show(icon)
 			end					
 			
@@ -485,7 +489,7 @@ A[3] = function(icon, isMulti)
 			end				
 			
 			--actions+=/unstable_affliction,if=refreshable
-			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and not A.IsSpellInCasting(A.UnstableAffliction) and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
+			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.UnstableAffliction) and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
 				return A.UnstableAffliction:Show(icon)
 			end
 			
@@ -496,7 +500,7 @@ A[3] = function(icon, isMulti)
 			end				
 			
 			--actions+=/haunt
-			if A.Haunt:IsReady(unit) then
+			if A.Haunt:IsReady(unit) and (not isMoving) then
 				return A.Haunt:Show(icon)
 			end
 			
@@ -569,33 +573,33 @@ A[3] = function(icon, isMulti)
 			end 		
 			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
-			if A.MaleficRapture:IsReady("player") and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking||cooldown.phantom_singularity.remains>12||soul_shard>3)
-			if A.MaleficRapture:IsReady("player") and A.PhantomSingularity:IsTalentLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-			if A.MaleficRapture:IsReady("player") and A.SowtheSeeds:IsTalentLearned() then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and A.SowtheSeeds:IsTalentLearned() then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/drain_life,if=buff.inevitable_demise.stack>30
-			if A.DrainLife:IsReady(unit) and Unit("player"):HasBuffsStacks(A.InevitableDemiseBuff.ID, true) > 30 then
+			if A.DrainLife:IsReady(unit) and (not isMoving) and Unit("player"):HasBuffsStacks(A.InevitableDemiseBuff.ID, true) > 30 then
 				return A.DrainLife:Show(icon)
 			end
 			
 			--actions+=/drain_life,if=buff.inevitable_demise_az.stack>30
 			--actions+=/drain_soul
-			if A.DrainSoul:IsReady(unit) then
+			if A.DrainSoul:IsReady(unit) and (not isMoving) then
 				return A.DrainSoul:Show(icon)
 			end	
 			
 			--actions+=/shadow_bolt
-			if A.ShadowBolt:IsReady(unit) then
+			if A.ShadowBolt:IsReady(unit) and (not isMoving) then
 				return A.ShadowBolt:Show(icon)
 			end	
 		end
