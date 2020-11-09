@@ -236,6 +236,8 @@ local Temp = {
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
 	CastStartTime                           = {},
+	UnstableAfflictionDelay					= 0,
+	SeedofCorruptionDelay					= 0,
 }
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
@@ -266,6 +268,7 @@ local function HandlePetChoice()
     end
     return choice
 end
+
 
 local function SelfDefensives()
     if Unit("player"):CombatTime() == 0 then 
@@ -336,6 +339,8 @@ A[3] = function(icon, isMulti)
 	local inCombat = Unit("player"):CombatTime() > 0
 	local Pull = Action.BossMods:GetPullTimer()
 	local profileStop = false	
+	local UADelay = A.GetToggle(2, "UADelay")
+	local SoCDelay = A.GetToggle(2, "SoCDelay")	
 
 	--Refreshables
 	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) < 6)
@@ -359,6 +364,24 @@ A[3] = function(icon, isMulti)
     else
         Action.Print("Error : You have to select Pet in UI Settings.") 
     end	
+
+	--UA Delay count
+    if Temp.UnstableAfflictionDelay == 0 and Unit(player):IsCasting(A.UnstableAffliction) then
+        Temp.UnstableAfflictionDelay = UADelay
+    end
+    
+    if Temp.UnstableAfflictionDelay > 0 then
+        Temp.UnstableAfflictionDelay = Temp.UnstableAfflictionDelay - 1
+    end
+	
+	--SoC Delay count
+    if Temp.SeedofCorruptionDelay == 0 and Unit(player):IsCasting(A.SeedofCorruption) then
+        Temp.SeedofCorruptionDelay = SoCDelay
+    end
+    
+    if Temp.SeedofCorruptionDelay > 0 then
+        Temp.SeedofCorruptionDelay = Temp.SeedofCorruptionDelay - 1
+    end	
 	
 	------------------------------------------------------
 	---------------- ENEMY UNIT ROTATION -----------------
@@ -377,7 +400,7 @@ A[3] = function(icon, isMulti)
 			end		
 
 			--Force AoE opener check
-			if A.SeedofCorruption:IsReady("target") and A.SowtheSeeds:IsTalentLearned() and (not isMoving) and not A.IsSpellInCasting(A.SeedofCorruption) and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE") and A.LastPlayerCastID ~= A.SeedofCorruption.ID and not inCombat then
+			if A.SeedofCorruption:IsReady("target") and A.SowtheSeeds:IsTalentLearned() and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and A.GetToggle(2, "ForceAoE") and A.GetToggle(2, "AoE")  and not inCombat then
 				return A.SeedofCorruption:Show(icon)
 			end	
 			
@@ -390,7 +413,7 @@ A[3] = function(icon, isMulti)
 
 
 			--actions.precombat+=/seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3&!equipped.169314
-			if A.SeedofCorruption:IsReady(unit) and (not isMoving) and not ShouldStop and A.GetToggle(2, "AoE") and Unit(unit):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 and MultiUnits:GetActiveEnemies() >= 3 then
+			if A.SeedofCorruption:IsReady("target") and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and A.GetToggle(2, "AoE") and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 and MultiUnits:GetActiveEnemies() >= 3 then
 				return A.SeedofCorruption:Show(icon)
 			end		
 			
@@ -474,7 +497,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--actions+=/corruption,if=refreshable (AOE)
-			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.SeedofCorruption) and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
+			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
 				return A.SeedofCorruption:Show(icon)
 			end					
 			
@@ -489,7 +512,7 @@ A[3] = function(icon, isMulti)
 			end				
 			
 			--actions+=/unstable_affliction,if=refreshable
-			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.UnstableAffliction) and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
+			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and (not isMoving) and Temp.UnstableAfflictionDelay == 0 and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
 				return A.UnstableAffliction:Show(icon)
 			end
 			
@@ -583,9 +606,9 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-			if A.MaleficRapture:IsReady("player") and (not isMoving) and A.SowtheSeeds:IsTalentLearned() then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and not A.PhantomSingularity:IsTalentLearned() and not A.VileTaint:IsTalentLearned() then
 				return A.SpatialRift:Show(icon)
-			end	
+			end			
 			
 			--actions+=/drain_life,if=buff.inevitable_demise.stack>30
 			if A.DrainLife:IsReady(unit) and (not isMoving) and Unit("player"):HasBuffsStacks(A.InevitableDemiseBuff.ID, true) > 30 then
@@ -614,6 +637,7 @@ A[3] = function(icon, isMulti)
 		
 	end
 	-- End on EnemyRotation()
+
 
     -- Defensive
     local SelfDefensive = SelfDefensives()

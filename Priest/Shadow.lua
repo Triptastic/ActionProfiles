@@ -536,6 +536,7 @@ A[3] = function(icon, isMulti)
 	local PWSMove = GetToggle(2, "PWSMove")
 	local UsePWS = GetToggle(2, "UsePWS")
 	local MultiDotDistance = GetToggle(2, "MultiDotDistance")
+	local VTDelay = GetToggle(2, "VTDelay")
     -- Multidots var
     local MissingShadowWordPain = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
     local MissingVampiricTouch = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.VampiricTouch.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)
@@ -599,7 +600,7 @@ A[3] = function(icon, isMulti)
 	
 	
     if Temp.VampiricTouchDelay == 0 and Unit(player):IsCasting(A.VampiricTouch) then
-        Temp.VampiricTouchDelay = 15
+        Temp.VampiricTouchDelay = VTDelay
     end
     
     if Temp.VampiricTouchDelay > 0 then
@@ -645,7 +646,7 @@ A[3] = function(icon, isMulti)
 		end
 
 		-- vampiric_touch
-		if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
 			return A.VampiricTouch:Show(icon)
 		end	
 		

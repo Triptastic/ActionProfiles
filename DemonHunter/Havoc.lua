@@ -960,7 +960,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- eye_beam,if=raid_event.adds.up|raid_event.adds.in>25
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and A.Demonic:IsSpellLearned() and HandleEyeBeam() and ((Pull > 0.1 and Pull <= 1) or not Action.GetToggle(1, "BossMods")) then
+            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and A.Demonic:IsSpellLearned() and HandleEyeBeam() and EyeBeamRange and ((Pull > 0.1 and Pull <= 1) or not Action.GetToggle(1, "BossMods")) then
                 -- Notification                    
 				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
@@ -1197,7 +1197,11 @@ A[3] = function(icon, isMulti)
             if A.ImmolationAura:IsReady(player) and CanCast and FuryDeficit > 20 then
                 return A.ImmolationAura:Show(icon)
             end 
-            
+  
+			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and MultiUnits:GetByRange(3,8) then
+				return A.GlaiveTempest:Show(icon)
+			end	
+  
             -- annihilation,if=!variable.pooling_for_blade_dance
             if A.Annihilation:IsReadyByPassCastGCD(unit) and CanCast and not VarPoolingForBladeDance then
                 return A.Annihilation:Show(icon)
@@ -1272,7 +1276,7 @@ A[3] = function(icon, isMulti)
             end
  
 			-- glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
-			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and GetByRange(3,8) then
+			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and MultiUnits:GetByRange(3,8) then
 				return A.GlaiveTempest:Show(icon)
 			end	
             

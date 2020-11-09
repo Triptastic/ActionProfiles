@@ -854,7 +854,7 @@ A[3] = function(icon, isMulti)
 			return Movement()
 		end	
 		
-		if BurstIsON and not isMoving and Cds() then
+		if BurstIsON(unit) and not isMoving and Cds() then
 			return true
 		end	
 		

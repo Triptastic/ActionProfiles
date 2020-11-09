@@ -131,29 +131,32 @@ A.Data.ProfileUI                                     = {
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Spell Status Frame -- ",
+                        ANY = " -- Vampiric Touch Delay -- ",
                     },
                 },
             },    
             {
-                {
-                    E         = "Button",
-                    H         = 35,
-                    OnClick = function(self, button, down)     
-                        if button == "LeftButton" then 
-                            TR.ToggleStatusFrame() 
-                        else                
-                            Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
-                        end 
-                    end, 
+				{	
+					E = "Label",
+					L = { 
+						enUS = "Use this slider to adjust the delay for Vampiric Touch. If you're finding that it's casting Vampiric Touch twice in a row, increase the value. If you find that you're missing Unfurling Darkness procs, lower the value. Recommended to sit somewhere between 80-100.", 
+						ruRU = "Метка", 
+					}, 
+				},            
+				{
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 200,                            
+                    DB = "VTDelay",
+                    DBV = 90, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
                     L = { 
-                        ANY = "Status Frame\nMacro Creator",
-                    }, 
+                        ANY = "Vampiric Touch Delay",
+                    },
                     TT = { 
-                        enUS = "Click this button to create the special status frame macro.\nStatus Frame is a new windows that allow user to track blocked spells during fight. So you don't have to check your chat anymore.", 
-                        ruRU = "Нажмите эту кнопку, чтобы создать специальный макрос статуса.\nStatus Frame - это новые окна, которые позволяют пользователю отслеживать заблокированные заклинания во время боя. Так что вам больше не нужно проверять свой чат.",  
-                        frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
-                    },                           
+                        ANY = "Use this slider to adjust the delay between Vampiric Touch casts."  
+                    },                    
+                    M = {},
                 },
             },    			
             { -- Line Divider

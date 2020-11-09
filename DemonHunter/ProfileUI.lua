@@ -2,26 +2,24 @@
 --##### TRIP'S DEMON HUNTER PROFILEUI #####
 --#########################################
 
---Full credit to Taste
-
-local TMW                                            = TMW 
-local CNDT                                            = TMW.CNDT
-local Env                                            = CNDT.Env
-local A                                                = Action
-local GetToggle                                        = A.GetToggle
-local InterruptIsValid                                = A.InterruptIsValid
-local UnitCooldown                                    = A.UnitCooldown
-local Unit                                            = A.Unit 
-local Player                                        = A.Player 
-local Pet                                            = A.Pet
-local LoC                                            = A.LossOfControl
-local MultiUnits                                    = A.MultiUnits
-local EnemyTeam                                        = A.EnemyTeam
-local FriendlyTeam                                    = A.FriendlyTeam
-local TeamCache                                        = A.TeamCache
-local InstanceInfo                                    = A.InstanceInfo
-local TR                                            = Action.TasteRotation
-local select, setmetatable                            = select, setmetatable
+local TMW					= TMW 
+local CNDT					= TMW.CNDT
+local Env					= CNDT.Env
+local A						= Action
+local GetToggle				= A.GetToggle
+local InterruptIsValid		= A.InterruptIsValid
+local UnitCooldown			= A.UnitCooldown
+local Unit					= A.Unit 
+local Player				= A.Player 
+local Pet					= A.Pet
+local LoC					= A.LossOfControl
+local MultiUnits			= A.MultiUnits
+local EnemyTeam				= A.EnemyTeam
+local FriendlyTeam			= A.FriendlyTeam
+local TeamCache				= A.TeamCache
+local InstanceInfo			= A.InstanceInfo
+local TR					= Action.TasteRotation
+local select, setmetatable	= select, setmetatable
 
 -- Shadowlands Spell Info fix for empty spells
 local GetSpellInfo_original                                = _G.GetSpellInfo
@@ -31,21 +29,21 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1 (28 Oct 2020)",
+    DateTime = "v1.0.0 (28 Oct 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_DEMONHUNTER_HAVOC] = {   
             LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },        
-            { -- [7]
+            { -- GENERAL HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- General -- ",
+                        ANY = " l><><>< GENERAL ><><><l ",
                     },
                 },
             },            
-            {
-                {
+            { -- GENERAL OPTIONS FIRST ROW
+                { -- MOUSEOVER
                     E = "Checkbox", 
                     DB = "mouseover",
                     DBV = true,
@@ -61,7 +59,7 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-				{
+				{ -- AOE
                     E = "Checkbox", 
                     DB = "AoE",
                     DBV = true,
@@ -83,29 +81,13 @@ A.Data.ProfileUI = {
                         TabN = '@number' or nil,                                
                         Print = '@string' or nil,
                     },
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "TasteInterruptList",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
-                    }, 
-                    TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
-                    }, 
-                    M = {},
-                },                
+                },             
             },  
-            { -- [2] 2nd Row 
+            { -- GENERAL OPTIONS SECOND ROW
                 {
                     E = "Checkbox", 
                     DB = "UseMoves",
-                    DBV = true,
+                    DBV = false,
                     L = { 
                         enUS = "Use Fel Rush & Vengeful Retreat", 
                         ruRU = "Используйте Fel Rush & Vengeful Retreat", 
@@ -135,113 +117,22 @@ A.Data.ProfileUI = {
                     M = {},
                 },     
             },
-            { -- [7] Spell Status Frame
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },            
+			{ -- FELBLADE HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Spell Status Frame -- ",
-                    },
-                },
-            },    
-            {
-                {
-                    E         = "Button",
-                    H         = 35,
-                    OnClick = function(self, button, down)     
-                        if button == "LeftButton" then 
-                            TR.ToggleStatusFrame() 
-                        else                
-                            Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
-                        end 
-                    end, 
-                    L = { 
-                        ANY = "Status Frame\nMacro Creator",
-                    }, 
-                    TT = { 
-                        enUS = "Click this button to create the special status frame macro.\nStatus Frame is a new windows that allow user to track blocked spells during fight. So you don't have to check your chat anymore.", 
-                        ruRU = "Нажмите эту кнопку, чтобы создать специальный макрос статуса.\nStatus Frame - это новые окна, которые позволяют пользователю отслеживать заблокированные заклинания во время боя. Так что вам больше не нужно проверять свой чат.",  
-                        frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
-                    },                           
-                },
-            },    
-            { -- [7]  Azerite Beam settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Prepull Options -- ",
+                        ANY = " l><><>< FELBLADE ><><><l ",
                     },
                 },
             },
-            { -- [3] 3rd Row     
-                -- Azshara Trinket                
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AzsharasFontofPowerPrePull",
-                    DBV = 6, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(296962) .. " sec",
-                    },
-                    TT = { 
-                        enUS = "Set the Pull timer in seconds to use " .. GetSpellInfo(296962) .. ".", 
-                        ruRU = "Set the Pull timer in seconds to use " .. GetSpellInfo(296962) .. ".", 
-                        frFR = "Set the Pull timer in seconds to use " .. GetSpellInfo(296962) .. ".", 
-                    },                     
-                    M = {},
-                },
-                -- Immolation Aura                
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "ImmolationAuraPrePull",
-                    DBV = 4, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(258920) .. " sec",
-                    },
-                    TT = { 
-                        enUS = "Set the Pull timer in seconds to use " .. GetSpellInfo(258920) .. ".", 
-                        ruRU = "Set the Pull timer in seconds to use " .. GetSpellInfo(258920) .. ".", 
-                        frFR = "Set the Pull timer in seconds to use " .. GetSpellInfo(258920) .. ".",  
-                    },                     
-                    M = {},
-                },
-            },
-            {
-                -- Arcane Torrent                
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "ArcaneTorrentPrePull",
-                    DBV = 3, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(28730) .. " sec",
-                    },
-                    TT = { 
-                        enUS = "Set the Pull timer in seconds to use " .. GetSpellInfo(28730) .. ".", 
-                        ruRU = "Set the Pull timer in seconds to use " .. GetSpellInfo(28730) .. ".", 
-                        frFR = "Set the Pull timer in seconds to use " .. GetSpellInfo(28730) .. ".",  
-                    },                     
-                    M = {},
-                },                         
-            },
-            
-            -- FelBlade
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(232893) .. " -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row
-                {
+            { -- FELBLADE OPTIONS FIRST ROW
+                { -- FELBLADE MODE
                     E = "Dropdown",                                                         
                     OT = {
                         { text = "AUTO", value = "AUTO" },
@@ -260,24 +151,8 @@ A.Data.ProfileUI = {
                         frFR = "Customize your " .. GetSpellInfo(232893) .. " options. Multiple checks possible.\nAUTO: Will use it as soon as you are out of range of your current target.\nPVP: Will use it only in PvP to chase enemy.\nNEVER: Will never use " .. GetSpellInfo(232893) .. ".", 
                     }, 
                     M = {},
-                },    
-                {
-                    E = "Checkbox", 
-                    DB = "FelBladeOutOfRange",
-                    DBV = false,
-                    L = { 
-                        enUS = "FelBlade Out Of Range", 
-                        ruRU = "FelBlade Out Of Range",
-                        frFR = "FelBlade Out Of Range", 
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will FelBlade Out Of Range depending on the maximum range you set in above settings.", 
-                        ruRU = "If activated, will FelBlade Out Of Range depending on the maximum range you set in above settings.", 
-                        frFR = "If activated, will FelBlade Out Of Range depending on the maximum range you set in above settings.", 
-                    }, 
-                    M = {},
-                },             
-                {
+                },                
+                { -- FELBLADE PVP RANGE
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 15,                            
@@ -295,8 +170,8 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            {
-                {
+            { -- FELBLADE OPTIONS SECOND ROW
+                { -- FELBLADE RANGE PVE
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 15,                            
@@ -313,7 +188,7 @@ A.Data.ProfileUI = {
                     },                     
                     M = {},
                 },
-                {
+                { -- FELBLADE FURY
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 120,                            
@@ -321,59 +196,29 @@ A.Data.ProfileUI = {
                     DBV = 60, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(232893) .. " fury",
+                        ANY = GetSpellInfo(232893) .. " Fury",
                     },
                     TT = { 
-                        enUS = "Set the amount of fury before using " .. GetSpellInfo(232893) .. ".", 
-                        ruRU = "Set the amount of fury before using " .. GetSpellInfo(232893) .. ".", 
-                        frFR = "Set the amount of fury before using " .. GetSpellInfo(232893) .. ".", 
+                        ANY = "Set the maximum amount of Fury before using " .. GetSpellInfo(232893) .. ".", 
                     },                     
                     M = {},
                 },
             },                
-            { -- [7] 
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },            
+			{ -- EYEBEAM HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(198013) .. " -- ",
+                        ANY = "  l><><>< EYEBEAM ><><><l ",
                     },
                 },
             },
-            { -- [3] 3rd Row 
-                {
-                    E = "Checkbox", 
-                    DB = "SyncBladeDanceDeathSweepWithEyeBeam",
-                    DBV = false,
-                    L = { 
-                        enUS = "BladeDance Sync EyeBeam", 
-                        ruRU = "BladeDance Sync EyeBeam", 
-                        frFR = "BladeDance Sync EyeBeam", 
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))", 
-                        ruRU = "If activated, will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))", 
-                        frFR = "If activated, will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))", 
-                    }, 
-                    M = {},
-                },     
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 15,                            
-                    DB = "BladeDancePoolSeconds",
-                    DBV = 15, -- Set healthpercentage @30% life. 
-                    Precision = 1,
-                    ONOFF = false,
-                    L = { 
-                        ANY = GetSpellInfo(188499) .. "\nPool secs",
-                    },
-                    TT = { 
-                        enUS = "Define the value in seconds you want to be pooling " .. GetSpellInfo(188499) .. " in order to sync it with next " .. GetSpellInfo(198013) .. ".\nAUTO: will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))", 
-                        ruRU = "Define the value in seconds you want to be pooling " .. GetSpellInfo(188499) .. " in order to sync it with next " .. GetSpellInfo(198013) .. ".\nAUTO: will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))",  
-                        frFR = "Define the value in seconds you want to be pooling " .. GetSpellInfo(188499) .. " in order to sync it with next " .. GetSpellInfo(198013) .. ".\nAUTO: will pool BladeDance if cooldown of EyeBeam > (9 / (1 + Player:HastePct() * 0.01))",  
-                    },                     
-                    M = {},
-                },                
+            { -- EYEBEAM MODE              
                 {
                     E = "Dropdown",                                                         
                     OT = {
@@ -399,8 +244,8 @@ A.Data.ProfileUI = {
                     M = {},
                 },    
             },
-            {            
-                {
+            { -- EYEBEAM SLIDERS           
+                { -- EYEBEAM TTD
                     E = "Slider",                                                     
                     MIN = 3, 
                     MAX = 60,                            
@@ -417,7 +262,7 @@ A.Data.ProfileUI = {
                     },                     
                     M = {},
                 },
-                {
+                { -- EYEBEAM RANGE
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 20,                            
@@ -435,125 +280,98 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            { -- [7] 
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- POTIONS HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(300714) .. " -- ",
+                        ANY = " l><><>< COMBAT POTION ><><><l ",
                     },
                 },
             },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryAuto",
-                    DBV = false,
-                    L = { 
-                        enUS = "Burst Potion", 
-                        ruRU = "Burst Potion",
-                        frFR = "Burst Potion",
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots depending of the settings of this section", 
-                        ruRU = "If activated, will auto re pots depending of the settings of this section", 
-                        frFR = "If activated, will auto re pots depending of the settings of this section", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithExecute",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync execute phase", 
-                        ruRU = "Sync execute phase",
-                        frFR = "Sync execute phase",   
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        frFR = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 40,                          
-                    DB = "UnbridledFuryTTD",
-                    DBV = 40, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " TTD",
+            { -- POTIONS OPTIONS
+                { -- POTION SELECTION
+                    E = "Dropdown",                                                         
+                    OT = {
+                        { text = "Unbridled Fury", value = "UnbridledFuryPot" },
+                        { text = "Spectral Agility", value = "SpectralAgilityPot" },
+                        { text = "Empowered Exorcisms", value = "EmpoweredExorcismsPot" },
+                        { text = "Phantom Fire", value = "PhantomFirePot" },
+                        { text = "Deathly Fixation", value = "DeathlyFixationPot" },						
                     },
+                    MULT = false,
+                    DB = "AutoPotionSelect",
+                    DBV = "SpectralAgilityPot", 
+                    L = { 
+                        ANY = "Pick Your Potion",
+                    }, 
                     TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
-                    },                     
+                        ANY = "Select which potion to use."
+                    }, 
                     M = {},
                 },                
-            },
-            {
-                {
+                { -- POTION HEROISM ONLY
                     E = "Checkbox", 
-                    DB = "UnbridledFuryWithSecondMeta",
+                    DB = "PotionHeroOnly",
                     DBV = false,
                     L = { 
-                        enUS = "Sync 2nd Meta", 
-                        ruRU = "Sync 2nd Meta", 
-                        frFR = "Sync 2nd Meta", 
+                        ANY = "Use with Bloodlust/Heroism"  
                     }, 
                     TT = { 
-                        enUS = "If activated, will auto re pots as soon as you recast Metamorphosis.", 
-                        ruRU = "If activated, will auto re pots as soon as you recast Metamorphosis.", 
-                        frFR = "If activated, will auto re pots as soon as you recast Metamorphosis.", 
+                        ANY = "Use Potion with Bloodlust/Heroism."
                     }, 
                     M = {},
-                }, 
-                {
+                },
+			},
+			{ -- POTIONS OPTIONS CONTINUED
+                { -- POTION META ONLY
                     E = "Checkbox", 
-                    DB = "UnbridledFuryWithBloodlust",
+                    DB = "PotionMetaOnly",
                     DBV = false,
                     L = { 
-                        enUS = "Sync Bloodlust", 
-                        ruRU = "Sync Bloodlust", 
-                        frFR = "Sync Bloodlust",  
+                        ANY = "Use Potion With Metamorphosis"  
                     }, 
                     TT = { 
-                        enUS = "If activated, will auto re pots as soon as Bloodlust is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Bloodlust is detected.",
-                        frFR = "If activated, will auto re pots as soon as Bloodlust is detected.",
+                        ANY = "Try to sync cooldown of Metamorphosis with cooldown of potion."
                     }, 
                     M = {},
-                }, 
-                {
+                },
+                { -- POTION TIME TO DIE
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 100,                          
-                    DB = "UnbridledFuryHP",
-                    DBV = 30, -- Set healthpercentage @30% life. 
+                    DB = "PotionTTD",
+                    DBV = 25, 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(300714) .. " HP",
+                        ANY = "Time To Die Requirement",
                     },
                     TT = { 
-                        enUS = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                        ruRU = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".",  
-                        frFR = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
+                        ANY = "Length of time target needs to stay alive for before using potion. It's a good idea to set this value to a little bit longer than the duration of your potion if you don't want to waste any!"
                     },                     
                     M = {},
                 },
             },    
-            { -- [7] 
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- DARKNESS HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(196718) .. " -- ",
+                        ANY = " l><><>< DARKNESS ><><><l ",
                     },
                 },
             },
-            { -- [3] 3rd Row 
+            { -- AUTO DARKNESS CHECKBOX
                 {
                     E = "Checkbox", 
                     DB = "AutoDarkness",
@@ -562,13 +380,13 @@ A.Data.ProfileUI = {
                         ANY = "Auto " .. GetSpellInfo(196718),
                     },
                     TT = { 
-                        enUS = "If activated, will auto use " .. GetSpellInfo(196718) .. " depending on currents settings.\nFor high end raiding, it is recommanded to keep Darkness when your Raid Leader call it.",
+                        enUS = "If activated, will auto use " .. GetSpellInfo(196718) .. " depending on currents settings.\nFor high end raiding, it is recommended to keep Darkness when your Raid Leader call it.",
                         ruRU = "Если активирован, будет автоматически использовать " .. GetSpellInfo(196718) .. " в зависимости от настроек токов.\nДля рейдового сегмента рекомендуется держать Тьму, когда ваш Рейдовый Лидер называет это.",
                         frFR = "Si activé, utilisera automatiquement " .. GetSpellInfo(196718) .. " en fonction des paramètres de courant.\nPour les raids de haut niveau, il est recommandé de garder Ténèbres lorsque votre chef de raid l'appelle.",
                     }, 
                     M = {},
                 }, 
-                {
+                { -- AUTO DARKNESS DROPDOWN
                     E = "Dropdown",                                                         
                     OT = {
                         { text = "In Raid", value = "In Raid" },
@@ -590,8 +408,8 @@ A.Data.ProfileUI = {
                         frFR = "Choisissez où vous souhaitez utiliser automatiquement " .. GetSpellInfo(196718),
                     }, 
                     M = {},
-                },
-                {
+                }, 
+                {-- DARKNESS UNITS
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 10,                            
@@ -608,9 +426,9 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },
-            }, -- [4] 4th Row
-            {
-                {
+            }, 
+            { -- AUTO DARKNESS CONTINUED
+                { -- AUTO DARKNESS TTD
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 10,                            
@@ -627,7 +445,7 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },
-                {
+                { -- AUTO DARKNESS HP
                     E = "Slider",                                                     
                     MIN = 5, 
                     MAX = 100,                            
@@ -646,16 +464,22 @@ A.Data.ProfileUI = {
                 },
                 
             },
-            { -- [7] 
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- DEFENSIVES HEADER 
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Defensives -- ",
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
                     },
                 },
             },
-            { -- [3] 3rd Row 
-                {
+            { -- DEFENSIVES OPTIONS 
+                { -- BLUR HP SLIDER
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
@@ -667,21 +491,21 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-                {
+                { -- HEALING POTION 
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "AbyssalHealingPotionHP",
+                    DB = "SpiritualHealingPotionHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(301308) .. " (%)",
+                        ANY = "Spiritual Healing Potion HP (%)",
                     }, 
                     M = {},
                 },
             }, 
-            { -- [3] 3rd Row 
-                {
+            { -- DEFENSIVES OPTIONS CONTINUED
+                { -- NETHERWALK
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
@@ -693,66 +517,22 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-            }, 
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Dummy DPS Test -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row                     
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 10,                            
-                    DB = "DummyTime",
-                    DBV = 5, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "DPS Testing Time",
-                    },
-                    TT = { 
-                        enUS = "Set the desired time for test in minutes.\nWill show a notification icon when time is expired.\nMin: 1 / Max: 10.", 
-                        ruRU = "Установите желаемое время для теста в минутах.\nПо истечении времени будет отображаться значок уведомления.\nMin: 1 / Max: 10.",  
-                        frFR = "Définissez la durée souhaitée pour le test en minutes.\nAffiche une icône de notification lorsque le temps est écoulé.\nMin: 1 / Max: 10.", 
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 15,                            
-                    DB = "DummyStopDelay",
-                    DBV = 10, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Stop Delay",
-                    },
-                    TT = { 
-                        enUS = "After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\nDefault value : 10 seconds.", 
-                        ruRU = "После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\nЗначение по умолчанию: 10 секунд.", 
-                        frFR = "Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\nValeur par défaut: 10 secondes.", 
-                    },                     
-                    M = {},
-                },
-            },  
-            { -- [4] 4th Row
+            },   
+            { -- LAYOUT SPACE
                 
                 {
                     E = "LayoutSpace",                                                                         
                 },
             },
-            { -- [7]
+            { -- PVP HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- PvP -- ",
+                        ANY = " l><><>< PVP ><><><l ",
                     },
                 },
             },
-            { -- [5] 5th Row     
+            { -- IMPRISON    
                 {
                     E = "Dropdown",                                                         
                     OT = {

@@ -1262,7 +1262,7 @@ local function ArenaRotation(icon, unit)
 	
 end 
 
-local function PartyRotation(unit)
+--[[local function PartyRotation(unit)
     if (unit == "party1" and not A.GetToggle(2, "PartyUnits")[1]) or (unit == "party2" and not A.GetToggle(2, "PartyUnits")[2]) then 
         return false 
     end
@@ -1271,24 +1271,10 @@ local function PartyRotation(unit)
     if A.Decurse:IsReady(unit) and A.Decurse:AbsentImun(unit, Temp.TotalAndMag) and Unit(unit):HasDeBuffs("Curse") > 0 then
         return A.Decurse
     end
-end 
+end ]]
   
-A[6] = function(icon)
-    return ArenaRotation(icon, "arena1")
-end
+A[6] = nil
 
-A[7] = function(icon)
-    local Party = PartyRotation("party1") 
-    if Party then 
-        return Party:Show(icon)
-    end 
-    return ArenaRotation(icon, "arena2")
-end
+A[7] = nil
 
-A[8] = function(icon)
-    local Party = PartyRotation("party2") 
-    if Party then 
-        return Party:Show(icon)
-    end     
-    return ArenaRotation(icon, "arena3")
-end
+A[8] = nil

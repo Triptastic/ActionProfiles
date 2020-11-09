@@ -99,6 +99,55 @@ A.Data.ProfileUI = {
                     E = "LayoutSpace",                                                                        
                 },
             },
+            { -- [7] Spell Status Frame
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " -- Double-Cast Delay -- ",
+                    },
+                },
+            },    
+            {            
+				{
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 200,                            
+                    DB = "UADelay",
+                    DBV = 30, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Unstable Affliction Delay",
+                    },
+                    TT = { 
+                        ANY = "Use this slider to adjust the delay between Unstable Affliction casts."  
+                    },                    
+                    M = {},
+                },
+				{
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 200,                            
+                    DB = "SoCDelay",
+                    DBV = 30, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Seed of Corruption Delay",
+                    },
+                    TT = { 
+                        ANY = "Use this slider to adjust the delay between Seed of Corruption casts."  
+                    },                    
+                    M = {},
+                },				
+            },
+			{
+				{	
+					E = "Label",
+					L = { 
+						enUS = "Use these sliders to adjust the delay for Unstable Affliction and Seed of Corruption. If you're finding that it's casting these spells twice in a row, increase the value. If you find that you're not refreshing the debuffs enough then lower the value. Recommended to sit somewhere between 80-100.", 
+						ruRU = "Метка", 
+					}, 
+				},
+			},
             { -- Pet Stuff -- Header
                 {
                     E = "Header",

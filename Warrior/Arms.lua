@@ -472,7 +472,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,,if=cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2)
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2) or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
@@ -487,7 +487,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!spell_targets.whirlwind>1&!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and GetByRange(3, 8) or (not GetByRange(2, 8) and not A.Cleave:IsSpellLearned()) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and GetByRange(1, 8) or (not GetByRange(2, 8) and not A.Cleave:IsSpellLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
@@ -542,7 +542,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,if=(cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2))
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2) or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
