@@ -813,39 +813,6 @@ A[3] = function(icon, isMulti)
         return A.PoolResource:Show(icon)
     end
     
-    ------------------------------------
-    ---------- DUMMY DPS TEST ----------
-    ------------------------------------
-    local DummyTime = GetToggle(2, "DummyTime")
-    if DummyTime > 0 then
-        local unit = "target"
-        local endtimer = 0
-        
-        if Unit(unit):IsExists() and Unit(unit):IsDummy() then
-            if Unit("player"):CombatTime() >= (DummyTime * 60) then
-                StopAttack()
-                endtimer = TMW.time
-                --ClearTarget() -- Protected ? 
-                -- Notification                    
-                --Action.SendNotification(DummyTime .. " Minutes Dummy Test Concluded - Profile Stopped", A.DummyTest.ID)
-				A.Toaster:SpawnByTimer("TripToast", 0, "Dummy Test Concluded!", DummyTime .. " minutes passed. Stopping profile.", A.DummyTest.ID)				
-                
-                if endtimer < TMW.time + 5 then
-                    profileStop = true
-                    --return A.DummyTest:Show(icon)
-                end
-            end
-        end
-    end    
-    --print(A.DBM_GetTimer("test"))
-    if A.DBM_GetTimer("test") > 0 and A.DBM_GetTimer("test") < 5 then
-        -- Notification                    
-        --Action.SendNotification("DBM Test Adds Spawn in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)
-		A.Toaster:SpawnByTimer("TripToast", 0, "DBM Test!", "Adds spawning in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)		
-    end
-
-
-    
     -- Start Rotation
     local function EnemyRotation(unit)     
 
@@ -1138,7 +1105,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.cooldown+=/elysian_decree
-			if A.ElysianDecree:IsReady(player) and Unit(unit):GetRange() <= 5 and MultiUnits:GetByRange(5) >= 2 and Unit(unit):TimeToDie() >= 5 then
+			if A.ElysianDecree:IsReady(player) and A.MultiUnits:GetByRange(5, 3) >= 2 and Unit(unit):TimeToDie() > 5 then
 				return A.ElysianDecree:Show(icon)
 			end	
 

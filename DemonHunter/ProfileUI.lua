@@ -29,7 +29,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.0.0 (28 Oct 2020)",
+    DateTime = "v 1.0.PP (11 November 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_DEMONHUNTER_HAVOC] = {   
@@ -618,16 +618,15 @@ A.Data.ProfileUI = {
         },
         -- Vengeance Specialisation
         [ACTION_CONST_DEMONHUNTER_VENGEANCE] = {          
-            { -- [7]
+            { -- GENERAL HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- General -- ",
+                        ANY = " l><><>< GENERAL ><><><l ",
                     },
                 },
             },            
-            { -- [1] 1st Row
-                
+            { -- GENERAL OPTIONS FIRST ROW               
                 {
                     E = "Checkbox", 
                     DB = "mouseover",
@@ -667,22 +666,6 @@ A.Data.ProfileUI = {
                         Print = '@string' or nil,
                     },
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "TasteInterruptList",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
-                    }, 
-                    TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
-                    }, 
-                    M = {},
-                },
 				{
 					E = "Checkbox", 
 					DB = "AutoTaunt",
@@ -693,103 +676,149 @@ A.Data.ProfileUI = {
 						frFR = "Raillerie automatique",
 					}, 
 					TT = { 
-						enUS = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
-						ruRU = "If activated, will use automatically use Torment if you do not have aggro on your target.",  
-						frFR = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
+						ANY = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
 					}, 
 					M = {},               
 				},                
-            }, 
-            { -- [7] Spell Status Frame
+            },
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },            
+            { -- LAYOUT SPACE               
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },            
+			{ -- FEL DEVASTATION
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Spell Status Frame -- ",
+                        ANY = "  l><><>< FEL DEVASTATION ><><><l ",
                     },
                 },
-            },    
-            {
+            },
+            { -- FEL DEVASTATION DAMAGE CHECKBOX              
                 {
-                    E         = "Button",
-                    H         = 35,
-                    OnClick = function(self, button, down)     
-                        if button == "LeftButton" then 
-                            TR.ToggleStatusFrame() 
-                        else                
-                            Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
-                        end 
-                    end, 
+                    E = "Checkbox", 
+                    DB = "FelDevastationDMG",
+                    DBV = true,
                     L = { 
-                        ANY = "Status Frame\nMacro Creator",
+                        ANY = "Use Fel Devastation in Damage Rotation", 
                     }, 
                     TT = { 
-                        enUS = "Click this button to create the special status frame macro.\nStatus Frame is a new windows that allow user to track blocked spells during fight. So you don't have to check your chat anymore.", 
-                        ruRU = "Нажмите эту кнопку, чтобы создать специальный макрос статуса.\nStatus Frame - это новые окна, которые позволяют пользователю отслеживать заблокированные заклинания во время боя. Так что вам больше не нужно проверять свой чат.",  
-                        frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
-                    },                           
+                        ANY = "Use Fel Devastation whenever available for damage (ignores the healing component of Fel Devastation).", 
+                    }, 
+                    M = {},
+                },          
+                { -- FEL DEVASTATION HP SLIDER
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 100,                            
+                    DB = "FelDevHP",
+                    DBV = 60, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Fel Devastation HP (%)",
+                    },
+                    TT = { 
+                        ANY = "HP to use Fel Devastation", 
+                    },                     
+                    M = {},
                 },
-            },                
-            { -- [4] 4th Row
+            },
+            { -- LAYOUT SPACE              
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- POTIONS HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< COMBAT POTION ><><><l ",
+                    },
+                },
+            },
+            { -- POTIONS OPTIONS
+                { -- POTION SELECTION
+                    E = "Dropdown",                                                         
+                    OT = {
+                        { text = "Hardened Shadows", value = "HardenedShadowsPot" },
+                        { text = "Spectral Stamina", value = "SpectralStaminaPot" },                        
+						{ text = "Spectral Agility", value = "SpectralAgilityPot" },
+                        { text = "Empowered Exorcisms", value = "EmpoweredExorcismsPot" },
+                        { text = "Phantom Fire", value = "PhantomFirePot" },
+                        { text = "Deathly Fixation", value = "DeathlyFixationPot" },						
+                    },
+                    MULT = false,
+                    DB = "AutoPotionSelect",
+                    DBV = "HardenedShadowsPot", 
+                    L = { 
+                        ANY = "Pick Your Potion",
+                    }, 
+                    TT = { 
+                        ANY = "Select which potion to use."
+                    }, 
+                    M = {},
+                },                
+			},    
+            { -- LAYOUT SPACE                
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- DEFENSIVES HEADER 
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
+                    },
+                },
+            },
+            { -- DEFENSIVES OPTIONS 
+                { -- METAMORPHOSIS
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "MetamorphosisHP",
+                    DBV = 40, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Metamorphosis HP(%)",
+                    }, 
+                    M = {},
+                },
+                { -- HEALING POTION 
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "SpiritualHealingPotionHP",
+                    DBV = 100, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Spiritual Healing Potion HP (%)",
+                    }, 
+                    M = {},
+                },
+            },    
+            { -- LAYOUT SPACE
                 
                 {
                     E = "LayoutSpace",                                                                         
                 },
             },
-            { -- [7]
+            { -- PVP HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- PvP -- ",
+                        ANY = " l><><>< PVP ><><><l ",
                     },
                 },
-            },
-            { -- [5] 5th Row     
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "ON MELEE BURST", value = "ON MELEE BURST" },
-                        { text = "ON COOLDOWN", value = "ON COOLDOWN" },                    
-                        { text = "OFF", value = "OFF" },
-                    },
-                    DB = "ImprisonPvP",
-                    DBV = "ON MELEE BURST",
-                    L = { 
-                        ANY = "PvP " .. GetSpellInfo(217832),
-                    }, 
-                    TT = { 
-                        enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                        ruRU = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Только если игрок ближнего боя имеет бафы на урон\nON COOLDOWN - значит будет использовано по игрокам ближнего боя по восстановлению способности\nOFF - Выключает из ротации, но при этом позволяет Очередь и MSG системам работать\nЕсли нужно полностью выключить, тогда установите блокировку во вкладке 'Действия'", 
-                        frFR = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Seulement si le joueur de mêlée a des buffs de dégâts\nON COOLDOWN - les moyens seront toujours utilisés sur les joueurs de mêlée\nOFF - Coupé de la rotation mais autorisant toujours le travail dans la file d'attente et Systèmes MSG\nSi vous souhaitez l'éteindre complètement, vous devez définir SetBlocker dans l'onglet 'Actions'", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@arena1", value = 1 },
-                        { text = "@arena2", value = 2 },
-                        { text = "@arena3", value = 3 },
-                        { text = "primary", value = 4 },
-                    },
-                    MULT = true,
-                    DB = "ImprisonPvPUnits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                        [3] = true,
-                        [4] = true,
-                    }, 
-                    L = { 
-                        ANY = "PvP " .. GetSpellInfo(217832) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
-                        ruRU = "primary - это @target, @mouseover, @targettarget (эти юниты зависят от чекбоксов наверху)", 
-                    }, 
-                    M = {},
-                },
-            },
-        },
+            },        
+		},
     },
     -- MSG Actions UI
     [7] = {

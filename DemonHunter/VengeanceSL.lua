@@ -42,7 +42,7 @@ local GetSpellTexture 							= _G.TMW.GetSpellTexture
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
 
-Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
+Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
     -- Racial
     ArcaneTorrent					= Action.Create({ Type = "Spell", ID = 50613     }),
     BloodFury						= Action.Create({ Type = "Spell", ID = 20572      }),
@@ -82,18 +82,52 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     DemonSpikes						= Action.Create({ Type = "Spell", ID = 344866	}),
 	DemonSpikesBuff					= Action.Create({ Type = "Spell", ID = 203819	}),
 	FieryBrand						= Action.Create({ Type = "Spell", ID = 344867	}),
-	FieryBrandDebuff				= Action.Create({ Type = "Spell", ID = 344866	}),
+	FieryBrandDebuff				= Action.Create({ Type = "Spell", ID = 207771, Hidden = true	}),
 	InfernalStrike					= Action.Create({ Type = "Spell", ID = 344865	}),
 	Shear							= Action.Create({ Type = "Spell", ID = 344859	}),
-
+	SigilofFlame					= Action.Create({ Type = "Spell", ID = 204596	}),
+	SigilofMisery					= Action.Create({ Type = "Spell", ID = 207684	}),
+	SigilofSilence					= Action.Create({ Type = "Spell", ID = 202137	}),
+	SoulCleave						= Action.Create({ Type = "Spell", ID = 344862	}),
+	FelDevastation					= Action.Create({ Type = "Spell", ID = 212084	}),
+	MasteryFelBlood					= Action.Create({ Type = "Spell", ID = 203747, Hidden = true	}),
+	RevelinPain						= Action.Create({ Type = "Spell", ID = 343014, Hidden = true	}),	
+	ThickSkin						= Action.Create({ Type = "Spell", ID = 320380, Hidden = true	}),
+	SoulFragments					= Action.Create({ Type = "Spell", ID = 203981, Hidden = true	}),
 	
 	-- Normal Talents
-    BlindFury						= Action.Create({ Type = "Spell", ID = 203550, Hidden = true	}),	
-
+    AbyssalStrike					= Action.Create({ Type = "Spell", ID = 207550, Hidden = true	}),
+    AgonizingFlames					= Action.Create({ Type = "Spell", ID = 207548, Hidden = true	}),
+    Felblade						= Action.Create({ Type = "Spell", ID = 232893	}),	
+    FeastofSouls					= Action.Create({ Type = "Spell", ID = 207697, Hidden = true	}),	
+    Fallout							= Action.Create({ Type = "Spell", ID = 227174, Hidden = true	}),	
+    BurningAlive					= Action.Create({ Type = "Spell", ID = 207739, Hidden = true	}),	
+    InfernalArmor					= Action.Create({ Type = "Spell", ID = 320331, Hidden = true	}),	
+    CharredFlesh					= Action.Create({ Type = "Spell", ID = 336639, Hidden = true	}),	
+    SpiritBomb						= Action.Create({ Type = "Spell", ID = 247454	}),
+    SoulRending						= Action.Create({ Type = "Spell", ID = 217996, Hidden = true	}),	
+    FeedtheDemon					= Action.Create({ Type = "Spell", ID = 218612, Hidden = true	}),
+    Fracture						= Action.Create({ Type = "Spell", ID = 263642	}),
+    ConcentratedSigils				= Action.Create({ Type = "Spell", ID = 207666, Hidden = true	}),
+    QuickenedSigils					= Action.Create({ Type = "Spell", ID = 209281, Hidden = true	}),
+    SigilofChains					= Action.Create({ Type = "Spell", ID = 202138	}),
+    VoidReaver						= Action.Create({ Type = "Spell", ID = 268175, Hidden = true	}),	
+    Demonic							= Action.Create({ Type = "Spell", ID = 321453, Hidden = true	}),
+    SoulBarrier						= Action.Create({ Type = "Spell", ID = 263648	}),
+    LastResort						= Action.Create({ Type = "Spell", ID = 209258, Hidden = true	}),
+    RuinousBulwark					= Action.Create({ Type = "Spell", ID = 326853, Hidden = true	}),
+	BulkExtraction					= Action.Create({ Type = "Spell", ID = 320341	}),	
 
 	-- PvP Talents
-    CleansedByFire					= Action.Create({ Type = "Spell", ID = 205625, Hidden = true	}),
-	
+    CleansedByFlame					= Action.Create({ Type = "Spell", ID = 205625, Hidden = true	}),
+    EverlastingHunt					= Action.Create({ Type = "Spell", ID = 205656, Hidden = true	}),
+    JaggedSpikes					= Action.Create({ Type = "Spell", ID = 205627, Hidden = true	}),
+    IllidansGrasp					= Action.Create({ Type = "Spell", ID = 205630	}),	
+    SigilMastery					= Action.Create({ Type = "Spell", ID = 211489, Hidden = true	}),
+    Tormentor						= Action.Create({ Type = "Spell", ID = 207029	}),	
+    DemonicTrample					= Action.Create({ Type = "Spell", ID = 205629	}),	
+    ReverseMagic					= Action.Create({ Type = "Spell", ID = 205604	}),	
+    Detainment						= Action.Create({ Type = "Spell", ID = 205596, Hidden = true	}),	
 
 	-- Covenant Abilities
     ElysianDecree					= Action.Create({ Type = "Spell", ID = 306830	}),
@@ -107,10 +141,9 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),
 
 	-- Conduits
-    DancingWithFate					= Action.Create({ Type = "Spell", ID = 339228, Hidden = true	}),
-    RelentlessOnslaught				= Action.Create({ Type = "Spell", ID = 339151, Hidden = true	}),
-    GrowingInferno					= Action.Create({ Type = "Spell", ID = 339231, Hidden = true	}),
-    SerratedGlaive					= Action.Create({ Type = "Spell", ID = 339230, Hidden = true	}),
+    SoulFurnace						= Action.Create({ Type = "Spell", ID = 339423, Hidden = true	}),
+    DemonMuzzle						= Action.Create({ Type = "Spell", ID = 339587, Hidden = true	}),	
+    RoaringFire						= Action.Create({ Type = "Spell", ID = 339644, Hidden = true	}),		
     ExposedWound					= Action.Create({ Type = "Spell", ID = 339229, Hidden = true	}),	
     RepeatDecree					= Action.Create({ Type = "Spell", ID = 339895, Hidden = true	}),	
     IncreasedScrutiny				= Action.Create({ Type = "Spell", ID = 340028, Hidden = true	}),
@@ -131,8 +164,10 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     DarkglareBoon					= Action.Create({ Type = "Spell", ID = 337534, Hidden = true	}),
     FelBombardment					= Action.Create({ Type = "Spell", ID = 337775, Hidden = true	}),
 	--Vengeance Legendaries
-
-
+    FelFlameFortification			= Action.Create({ Type = "Spell", ID = 337545, Hidden = true	}),
+    FierySoul						= Action.Create({ Type = "Spell", ID = 337547, Hidden = true	}),
+    RazelikhsDefilement				= Action.Create({ Type = "Spell", ID = 337544, Hidden = true	}),	
+    SpiritoftheDarknessFlame		= Action.Create({ Type = "Spell", ID = 337541, Hidden = true	}),		
 
 	--Anima Powers - to add later...
 	
@@ -141,7 +176,15 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
 	
 
 	-- Potions
-	
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
+    PotionofSpectralAgility			= Action.Create({ Type = "Potion", ID = 171270, QueueForbidden = true }),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),  	
 
     -- Misc
     Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
@@ -152,7 +195,7 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
 }
 
 -- To create essences use next code:
-Action:CreateEssencesFor(ACTION_CONST_DEMONHUNTER_VENGEANCE)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
+A:CreateEssencesFor(ACTION_CONST_DEMONHUNTER_VENGEANCE)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
 local A = setmetatable(Action[ACTION_CONST_DEMONHUNTER_VENGEANCE], { __index = Action })
 
 
@@ -241,11 +284,6 @@ local function Interrupts(unit)
         -- Imprison    
         if useCC and A.Imprison:IsReady(unit) and not A.Disrupt:IsReady(unit) then        
             return A.Imprison              
-        end 
-        
-        -- Chaos Nova    
-        if useCC and A.ChaosNova:IsReady(unit) and EnemiesCasting > 1 and A.ChaosNova:AbsentImun(unit, Temp.TotalAndCC, true) then 
-            return A.ChaosNova              
         end 
         
         -- Disrupt
@@ -352,7 +390,10 @@ A[3] = function(icon, isMulti)
     UpdateSoulFragments()
     UpdateIsInMeleeRange()
     local SoulFragments = Unit("player"):HasBuffsStacks(A.SoulFragments.ID, true)
-    local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()
+	local PotionTrue = Action.GetToggle(1, "Potion")
+	local MetaHP = Action.GetToggle(2, "MetamorphosisHP")
+	local FelDevDMG = Action.GetToggle(2, "FelDevastationDMG")
+	local FelDevHP = Action.GetToggle(2, "FelDevHP")
     
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
@@ -363,187 +404,256 @@ A[3] = function(icon, isMulti)
         local IsInDanger = IsInDanger(unit)
         local HPLosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
         
+		local function CovenantCall()
+			
+			--actions.cooldown+=/sinful_brand,if=!dot.sinful_brand.ticking
+			if A.SinfulBrand:IsReady(unit) and Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0 and not Player:PrevGCD(1, A.Metamorphosis) then
+				return A.SinfulBrand:Show(icon)
+			end	
+			
+			--actions.cooldown+=/the_hunt
+			if A.TheHunt:IsReady(unit) then
+				return A.TheHunt:Show(icon)
+			end	
+
+			--Fleshcraft
+			if A.Fleshcraft:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit("player"):CombatTime() > 0 and (Unit("player"):IsExecuted() or (Unit("player"):HealthPercent() <= 40 and Unit("player"):TimeToDie() < 8)) then 
+			A.Toaster:SpawnByTimer("TripToast", 0, "Fleshcraft!", "Using Fleshcraft defensively! Don't move!", A.Fleshcraft.ID)			
+				return self.Fleshcraft:Show(icon)
+			end 
+			
+			--actions.cooldown+=/fodder_to_the_flame
+			if A.FoddertotheFlame:IsReady(unit) then
+			A.Toaster:SpawnByTimer("TripToast", 0, "Fodder to the Flame!", "You've spawned a demon! Kill it!", A.FoddertotheFlame.ID)			
+				return A.FoddertotheFlame:Show(icon)
+			end	
+			
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and MultiUnits:GetByRange(5, 2) >= 2 and Unit(unit):TimeToDie() >= 5 then
+				return A.ElysianDecree:Show(icon)
+			end	
+
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
+				return A.ElysianDecree:Show(icon)
+			end					
+		
+		end
+
 	
 			--Damage Rotation
-			local function DamageRotation()
-			
-				--Infernal Strike if about to cap charges, range check for casting @player
-				if A.InfernalStrike:IsReady("player") and (A.LastPlayerCastID ~= A.InfernalStrike.ID) and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 then 
-					return A.InfernalStrike:Show(icon)
-				end
-				
-				--Fiery Brand on cooldown
-				if A.FieryBrand:IsReady(unit) then 
-					return A.FieryBrand:Show(icon)
-				end
-				
-				-- guardian_of_azeroth
-				if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- focused_azerite_beam
-				if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- memory_of_lucid_dreams
-				if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- blood_of_the_enemy
-				if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- purifying_blast
-				if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				--[[ ripple_in_space
-				if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-					return A.Darkflight:Show(icon)
-				end]]
-				
-				-- concentrated_flame,line_cd=6
-				if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- reaping_flames
-				if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- the_unbound_force,if=buff.reckless_force.up
-				if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- worldvein_resonance
-				if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end	
-			
-				--Spirit Bomb if four or more souls and fury cap incoming
-				if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Player:Fury() then
-					return A.SpiritBomb:Show(icon)
-				end
-				
-				--Fel Devastation on cooldown
-				if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 then
-					return A.Imprison:Show(icon)
-				end
+		local function DamageRotation()
 
-				--Fracture if need fury/souls
-				if A.Fracture:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 75 then
-					return A.Fracture:Show(icon)
-				end	
-
-				--Immolation Aura if souls not capped
-				if A.ImmolationAura:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 80 then
-					return A.ImmolationAura:Show(icon)
-				end
-
-				--Soul Cleave to dump fury
-				if A.SoulCleave:IsReady(unit) and Player:Fury() >= 80 then
-					return A.SoulCleave:Show(icon)
-				end
-
-				--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-				if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) then
-					return A.SigilofFlame:Show(icon)
-				end
-
-				--Shear
-				if A.Shear:IsReady(unit) and not A.Fracture:IsSpellLearned() then
-					return A.Shear:Show(icon)
-				end
-
-				--Throw Glaive
-				if A.ThrowGlaive:IsReady(unit) and inCombat then
-					return A.ThrowGlaive:Show(icon)
-				end	
-			
-			end 
-	
-			local function DefenseRotation()
-			
-				if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) then
-					return A.DemonSpikes:Show(icon)
-				end
-				
-				if A.SoulBarrier:IsReady(unit) and ((A.SpiritBomb:IsSpellLearned() and SoulFragments < 3) or (not A.SpiritBomb:IsSpellLearned() and SoulFragments >= 5)) then
-					return A.SoulBarrier:Show(icon)
-				end
-				
-				
-				if A.Metamorphosis:IsReady(unit) and A.BurstIsON(unit) and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and
-				(
-					IsInDanger 
-					or                 
-					-- HP lose per sec >= 40
-					Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 40 
-					or 
-					Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.40 
-					or 
-					-- TTD 
-					Unit("player"):TimeToDieX(15) < 3 
-				)  
-				then
-					return A.Metamorphosis:Show(icon)
-				end				
+			if A.Felblade:IsReady(unit) and Player:FuryDeficit() >= 40 then
+				return A.Felblade:Show(icon)
+			end	
+		
+			--Infernal Strike if about to cap charges, range check for casting @player
+			if A.InfernalStrike:IsReady("player") and (A.LastPlayerCastID ~= A.InfernalStrike.ID) and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 then 
+				return A.InfernalStrike:Show(icon)
 			end
 			
+			--Fiery Brand on cooldown
+			if A.FieryBrand:IsReady(unit) then 
+				return A.FieryBrand:Show(icon)
+			end
 			
-			local function Utilities()
+			--[[ guardian_of_azeroth
+			if A.GuardianofAzeroth:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
 			
-				-- Interrupt
-				local Interrupt = Interrupts(unit)
-				if Interrupt then 
-					return Interrupt:Show(icon)
-				end
-				
-				-- Purge
-				-- Note: Toggles  ("UseDispel", "UsePurge", "UseExpelEnrage")
-				-- Category ("Dispel", "MagicMovement", "PurgeFriendly", "PurgeHigh", "PurgeLow", "Enrage")
-				if A.ConsumeMagic:IsReady(unit) and Action.AuraIsValid(unit, "UsePurge", "PurgeHigh") then
-					return A.ConsumeMagic:Show(icon)
-				end    
-				
-				-- Taunt 
-				if A.GetToggle(2, "AutoTaunt") 
-				and combatTime > 0     
-				then 
-					-- if not fully aggroed or we are not current target then use taunt
-					if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() ) then 
-						return A.Torment:Show(icon)
-						-- else if all good on current target, switch to another one we know we dont currently tank
-					else
-						local Growl_Nameplates = MultiUnits:GetActiveUnitPlates()
-						if Torment_Nameplates then  
-							for Torment_UnitID in pairs(Torment_Nameplates) do             
-								if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and Unit("player"):ThreatSituation(Torment_UnitID) ~= 3 then 
-									return A:Show(icon, ACTION_CONST_AUTOTARGET)
-								end         
-							end 
-						end
+			-- focused_azerite_beam
+			if A.FocusedAzeriteBeam:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- memory_of_lucid_dreams
+			if A.MemoryofLucidDreams:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- blood_of_the_enemy
+			if A.BloodoftheEnemy:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- purifying_blast
+			if A.PurifyingBlast:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- ripple_in_space
+			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- concentrated_flame,line_cd=6
+			if A.ConcentratedFlame:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- reaping_flames
+			if A.ReapingFlames:IsReady(unit) and CanCast and BurstIsON(unit) then
+				return A.Shadowmeld:Show(icon)
+			end
+			
+			-- the_unbound_force,if=buff.reckless_force.up
+			if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
+				return A.Darkflight:Show(icon)
+			end
+			
+			-- worldvein_resonance
+			if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
+				return A.Darkflight:Show(icon)
+			end]]	
+		
+			--Spirit Bomb if four or more souls and fury cap incoming
+			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Player:Fury() then
+				return A.SpiritBomb:Show(icon)
+			end
+			
+			--Fel Devastation on cooldown
+			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
+				return A.FelDevastation:Show(icon)
+			end
+
+			--Fracture if need fury/souls
+			if A.Fracture:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 75 then
+				return A.Fracture:Show(icon)
+			end	
+
+			--Immolation Aura if souls not capped
+			if A.ImmolationAura:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 80 then
+				return A.ImmolationAura:Show(icon)
+			end
+
+			--Soul Cleave to dump fury
+			if A.SoulCleave:IsReady(unit) and Player:Fury() >= 80 then
+				return A.SoulCleave:Show(icon)
+			end
+
+			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) then
+				return A.SigilofFlame:Show(icon)
+			end
+
+			--Shear
+			if A.Shear:IsReady(unit) and not A.Fracture:IsSpellLearned() then
+				return A.Shear:Show(icon)
+			end
+
+			--Throw Glaive
+			if A.ThrowGlaive:IsReady(unit) and inCombat then
+				return A.ThrowGlaive:Show(icon)
+			end	
+		
+		end 
+	
+		local function DefenseRotation()
+		
+			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) then
+				return A.DemonSpikes:Show(icon)
+			end
+			
+			if A.SoulBarrier:IsReady(unit) and ((A.SpiritBomb:IsSpellLearned() and SoulFragments < 3) or (not A.SpiritBomb:IsSpellLearned() and SoulFragments >= 5)) then
+				return A.SoulBarrier:Show(icon)
+			end
+
+			--Fel Devastation on cooldown
+			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and Unit(player):HealthPercent() <= FelDevHP then
+				return A.FelDevastation:Show(icon)
+			end			
+			
+			if A.Metamorphosis:IsReady(unit) and A.BurstIsON(unit) and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and Unit(player):HealthPercent() <= MetaHP then
+				return A.Metamorphosis:Show(icon)
+			end	
+
+            if A.PotionofHardenedShadows:IsReady(unit) and AutoPotionSelect == "HardenedShadowsPot" and PotionTrue and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and
+			(
+				IsInDanger 
+				or                 
+				-- HP lose per sec >= 40
+				Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 40 
+				or 
+				Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.40 
+				or 
+				-- TTD 
+				Unit("player"):TimeToDieX(15) < 3 
+			)  			
+            then
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Ouch!", "Using Defensive Potion!", A.PotionofHardenedShadows.ID)  
+                return A.PotionofHardenedShadows:Show(icon)
+            end
+			
+            if A.PotionofSpectralStamina:IsReady(unit) and AutoPotionSelect == "SpectralStaminaPot" and PotionTrue and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and
+			(
+				IsInDanger 
+				or                 
+				-- HP lose per sec >= 40
+				Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 40 
+				or 
+				Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.40 
+				or 
+				-- TTD 
+				Unit("player"):TimeToDieX(15) < 3 
+			)  			
+            then
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Ouch!", "Using Defensive Potion!", A.PotionofSpectralStamina.ID)  
+                return A.PotionofSpectralStamina:Show(icon)
+            end			
+			
+		end
+			
+			
+		local function Utilities()
+		
+			-- Interrupt
+			local Interrupt = Interrupts(unit)
+			if Interrupt then 
+				return Interrupt:Show(icon)
+			end
+			
+			-- Purge
+			-- Note: Toggles  ("UseDispel", "UsePurge", "UseExpelEnrage")
+			-- Category ("Dispel", "MagicMovement", "PurgeFriendly", "PurgeHigh", "PurgeLow", "Enrage")
+			if A.ConsumeMagic:IsReady(unit) and Action.AuraIsValid(unit, "UsePurge", "PurgeHigh") then
+				return A.ConsumeMagic:Show(icon)
+			end    
+			
+			-- Taunt 
+			if A.GetToggle(2, "AutoTaunt") 
+			and combatTime > 0     
+			then 
+				-- if not fully aggroed or we are not current target then use taunt
+				if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() ) then 
+					return A.Torment:Show(icon)
+					-- else if all good on current target, switch to another one we know we dont currently tank
+				else
+					local Growl_Nameplates = MultiUnits:GetActiveUnitPlates()
+					if Torment_Nameplates then  
+						for Torment_UnitID in pairs(Torment_Nameplates) do             
+							if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and Unit("player"):ThreatSituation(Torment_UnitID) ~= 3 then 
+								return A:Show(icon, ACTION_CONST_AUTOTARGET)
+							end         
+						end 
 					end
-				end 
-				
-				-- Non SIMC Custom Trinket1
-				if A.Trinket1:IsReady(unit) and Trinket1IsAllowed then        
-					return A.Trinket1:Show(icon)        
 				end
-				
-				-- Non SIMC Custom Trinket2
-				if A.Trinket2:IsReady(unit) and Trinket2IsAllowed then        
-					return A.Trinket2:Show(icon)    
-				end 
-			
 			end 
+			
+			-- Non SIMC Custom Trinket1
+			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed then        
+				return A.Trinket1:Show(icon)        
+			end
+			
+			-- Non SIMC Custom Trinket2
+			if A.Trinket2:IsReady(unit) and Trinket2IsAllowed then        
+				return A.Trinket2:Show(icon)    
+			end 
+		
+		end 
 	
 		if DefenseRotation(unit) and inCombat then
 			return true
@@ -553,6 +663,10 @@ A[3] = function(icon, isMulti)
 			return true
 		end
 
+		if CovenantCall(unit) and inCombat and A.GetToggle(1, "Covenant") then
+			return true
+		end	
+		
 		if DamageRotation(unit) and inCombat then
 			return true
 		end		
