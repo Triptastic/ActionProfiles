@@ -371,11 +371,9 @@ end
 
 -- Interrupts spells
 local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-    else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
+
+	useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
+
     
     if castRemainsTime >= A.GetLatency() then
         -- Silence
@@ -451,6 +449,26 @@ local function SelfDefensives()
     end 
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
+
+function Player:AreaTTD(range)
+    local ttdtotal = 0
+	local totalunits = 0
+    local r = range
+    
+	for _, unitID in pairs(ActiveUnitPlates) do 
+		if Unit(unitID):GetRange() <= r then 
+			local ttd = Unit(unitID):TimeToDie()
+			totalunits = totalunits + 1
+			ttdtotal = ttd + ttdtotal
+		end
+	end
+    
+	if totalunits == 0 then
+		return 0
+	end
+    
+	return ttdtotal / totalunits
+end	
 
 -- Multidot Handler UI --
 local function HandleMultidots()
@@ -548,13 +566,15 @@ A[3] = function(icon, isMulti)
     local TrinketsMinTTD = GetToggle(2, "TrinketsMinTTD")
     local TrinketsUnitsRange = GetToggle(2, "TrinketsUnitsRange")
     local TrinketsMinUnits = GetToggle(2, "TrinketsMinUnits")
-    
+    local StMActive = A.SurrenderToMadness:GetSpellTimeSinceLastCast() <= 25
     local VoidFormActive = Unit(player):HasBuffs(A.VoidformBuff.ID, true) > 0
     -- Azerite beam protection channel
     local CanCast = true
     local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()
     local _, castStartedTime, castEndTime = Unit(player):IsCasting()
     local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()
+	local TargetsMissingSWP = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.ShadowWordPainDebuff.ID)
+	local AutoMultiDot = A.GetToggle(2, "AutoMultiDot")	
     -- Ensure all channel and cast are really safe
     -- Double protection with check on current casts and also timestamp of the cast
     if (spellID == A.FocusedAzeriteBeam.ID) then 
@@ -627,10 +647,28 @@ A[3] = function(icon, isMulti)
 			return A.Shadowform:Show(icon)
 		end
 		
+		local Interrupt = Interrupts(unit)
+		if Interrupt then 
+			return Interrupt:Show(icon)
+		end			
+		
 		--actions.precombat+=/arcane_torrent
 		if A.ArcaneTorrent:IsReady(unit) and useRacial and A.ArcaneTorrent:AutoRacial(unit) and Unit(player):CombatTime() == 0 then
 			return A.ArcaneTorrent:Show(icon)
 		end
+
+			-- Auto Multi DoT
+			if AutoMultiDot and VarDotsUp and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingSWP > 0 and TargetsMissingSWP < 5 or Unit("target"):IsDummy())
+			then
+				local SWP_Nameplates = MultiUnits:GetActiveUnitPlates()
+				if SWP_Nameplates then  
+					for SWP_UnitID in pairs(SWP_Nameplates) do             
+						if Unit(SWP_UnitID):GetRange() < 40 and not Unit(SWP_UnitID):InLOS() and Unit(SWP_UnitID):HasDeBuffsStacks(A.ShadowWordPainDebuff.ID, true) == 0 then 
+							return A:Show(icon, ACTION_CONST_AUTOTARGET)
+						end         
+					end 
+				end
+			end
 		
 		--[[actions.precombat+=/use_item,name=azsharas_font_of_power
 		if A.AzsharasFontofPower:IsReady(player) and noCombat then
@@ -656,7 +694,7 @@ A[3] = function(icon, isMulti)
 
 		--actions+=/call_action_list,name=cwc
 		--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
-		if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsSpellLearned() and Unit(player):IsCasting(A.MindSear) and MultiUnits:GetActiveEnemies() > 3 -- or  MissingShadowWordPain > 2 
+		if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsSpellLearned() and Unit(player):IsChanneling(A.MindSear) -- or  MissingShadowWordPain > 2 
 		then 
 			return A.SearingNightmare:Show(icon)
 		end	
@@ -664,7 +702,7 @@ A[3] = function(icon, isMulti)
 		--actions+=/run_action_list,name=main
 
 		--actions.main=void_eruption,if=variable.pi_or_vf_sync_condition&insanity>=40
-		if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) then
 			return A.VoidEruption:Show(icon)
 		end	
 
@@ -742,7 +780,7 @@ A[3] = function(icon, isMulti)
 		end    
 
 		--actions.main+=/mind_sear,target_if=talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1)&!dot.shadow_word_pain.ticking&!cooldown.Shadowfiend.up
-		if A.MindSear:IsReady(unit) and A.SearingNightmare:IsReady(unit) and MultiUnits:GetActiveEnemies() > 3 and  Unit(unit):HasBuffs(A.ShadowWordPainDebuff.ID, true) == 0 and A.Shadowfiend:GetCooldown() > 0 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0)then
+		if A.MindSear:IsReady(unit) and A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > 3 and  Unit(unit):HasBuffs(A.ShadowWordPainDebuff.ID, true) == 0 and A.Shadowfiend:GetCooldown() > 0 and (not isMoving or StMActive)then
 			return A.MindSear:Show(icon)
 		end			
 
@@ -780,7 +818,7 @@ A[3] = function(icon, isMulti)
 			return A.Shadowfiend:Show(icon)
 		end	
 		--actions.main+=/void_torrent,target_if=variable.dots_up&target.time_to_die>4&buff.voidform.down&spell_targets.mind_sear<(5+(6*talent.twist_of_fate.enabled))
-		if A.VoidTorrent:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) and VarDotsUp and Unit(unit):TimeToDie() > 4 and not VoidFormActive and MultiUnits:GetActiveEnemies() < (5 + (6 * num(A.TwistofFateTalent:IsSpellLearned()))) then
+		if A.VoidTorrent:IsReady(unit) and (not isMoving or StMActive) and VarDotsUp and Unit(unit):TimeToDie() > 4 and not VoidFormActive and MultiUnits:GetActiveEnemies() < (5 + (6 * num(A.TwistofFateTalent:IsSpellLearned()))) then
 			return A.VoidTorrent:Show(icon)
 		end	
 
@@ -802,7 +840,7 @@ A[3] = function(icon, isMulti)
 
 
 		--actions.main+=/mind_blast,if=variable.dots_up&raid_event.movement.in>cast_time+0.5&spell_targets.mind_sear<4
-		if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and VarDotsUp and MultiUnits:GetActiveEnemies() < 4 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0 or Unit(player):HasBuffs(A.DarkThought.ID, true) > 0) then
+		if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and VarDotsUp and MultiUnits:GetActiveEnemies() < 4 and (not isMoving or StMActive or Unit(player):HasBuffs(A.DarkThought.ID, true) > 0) then
 			return A.MindBlast:Show(icon)
 		end	
 		
@@ -811,7 +849,7 @@ A[3] = function(icon, isMulti)
 			return A.VampiricTouch:Show(icon)
 		end]]
 		
-		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)))) and Unit(unit):TimeToDie() > 6 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)))) and Unit(unit):TimeToDie() > 6 and (not isMoving or StMActive) then
 			return A.VampiricTouch:Show(icon)
 		end
 		
@@ -830,12 +868,12 @@ A[3] = function(icon, isMulti)
 		
 		
 		--actions.main+=/mind_sear,target_if=spell_targets.mind_sear>variable.mind_sear_cutoff,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2
-		if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() > 2 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() > 2 and (not isMoving or StMActive) then
 			return A.MindSear:Show(icon)
 		end	
 		
 		--actions.main+=/mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&cooldown.void_bolt.up
-		if A.MindFlay:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) then
+		if A.MindFlay:IsReady(unit) and (not isMoving or StMActive) then
 			return A.MindFlay:Show(icon)
 		end	
 

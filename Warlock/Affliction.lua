@@ -4,6 +4,8 @@
 
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
+local Covenant									= _G.LibStub("Covenant")
+local TMW										= _G.TMW
 local Listener									= Action.Listener
 local Create									= Action.Create
 local GetToggle									= Action.GetToggle
@@ -13,22 +15,29 @@ local GetCurrentGCD								= Action.GetCurrentGCD
 local GetPing									= Action.GetPing
 local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
+local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid								= Action.AuraIsValid
 local InterruptIsValid							= Action.InterruptIsValid
+local FrameHasSpell                             = Action.FrameHasSpell
 local Utils										= Action.Utils
 local TeamCache									= Action.TeamCache
 local EnemyTeam									= Action.EnemyTeam
 local FriendlyTeam								= Action.FriendlyTeam
 local LoC										= Action.LossOfControl
-local Player									= Action.Player 
+local Player									= Action.Player
+local Pet                                       = LibStub("PetLibrary") 
 local MultiUnits								= Action.MultiUnits
 local UnitCooldown								= Action.UnitCooldown
 local Unit										= Action.Unit 
 local IsUnitEnemy								= Action.IsUnitEnemy
 local IsUnitFriendly							= Action.IsUnitFriendly
+local ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
 local pairs                                     = pairs
-local Pet                                       = LibStub("PetLibrary")
+
+--For Toaster
+local Toaster									= _G.Toaster
+local GetSpellTexture 							= _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -242,6 +251,8 @@ local Temp = {
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
 
+
+
 local function IsSchoolFree()
 	return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "SHADOW") == 0
 end 
@@ -269,6 +280,68 @@ local function HandlePetChoice()
     return choice
 end
 
+function Player:AreaTTD(range)
+    local ttdtotal = 0
+	local totalunits = 0
+    local r = range
+    
+	for _, unitID in pairs(ActiveUnitPlates) do 
+		if Unit(unitID):GetRange() <= r then 
+			local ttd = Unit(unitID):TimeToDie()
+			totalunits = totalunits + 1
+			ttdtotal = ttd + ttdtotal
+		end
+	end
+    
+	if totalunits == 0 then
+		return 0
+	end
+    
+	return ttdtotal / totalunits
+end	
+
+-- Non GCD spell check
+local function countInterruptGCD(unit)
+    if not A.SpellLock:IsReadyByPassCastGCD(unit) or not A.SpellLock:AbsentImun(unit, Temp.TotalAndMagKick) then
+	    return true
+	end
+end
+
+-- Interrupts spells
+local function Interrupts(unit)
+
+    local unit
+    if A.IsUnitEnemy("mouseover") then 
+        unit = "mouseover"
+    elseif A.IsUnitEnemy("target") then 
+        unit = "target"
+    end  
+
+useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD("target"))
+
+	if castRemainsTime >= A.GetLatency() then
+        -- SpellLock
+        if useKick and not notInterruptable and A.SpellLock:IsReady(unit) then 
+            return A.PetKick
+        end
+		    
+   	    if useRacial and A.QuakingPalm:AutoRacial(unit) then 
+   	        return A.QuakingPalm
+   	    end 
+    
+   	    if useRacial and A.Haymaker:AutoRacial(unit) then 
+            return A.Haymaker
+   	    end 
+    
+   	    if useRacial and A.WarStomp:AutoRacial(unit) then 
+            return A.WarStomp
+   	    end 
+    
+   	    if useRacial and A.BullRush:AutoRacial(unit) then 
+            return A.BullRush
+   	    end 
+    end
+end
 
 local function SelfDefensives()
     if Unit("player"):CombatTime() == 0 then 
@@ -340,15 +413,17 @@ A[3] = function(icon, isMulti)
 	local Pull = Action.BossMods:GetPullTimer()
 	local profileStop = false	
 	local UADelay = A.GetToggle(2, "UADelay")
-	local SoCDelay = A.GetToggle(2, "SoCDelay")	
-
+	local SoCDelay = A.GetToggle(2, "SoCDelay")
+	local TargetsMissingAgony = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.AgonyDebuff.ID)
+	local AutoMultiDot = A.GetToggle(2, "AutoMultiDot")
+	
 	--Refreshables
 	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) < 6)
 	CorruptionRefreshable = (Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) < 6)
 	AgonyRefreshable = (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) < 6)
 
 
-	HasAllDots = Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 0
+	HasAllDots = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) > 0 and A.SiphonLife:IsTalentLearned()) and (Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 0 or Player:GetDeBuffsUnitCount(A.SeedofCorruptionDebuff.ID) >= 1) and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 0 
 
 	
 	-- Pet Selection Menu (Thanks Taste)
@@ -413,7 +488,7 @@ A[3] = function(icon, isMulti)
 
 
 			--actions.precombat+=/seed_of_corruption,if=spell_targets.seed_of_corruption_aoe>=3&!equipped.169314
-			if A.SeedofCorruption:IsReady("target") and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and A.GetToggle(2, "AoE") and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 and MultiUnits:GetActiveEnemies() >= 3 then
+			if A.SeedofCorruption:IsReady("target") and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and A.GetToggle(2, "AoE") and Player:GetDeBuffsUnitCount(A.SeedofCorruptionDebuff.ID) < 1 and MultiUnits:GetActiveEnemies() >= 3 then
 				return A.SeedofCorruption:Show(icon)
 			end		
 			
@@ -477,7 +552,7 @@ A[3] = function(icon, isMulti)
 		local function Main(unit)
 				
 			--Fel Domination if Pet dies
-			if A.FelDomination:IsReady("player") and not Pet:IsActive() and inCombat then
+			if A.FelDomination:IsReady("player") and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and inCombat then
 				return A.RocketJump:Show(icon)
 			end
 			
@@ -485,6 +560,11 @@ A[3] = function(icon, isMulti)
 			if SummonPet:IsReady("player") and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.FelDomination.ID, true) > 0 then
 				return SummonPet:Show(icon)
 			end		
+
+		    local Interrupt = Interrupts(unit)
+            if Interrupt then 
+                return Interrupt:Show(icon)
+            end	
 			
 			--actions=phantom_singularity
 			if A.PhantomSingularity:IsReady(unit, nil, nil, true) then
@@ -500,6 +580,19 @@ A[3] = function(icon, isMulti)
 			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
 				return A.SeedofCorruption:Show(icon)
 			end					
+			
+			-- Auto Multi DoT
+			if AutoMultiDot and HasAllDots and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingAgony > 0 and TargetsMissingAgony < 5 or Unit("target"):IsDummy())
+			then
+				local Agony_Nameplates = MultiUnits:GetActiveUnitPlates()
+				if Agony_Nameplates then  
+					for Agony_UnitID in pairs(Agony_Nameplates) do             
+						if Unit(Agony_UnitID):GetRange() < 40 and not Unit(Agony_UnitID):InLOS() and Unit(Agony_UnitID):HasDeBuffsStacks(A.Agony.ID, true) == 0 then 
+							return A:Show(icon, ACTION_CONST_AUTOTARGET)
+						end         
+					end 
+				end
+			end
 			
 			--actions+=/siphon_life,if=refreshable
 			if A.SiphonLife:IsReady(unit, nil, nil, true) and SiphonLifeRefreshable and Unit("target"):TimeToDie() > 5 then
@@ -518,7 +611,7 @@ A[3] = function(icon, isMulti)
 			
 			
 			--actions+=/corruption,if=refreshable
-			if A.Corruption:IsReady(unit, nil, nil, true) and CorruptionRefreshable and Unit("target"):TimeToDie() > 5 and  MultiUnits:GetActiveEnemies() < 3 and not A.IsSpellInCasting(A.SeedofCorruption) and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
+			if A.Corruption:IsReady(unit, nil, nil, true) and CorruptionRefreshable and Unit("target"):TimeToDie() > 5 and  MultiUnits:GetActiveEnemies() < 3 and not A.IsSpellInCasting(A.SeedofCorruption) and Player:GetDeBuffsUnitCount(A.SeedofCorruptionDebuff.ID) < 1 then
 				return A.Corruption:Show(icon)
 			end				
 			

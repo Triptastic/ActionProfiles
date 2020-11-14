@@ -603,7 +603,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- icy_veins,if=buff.rune_of_power.down
-            if A.IcyVeins:IsReady(unit) and A.BurstIsON and (Unit("player"):HasBuffsDown(A.RuneofPowerBuff.ID, true)) then
+            if A.IcyVeins:IsReady(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffsDown(A.RuneofPowerBuff.ID, true)) then
                 return A.IcyVeins:Show(icon)
             end
             

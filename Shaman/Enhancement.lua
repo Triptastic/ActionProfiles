@@ -829,7 +829,7 @@ A[3] = function(icon, isMulti)
         end]]
 			
 		-- Bloodlust Shamanism PvP
-        if A.BloodLust:IsReady(player) and inCombat and BurstIsON(unit) and A.Shamanism:IsSpellLearned() then 
+        if A.BloodLust:IsReady(player) and A.IsInPvP and inCombat and BurstIsON(unit) and A.Shamanism:IsSpellLearned() then 
             return A.BloodLust:Show(icon)
         end 
 			

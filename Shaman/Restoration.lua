@@ -2144,27 +2144,9 @@ A[3] = function(icon, isMulti)
         -- SpiritWalkersGrace
         if A.SpiritWalkersGrace:IsReady(player) and
 		isMoving and
-		UseSpiritWalkersGrace and
-		isMovingFor >= SpiritWalkersGraceTime and
-		(
-            (
-                TeamCacheFriendlyType == "party" and
-                HealingEngine.GetBelowHealthPercentUnits(25) >= 3  
-            ) or 
-            (
-                TeamCacheFriendlyType == "raid" and
-                HealingEngine.GetBelowHealthPercentUnits(35) >= 4               
-            ) or
-			A.IsInPvP and Unit(player):IsFocused("MELEE") and
-			(
-		        CanSpiritWalkersGrace("CATCH") and SpiritWalkersCatch
-			    or 
-			    CanSpiritWalkersGrace()
-			    or
-			    Unit(player):HasBuffs(A.Ascendance.ID, true) > 3
-			)
-		)
-		then 
+		UseSpiritWalkersGrace and inCombat and 
+		isMovingFor >= SpiritWalkersGraceTime 
+		then
             return A.SpiritWalkersGrace:Show(icon)
         end 	
 		

@@ -494,7 +494,7 @@ local function SelfDefensives()
     end  
     
     -- Darkness
-    if   AutoDarkness and HandleDarkness and CanDarkness() then 
+    if AutoDarkness and HandleDarkness and CanDarkness() then 
         -- Notification                    
         A.Toaster:SpawnByTimer("TripToast", 0, "Darkness!", "Using Defensive Darkness!", A.Darkness.ID)
         return A.Darkness
@@ -808,7 +808,7 @@ A[3] = function(icon, isMulti)
 		
 		--VengefulRetreat + Fel Rush combo ----- this actually sucks... Vengeful Retreat jumps back further than Fel Rush dashes forward
 		MovementComboReady = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:IsReady("player") and A.FelRush:IsReady("player") and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and UseMovement
-		MovementComboSoon = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:GetCooldown() < 3 and A.FelRush:GetCooldown() < 3 and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and UseMovement
+		MovementComboSoon = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:GetCooldown() < 3 and A.FelRush:GetCooldown() < 3 and (Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0 or (A.ImmolationAura:GetCooldown() <= 2 and A.UnboundChaos:IsTalentLearned()))  and UseMovement
 		
         --#########################
 		--##### NOTIFICATIONS #####
@@ -825,7 +825,7 @@ A[3] = function(icon, isMulti)
 		--##########################
 		
 		-- unbound chaos
-		if MovementComboReady and A.EyeBeam:GetCooldown() > 3 and A.Metamorphosis:GetCooldown() > 5
+		if MovementComboReady and A.EyeBeam:GetCooldown() > 3 and ((BurstIsON(unit) and A.Metamorphosis:GetCooldown() > 5) or not BurstIsON(unit))
 		then
 			return A.VengefulRetreat:Show(icon)
 		end	
@@ -1120,10 +1120,10 @@ A[3] = function(icon, isMulti)
 
 		local function DemonicCall()
 		
-			--actions.demonic=fel_rush,if=(talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			--[[actions.demonic=fel_rush,if=(talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
 			if A.FelRush:IsReady(unitID, true) and (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0) and A.FelRush:GetSpellCharges() > 1 and UseMovement then
 				return A.FelRush:Show(icon)
-			end
+			end]]
 			
 			--Pseudo EssenceBreak
 			if A.EssenceBreak:IsReady(player) and Unit(unit):HasDeBuffs(A.EssenceBreak.ID, true) == 0 then
@@ -1175,10 +1175,10 @@ A[3] = function(icon, isMulti)
 				return A.ChaosStrike:Show(icon)
 			end	
 			
-			--actions.demonic+=/fel_rush,if=talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			--[[actions.demonic+=/fel_rush,if=talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
 			if A.FelRush:IsReady(unitID, true) and UseMovement and A.DemonBlades:IsTalentLearned() and A.EyeBeam:GetCooldown() > 0 and A.FelRush:GetSpellCharges() > 1 then
 				return A.FelRush:Show(icon)
-			end	
+			end	]]
 			--actions.demonic+=/demons_bite,target_if=min:debuff.burning_wound.remains,if=runeforge.burning_wound.equipped&debuff.burning_wound.remains<4
 			if A.DemonsBite:IsReady(unit) and Player:HasLegendaryCraftingPower(A.BurningWound) and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
 				return A.DemonsBite:Show(icon)
@@ -1215,10 +1215,10 @@ A[3] = function(icon, isMulti)
 		
 			--actions.normal=vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down&time>1
 			--Huh?
-			--actions.normal+=/fel_rush,if=(variable.waiting_for_momentum|talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			--[[actions.normal+=/fel_rush,if=(variable.waiting_for_momentum|talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
 			if A.FelRush:IsReady(unitID, true) and UseMovement and (VarWaitingForMomentum or A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0) and A.FelRush:GetSpellCharges() > 1 then
 				return A.FelRush:Show(icon)
-			end	
+			end	]]
 
 			--Pseduo EssenceBreak
 			if A.EssenceBreak:IsReady(player) and Unit(unit):HasDeBuffs(A.EssenceBreak.ID, true) == 0 then
@@ -1298,10 +1298,10 @@ A[3] = function(icon, isMulti)
 			if A.DemonsBite:IsReady(unit) then
 				return A.DemonsBite:Show(icon)
 			end	
-			--actions.normal+=/fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
+			--[[actions.normal+=/fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
 			if A.FelRush:IsReady(unitID, true) and UseMovement and not A.Momentum:IsTalentLearned() and A.FelRush:GetSpellCharges() > 1 and A.DemonBlades:IsTalentLearned() then
 				return A.FelRush:Show(icon)
-			end	
+			end	]]
 			
 			--actions.normal+=/felblade,if=movement.distance>15|buff.out_of_range.up
 			if A.Felblade:IsReady(unit) and Fury <= FelBladeFury and Unit(unit):GetRange() <= FelBladeRange and HandleFelBlade() then

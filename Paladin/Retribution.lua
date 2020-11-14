@@ -702,7 +702,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- judgment,if=!debuff.judgment.up&(holy_power<=2|holy_power<=4&cooldown.blade_of_justice.remains>gcd*2)
-            if A.Judgment:IsReady(unit) and (not Unit(unit):HasDeBuffs(A.JudgmentDebuff.ID, true) and (Player:HolyPower() <= 2 or Player:HolyPower() <= 4 and A.BladeofJustice:GetCooldown() > GetGCD() * 2)) then
+            if A.Judgment:IsReady(unit) and (Unit(unit):HasDeBuffs(A.JudgmentDebuff.ID, true) == 0 and (Player:HolyPower() <= 2 or Player:HolyPower() <= 4 and A.BladeofJustice:GetCooldown() > GetGCD() * 2)) then
                 return A.Judgment:Show(icon)
             end
             

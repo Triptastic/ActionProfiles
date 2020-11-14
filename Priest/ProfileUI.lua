@@ -2,7 +2,6 @@
 --##### TRIP'S PRIEST UI ######
 --#############################
 
--- Full credit to Taste
 
 local TMW                                            = TMW 
 local CNDT                                            = TMW.CNDT
@@ -59,22 +58,18 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 }, 
-                {
+				{ -- Auto Multi Dot
                     E = "Checkbox", 
-                    DB = "TasteInterruptList",
+                    DB = "AutoMultiDot",
                     DBV = true,
                     L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
+                        ANY = "Auto Multi DoT (BETA)"
                     }, 
                     TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
+                        ANY = "Switch through enemies to apply DoTs automatically! Limited to five total targets per combat."
                     }, 
                     M = {},
-                },                    
+                },	                    
             }, 
             { -- [2]
                 {

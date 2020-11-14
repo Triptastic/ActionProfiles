@@ -2,7 +2,6 @@
 --##### TRIP'S WARLOCK PROFILEUI #####
 --####################################
 
---Full credit to Taste
 
 local TMW											= TMW 
 local CNDT											= TMW.CNDT
@@ -79,7 +78,21 @@ A.Data.ProfileUI = {
 						TabN = '@number' or nil,								
 						Print = '@string' or nil,
 					},
-                },  
+                },
+			},
+			{
+				{ -- Auto Multi Dot
+                    E = "Checkbox", 
+                    DB = "AutoMultiDot",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Multi DoT (BETA)"
+                    }, 
+                    TT = { 
+                        ANY = "Switch through enemies to apply DoTs automatically! Limited to five total targets per combat."
+                    }, 
+                    M = {},
+                },			
 				{ -- ForceAoE
                     E = "Checkbox", 
                     DB = "ForceAoE",
@@ -91,7 +104,7 @@ A.Data.ProfileUI = {
                         ANY = "Force Seed of Corruption as first spell if using Sow The Seeds talent - this is to help with AoE detection!"
                     }, 
                     M = {},
-                },
+                },				
             }, 								
             { -- Spacer
 
@@ -99,7 +112,7 @@ A.Data.ProfileUI = {
                     E = "LayoutSpace",                                                                        
                 },
             },
-            { -- [7] Spell Status Frame
+            { -- Double-cast Delay Header
                 {
                     E = "Header",
                     L = {
