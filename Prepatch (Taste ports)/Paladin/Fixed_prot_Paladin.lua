@@ -83,7 +83,7 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     Seraphim                               = Action.Create({ Type = "Spell", ID = 152262     }),
     ShieldoftheRighteous                   = Action.Create({ Type = "Spell", ID = 53600     }),
     AvengingWrath                          = Action.Create({ Type = "Spell", ID = 31884     }),
-    BastionofLight                         = Action.Create({ Type = "Spell", ID = 204035     }),
+--    BastionofLight                         = Action.Create({ Type = "Spell", ID = 204035     }),
     Judgment                               = Action.Create({ Type = "Spell", ID = 275779     }),
     CrusadersJudgment                      = Action.Create({ Type = "Spell", ID = 204023     }),
     AvengersShield                         = Action.Create({ Type = "Spell", ID = 31935     }),
@@ -102,12 +102,12 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     ConsecrationBuff                       = Action.Create({ Type = "Spell", ID = 188370, Hidden = true      }),
     -- Utilities
     Rebuke                                 = Action.Create({ Type = "Spell", ID = 96231     }),
-    FistofJustice                          = Action.Create({ Type = "Spell", ID = 198054     }),
+    FistofJustice                          = Action.Create({ Type = "Spell", ID = 234299, Hidden = true     }),
     Repentance                             = Action.Create({ Type = "Spell", ID = 20066     }), 
     Cavalier                               = Action.Create({ Type = "Spell", ID = 190784     }),
     BlessingofProtectionYellow             = Action.Create({ Type = "Spell", ID = 1022, Color = "YELLOW", Desc = "YELLOW Color for Party Blessing"     }),    
     BlessingofProtection                   = Action.Create({ Type = "Spell", ID = 1022     }), 
-    WordofGlory                            = Action.Create({ Type = "Spell", ID = 210191     }),
+    WordofGlory                            = Action.Create({ Type = "Spell", ID = 85673     }),
     BlessingofFreedom                      = Action.Create({ Type = "Spell", ID = 1044     }),
     BlessingofFreedomYellow                = Action.Create({ Type = "Spell", ID = 1044, Color = "YELLOW", Desc = "YELLOW Color for Party Blessing"     }),    
     BlessingofSanctuary                    = Action.Create({ Type = "Spell", ID = 210256     }),
@@ -118,8 +118,8 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     CleanseToxins                          = Action.Create({ Type = "Spell", ID = 213644   }),
     BlessingofSacrifice                    = Action.Create({ Type = "Spell", ID = 6940 }),
     -- Defensives
-    LightoftheProtector                    = Action.Create({ Type = "Spell", ID = 184092     }),
-    HandoftheProtector                     = Action.Create({ Type = "Spell", ID = 213652     }),
+--    LightoftheProtector                    = Action.Create({ Type = "Spell", ID = 184092     }),
+    HandoftheProtector                     = Action.Create({ Type = "Spell", ID = 315924, Hidden = true     }),
     HandofReckoning                        = Action.Create({ Type = "Spell", ID = 62124     }), -- Taunt
     ArdentDefender                         = Action.Create({ Type = "Spell", ID = 31850     }),
     GuardianofAncientKings                 = Action.Create({ Type = "Spell", ID = 86659     }),
@@ -531,20 +531,20 @@ local function SelfDefensives()
     end 
     
     -- LightoftheProtector 
-    local LightoftheProtectorHPLost = GetToggle(2, "LightoftheProtectorHPLost")
-    local LightoftheProtectorHP = GetToggle(2, "LightoftheProtectorHP")
-    if not A.HandoftheProtector:IsSpellLearned() and A.LightoftheProtector:IsReady(player) and 
+    local WordofGloryHPLost = GetToggle(2, "WordofGloryHPLost")
+    local WordofGloryHP = GetToggle(2, "WordofGloryHP")
+    if A.WordofGlory:IsReady(player) and Player:HolyPower() >= 3 and 
     (
-        Unit(player):HealthPercent() <= LightoftheProtectorHP 
+        Unit(player):HealthPercent() <= WordofGloryHP 
         or 
         Unit(player):TimeToDie() < 10 
         or 
         Unit(player):HealthPercent() < 97
     )
     then 
-        return A.LightoftheProtector
-    end 
-    
+        return A.WordofGlory
+    end
+   
     -- ArdentDefender
     if A.ArdentDefender:IsReadyByPassCastGCD(player) and (not A.GetToggle(2, "ArdentDefenderIgnoreBigDeff") or Unit(player):HasBuffs(Temp.BigDeff) == 0) and
     -- Divine Shield and BoP and PvP Divine Shield (prot)
@@ -1312,7 +1312,7 @@ A[3] = function(icon, isMulti)
             return A.Cavalier:Show(icon)
         end    
         
-        -- LightoftheProtector @mouseover friendly        
+        --[[ LightoftheProtector @mouseover friendly        
         if A.HandoftheProtector:IsSpellLearned() and Unit("mouseover"):IsPlayer() 
         and IsUnitFriendly("mouseover") 
         --and A.LightOfProtector:PredictHeal("LightOfProtector", "mouseover") 
@@ -1320,7 +1320,7 @@ A[3] = function(icon, isMulti)
         and Unit("mouseover"):HealthPercent() <= HandoftheProtectorHP 
         then 
             return A.HandoftheProtector:Show(icon)
-        end 
+        end ]]
         
         --Precombat
         if combatTime == 0 and unit ~= "mouseover" then
@@ -1379,10 +1379,10 @@ A[3] = function(icon, isMulti)
                 return A.MemoryofLucidDreams:Show(icon)
             end
             
-            -- bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
+            --[[ bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
             if A.BastionofLight:IsReady(unit) then
                 return A.BastionofLight:Show(icon)
-            end
+            end]]
             
             -- potion,if=buff.avenging_wrath.up
             if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") and (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0) then
