@@ -45,177 +45,179 @@ local GetSpellTexture 							= _G.TMW.GetSpellTexture
 
 Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     -- Racial
-    ArcaneTorrent                        = Action.Create({ Type = "Spell", ID = 50613     }),
-    BloodFury                            = Action.Create({ Type = "Spell", ID = 20572      }),
-    Fireblood                            = Action.Create({ Type = "Spell", ID = 265221     }),
-    AncestralCall                        = Action.Create({ Type = "Spell", ID = 274738     }),
-    Berserking                           = Action.Create({ Type = "Spell", ID = 26297    }),
-    ArcanePulse                          = Action.Create({ Type = "Spell", ID = 260364    }),
-    QuakingPalm                          = Action.Create({ Type = "Spell", ID = 107079     }),
-    Haymaker                             = Action.Create({ Type = "Spell", ID = 287712     }), 
-    BullRush                             = Action.Create({ Type = "Spell", ID = 255654     }),    
-    WarStomp                             = Action.Create({ Type = "Spell", ID = 20549     }),
-    GiftofNaaru                          = Action.Create({ Type = "Spell", ID = 59544    }),
-    Shadowmeld                           = Action.Create({ Type = "Spell", ID = 58984    }), -- usable in Action Core 
-    Stoneform                            = Action.Create({ Type = "Spell", ID = 20594    }), 
-    BagofTricks                          = Action.Create({ Type = "Spell", ID = 312411    }),
-    WilloftheForsaken                    = Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it    
-    EscapeArtist                         = Action.Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
-    EveryManforHimself                   = Action.Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
-    -- Generics Spells
-    DreadfulCalling                      = Action.Create({ Type = "Spell", ID = 279650     }), -- Azerite traits
-    SummonImp                            = Action.Create({ Type = "Spell", ID = 688        }),    
-    SummonVoidwalker                     = Action.Create({ Type = "Spell", ID = 697        }),
-    SummonFelhunter                      = Action.Create({ Type = "Spell", ID = 691        }),
-    SummonSuccubus                       = Action.Create({ Type = "Spell", ID = 712        }),
-    GrimoireofSacrifice                  = Action.Create({ Type = "Spell", ID = 108503     }),
-    SeedofCorruption                     = Action.Create({ Type = "Spell", ID = 27243      }),
-    Haunt                                = Action.Create({ Type = "Spell", ID = 48181      }),
-    ShadowBolt                           = Action.Create({ Type = "Spell", ID = 686     }),
-    DarkSoulMisery                       = Action.Create({ Type = "Spell", ID = 113860     }),
-    SummonDarkglare                      = Action.Create({ Type = "Spell", ID = 205180     }),
-    SiphonLife                           = Action.Create({ Type = "Spell", ID = 63106      }),
-    Agony                                = Action.Create({ Type = "Spell", ID = 980        }),
-    Corruption                           = Action.Create({ Type = "Spell", ID = 172        }),
-    CreepingDeath                        = Action.Create({ Type = "Spell", ID = 264000, Hidden = true     }),
-    WritheInAgony                        = Action.Create({ Type = "Spell", ID = 196102, Hidden = true     }),
-    UnstableAffliction                   = Action.Create({ Type = "Spell", ID = 316099      }),
-    AbsoluteCorruption                   = Action.Create({ Type = "Spell", ID = 196103, Hidden = true     }),
-    DrainLife                            = Action.Create({ Type = "Spell", ID = 234153     }),
-    PhantomSingularity                   = Action.Create({ Type = "Spell", ID = 205179     }),
-    VileTaint                            = Action.Create({ Type = "Spell", ID = 278350     }),
-    DrainSoul                            = Action.Create({ Type = "Spell", ID = 198590     }),
-    CascadingCalamity                    = Action.Create({ Type = "Spell", ID = 275372     }),
-    SowtheSeeds                          = Action.Create({ Type = "Spell", ID = 196226, Hidden = true     }),
-    PetKick                              = Action.Create({ Type = "SpellSingleColor", ID = 119910, Color = "RED", Desc = "RED Color for Pet Target kick" }),  
-    FearGreen                            = Action.Create({ Type = "SpellSingleColor", ID = 5782, Color = "GREEN", Desc = "[2] Kick", Hidden = true, QueueForbidden = true }),	
-    Fear                                 = Action.Create({ Type = "Spell", ID = 5782       }),
-    SpellLock                            = Action.Create({ Type = "Spell", ID = 119898     }),
-    DispellMagic                         = Action.Create({ Type = "Spell", ID = 119905     }),
-    Shadowfury                           = Action.Create({ Type = "Spell", ID = 30283      }),
-    PandemicInvocation                   = Action.Create({ Type = "Spell", ID = 289364     }),
-	MaleficRapture						 = Action.Create({ Type = "Spell", ID = 324536	   }),
-	FelDomination						 = Action.Create({ Type = "Spell", ID = 333889	   }),	
-	MortalCoil							 = Action.Create({ Type = "Spell", ID = 6789	}),
-	HowlOfTerror						 = Action.Create({ Type = "Spell", ID = 5484	}),
-	DarkPact							 = Action.Create({ Type = "Spell", ID = 108416	}),
-    -- Defensive
-    UnendingResolve                      = Action.Create({ Type = "Spell", ID = 104773     }),
-	SingeMagic                           = Action.Create({ Type = "Spell", ID = 89808, Color = "YELLOW", Desc = "YELLOW Color for Pet Target dispel"     }),
-    -- Utilities
-    DemonicCircle                        = Action.Create({ Type = "Spell", ID = 48018     }),
-    DemonicCircleTeleport                = Action.Create({ Type = "Spell", ID = 48020     }),
-	-- Misc
-    BurningRush                          = Action.Create({ Type = "Spell", ID = 111400     }),
-    Channeling                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
-    --TargetEnemy                          = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
-	StopCast 				             = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
-    -- Buffs
-    GrimoireofSacrificeBuff              = Action.Create({ Type = "Spell", ID = 196099, Hidden = true     }),
-    ActiveUasBuff                        = Action.Create({ Type = "Spell", ID = 233490, Hidden = true     }),
-    InevitableDemiseBuff                 = Action.Create({ Type = "Spell", ID = 273525, Hidden = true     }),
-    NightfallBuff                        = Action.Create({ Type = "Spell", ID = 264571, Hidden = true     }),
-    CascadingCalamityBuff                = Action.Create({ Type = "Spell", ID = 275378, Hidden = true     }),
-    WrackingBrillianceBuff               = Action.Create({ Type = "Spell", ID = 272891, Hidden = true    }),
-    -- Debuffs 
-    SeedofCorruptionDebuff               = Action.Create({ Type = "Spell", ID = 27243, Hidden = true}),
-    HauntDebuff                          = Action.Create({ Type = "Spell", ID = 48181, Hidden = true}),
-    UnstableAfflictionDebuff             = Action.Create({ Type = "Spell", ID = 316099, Hidden = true}),
-    PhantomSingularityDebuff             = Action.Create({ Type = "Spell", ID = 205179, Hidden = true}),
-    SiphonLifeDebuff                     = Action.Create({ Type = "Spell", ID = 63106, Hidden = true}),
-    AgonyDebuff                          = Action.Create({ Type = "Spell", ID = 980, Hidden = true}),
-    CorruptionDebuff                     = Action.Create({ Type = "Spell", ID = 146739, Hidden = true     }),
-    -- PvP
-    NetherWard                           = Action.Create({ Type = "Spell", ID = 212295     }), -- Spell Reflect	
-	DemonArmor                           = Action.Create({ Type = "Spell", ID = 285933     }), -- Demon Armor PvP		
-	CurseofTongues                       = Action.Create({ Type = "Spell", ID = 199890     }), -- 30% increase cast time on target for 10sec
-	CurseofWeakness                      = Action.Create({ Type = "Spell", ID = 199892     }), -- 30% reduction attack power for 10sec
-	CastingCircle                        = Action.Create({ Type = "Spell", ID = 221703     }), -- Silence interrupt immune for 8sec
-	CurseofShadows                       = Action.Create({ Type = "Spell", ID = 234877     }), -- Additional damage 10sec
-	RotandDecay                          = Action.Create({ Type = "Spell", ID = 212371, Hidden = true        }), -- Drain Life increasing dots duration by 1sec per tick
-	Soulshatter                          = Action.Create({ Type = "Spell", ID = 212356     }), -- Big burst on multi target 
-    -- Potions
-    PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }),  
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
-	AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
-	PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
-	SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
-	PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
-    -- Trinkets
-    AzsharasFontofPower                    = Action.Create({ Type = "Trinket", ID = 169314 }),
-    PocketsizedComputationDevice           = Action.Create({ Type = "Trinket", ID = 167555 }),
-    RotcrustedVoodooDoll                   = Action.Create({ Type = "Trinket", ID = 159624 }),
-    ShiverVenomRelic                       = Action.Create({ Type = "Trinket", ID = 168905 }),
-    AquipotentNautilus                     = Action.Create({ Type = "Trinket", ID = 169305 }),
-    TidestormCodex                         = Action.Create({ Type = "Trinket", ID = 165576 }),
-    VialofStorms                           = Action.Create({ Type = "Trinket", ID = 158224 }),
-    GalecallersBoon                        = Action.Create({ Type = "Trinket", ID = 159614 }),
-    InvocationOfYulon                      = Action.Create({ Type = "Trinket", ID = 165568 }),
-    LustrousGoldenPlumage                  = Action.Create({ Type = "Trinket", ID = 159617 }),
-    LurkersInsidiousGift                   = Action.Create({ Type = "Trinket", ID = 167866 }),
-    VigorTrinket                           = Action.Create({ Type = "Trinket", ID = 165572 }),
-    AshvanesRazorCoral                     = Action.Create({ Type = "Trinket", ID = 169311 }),
-    MalformedHeraldsLegwraps               = Action.Create({ Type = "Trinket", ID = 167835 }),
-    HyperthreadWristwraps                  = Action.Create({ Type = "Trinket", ID = 168989 }),
-    NotoriousAspirantsBadge                = Action.Create({ Type = "Trinket", ID = 167528 }),
-    NotoriousGladiatorsBadge               = Action.Create({ Type = "Trinket", ID = 167380 }),
-    SinisterGladiatorsBadge                = Action.Create({ Type = "Trinket", ID = 165058 }),
-    SinisterAspirantsBadge                 = Action.Create({ Type = "Trinket", ID = 165223 }),
-    DreadGladiatorsBadge                   = Action.Create({ Type = "Trinket", ID = 161902 }),
-    DreadAspirantsBadge                    = Action.Create({ Type = "Trinket", ID = 162966 }),
-    DreadCombatantsInsignia                = Action.Create({ Type = "Trinket", ID = 161676 }),
-    NotoriousAspirantsMedallion            = Action.Create({ Type = "Trinket", ID = 167525 }),
-    NotoriousGladiatorsMedallion           = Action.Create({ Type = "Trinket", ID = 167377 }),
-    SinisterGladiatorsMedallion            = Action.Create({ Type = "Trinket", ID = 165055 }),
-    SinisterAspirantsMedallion             = Action.Create({ Type = "Trinket", ID = 165220 }),
-    DreadGladiatorsMedallion               = Action.Create({ Type = "Trinket", ID = 161674 }),
-    DreadAspirantsMedallion                = Action.Create({ Type = "Trinket", ID = 162897 }),
-    DreadCombatantsMedallion               = Action.Create({ Type = "Trinket", ID = 161811 }),
-    IgnitionMagesFuse                      = Action.Create({ Type = "Trinket", ID = 159615 }),
-    TzanesBarkspines                       = Action.Create({ Type = "Trinket", ID = 161411 }),
-    AzurethosSingedPlumage                = Action.Create({ Type = "Trinket", ID = 161377 }),
-    AncientKnotofWisdomAlliance            = Action.Create({ Type = "Trinket", ID = 161417 }),
-    AncientKnotofWisdomHorde               = Action.Create({ Type = "Trinket", ID = 166793 }),
-    ShockbitersFang                        = Action.Create({ Type = "Trinket", ID = 169318 }),
-    NeuralSynapseEnhancer                  = Action.Create({ Type = "Trinket", ID = 168973 }),
-    BalefireBranch                         = Action.Create({ Type = "Trinket", ID = 159630 }),
-	GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-	BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-	RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-	VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-	JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-	GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),	
-	GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-	BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-	RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-	VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-	JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-	GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    RazdunksBigRedButton                   = Action.Create({ Type = "Trinket", ID = 159611 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),
-    KnotofAncientFuryAlliance              = Action.Create({ Type = "Trinket", ID = 161413 }),
-    KnotofAncientFuryHorde                 = Action.Create({ Type = "Trinket", ID = 166795 }),
-    FirstMatesSpyglass                     = Action.Create({ Type = "Trinket", ID = 158163 }),
-    VialofAnimatedBlood                    = Action.Create({ Type = "Trinket", ID = 159625 }),
-    -- Misc
-    CyclotronicBlast                     = Action.Create({ Type = "Spell", ID = 293491, Hidden = true}),
-    ConcentratedFlameBurn                = Action.Create({ Type = "Spell", ID = 295368, Hidden = true}),
-    -- Hidden Heart of Azeroth
-    VisionofPerfectionMinor              = Action.Create({ Type = "Spell", ID = 296320, Hidden = true}), -- used by APL 
-    VisionofPerfectionMinor2             = Action.Create({ Type = "Spell", ID = 299367, Hidden = true}),
-    VisionofPerfectionMinor3             = Action.Create({ Type = "Spell", ID = 299369, Hidden = true}),
-	DummyTest                            = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
+    ArcaneTorrent				= Action.Create({ Type = "Spell", ID = 50613	}),
+    BloodFury					= Action.Create({ Type = "Spell", ID = 20572	}),
+    Fireblood					= Action.Create({ Type = "Spell", ID = 265221	}),
+    AncestralCall				= Action.Create({ Type = "Spell", ID = 274738	}),
+    Berserking					= Action.Create({ Type = "Spell", ID = 26297	}),
+    ArcanePulse             	= Action.Create({ Type = "Spell", ID = 260364	}),
+    QuakingPalm           		= Action.Create({ Type = "Spell", ID = 107079	}),
+    Haymaker           			= Action.Create({ Type = "Spell", ID = 287712	}), 
+    BullRush           			= Action.Create({ Type = "Spell", ID = 255654	}),    
+    WarStomp        			= Action.Create({ Type = "Spell", ID = 20549	}),
+    GiftofNaaru   				= Action.Create({ Type = "Spell", ID = 59544	}),
+    Shadowmeld   				= Action.Create({ Type = "Spell", ID = 58984    }),
+    Stoneform 					= Action.Create({ Type = "Spell", ID = 20594    }), 
+    BagofTricks					= Action.Create({ Type = "Spell", ID = 312411	}),
+    WilloftheForsaken			= Action.Create({ Type = "Spell", ID = 7744		}),   
+    EscapeArtist				= Action.Create({ Type = "Spell", ID = 20589    }), 
+    EveryManforHimself			= Action.Create({ Type = "Spell", ID = 59752    }), 
 	
+	--Warlock General
+    Banish			     		= Action.Create({ Type = "Spell", ID = 710		}),
+    Corruption					= Action.Create({ Type = "Spell", ID = 172		}),
+    CorruptionDebuff			= Action.Create({ Type = "Spell", ID = 146739, Hidden = true	}),
+    CreateHealthstone       	= Action.Create({ Type = "Spell", ID = 6201		}),
+    CreateSoulwell		    	= Action.Create({ Type = "Spell", ID = 29893	}),
+    CurseofExhaustion      	 	= Action.Create({ Type = "Spell", ID = 334275	}),
+    CurseofTongues				= Action.Create({ Type = "Spell", ID = 1714		}),
+    CurseofWeakness				= Action.Create({ Type = "Spell", ID = 702		}),
+    DemonicCircle				= Action.Create({ Type = "Spell", ID = 48018	}),
+    DemonicCircleTeleport		= Action.Create({ Type = "Spell", ID = 48020	}),	
+    DemonicGateway				= Action.Create({ Type = "Spell", ID = 111771	}),	
+    DrainLife					= Action.Create({ Type = "Spell", ID = 234153	}),
+    EyeofKilrogg				= Action.Create({ Type = "Spell", ID = 126		}),
+	Fear						= Action.Create({ Type = "Spell", ID = 5782		}),
+	FelDomination				= Action.Create({ Type = "Spell", ID = 333889	}),	
+	HealthFunnel				= Action.Create({ Type = "Spell", ID = 755		}),	
+	RitualofDoom				= Action.Create({ Type = "Spell", ID = 342601	}),	
+	RitualofSummoning			= Action.Create({ Type = "Spell", ID = 698		}),	
+	ShadowBolt					= Action.Create({ Type = "Spell", ID = 686		}),	
+	Shadowfury					= Action.Create({ Type = "Spell", ID = 30283	}),	
+	Soulstone					= Action.Create({ Type = "Spell", ID = 20707	}),	
+	SubjugateDemon				= Action.Create({ Type = "Spell", ID = 1098		}),	
+	UnendingBreath				= Action.Create({ Type = "Spell", ID = 5697		}),	
+	UnendingResolve				= Action.Create({ Type = "Spell", ID = 104773	}),	
+
+	--Pet Summon
+    SummonImp					= Action.Create({ Type = "Spell", ID = 688		}),    
+    SummonVoidwalker			= Action.Create({ Type = "Spell", ID = 697		}),
+    SummonFelhunter				= Action.Create({ Type = "Spell", ID = 691		}),
+    SummonSuccubus				= Action.Create({ Type = "Spell", ID = 712		}),	
+    CommandDemon				= Action.Create({ Type = "Spell", ID = 119898	}),	
+    SingeMagic					= Action.Create({ Type = "Spell", ID = 119905	}),	
+    ShadowBulwark				= Action.Create({ Type = "Spell", ID = 119907	}),	
+    SpellLock					= Action.Create({ Type = "Spell", ID = 119910	}),	
+    Seduction					= Action.Create({ Type = "Spell", ID = 119909	}),	
+
+	--Affliction Spells
+    Agony						= Action.Create({ Type = "Spell", ID = 980		}),
+    AgonyDebuff					= Action.Create({ Type = "Spell", ID = 980, Hidden = true		}),
+    MaleficRapture				= Action.Create({ Type = "Spell", ID = 324536, Hidden = true	}),
+    SeedofCorruption			= Action.Create({ Type = "Spell", ID = 27243	}),
+    SeedofCorruptionDebuff		= Action.Create({ Type = "Spell", ID = 27243, Hidden = true		}),
+	SummonDarkglare				= Action.Create({ Type = "Spell", ID = 205180	}),
+    UnstableAffliction			= Action.Create({ Type = "Spell", ID = 316099	}),
+    UnstableAfflictionDebuff	= Action.Create({ Type = "Spell", ID = 316099, Hidden = true	}),
+
+	--Normal Talents
+    Nightfall					= Action.Create({ Type = "Spell", ID = 108558, Hidden = true	}),
+    NightfallBuff				= Action.Create({ Type = "Spell", ID = 264571, Hidden = true	}),
+    InevitableDemise			= Action.Create({ Type = "Spell", ID = 334319, Hidden = true	}),
+    InevitableDemiseBuff		= Action.Create({ Type = "Spell", ID = 273525, Hidden = true	}),
+    DrainSoul					= Action.Create({ Type = "Spell", ID = 198590	}),
+    WritheInAgony				= Action.Create({ Type = "Spell", ID = 196102	}),
+    AbsoluteCorruption			= Action.Create({ Type = "Spell", ID = 196103	}),
+    SiphonLife					= Action.Create({ Type = "Spell", ID = 63106	}),
+    SiphonLifeDebuff			= Action.Create({ Type = "Spell", ID = 63106, Hidden = true		}),	
+    DemonSkin					= Action.Create({ Type = "Spell", ID = 219272, Hidden = true	}),
+    BurningRush					= Action.Create({ Type = "Spell", ID = 111400	}),
+    DarkPact					= Action.Create({ Type = "Spell", ID = 108416	}),
+    SowtheSeeds					= Action.Create({ Type = "Spell", ID = 196226, Hidden = true	}),
+    PhantomSingularity			= Action.Create({ Type = "Spell", ID = 205179	}),
+    PhantomSingularityDebuff	= Action.Create({ Type = "Spell", ID = 205179, Hidden = true	}),	
+    VileTaint					= Action.Create({ Type = "Spell", ID = 278350	}),
+    Darkfury					= Action.Create({ Type = "Spell", ID = 264874, Hidden = true	}),
+	MortalCoil					= Action.Create({ Type = "Spell", ID = 6789		}),
+	HowlofTerror				= Action.Create({ Type = "Spell", ID = 5484		}),
+	DarkCaller					= Action.Create({ Type = "Spell", ID = 334183, Hidden = true	}),
+    Haunt						= Action.Create({ Type = "Spell", ID = 48181	}),
+    GrimoireofSacrifice			= Action.Create({ Type = "Spell", ID = 108503	}),
+    GrimoireofSacrificeBuff		= Action.Create({ Type = "Spell", ID = 196099, Hidden = true	}),
+    SoulConduit					= Action.Create({ Type = "Spell", ID = 215941, Hidden = true	}),
+    CreepingDeath				= Action.Create({ Type = "Spell", ID = 264000, Hidden = true	}),
+    DarkSoulMisery				= Action.Create({ Type = "Spell", ID = 113860	}),
+
+	--PvP Talents
+    BaneofFragility				= Action.Create({ Type = "Spell", ID = 199954	}),
+    Deathbolt					= Action.Create({ Type = "Spell", ID = 264106	}),
+    Soulshatter					= Action.Create({ Type = "Spell", ID = 212356	}),
+    GatewayMastery				= Action.Create({ Type = "Spell", ID = 248855, Hidden = true	}),
+    RotandDecay					= Action.Create({ Type = "Spell", ID = 212371, Hidden = true	}),
+    BaneofShadows				= Action.Create({ Type = "Spell", ID = 234877	}),
+    NetherWard					= Action.Create({ Type = "Spell", ID = 212295	}),
+    EssenceDrain				= Action.Create({ Type = "Spell", ID = 221711, Hidden = true	}),
+    CastingCircle				= Action.Create({ Type = "Spell", ID = 221703	}),
+    DemonArmor					= Action.Create({ Type = "Spell", ID = 285933	}),
+    AmplifyCurse				= Action.Create({ Type = "Spell", ID = 328774	}),
+    RampantAfflictions			= Action.Create({ Type = "Spell", ID = 335052, Hidden = true	}),
+    RapidContagion				= Action.Create({ Type = "Spell", ID = 344566	}),
+	
+	-- Covenant Abilities
+    ScouringTithe				= Action.Create({ Type = "Spell", ID = 312321	}),
+    SummonSteward				= Action.Create({ Type = "Spell", ID = 324739	}),
+    ImpendingCatastrophe		= Action.Create({ Type = "Spell", ID = 321792	}),
+    DoorofShadows				= Action.Create({ Type = "Spell", ID = 300728	}),
+    DecimatingBolt				= Action.Create({ Type = "Spell", ID = 325289	}),
+    Fleshcraft					= Action.Create({ Type = "Spell", ID = 331180	}),
+    SoulRot						= Action.Create({ Type = "Spell", ID = 325640	}),
+    Soulshape					= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker						= Action.Create({ Type = "Spell", ID = 324701	}),
+
+	-- Conduits
+    ColdEmbrace					= Action.Create({ Type = "Spell", ID = 339576, Hidden = true	}),	
+    CorruptingLeer				= Action.Create({ Type = "Spell", ID = 339455, Hidden = true	}),	
+    FocusedMalignancy			= Action.Create({ Type = "Spell", ID = 339500, Hidden = true	}),	
+    RollingAgony				= Action.Create({ Type = "Spell", ID = 339481, Hidden = true	}),	
+    SoulTithe					= Action.Create({ Type = "Spell", ID = 340229, Hidden = true	}),	
+    CatastrophicOrigin			= Action.Create({ Type = "Spell", ID = 340316, Hidden = true	}),	
+    FatalDecimation				= Action.Create({ Type = "Spell", ID = 340268, Hidden = true	}),	
+    SoulEater					= Action.Create({ Type = "Spell", ID = 340348, Hidden = true	}),	
+    AccruedVitality				= Action.Create({ Type = "Spell", ID = 339282, Hidden = true	}),	
+    DiabolicBloodstone			= Action.Create({ Type = "Spell", ID = 340562, Hidden = true	}),	
+    ResoluteBarrier				= Action.Create({ Type = "Spell", ID = 339272, Hidden = true	}),	
+    DemonicMomentum				= Action.Create({ Type = "Spell", ID = 339411, Hidden = true	}),	
+    FelCelerity					= Action.Create({ Type = "Spell", ID = 339130, Hidden = true	}),	
+    ShadeofTerror				= Action.Create({ Type = "Spell", ID = 339379, Hidden = true	}),	
+    KilroggsCunning				= Action.Create({ Type = "Spell", ID = 58081, Hidden = true		}),	
+
+	
+
+	-- Legendaries
+	-- General Legendaries
+    ClawofEndereth				= Action.Create({ Type = "Spell", ID = 337038, Hidden = true	}),
+    PillarsoftheDarkPortal		= Action.Create({ Type = "Spell", ID = 337065, Hidden = true	}),
+    RelicofDemonicSynergy		= Action.Create({ Type = "Spell", ID = 337057, Hidden = true	}),
+    WilfredsSigil				= Action.Create({ Type = "Spell", ID = 337020, Hidden = true	}),
+	--Affliction
+    MaleficWrath				= Action.Create({ Type = "Spell", ID = 337122, Hidden = true	}),
+    PerpetualAgony				= Action.Create({ Type = "Spell", ID = 337106, Hidden = true	}),
+    SacrolashsDarkStrike		= Action.Create({ Type = "Spell", ID = 337111, Hidden = true	}),
+    WrathofConsumption			= Action.Create({ Type = "Spell", ID = 337128, Hidden = true	}),
+
+
+	--Anima Powers - to add later...
+	
+	
+	-- Trinkets
+	
+
+	-- Potions
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
+    PotionofSpectralIntellect		= Action.Create({ Type = "Potion", ID = 171273, QueueForbidden = true }),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
+
+
 	-- Extra icons until GG update
 	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Malefic Rapture
 	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
-	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for Heart of Azeroth	
-    -- Here come all the stuff needed by simcraft but not classic spells or items. 
+	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for FelDomination
 }
 
 -- To create essences use next code:
@@ -412,8 +414,6 @@ A[3] = function(icon, isMulti)
 	local inCombat = Unit("player"):CombatTime() > 0
 	local Pull = Action.BossMods:GetPullTimer()
 	local profileStop = false	
-	local UADelay = A.GetToggle(2, "UADelay")
-	local SoCDelay = A.GetToggle(2, "SoCDelay")
 	local TargetsMissingAgony = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.AgonyDebuff.ID)
 	local AutoMultiDot = A.GetToggle(2, "AutoMultiDot")
 	
@@ -441,8 +441,8 @@ A[3] = function(icon, isMulti)
     end	
 
 	--UA Delay count
-    if Temp.UnstableAfflictionDelay == 0 and Unit(player):IsCasting(A.UnstableAffliction) then
-        Temp.UnstableAfflictionDelay = UADelay
+    if Temp.UnstableAfflictionDelay == 0 and Unit(player):IsCasting() == "Unstable Affliction" then
+        Temp.UnstableAfflictionDelay = 90
     end
     
     if Temp.UnstableAfflictionDelay > 0 then
@@ -450,8 +450,8 @@ A[3] = function(icon, isMulti)
     end
 	
 	--SoC Delay count
-    if Temp.SeedofCorruptionDelay == 0 and Unit(player):IsCasting(A.SeedofCorruption) then
-        Temp.SeedofCorruptionDelay = SoCDelay
+    if Temp.SeedofCorruptionDelay == 0 and Unit(player):IsCasting() == "Seed of Corruption" then
+        Temp.SeedofCorruptionDelay = 90
     end
     
     if Temp.SeedofCorruptionDelay > 0 then
@@ -582,15 +582,19 @@ A[3] = function(icon, isMulti)
 			end					
 			
 			-- Auto Multi DoT
-			if AutoMultiDot and HasAllDots and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingAgony > 0 and TargetsMissingAgony < 5 or Unit("target"):IsDummy())
+			if AutoMultiDot and (HasAllDots and unit ~= "mouseover") and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingAgony > 0 and TargetsMissingAgony < 5 or Unit("target"):IsDummy())
 			then
 				local Agony_Nameplates = MultiUnits:GetActiveUnitPlates()
 				if Agony_Nameplates then  
-					for Agony_UnitID in pairs(Agony_Nameplates) do             
-						if Unit(Agony_UnitID):GetRange() < 40 and not Unit(Agony_UnitID):InLOS() and Unit(Agony_UnitID):HasDeBuffsStacks(A.Agony.ID, true) == 0 then 
+					for Agony_UnitID in pairs(ActiveUnitPlates) do 
+						if not UnitIsUnit("target", Agony_UnitID) then
+							if Unit(Agony_UnitID):GetRange() < 40 and not Unit(Agony_UnitID):InLOS() and Unit(Agony_UnitID):HasDeBuffs(A.Agony.ID, true) == 0 and ((A.Zone == "none" and (Unit(Agony_UnitID):IsDummy() or Unit(Agony_UnitID):IsDummyPvP())) or Unit(Agony_UnitID):CombatTime() > 0) then 
+								return A:Show(icon, ACTION_CONST_AUTOTARGET)
+							end
+						elseif Unit(Agony_UnitID):GetRange() > 40 or (not (A.Zone == "none" and (Unit(Agony_UnitID):IsDummy() or Unit(Agony_UnitID):IsDummyPvP())) and Unit(Agony_UnitID):CombatTime() == 0) then
 							return A:Show(icon, ACTION_CONST_AUTOTARGET)
-						end         
-					end 
+						end 
+					end
 				end
 			end
 			
