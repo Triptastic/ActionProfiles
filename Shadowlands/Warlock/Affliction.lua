@@ -710,6 +710,24 @@ A[3] = function(icon, isMulti)
 				return A.Trinket2:Show(icon)
 			end 		
 			
+			--Temporary Covenants until they're simmed
+			if A.ScouringTithe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
+				return A.ScouringTithe:Show(icon)
+			end	
+			
+			if A.ImpendingCatastrophe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
+				return A.ImpendingCatastrophe:Show(icon)
+			end				
+			
+			if A.DecimatingBolt:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
+				return A.DecimatingBolt:Show(icon)
+			end	
+
+			if A.SoulRot:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
+				return A.SoulRot:Show(icon)
+			end	
+
+			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
 			if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 and Unit("target"):TimeToDie() >= 3 then
 				return A.SpatialRift:Show(icon)
