@@ -2,10 +2,10 @@
 --##### TRIP'S HAVOC DEMON HUNTER #####
 --#####################################
 
---Full credit to Taste
-
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
+local Covenant									= _G.LibStub("Covenant")
+local TMW										= _G.TMW
 local Listener                                  = Action.Listener
 local Create                                    = Action.Create
 local GetToggle                                 = Action.GetToggle
@@ -15,10 +15,10 @@ local GetCurrentGCD                             = Action.GetCurrentGCD
 local GetPing                                   = Action.GetPing
 local ShouldStop                                = Action.ShouldStop
 local BurstIsON                                 = Action.BurstIsON
+local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid                               = Action.AuraIsValid
 local InterruptIsValid                          = Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
-local Azerite                                   = LibStub("AzeriteTraits")
 local Utils                                     = Action.Utils
 local TeamCache                                 = Action.TeamCache
 local EnemyTeam                                 = Action.EnemyTeam
@@ -32,13 +32,11 @@ local IsUnitEnemy                               = Action.IsUnitEnemy
 local IsUnitFriendly                            = Action.IsUnitFriendly
 local ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
-local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
-local Pet                                       = LibStub("PetLibrary")
 
 --For Toaster
-local Toaster																	= _G.Toaster
-local GetSpellTexture 															= _G.TMW.GetSpellTexture
+local Toaster									= _G.Toaster
+local GetSpellTexture 							= _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -46,158 +44,160 @@ local GetSpellTexture 															= _G.TMW.GetSpellTexture
 
 Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     -- Racial
-    ArcaneTorrent                          = Action.Create({ Type = "Spell", ID = 50613     }),
-    BloodFury                              = Action.Create({ Type = "Spell", ID = 20572      }),
-    Fireblood                              = Action.Create({ Type = "Spell", ID = 265221     }),
-    AncestralCall                          = Action.Create({ Type = "Spell", ID = 274738     }),
-    Berserking                             = Action.Create({ Type = "Spell", ID = 26297    }),
-    ArcanePulse                            = Action.Create({ Type = "Spell", ID = 260364    }),
-    QuakingPalm                            = Action.Create({ Type = "Spell", ID = 107079     }),
-    Haymaker                               = Action.Create({ Type = "Spell", ID = 287712     }), 
-    WarStomp                               = Action.Create({ Type = "Spell", ID = 20549     }),
-    BullRush                               = Action.Create({ Type = "Spell", ID = 255654     }),  
-    GiftofNaaru                            = Action.Create({ Type = "Spell", ID = 59544    }),
-    Shadowmeld                             = Action.Create({ Type = "Spell", ID = 58984    }), -- Used for HoA
-    Stoneform                              = Action.Create({ Type = "Spell", ID = 20594    }), 
-    BagofTricks                            = Action.Create({ Type = "Spell", ID = 312411    }),
-    WilloftheForsaken                      = Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
-    EscapeArtist                           = Action.Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
-    EveryManforHimself                     = Action.Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
-    -- Generics
-    MetamorphosisBuff                      = Action.Create({ Type = "Spell", ID = 162264 }),
-    Metamorphosis                          = Action.Create({ Type = "Spell", ID = 191427 }),
-    ChaoticTransformation                  = Action.Create({ Type = "Spell", ID = 288754 }),
-    Demonic                                = Action.Create({ Type = "Spell", ID = 213410 }),
-    EyeBeam                                = Action.Create({ Type = "Spell", ID = 198013 }),
-    BladeDance                             = Action.Create({ Type = "Spell", ID = 188499 }),
-    FelBarrage                             = Action.Create({ Type = "Spell", ID = 258925 }),
-    EssenceBreak                              = Action.Create({ Type = "Spell", ID = 258860 }),
-    Annihilation                           = Action.Create({ Type = "Spell", ID = 201427 }),
-    EssenceBreakDebuff                        = Action.Create({ Type = "Spell", ID = 258860, Hidden = true      }),
-    ChaosStrike                            = Action.Create({ Type = "Spell", ID = 162794 }),
-    DeathSweep                             = Action.Create({ Type = "Spell", ID = 210152 }),
-    RevolvingBlades                        = Action.Create({ Type = "Spell", ID = 279581 }),
-    ImmolationAura                         = Action.Create({ Type = "Spell", ID = 258920 }),
-    Felblade                               = Action.Create({ Type = "Spell", ID = 232893 }),
-    FelRush                                = Action.Create({ Type = "Spell", ID = 195072 }),
-    Netherwalk                             = Action.Create({ Type = "Spell", ID = 196555 }),
-    DemonBlades                            = Action.Create({ Type = "Spell", ID = 203555 }),
-    DemonsBite                             = Action.Create({ Type = "Spell", ID = 162243 }),
-    ThrowGlaive                            = Action.Create({ Type = "Spell", ID = 185123 }),
-    VengefulRetreat                        = Action.Create({ Type = "Spell", ID = 198793 }),
-    LifebloodBuff                          = Action.Create({ Type = "Spell", ID = 295078 }),
-    Momentum                               = Action.Create({ Type = "Spell", ID = 206476 }),
-    PreparedBuff                           = Action.Create({ Type = "Spell", ID = 203650 }),
-    FelMastery                             = Action.Create({ Type = "Spell", ID = 192939 }),
-    BlindFury                              = Action.Create({ Type = "Spell", ID = 203550 }),
-    FirstBlood                             = Action.Create({ Type = "Spell", ID = 206416 }),
-    TrailofRuin                            = Action.Create({ Type = "Spell", ID = 258881 }),
-    MomentumBuff                           = Action.Create({ Type = "Spell", ID = 208628 }),
-	InnerDemon							   = Action.Create({ Type = "Spell", ID = 337313 }),
-    FelEruption                            = Action.Create({ Type = "Spell", ID = 211881}),
-    Blur                                   = Action.Create({ Type = "Spell", ID = 198589}),
-    ConsumeMagic                           = Action.Create({ Type = "Spell", ID = 278326}),
-    Darkness                               = Action.Create({ Type = "Spell", ID = 196718}),
-	GlaiveTempest						   = Action.Create({ Type = "Spell", ID = 342817}),
-    RecklessForceCounter                   = Action.Create({ Type = "Spell", ID = 298409}),
-    RecklessForceCounter2                  = Action.Create({ Type = "Spell", ID = 302917}),
-    ConcentratedFlameBurn                  = Action.Create({ Type = "Spell", ID = 295368}),
-    --PickUpFragment                         = Action.Create({ Type = "Spell", ID =  }),
-    EyesofRage                             = Action.Create({ Type = "Spell", ID = 278500 }),
-    Imprison                               = Action.Create({ Type = "Spell", ID = 217832}),
-	ImprisonImproved                       = Action.Create({ Type = "Spell", ID = 221527}),
-    --ImprisonAntiFake                       = Action.Create({ Type = "Spell", ID = 217832, Desc = "[2] Kick", Hidden = true, QueueForbidden = true    }),
-    Disrupt                                = Action.Create({ Type = "Spell", ID = 183752}),
-    DisruptGreen                           = Action.Create({ Type = "SpellSingleColor", ID = 183752, Color = "GREEN", Desc = "[2] Kick", Hidden = true, QueueForbidden = true }),
-    ChaosNova                              = Action.Create({ Type = "Spell", ID = 179057}),
-    ChaosNovaGreen                           = Action.Create({ Type = "SpellSingleColor", ID = 179057, Color = "GREEN", Desc = "[1] CC", Hidden = true, QueueForbidden = true }),
-    -- PvP
-    ManaRift                               = Action.Create({ Type = "Spell", ID = 235903}),    -- Mana destroyer
-    ManaBreak                              = Action.Create({ Type = "Spell", ID = 203704}),    -- Mana destroyer 2 :D
-    RainfromAbove                          = Action.Create({ Type = "Spell", ID = 206803}), -- Better if Unit is LOS
-    ReverseMagic                           = Action.Create({ Type = "Spell", ID = 205604}), -- Player + Friendly dispell and send back dispelled debuff to enemy
-	Detainment                             = Action.Create({ Type = "Spell", ID = 205596}),
-	Torment                                = Action.Create({ Type = "Spell", ID = 185245}), -- Taunt
-	Tormentor                              = Action.Create({ Type = "Spell", ID = 207029}), -- Taunt PvP replace Torment
-    -- Potions
-    PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }),  
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
-	AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
-	PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
-	SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
-	PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
-    -- Trinkets
-    AzsharasFontofPower                    = Action.Create({ Type = "Trinket", ID = 169314 }),
-    PocketsizedComputationDevice           = Action.Create({ Type = "Trinket", ID = 167555 }),
-    RotcrustedVoodooDoll                   = Action.Create({ Type = "Trinket", ID = 159624 }),
-    ShiverVenomRelic                       = Action.Create({ Type = "Trinket", ID = 168905 }),
-    AquipotentNautilus                     = Action.Create({ Type = "Trinket", ID = 169305 }),
-    TidestormCodex                         = Action.Create({ Type = "Trinket", ID = 165576 }),
-    VialofStorms                           = Action.Create({ Type = "Trinket", ID = 158224 }),
-    GalecallersBoon                        = Action.Create({ Type = "Trinket", ID = 159614 }),
-    InvocationOfYulon                      = Action.Create({ Type = "Trinket", ID = 165568 }),
-    LustrousGoldenPlumage                  = Action.Create({ Type = "Trinket", ID = 159617 }),
-    LurkersInsidiousGift                   = Action.Create({ Type = "Trinket", ID = 167866 }),
-    VigorTrinket                           = Action.Create({ Type = "Trinket", ID = 165572 }),
-    AshvanesRazorCoral                     = Action.Create({ Type = "Trinket", ID = 169311 }),
-    MalformedHeraldsLegwraps               = Action.Create({ Type = "Trinket", ID = 167835 }),
-    HyperthreadWristwraps                  = Action.Create({ Type = "Trinket", ID = 168989 }),
-    NotoriousAspirantsBadge                = Action.Create({ Type = "Trinket", ID = 167528 }),
-    NotoriousGladiatorsBadge               = Action.Create({ Type = "Trinket", ID = 167380 }),
-    SinisterGladiatorsBadge                = Action.Create({ Type = "Trinket", ID = 165058 }),
-    SinisterAspirantsBadge                 = Action.Create({ Type = "Trinket", ID = 165223 }),
-    DreadGladiatorsBadge                   = Action.Create({ Type = "Trinket", ID = 161902 }),
-    DreadAspirantsBadge                    = Action.Create({ Type = "Trinket", ID = 162966 }),
-    DreadCombatantsInsignia                = Action.Create({ Type = "Trinket", ID = 161676 }),
-    NotoriousAspirantsMedallion            = Action.Create({ Type = "Trinket", ID = 167525 }),
-    NotoriousGladiatorsMedallion           = Action.Create({ Type = "Trinket", ID = 167377 }),
-    SinisterGladiatorsMedallion            = Action.Create({ Type = "Trinket", ID = 165055 }),
-    SinisterAspirantsMedallion             = Action.Create({ Type = "Trinket", ID = 165220 }),
-    DreadGladiatorsMedallion               = Action.Create({ Type = "Trinket", ID = 161674 }),
-    DreadAspirantsMedallion                = Action.Create({ Type = "Trinket", ID = 162897 }),
-    DreadCombatantsMedallion               = Action.Create({ Type = "Trinket", ID = 161811 }),
-    IgnitionMagesFuse                      = Action.Create({ Type = "Trinket", ID = 159615 }),
-    TzanesBarkspines                       = Action.Create({ Type = "Trinket", ID = 161411 }),
-    AzurethosSingedPlumage                = Action.Create({ Type = "Trinket", ID = 161377 }),
-    AncientKnotofWisdomAlliance            = Action.Create({ Type = "Trinket", ID = 161417 }),
-    AncientKnotofWisdomHorde               = Action.Create({ Type = "Trinket", ID = 166793 }),
-    ShockbitersFang                        = Action.Create({ Type = "Trinket", ID = 169318 }),
-    NeuralSynapseEnhancer                  = Action.Create({ Type = "Trinket", ID = 168973 }),
-    BalefireBranch                         = Action.Create({ Type = "Trinket", ID = 159630 }),
-	GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-	BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-	RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-	VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-	JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-	GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),	
-	GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-	BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-	RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-	VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-	JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-	GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    RazdunksBigRedButton                   = Action.Create({ Type = "Trinket", ID = 159611 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),
-    KnotofAncientFuryAlliance              = Action.Create({ Type = "Trinket", ID = 161413 }),
-    KnotofAncientFuryHorde                 = Action.Create({ Type = "Trinket", ID = 166795 }),
-    FirstMatesSpyglass                     = Action.Create({ Type = "Trinket", ID = 158163 }),
-    VialofAnimatedBlood                    = Action.Create({ Type = "Trinket", ID = 159625 }),
+    ArcaneTorrent					= Action.Create({ Type = "Spell", ID = 50613     }),
+    BloodFury						= Action.Create({ Type = "Spell", ID = 20572      }),
+    Fireblood						= Action.Create({ Type = "Spell", ID = 265221     }),
+    AncestralCall					= Action.Create({ Type = "Spell", ID = 274738     }),
+    Berserking						= Action.Create({ Type = "Spell", ID = 26297    }),
+    ArcanePulse						= Action.Create({ Type = "Spell", ID = 260364    }),
+    QuakingPalm						= Action.Create({ Type = "Spell", ID = 107079     }),
+    Haymaker						= Action.Create({ Type = "Spell", ID = 287712     }), 
+    WarStomp						= Action.Create({ Type = "Spell", ID = 20549     }),
+    BullRush						= Action.Create({ Type = "Spell", ID = 255654     }),  
+    GiftofNaaru						= Action.Create({ Type = "Spell", ID = 59544    }),
+    Shadowmeld						= Action.Create({ Type = "Spell", ID = 58984    }), -- Used for HoA
+    Stoneform						= Action.Create({ Type = "Spell", ID = 20594    }), 
+    BagofTricks						= Action.Create({ Type = "Spell", ID = 312411    }),
+    WilloftheForsaken				= Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
+    EscapeArtist					= Action.Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
+    EveryManforHimself				= Action.Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
+
+	-- Demon Hunter General
+    ConsumeMagic					= Action.Create({ Type = "Spell", ID = 278326	}),
+    Disrupt							= Action.Create({ Type = "Spell", ID = 183752	}),
+    DisruptGreen					= Action.Create({ Type = "SpellSingleColor", ID = 183752, Color = "GREEN", Desc = "[2] Kick", Hidden = true, QueueForbidden = true	}),	
+    ImmolationAura					= Action.Create({ Type = "Spell", ID = 258920	}),
+    Imprison						= Action.Create({ Type = "Spell", ID = 217832	}),
+    Metamorphosis					= Action.Create({ Type = "Spell", ID = 191427	}),
+    MetamorphosisBuff				= Action.Create({ Type = "Spell", ID = 162264, Hidden = true	}),
+	SpectralSight					= Action.Create({ Type = "Spell", ID = 188501	}),
+    ThrowGlaive						= Action.Create({ Type = "Spell", ID = 185123 	}),
+	Torment							= Action.Create({ Type = "Spell", ID = 185245	}),
+	ChaosBrand						= Action.Create({ Type = "Spell", ID = 255260, Hidden = true	}),
+	DemonicWards					= Action.Create({ Type = "Spell", ID = 278386, Hidden = true	}),
+	ShatteredSouls					= Action.Create({ Type = "Spell", ID = 178940, Hidden = true	}),
+	DemonSoul						= Action.Create({ Type = "Spell", ID = 163073, Hidden = true	}),
+	
+	-- Havoc Specific
+    BladeDance						= Action.Create({ Type = "Spell", ID = 188499	}),
+    DeathSweep                      = Action.Create({ Type = "Spell", ID = 210152	}),	
+    Blur							= Action.Create({ Type = "Spell", ID = 198589	}),
+    ChaosNova                       = Action.Create({ Type = "Spell", ID = 179057	}),
+    ChaosNovaGreen                  = Action.Create({ Type = "SpellSingleColor", ID = 179057, Color = "GREEN", Desc = "[1] CC", Hidden = true, QueueForbidden = true	}),	
+    ChaosStrike						= Action.Create({ Type = "Spell", ID = 162794	}),
+    Annihilation                    = Action.Create({ Type = "Spell", ID = 201427	}),	
+    Darkness						= Action.Create({ Type = "Spell", ID = 196718	}),	
+    DemonsBite						= Action.Create({ Type = "Spell", ID = 162243	}),
+    EyeBeam							= Action.Create({ Type = "Spell", ID = 198013	}),
+    FelEruption						= Action.Create({ Type = "Spell", ID = 211881	}),	
+    FelRush							= Action.Create({ Type = "Spell", ID = 195072	}),
+    VengefulRetreat					= Action.Create({ Type = "Spell", ID = 198793	}),
+	MasteryDemonicPresence			= Action.Create({ Type = "Spell", ID = 185164, Hidden = true	}),		
+	FuriousGaze						= Action.Create({ Type = "Spell", ID = 343311, Hidden = true	}),
+	
+	-- Normal Talents
+    BlindFury						= Action.Create({ Type = "Spell", ID = 203550, Hidden = true	}),	
+    DemonicAppetite					= Action.Create({ Type = "Spell", ID = 206478, Hidden = true	}),
+    Felblade						= Action.Create({ Type = "Spell", ID = 232893	}),
+    InsatiableHunger				= Action.Create({ Type = "Spell", ID = 258876, Hidden = true	}),
+    BurningHatred					= Action.Create({ Type = "Spell", ID = 320374, Hidden = true	}),
+    DemonBlades						= Action.Create({ Type = "Spell", ID = 203555, Hidden = true	}),
+    TrailofRuin						= Action.Create({ Type = "Spell", ID = 258881, Hidden = true	}),
+    UnboundChaos					= Action.Create({ Type = "Spell", ID = 275144, Hidden = true	}),
+	InnerDemon						= Action.Create({ Type = "Spell", ID = 337313, Hidden = true	}),
+    GlaiveTempest					= Action.Create({ Type = "Spell", ID = 342817	}),
+    SoulRending						= Action.Create({ Type = "Spell", ID = 204909, Hidden = true	}),
+    DesperateInstincts				= Action.Create({ Type = "Spell", ID = 205411, Hidden = true	}),
+    Netherwalk						= Action.Create({ Type = "Spell", ID = 196555	}),
+    CycleofHatred					= Action.Create({ Type = "Spell", ID = 258887, Hidden = true	}),
+    FirstBlood						= Action.Create({ Type = "Spell", ID = 206416, Hidden = true	}),
+    EssenceBreak					= Action.Create({ Type = "Spell", ID = 258860	}),
+    EssenceBreakDebuff				= Action.Create({ Type = "Spell", ID = 320338, Hidden = true	}),	
+    UnleashedPower					= Action.Create({ Type = "Spell", ID = 206477, Hidden = true	}),
+    MasteroftheGlaive				= Action.Create({ Type = "Spell", ID = 203556, Hidden = true	}),
+    FelEruption						= Action.Create({ Type = "Spell", ID = 211881	}),	
+    Demonic							= Action.Create({ Type = "Spell", ID = 213410, Hidden = true	}),
+    Momentum						= Action.Create({ Type = "Spell", ID = 206476, Hidden = true	}),
+    MomentumBuff					= Action.Create({ Type = "Spell", ID = 208628, Hidden = true	}),	
+    FelBarrage						= Action.Create({ Type = "Spell", ID = 258925	}),
+
+	-- PvP Talents
+    CleansedByFire					= Action.Create({ Type = "Spell", ID = 205625, Hidden = true	}),
+    ReverseMagic					= Action.Create({ Type = "Spell", ID = 205604	}),
+    EyeofLeotheras					= Action.Create({ Type = "Spell", ID = 206649	}),
+    ManaRift						= Action.Create({ Type = "Spell", ID = 235903	}),
+    DemonicOrigins					= Action.Create({ Type = "Spell", ID = 235893, Hidden = true	}),
+    RainfromAbove					= Action.Create({ Type = "Spell", ID = 206803	}),
+	Detainment						= Action.Create({ Type = "Spell", ID = 205596, Hidden = true	}),
+    ManaBreak						= Action.Create({ Type = "Spell", ID = 203704	}),
+    MortalRush						= Action.Create({ Type = "Spell", ID = 328725, Hidden = true	}),
+    CoverofDarkness					= Action.Create({ Type = "Spell", ID = 227635, Hidden = true	}),
+    UnendingHatred					= Action.Create({ Type = "Spell", ID = 213480, Hidden = true	}),	
+
+	-- Covenant Abilities
+    ElysianDecree					= Action.Create({ Type = "Spell", ID = 306830	}),
+    SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
+    SinfulBrand						= Action.Create({ Type = "Spell", ID = 317009	}),
+    DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
+    FoddertotheFlame				= Action.Create({ Type = "Spell", ID = 329554	}),
+    Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
+    TheHunt							= Action.Create({ Type = "Spell", ID = 323639	}),
+    Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),
+
+	-- Conduits
+    DancingWithFate					= Action.Create({ Type = "Spell", ID = 339228, Hidden = true	}),
+    RelentlessOnslaught				= Action.Create({ Type = "Spell", ID = 339151, Hidden = true	}),
+    GrowingInferno					= Action.Create({ Type = "Spell", ID = 339231, Hidden = true	}),
+    SerratedGlaive					= Action.Create({ Type = "Spell", ID = 339230, Hidden = true	}),
+    ExposedWound					= Action.Create({ Type = "Spell", ID = 339229, Hidden = true	}),	
+    RepeatDecree					= Action.Create({ Type = "Spell", ID = 339895, Hidden = true	}),	
+    IncreasedScrutiny				= Action.Create({ Type = "Spell", ID = 340028, Hidden = true	}),
+    BroodingPool					= Action.Create({ Type = "Spell", ID = 340063, Hidden = true	}),	
+    UnnaturalMalice					= Action.Create({ Type = "Spell", ID = 344358, Hidden = true	}),
+    FelDefender						= Action.Create({ Type = "Spell", ID = 338671, Hidden = true	}),	
+    ShatteredRestoration			= Action.Create({ Type = "Spell", ID = 338793, Hidden = true	}),
+    ViscousInk						= Action.Create({ Type = "Spell", ID = 338682, Hidden = true	}),
+    DemonicParole					= Action.Create({ Type = "Spell", ID = 339048, Hidden = true	}),
+    FelfireHaste					= Action.Create({ Type = "Spell", ID = 338799, Hidden = true	}),
+    LostinDarkness					= Action.Create({ Type = "Spell", ID = 339149, Hidden = true	}),
+    RavenousConsumption				= Action.Create({ Type = "Spell", ID = 338835, Hidden = true	}),	
+	
+	-- Legendaries
+	-- General Legendaries
+    CollectiveAnguish				= Action.Create({ Type = "Spell", ID = 337504, Hidden = true	}),
+    DarkestHour						= Action.Create({ Type = "Spell", ID = 337539, Hidden = true	}),	
+    DarkglareBoon					= Action.Create({ Type = "Spell", ID = 337534, Hidden = true	}),
+    FelBombardment					= Action.Create({ Type = "Spell", ID = 337775, Hidden = true	}),
+	--Havoc Legendaries
+    BurningWound					= Action.Create({ Type = "Spell", ID = 346279, Hidden = true	}),
+    ChaosTheory						= Action.Create({ Type = "Spell", ID = 337551, Hidden = true	}),
+    DarkerNature					= Action.Create({ Type = "Spell", ID = 346264, Hidden = true	}),
+    ErraticFelCore					= Action.Create({ Type = "Spell", ID = 337685, Hidden = true	}),	
+
+	--Anima Powers - to add later...
+	
+	
+	-- Trinkets
+	
+
+	-- Potions
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
+    PotionofSpectralAgility			= Action.Create({ Type = "Potion", ID = 171270, QueueForbidden = true }),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),    	
+	
     -- Misc
-    Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
-    TargetEnemy                            = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)
-    StopCast                               = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit
-    CyclotronicBlast                       = Action.Create({ Type = "Spell", ID = 293491, Hidden = true}),
-    ConcentratedFlameBurn                  = Action.Create({ Type = "Spell", ID = 295368, Hidden = true}),
-    RazorCoralDebuff                       = Action.Create({ Type = "Spell", ID = 303568, Hidden = true     }),
-    ConductiveInkDebuff                    = Action.Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-    PoolResource                           = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
-    DummyTest                              = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
-	Quake                                  = Action.Create({ Type = "Spell", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)
+    Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
+    TargetEnemy                     = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)
+    StopCast                        = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit
+    PoolResource                    = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
+	Quake                           = Action.Create({ Type = "Spell", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)
 }
 
 Action:CreateEssencesFor(ACTION_CONST_DEMONHUNTER_HAVOC)
@@ -370,7 +370,7 @@ A[2] = function(icon)
     end                                                                                 
 end
 
--- Multidot Handler UI --
+-- Darkness Handler --
 local function HandleDarkness()
     local choice = Action.GetToggle(2, "DarknessMode")
     
@@ -494,7 +494,7 @@ local function SelfDefensives()
     end  
     
     -- Darkness
-    if   AutoDarkness and HandleDarkness and CanDarkness() then 
+    if AutoDarkness and HandleDarkness and CanDarkness() then 
         -- Notification                    
         A.Toaster:SpawnByTimer("TripToast", 0, "Darkness!", "Using Defensive Darkness!", A.Darkness.ID)
         return A.Darkness
@@ -573,13 +573,13 @@ local function SelfDefensives()
         A.Toaster:SpawnByTimer("TripToast", 0, "Blur!", "Using Defensive Blur!", A.Blur.ID)
         return A.Blur
     end
-    
+
     -- HealingPotion
-    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
-    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady(player) and 
+    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
+    if     SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
-            AbyssalHealingPotion >= 100 and 
+            SpiritualHealingPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 20 or 
@@ -601,12 +601,12 @@ local function SelfDefensives()
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            AbyssalHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= AbyssalHealingPotion
+            SpiritualHealingPotion < 100 and 
+            Unit(player):HealthPercent() <= SpiritualHealingPotion
         )
     ) 
     then 
-        return A.AbyssalHealingPotion
+        return A.SpiritualHealingPotion
     end 
     
     -- Stoneform on self dispel (only PvE)
@@ -649,7 +649,7 @@ local function Interrupts(unit)
         end 
 		
         -- Fel Eruption
-        if useCC and A.FelEruption:IsSpellLearned() and A.FelEruption:IsReady(unit) and not A.Disrupt:IsReady(unit) and A.FelEruption:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true) then 
+        if useCC and A.FelEruption:IsTalentLearned() and A.FelEruption:IsReady(unit) and not A.Disrupt:IsReady(unit) and A.FelEruption:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true) then 
             -- Notification                    
             --Action.SendNotification("CC : Fel Eruption", A.FelEruption.ID)
             return A.FelEruption              
@@ -737,33 +737,28 @@ A[3] = function(icon, isMulti)
     local inCombat = Unit(player):CombatTime() > 0
     local combatTime = Unit(player):CombatTime()
     local Pull = A.BossMods:GetPullTimer()	
---    local HoABossOnly = A.GetToggle(2, "HoABossOnly")
     local EyeBeamTTD = A.GetToggle(2, "EyeBeamTTD")
     local EyeBeamRange = A.GetToggle(2, "EyeBeamRange")
     local FocusedAzeriteBeamTTD = A.GetToggle(2, "FocusedAzeriteBeamTTD")
     local FocusedAzeriteBeamUnits = A.GetToggle(2, "FocusedAzeriteBeamUnits")    
     local FelBladeRange = A.GetToggle(2, "FelBladeRange")
-    local FelBladeFury = A.GetToggle(2, "FelBladeFury")    
-    local FelBladeOutOfRange = A.GetToggle(2, "FelBladeOutOfRange")    
-    local ImprisonAsInterrupt = A.GetToggle(2, "ImprisonAsInterrupt")    
-    local BladeDancePoolSeconds = A.GetToggle(2, "BladeDancePoolSeconds")        
-    local ExpectedCombatLength = ExpectedCombatLength()
+    local FelBladeFury = A.GetToggle(2, "FelBladeFury")       
+    local ImprisonAsInterrupt = A.GetToggle(2, "ImprisonAsInterrupt")          
     local HandleDarkness = HandleDarkness()
     local Fury = Player:Fury()
     local FuryDeficit = Player:FuryDeficit()
-    local UnbridledFuryAuto = A.GetToggle(2, "UnbridledFuryAuto")
-    local UnbridledFuryTTD = A.GetToggle(2, "UnbridledFuryTTD")
-    local UnbridledFuryWithSecondMeta = A.GetToggle(2, "UnbridledFuryWithSecondMeta")
-    local UnbridledFuryWithBloodlust = A.GetToggle(2, "UnbridledFuryWithBloodlust")
-    local UnbridledFuryHP = A.GetToggle(2, "UnbridledFuryHP")
-    local UnbridledFuryWithExecute = A.GetToggle(2, "UnbridledFuryWithExecute")
-    local UseHeartOfAzeroth = Action.GetToggle(1, "HeartOfAzeroth")
-    local SyncBladeDanceDeathSweepWithEyeBeam = Action.GetToggle(2, "SyncBladeDanceDeathSweepWithEyeBeam")
     local ImmolationAuraPrePull = Action.GetToggle(2, "ImmolationAuraPrePull")
-    local AzsharasFontofPowerPrePull = Action.GetToggle(2, "AzsharasFontofPowerPrePull")
-    local UnbridledFuryPrePull = Action.GetToggle(2, "UnbridledFuryPrePull")
-    local ArcaneTorrentPrePull = Action.GetToggle(2, "ArcaneTorrentPrePull")
-    local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()
+	local UseMovement = Action.GetToggle(2, "UseMoves")
+	local PotionReady = A.GetToggle(1, "Potion") and ((A.PotionofSpectralAgility:IsReady(player) and A.PotionofSpectralAgility:GetCount() > 0) or (A.PotionofUnbridledFury:IsReady(player) and A.PotionofUnbridledFury:GetCount() > 0) or (A.PotionofEmpoweredExorcisms:IsReady(player) and A.PotionofEmpoweredExorcisms:GetCount() > 0) or (A.PotionofPhantomFire:IsReady(player) and A.PotionofPhantomFire:GetCount() > 0)  or (A.PotionofDeathlyFixation:IsReady(player) and A.PotionofDeathlyFixation:GetCount() > 0))
+	
+	--Potions
+	local AutoPotionSelect = Action.GetToggle(2, "AutoPotionSelect")
+	local PotionTrue = Action.GetToggle(1, "Potion")
+	local PotionHeroOnly = Action.GetToggle(2, "PotionHeroOnly")
+	local PotionTTD = Unit("target"):TimeToDie() > Action.GetToggle(2, "PotionTTD")
+	local PotionMetaOnly = Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and A.GetToggle(2, "PotionMetaOnly")
+	
+	
     -- EyeBeam protection channel
     local CanCast = true
     --local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()
@@ -783,79 +778,68 @@ A[3] = function(icon, isMulti)
         return A.PoolResource:Show(icon)
     end
     
-    ------------------------------------
-    ---------- DUMMY DPS TEST ----------
-    ------------------------------------
-    local DummyTime = GetToggle(2, "DummyTime")
-    if DummyTime > 0 then
-        local unit = "target"
-        local endtimer = 0
-        
-        if Unit(unit):IsExists() and Unit(unit):IsDummy() then
-            if Unit("player"):CombatTime() >= (DummyTime * 60) then
-                StopAttack()
-                endtimer = TMW.time
-                --ClearTarget() -- Protected ? 
-                -- Notification                    
-                --Action.SendNotification(DummyTime .. " Minutes Dummy Test Concluded - Profile Stopped", A.DummyTest.ID)
-				A.Toaster:SpawnByTimer("TripToast", 0, "Dummy Test Concluded!", DummyTime .. " minutes passed. Stopping profile.", A.DummyTest.ID)				
-                
-                if endtimer < TMW.time + 5 then
-                    profileStop = true
-                    --return A.DummyTest:Show(icon)
-                end
-            end
-        end
-    end    
-    --print(A.DBM_GetTimer("test"))
-    if A.DBM_GetTimer("test") > 0 and A.DBM_GetTimer("test") < 5 then
-        -- Notification                    
-        --Action.SendNotification("DBM Test Adds Spawn in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)
-		A.Toaster:SpawnByTimer("TripToast", 0, "DBM Test!", "Adds spawning in: ".. round(A.DBM_GetTimer("test"), 0), A.DummyTest.ID)		
-    end
-
-
-    
     -- Start Rotation
     local function EnemyRotation(unit)     
 
-		VarBladeDance = A.FirstBlood:IsSpellLearned() or GetByRange(8, 3 - num(A.TrailofRuin:IsSpellLearned()))
-        VarPoolingMeta = not A.Demonic:IsSpellLearned() and A.Metamorphosis:GetCooldown() < 6 and FuryDeficit > 30       
-        -- variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30          
-        VarPoolingForMeta = not A.Demonic:IsSpellLearned() and A.Metamorphosis:GetCooldown() < 6 and Fury < 90          
-        -- variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)            
-        VarPoolingForBladeDance = VarBladeDance and (Fury < 75 - num(A.FirstBlood:IsSpellLearned())*20)       
-        -- variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
-        VarPoolingForEyeBeam = A.Demonic:IsSpellLearned() and not A.BlindFury:IsSpellLearned() and A.EyeBeam:GetCooldown() < (A.GetGCD() * 2) and FuryDeficit > 20
-		-- Low Pooling for Eye Beam
-		VarLowPoolForEyeBeam = A.Demonic:IsSpellLearned() and not A.BlindFury:IsSpellLearned() and A.EyeBeam:GetCooldown() < (A.GetGCD() * 2) and FuryDeficit > 75
-        -- variable,name=waiting_for_dark_slash,value=talent.dark_slash.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.dark_slash.up
-        VarWaitingForEssenceBreak = A.EssenceBreak:IsSpellLearned() and not VarPoolingForBladeDance and not VarPoolingForMeta and A.EssenceBreak:GetCooldown() == 0          
-        -- variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
-        VarWaitingForMomentum = A.Momentum:IsSpellLearned() and Unit(player):HasBuffs(A.MomentumBuff.ID, true) == 0
-		--VengefulRetreat + Fel Rush combo
-		MovementComboReady = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:IsReady("player") and A.FelRush:IsReady("player") and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and A.GetToggle(2, "UseMoves")
-		MovementComboSoon = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:GetCooldown() < 3 and A.FelRush:GetCooldown() < 3 and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and A.GetToggle(2, "UseMoves")
+		--#####################
+		--##### VARIABLES #####
+		--#####################
+
+		--actions+=/variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-talent.trail_of_ruin.enabled)
+		VarBladeDance = A.FirstBlood:IsTalentLearned() or (not A.TrailofRuin:IsTalentLearned() and MultiUnits:GetByRange(8, 3) >= (3 - num(A.TrailofRuin:IsTalentLearned())))
+
+		--actions+=/variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30		
+        VarPoolingForMeta = not A.Demonic:IsTalentLearned() and A.Metamorphosis:GetCooldown() < 6 and FuryDeficit > 30         
 		
+		--actions+=/variable,name=pooling_for_blade_dance,value=variable.blade_dance&(fury<75-talent.first_blood.enabled*20)           
+        VarPoolingForBladeDance = VarBladeDance and (Fury < 75 - (num(A.FirstBlood:IsTalentLearned())*20))       
+		
+        -- actions+=/variable,name=pooling_for_eye_beam,value=talent.demonic.enabled&!talent.blind_fury.enabled&cooldown.eye_beam.remains<(gcd.max*2)&fury.deficit>20
+        VarPoolingForEyeBeam = A.Demonic:IsTalentLearned() and not A.BlindFury:IsTalentLearned() and A.EyeBeam:GetCooldown() < (A.GetGCD() * 2) and FuryDeficit > 20
+		
+		--[[ Low Pooling for Eye Beam
+		VarLowPoolForEyeBeam = A.Demonic:IsTalentLearned() and not A.BlindFury:IsTalentLearned() and A.EyeBeam:GetCooldown() < (A.GetGCD() * 2) and FuryDeficit > 75]]
         
+		-- actions+=/variable,name=waiting_for_essence_break,value=talent.essence_break.enabled&!variable.pooling_for_blade_dance&!variable.pooling_for_meta&cooldown.essence_break.up
+        VarWaitingForEssenceBreak = A.EssenceBreak:IsTalentLearned() and not VarPoolingForBladeDance and not VarPoolingForMeta and A.EssenceBreak:IsReady(unit)          
+        
+		-- actions+=/variable,name=waiting_for_momentum,value=talent.momentum.enabled&!buff.momentum.up
+        VarWaitingForMomentum = A.Momentum:IsTalentLearned() and Unit(player):HasBuffs(A.MomentumBuff.ID, true) == 0
+		
+		--VengefulRetreat + Fel Rush combo ----- this actually sucks... Vengeful Retreat jumps back further than Fel Rush dashes forward
+		MovementComboReady = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:IsReady("player") and A.FelRush:IsReady("player") and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0  and UseMovement
+		MovementComboSoon = Unit("target"):GetRange() <= 2 and inCombat and A.VengefulRetreat:GetCooldown() < 3 and A.FelRush:GetCooldown() < 3 and (Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0 or (A.ImmolationAura:GetCooldown() <= 2 and A.UnboundChaos:IsTalentLearned()))  and UseMovement
+		
+        --#########################
+		--##### NOTIFICATIONS #####
+		--#########################
+		
 		--Announce Movement Combo soon
 		if MovementComboSoon
 		then
 			A.Toaster:SpawnByTimer("TripToast", 0, "Movement Combo Ready!", "Get prepared!", A.VengefulRetreat.ID)
 		end
 		
-				-- unbound chaos
-		if MovementComboReady and A.EyeBeam:GetCooldown() > 3 and A.Metamorphosis:GetCooldown() > 5
+		--##########################
+		--##### MOVEMENT COMBO ##### -- Actual garbage in game - need to revisit this.
+		--##########################
+		
+		-- unbound chaos
+		if MovementComboReady and A.EyeBeam:GetCooldown() > 3 and ((BurstIsON(unit) and A.Metamorphosis:GetCooldown() > 5) or not BurstIsON(unit))
 		then
 			return A.VengefulRetreat:Show(icon)
 		end	
 		
-		if A.FelRush:IsReady("player") and inCombat and Unit("target"):GetRange() >= 10 and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0 and A.GetToggle(2, "UseMoves") then
+		if A.FelRush:IsReady("player") and inCombat and Unit("target"):GetRange() >= 10 and Unit("player"):HasBuffs(A.InnerDemon.ID, true) > 0 and UseMovement then
 			return A.FelRush:Show(icon)
 		end		
 		
+		--#####################
+		--##### UTILITIES #####
+		--#####################
+		
         -- Purge
-        if inCombat and A.ArcaneTorrent:AutoRacial(unit) and AuraIsValid(unit, "UsePurge", "Dispel") then 
+        if inCombat and A.ArcaneTorrent:AutoRacial(unitID, true) and AuraIsValid(unit, "UsePurge", "Dispel") then 
             return A.ArcaneTorrent:Show(icon)
         end             
         
@@ -863,6 +847,7 @@ A[3] = function(icon, isMulti)
         --if A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UsePurge", "Dispel") then
         --    return A.ConsumeMagic:Show(icon)
         --end
+		
         if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UsePurge", "MagicMovement") then
             return A.ConsumeMagic:Show(icon)
         end
@@ -884,14 +869,8 @@ A[3] = function(icon, isMulti)
             return Interrupt:Show(icon)
         end 
         
-        -- pick_up_fragment,if=fury.deficit>=35&(!azerite.eyes_of_rage.enabled|cooldown.eye_beam.remains>1.4)
-        if inCombat and FuryDeficit <= 35 and (A.EyesofRage:GetAzeriteRank() > 0 or A.EyeBeam:GetCooldown() < 1.4) then
-            -- Notification                    
-            --Action.SendNotification("Don't take Soul Fragment !!!", A.EyesofRage.ID)
-        end
-        
         -- Custom Katherine tentacle handler
-        if inCombat and UnitName(unit) == "Twisted Appendage" and A.DemonsBite:IsReady(unit) and not A.DemonBlades:IsSpellLearned() and CanCast then
+        if inCombat and UnitName(unit) == "Twisted Appendage" and A.DemonsBite:IsReady(unit) and not A.DemonBlades:IsTalentLearned() and CanCast then
             return A.DemonsBite:Show(icon)
         end
         
@@ -913,19 +892,18 @@ A[3] = function(icon, isMulti)
                 return A.DemonsBite:Show(icon)
             end            
         end
-        
+		
+		
+		--#####################
+		--##### PRECOMBAT #####
+		--#####################
+		
         --Precombat
-        if not inCombat and Unit(unit):IsExists() then
-            
-            -- use_item,name=azsharas_font_of_power
-            if A.AzsharasFontofPower:IsReady(player) and (Pull > 0.1 and Pull <= AzsharasFontofPowerPrePull) then
-                -- Notification                    
-			A.Toaster:SpawnByTimer("TripToast", 0, "Azshara's Font of Power!", "Channeling for Pre-Pull!", A.AzsharasFontofPower.ID) 
-                return A.AzsharasFontofPower:Show(icon)
-            end
-            
+		
+		local function PrecombatCall()
+
             -- immolation_aura
-            if A.ImmolationAura:IsReady(player) and ((Pull > 0.1 and Pull <= ImmolationAuraPrePull) or not Action.GetToggle(1, "BossMods")) then
+            if A.ImmolationAura:IsReady(unit) then
                 -- Notification                    
 			--A.Toaster:SpawnByTimer("TripToast", 0, "Immolation Aura PrePull!", "Unbound Chaos ready if talented.", A.ImmolationAura.ID)
                 return A.ImmolationAura:Show(icon)
@@ -937,131 +915,38 @@ A[3] = function(icon, isMulti)
                 -- Notification                    
                 --Action.SendNotification("Prepull: Arcane Torrent", A.ArcaneTorrent.ID) 
                 return A.ArcaneTorrent:Show(icon)
-            end    
+            end           
             
-            --[[ PotionofUnbridledFury
-            if A.PotionofUnbridledFury:IsReady(unit) and Action.GetToggle(1, "Potion") and (Pull > 0.1 and Pull <= UnbridledFuryPrePull) then
-                -- Notification                    
-                Action.SendNotification("Using pre pot", A.PotionofUnbridledFury.ID) 
-                return A.PotionofUnbridledFury:Show(icon)
-            end]]    
-            
-            --[[ guardian_of_azeroth,if=(buff.metamorphosis.up&cooldown.metamorphosis.ready)|buff.metamorphosis.remains>25|target.time_to_die<=30
-            if A.GuardianofAzeroth:AutoHeartOfAzeroth(unit) and BurstIsON(unit) and (Action.GetToggle(1, "Racial") and Pull > 0.1 and Pull <= 1.5 or not Action.GetToggle(1, "BossMods"))
-            then
-                -- Notification                    
-                Action.SendNotification("Prepull: Guardian of Azeroth", A.GuardianofAzeroth.ID) 
-                return A.GuardianofAzeroth:Show(icon)
-            end   ]]         
-            
-            -- use_item,name=azsharas_font_of_power
-            if A.DemonsBite:IsReady(unit) and not A.Demonic:IsSpellLearned() and not A.DemonBlades:IsSpellLearned() and ((Pull > 0.1 and Pull <= 1) or not Action.GetToggle(1, "BossMods")) then
+            -- Failsafe if nothing else is ready.
+            if A.DemonsBite:IsReady(unit) then
                 return A.DemonsBite:Show(icon)
             end
-            
-            -- eye_beam,if=raid_event.adds.up|raid_event.adds.in>25
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and A.Demonic:IsSpellLearned() and HandleEyeBeam() and EyeBeamRange and ((Pull > 0.1 and Pull <= 1) or not Action.GetToggle(1, "BossMods")) then
-                -- Notification                    
-				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
-                return A.EyeBeam:Show(icon)
-            end            
-        end
-                
-        -- Burst Phase
-        if BurstIsON(unit) and unit ~= "mouseover" and inCombat and not profileStop then
-            -- metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta|target.time_to_die<25
-            if A.Metamorphosis:IsReady(player) and CanCast and combatTime > 3 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and 
-            (
-                not A.Demonic:IsSpellLearned() 
-                or
-                (Unit(unit):IsBoss() and Unit(unit):TimeToDie() < 25)
-            )
-            then
-                -- Notification                    
-                --Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)                
-                return A.Metamorphosis:Show(icon)
-            end    
-            
-            -- metamorphosis,if=talent.demonic.enabled&(!azerite.chaotic_transformation.enabled|(cooldown.eye_beam.remains>20&(!variable.blade_dance|cooldown.blade_dance.remains>gcd.max)))
-            if A.Metamorphosis:IsReady(player) and CanCast and   
-            (
-                A.Demonic:IsSpellLearned() and 
-                (
-                    A.ChaoticTransformation:GetAzeriteRank() == 0 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0
-                    or
-                    A.ChaoticTransformation:GetAzeriteRank() > 0 and A.EyeBeam:GetCooldown() > 0 and A.LastPlayerCastName == A.DeathSweep:Info()
-                )
-            )
-            then
-                -- Notification                    
-                --Action.SendNotification("Burst: Metamorphosis", A.Metamorphosis.ID)
-                return A.Metamorphosis:Show(icon)
-            end
-            
-            
-            -- potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
-            if A.PotionofUnbridledFury:IsReady(unit) and CanCast and Action.GetToggle(1, "Potion") and UnbridledFuryAuto
-            and 
-            (
-                (Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and UnbridledFuryWithSecondMeta)
-                or
-                (UnbridledFuryWithBloodlust and Unit("player"):HasHeroism())
-                or
-                (UnbridledFuryWithExecute and Unit(unit):HealthPercent() <= 30)
-            )
-            and Unit(unit):TimeToDie() > UnbridledFuryTTD
-            then
-                -- Notification                    
-                A.Toaster:SpawnByTimer("TripToast", 0, "Unbridled Fury!", "Using Unbridled Fury potion!", A.PotionofUnbridledFury.ID)  
-                return A.PotionofUnbridledFury:Show(icon)
-            end
-            
-            -- use_item,name=galecallers_boon,if=!talent.fel_barrage.enabled|cooldown.fel_barrage.ready
-            if A.GalecallersBoon:IsReady(unit) and CanCast and (not A.FelBarrage:IsSpellLearned() or A.FelBarrage:GetCooldown() == 0) then
-                return A.GalecallersBoon:Show(icon)
-            end
-            
-            -- use_item,effect_name=cyclotronic_blast,if=buff.metamorphosis.up&buff.memory_of_lucid_dreams.down&(!variable.blade_dance|!cooldown.blade_dance.ready)
-            if A.CyclotronicBlast:IsReady(unit) and CanCast and (Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) and Unit(player):HasBuffs(A.MemoryofLucidDreamsBuff.ID, true) == 0 and (not VarBladeDance or not A.BladeDance:GetCooldown() == 0)) then
-                return A.CyclotronicBlast:Show(icon)
-            end
-            
-            -- use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.down|(debuff.conductive_ink_debuff.up|buff.metamorphosis.remains>20)&target.health.pct<31|target.time_to_die<20
-            if A.AshvanesRazorCoral:IsReady(unit)  
-            and (
-                Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) == 0 and CanCast
-                or 
-                (
-                    (
-                        (
-                            Unit(unit):HealthPercent() < 31 and CanCast and Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) > 10 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 8 
-                        )
-                        or 
-                        (
-                            Unit(unit):HealthPercent() < 31 and CanCast and Unit(unit):HasDeBuffs(A.ConductiveInkDebuff.ID, true) > 0 and Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) > 0
-                        )
-                    )
-                )
-            ) 
-            then
-                -- Notification                    
-                --Action.SendNotification("Trinket: Ashvanes Razor Coral", A.AshvanesRazorCoral.ID)
-                return A.AshvanesRazorCoral:Show(icon)
-            end
-            
-            -- use_item,name=azsharas_font_of_power,if=cooldown.metamorphosis.remains<10|cooldown.metamorphosis.remains>60
-            if A.AzsharasFontofPower:IsReady(player) and CanCast and (A.Metamorphosis:GetCooldown() < 10 or A.Metamorphosis:GetCooldown() > 60) then
-                -- Notification                    
-				A.Toaster:SpawnByTimer("TripToast", 0, "Azshara's Font of Power!", "Stop moving!", A.AzsharasFontofPower.ID)              
-                return A.AzsharasFontofPower:Show(icon)
-            end
-            
-            -- use_items,if=buff.metamorphosis.up
-            -- call_action_list,name=essences
-            --[[if Essences(unit) then
-                return true
-            end]] 
+		
+		end
+                       
+          
+		--##################### 
+		--##### COOLDOWNS #####
+		--#####################
+		  
+		local function CooldownCall()
+			--actions.cooldown=metamorphosis,if=!(talent.demonic.enabled|variable.pooling_for_meta)&(!covenant.venthyr.enabled|!dot.sinful_brand.ticking)|target.time_to_die<25
+			if A.Metamorphosis:IsReady(unit) and (not (A.Demonic:IsTalentLearned() or VarPoolingForMeta)) and (Player:GetCovenant() ~= 2 or Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0) and not Action.GetToggle(2, "PotionMetaOnly") then
+				return A.Metamorphosis:Show(icon)
+			end		
 			
+			if A.Metamorphosis:IsReady(unit) and (not (A.Demonic:IsTalentLearned() or VarPoolingForMeta)) and (Player:GetCovenant() ~= 2 or Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0) and PotionReady then
+				return A.Metamorphosis:Show(icon)
+			end					
+			--actions.cooldown+=/metamorphosis,if=talent.demonic.enabled&(!azerite.chaotic_transformation.enabled&level<54|(cooldown.eye_beam.remains>20&(!variable.blade_dance|cooldown.blade_dance.remains>gcd.max)))&(!covenant.venthyr.enabled|!dot.sinful_brand.ticking)
+			if A.Metamorphosis:IsReady(unit) and A.EyeBeam:GetCooldown() > 20 and (not VarBladeDance or A.BladeDance:GetCooldown() > A.GetGCD()) and (Player:GetCovenant() ~= 2 or Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0) and not Action.GetToggle(2, "PotionMetaOnly") then
+				return A.Metamorphosis:Show(icon)
+			end 
+			
+			if A.Metamorphosis:IsReady(unit) and A.EyeBeam:GetCooldown() > 20 and (not VarBladeDance or A.BladeDance:GetCooldown() > A.GetGCD()) and (Player:GetCovenant() ~= 2 or Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0) and PotionReady then
+				return A.Metamorphosis:Show(icon)
+			end 			
+
 			-- guardian_of_azeroth
 			if A.GuardianofAzeroth:IsReady(unit) and CanCast and BurstIsON(unit) then
 				return A.Shadowmeld:Show(icon)
@@ -1102,257 +987,344 @@ A[3] = function(icon, isMulti)
 				return A.Shadowmeld:Show(icon)
 			end
 
-            
-            -- bag_of_tricks
-            if A.BagofTricks:AutoRacial(unit) and CanCast and Action.GetToggle(1, "Racial") and BurstIsON(unit) then
-                return A.BagofTricks:Show(icon)
+			--Trinket 1
+            if A.Trinket1:IsReady(unit) then
+                return A.Trinket1:Show(icon)    
             end
             
-            -- Non SIMC Custom Trinket1
-            if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and CanCast then        
-                if BurstIsON(unit) then 
-                    return A.Trinket1:Show(icon)
-                end         
+			--Trinket 2
+            if A.Trinket2:IsReady(unit) then
+                return A.Trinket2:Show(icon)    
             end
-            
-            -- Non SIMC Custom Trinket2
-            if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and CanCast then        
-                if BurstIsON(unit) then 
-                    return A.Trinket2:Show(icon)
-                end     
-            end
-            
-        end
-
-        --[[ concentrated_flame,if=(!dot.concentrated_flame_burn.ticking&!action.concentrated_flame.in_flight|full_recharge_time<gcd.max)
-        if A.ConcentratedFlame:AutoHeartOfAzeroth(unit, true)  and UseHeartOfAzeroth 
-		and (
-		        (Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 and not A.ConcentratedFlame:IsSpellInFlight() or A.ConcentratedFlame:GetSpellChargesFullRechargeTime() < A.GetGCD())
-		    ) then
-            return A.ConcentratedFlame:Show(icon)
-        end
-			
-		-- reaping_flames
-        if A.ReapingFlames:AutoHeartOfAzeroth(unit, true) and UseHeartOfAzeroth then
-            return A.ReapingFlames:Show(icon)
-        end]]
-        
 		
-        -- Demonic build
-        if A.Demonic:IsSpellLearned() and not profileStop and inCombat then
-			
-			-- death_sweep,if=variable.blade_dance
-            if A.DeathSweep:IsReadyByPassCastGCD(player) and Unit(unit):GetRange() < 6 and CanCast and VarBladeDance and not Unit(unit):IsTotem()
-            then
-                return A.DeathSweep:Show(icon)
-            end   
-            
-            -- eye_beam,if=raid_event.adds.up|raid_event.adds.in>25
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and 
-            (
-                Unit(unit):TimeToDie() > EyeBeamTTD 
-                or 
-                Unit(unit):IsBoss()
-            ) 
+			--actions.cooldown+=/potion,if=buff.metamorphosis.remains>25|target.time_to_die<60
+			-- Unbridled Fury
+            if A.PotionofUnbridledFury:IsReady(unit) and AutoPotionSelect == "UnbridledFuryPot" and PotionTrue and ((Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and PotionMetaOnly) or (PotionHeroOnly and Unit("player"):HasHeroism())) and PotionTTD
             then
                 -- Notification                    
-				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                 
-                return A.EyeBeam:Show(icon)
-            end    
-            
-            -- blade_dance,if=variable.blade_dance&!cooldown.metamorphosis.ready&(cooldown.eye_beam.remains>(5-azerite.revolving_blades.rank*3)|(raid_event.adds.in>cooldown&raid_event.adds.in<25))
-            if A.BladeDance:IsReadyByPassCastGCD(player) and Unit(unit):GetRange() < 6 and CanCast and VarBladeDance and not Unit(unit):IsTotem() and
-            (
-                -- AUTO
-                (
-                    BladeDancePoolSeconds >= 15 and
-                    (
-                        (A.EyeBeam:GetCooldown() > (9 / (1 + Player:HastePct() * 0.01)) and SyncBladeDanceDeathSweepWithEyeBeam) 
-                    )                
-                ) 
-                or  
-                -- MANUAL
-                (
-                    BladeDancePoolSeconds < 15 and
-                    (A.EyeBeam:GetCooldown() > BladeDancePoolSeconds and SyncBladeDanceDeathSweepWithEyeBeam)
-                )
-                -- DISABLED NO SYNC
-                or 
-                (
-                    not SyncBladeDanceDeathSweepWithEyeBeam    and A.EyeBeam:GetCooldown() > 0
-                )
-                -- DISABLED EYE BEAM
-                or
-                (
-                    HandleEyeBeam() == false
-                )
-            )            
-            then
-                --(BladeDancePool and A.EyeBeam:GetCooldown() < A.BladeDance:GetCooldown() * BladeDancePoolSeconds)  
-                -- EyeBeam cooldown < Blade Dance Cooldown = stop using Blade Dance
-                return A.BladeDance:Show(icon)
-            end 
+                A.Toaster:SpawnByTimer("TripToast", 0, "Combat Potion!", "Using Combat Potion!", A.PotionofUnbridledFury.ID)  
+                return A.PotionofUnbridledFury:Show(icon)
+            end
 
-			-- immolation_aura
-            if A.ImmolationAura:IsReady(player) and CanCast and FuryDeficit > 20 then
-                return A.ImmolationAura:Show(icon)
-            end 
-  
-			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and MultiUnits:GetByRange(3,8) then
-				return A.GlaiveTempest:Show(icon)
-			end	
-  
-            -- annihilation,if=!variable.pooling_for_blade_dance
-            if A.Annihilation:IsReadyByPassCastGCD(unit) and CanCast and not VarPoolingForBladeDance then
-                return A.Annihilation:Show(icon)
+			-- Spectral Agility
+            if A.PotionofSpectralAgility:IsReady(unit) and AutoPotionSelect == "SpectralAgilityPot" and PotionTrue and ((Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and PotionMetaOnly) or (PotionHeroOnly and Unit("player"):HasHeroism())) and PotionTTD
+            then
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Combat Potion!", "Using Combat Potion!", A.PotionofSpectralAgility.ID)  
+                return A.PotionofSpectralAgility:Show(icon)
             end
-            
-            -- felblade,if=fury.deficit>=40
-            if A.Felblade:IsReady(unit) and HandleFelBlade() and Unit(unit):GetRange() <= FelBladeRange and CanCast and A.Felblade:IsSpellLearned() and Fury < FelBladeFury then
-                return A.Felblade:Show(icon)
-            end
-            
-            -- chaos_strike,if=!variable.pooling_for_blade_dance&!variable.pooling_for_eye_beam
-            if A.ChaosStrike:IsReady(unit) and CanCast and not VarPoolingForBladeDance and 
-			(
-					(HandleEyeBeam() ~= false and not VarPoolingForEyeBeam)
-					or
-					(HandleEyeBeam() == false and not VarLowPoolForEyeBeam)
-			) then
-                return A.ChaosStrike:Show(icon)
-            end    
-            
-            -- demons_bite
-            if A.DemonsBite:IsReady(unit) and CanCast and not A.DemonBlades:IsSpellLearned() then
-                return A.DemonsBite:Show(icon)
-            end    
-            
-            -- felblade,if=movement.distance>15|buff.out_of_range.up
-            if A.Felblade:IsReady(unit) and HandleFelBlade() and CanCast and Unit(unit):GetRange() > 10 and FelBladeOutOfRange and A.Felblade:IsSpellLearned() and not A.Momentum:IsSpellLearned() then
-                return A.Felblade:Show(icon)
-            end
-            
-            -- throw_glaive,if=buff.out_of_range.up
-            if A.ThrowGlaive:IsReady(unit) and CanCast and Unit(unit):GetRange() > 15 and A.ThrowGlaive:GetSpellCharges() > 1 and not A.Momentum:IsSpellLearned() then
-                return A.ThrowGlaive:Show(icon)
-            end
-            
-            -- throw_glaive,if=talent.demon_blades.enabled
-            if A.ThrowGlaive:IsReady(unit) and CanCast and (A.DemonBlades:IsSpellLearned() or A.ThrowGlaive:GetSpellCharges() > 1) then
-                return A.ThrowGlaive:Show(icon)
-            end
-			
-            -- throw_glaive,manual two charges
-            if A.ThrowGlaive:IsReady(unit) and CanCast and A.ThrowGlaive:GetSpellCharges() == 2 then
-                return A.ThrowGlaive:Show(icon)
-            end
-            
-        end
-        
-        -- Normal build
-        if not A.Demonic:IsSpellLearned() and not profileStop and inCombat then
 
-            -- fel_barrage,if=((!cooldown.eye_beam.up|buff.metamorphosis.up)&raid_event.adds.in>30)|active_enemies>desired_targets
-            if A.FelBarrage:IsReady(unit) and not ShouldDelayFelBarrage() and CanCast and 
-            (
-                (
-                    (A.EyeBeam:GetCooldown() > 0 or Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0)
-                ) 
-                or 
-                GetByRange(1, 40)
-            ) 
+			-- Empowered Exorcisms
+            if A.PotionofEmpoweredExorcisms:IsReady(unit) and AutoPotionSelect == "EmpoweredExorcismsPot" and PotionTrue and ((Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and PotionMetaOnly) or (PotionHeroOnly and Unit("player"):HasHeroism())) and PotionTTD
             then
-                return A.FelBarrage:Show(icon)
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Combat Potion!", "Using Combat Potion!", A.PotionofEmpoweredExorcisms.ID)  
+                return A.PotionofEmpoweredExorcisms:Show(icon)
             end
+
+			-- Phantom Fire
+            if A.PotionofPhantomFire:IsReady(unit) and AutoPotionSelect == "PhantomFirePot" and PotionTrue and ((Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and PotionMetaOnly) or (PotionHeroOnly and Unit("player"):HasHeroism())) and PotionTTD
+            then
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Combat Potion!", "Using Combat Potion!", A.PotionofPhantomFire.ID)  
+                return A.PotionofPhantomFire:Show(icon)
+            end
+
+			-- Deathly Fixation
+            if A.PotionofDeathlyFixation:IsReady(unit) and AutoPotionSelect == "DeathlyFixationPot" and PotionTrue and ((Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 25 and PotionMetaOnly) or (PotionHeroOnly and Unit("player"):HasHeroism())) and PotionTTD
+            then
+                -- Notification                    
+                A.Toaster:SpawnByTimer("TripToast", 0, "Combat Potion!", "Using Combat Potion!", A.PotionofDeathlyFixation.ID)  
+                return A.PotionofDeathlyFixation:Show(icon)
+            end	
+		
+		end
+
+
+		--#################### 
+		--##### COVENANT #####
+		--####################
+		
+		local function CovenantCall()
 			
-			-- death_sweep,if=variable.blade_dance
-            if A.DeathSweep:IsReadyByPassCastGCD(unit) and InMelee(unit) and CanCast and not Unit(unit):IsTotem() and VarBladeDance then
-                return A.DeathSweep:Show(icon)
-            end
-			
-            -- immolation_aura
-            if A.ImmolationAura:IsReady(player) and CanCast and FuryDeficit > 10 then
-                return A.ImmolationAura:Show(icon)
-            end
- 
-			-- glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
-			if A.GlaiveTempest:IsReady(player) and not VarWaitingForMomentum and MultiUnits:GetByRange(3,8) then
-				return A.GlaiveTempest:Show(icon)
+			--actions.cooldown+=/sinful_brand,if=!dot.sinful_brand.ticking
+			if A.SinfulBrand:IsReady(unit) and Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0 and not Player:PrevGCD(1, A.Metamorphosis) then
+				return A.SinfulBrand:Show(icon)
 			end	
-            
-			-- eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and Unit(unit):GetRange() <= EyeBeamRange and not Unit(unit):IsTotem() and HandleEyeBeam()  then
+			
+			--actions.cooldown+=/the_hunt
+			if A.TheHunt:IsReady(unit) then
+				return A.TheHunt:Show(icon)
+			end	
+
+			--Fleshcraft
+			if A.Fleshcraft:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit("player"):CombatTime() > 0 and (Unit("player"):IsExecuted() or (Unit("player"):HealthPercent() <= 40 and Unit("player"):TimeToDie() < 8)) then 
+			A.Toaster:SpawnByTimer("TripToast", 0, "Fleshcraft!", "Using Fleshcraft defensively! Don't move!", A.Fleshcraft.ID)			
+				return self.Fleshcraft:Show(icon)
+			end 
+			
+			--actions.cooldown+=/fodder_to_the_flame
+			if A.FoddertotheFlame:IsReady(unit) then
+			A.Toaster:SpawnByTimer("TripToast", 0, "Fodder to the Flame!", "You've spawned a demon! Kill it!", A.FoddertotheFlame.ID)			
+				return A.FoddertotheFlame:Show(icon)
+			end	
+			
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and A.MultiUnits:GetByRange(5, 3) >= 2 and Unit(unit):TimeToDie() > 5 then
+				return A.ElysianDecree:Show(icon)
+			end	
+
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
+				return A.ElysianDecree:Show(icon)
+			end					
+		
+		end
+
+		--[[################################## 
+		--##### ESSENCE BREAK ROTATION #####
+		--##################################		
+
+		--local function EssenceBreakCall()	
+		
+			--actions.essence_break=essence_break,if=fury>=80&(cooldown.blade_dance.ready|!variable.blade_dance)
+			if A.EssenceBreak:IsReady(unit) and Fury >= 80 and (A.BladeDance:IsReady(unit) or not VarBladeDance) then
+				return A.EssenceBreak:Show(icon)
+			end
+			
+			--actions.essence_break+=/death_sweep,if=variable.blade_dance&debuff.essence_break.up
+			if A.DeathSweep:IsReady(unit) and VarBladeDance and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 and Unit(unit):GetRange() <= 8 then
+				return A.DeathSweep:Show(icon)
+			end	
+			
+			--actions.essence_break+=/blade_dance,if=variable.blade_dance&debuff.essence_break.up
+			if A.BladeDance:IsReady(unit) and VarBladeDance and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 and Unit(unit):GetRange() <= 8 then
+				return A.BladeDance:Show(icon)
+			end	
+			
+			--actions.essence_break+=/annihilation,if=debuff.essence_break.up
+			if A.Annihilation:IsReady(unit) and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 then
+				return A.Annihilation:Show(icon)
+			end
+			
+			--actions.essence_break+=/chaos_strike,if=debuff.essence_break.up
+			if A.ChaosStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 then
+				return A.ChaosStrike:Show(icon)
+			end	
+		
+		end]]
+
+		--############################ 
+		--##### DEMONIC ROTATION #####
+		--############################
+
+		local function DemonicCall()
+		
+			--[[actions.demonic=fel_rush,if=(talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			if A.FelRush:IsReady(unitID, true) and (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0) and A.FelRush:GetSpellCharges() > 1 and UseMovement then
+				return A.FelRush:Show(icon)
+			end]]
+			
+			--Pseudo EssenceBreak
+			if A.EssenceBreak:IsReady(player) and Unit(unit):HasDeBuffs(A.EssenceBreak.ID, true) == 0 then
+				return A.EssenceBreak:Show(icon)
+			end	
+			
+			--actions.demonic+=/death_sweep,if=variable.blade_dance
+			if A.DeathSweep:IsReady(unit) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+				return A.DeathSweep:Show(icon)
+			end
+			
+			--actions.demonic+=/glaive_tempest,if=active_enemies>desired_targets|raid_event.adds.in>10
+			if A.GlaiveTempest:IsReady(unit) and A.MultiUnits:GetByRange(5) >= 2 then
+				return A.SpectralSight:Show(icon)
+			end	
+			
+			--actions.demonic+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up
+			if A.ThrowGlaive:IsReady(unit) and A.SerratedGlaive:IsSoulbindLearned() and A.EyeBeam:GetCooldown() < 6 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and Unit(unit):HasDeBuffs(A.ExposedWound.ID, true) == 0 then
+				return A.ThrowGlaive:Show(icon)
+			end	
+			
+			--actions.demonic+=/eye_beam,if=raid_event.adds.up|raid_event.adds.in>25
+            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and A.Demonic:IsSpellLearned() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) then
                 -- Notification                    
-                Action.SendNotification("Stop moving!! Using Eye Beam", A.EyeBeam.ID)               
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
-            end
+            end    
+			--actions.demonic+=/blade_dance,if=variable.blade_dance&!cooldown.metamorphosis.ready&(cooldown.eye_beam.remains>(5-azerite.revolving_blades.rank*3)|(raid_event.adds.in>cooldown&raid_event.adds.in<25))
+			if A.BladeDance:IsReady(unit) and VarBladeDance and ((not A.Metamorphosis:IsReadyByPassCastGCD() and BurstIsON(unit)) or not BurstIsON(unit)) and A.EyeBeam:GetCooldown() > 5 and Unit(unit):GetRange() <= 8 then
+				return A.BladeDance:Show(icon)
+			end	
 			
-			-- blade_dance,if=variable.blade_dance
-            if A.BladeDance:IsReady(unit) and InMelee(unit) and CanCast and not Unit(unit):IsTotem() and VarBladeDance then
-                return A.BladeDance:Show(icon)
-            end
+			--actions.demonic+=/immolation_aura
+			if A.ImmolationAura:IsReady(unitID, true) then
+				return A.ImmolationAura:Show(icon)
+			end	
 			
+			--actions.demonic+=/annihilation,if=!variable.pooling_for_blade_dance
+			if A.Annihilation:IsReady(unit) and not VarPoolingForBladeDance then
+				return A.Annihilation:Show(icon)
+			end	
 			
-            -- felblade,if=fury.deficit>=40
-            if A.Felblade:IsReady(unit) and HandleFelBlade() and Unit(unit):GetRange() <= FelBladeRange and A.Felblade:IsSpellLearned() and Fury < FelBladeFury then
-                return A.Felblade:Show(icon)
-            end
+			--actions.demonic+=/felblade,if=fury.deficit>=40
+			if A.Felblade:IsReady(unit) and Fury <= FelBladeFury and Unit(unit):GetRange() <= FelBladeRange and HandleFelBlade() then
+				return A.Felblade:Show(icon)
+			end	
+			--actions.demonic+=/chaos_strike,if=!variable.pooling_for_blade_dance&!variable.pooling_for_eye_beam
+			if A.ChaosStrike:IsReady(unit) and not VarPoolingForBladeDance and not VarLowPoolForEyeBeam then
+				return A.ChaosStrike:Show(icon)
+			end	
 			
-			-- eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_essence_break&raid_event.adds.in>cooldown
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and Unit(unit):GetRange() <= EyeBeamRange and not Unit(unit):IsTotem() and HandleEyeBeam() and (not A.BlindFury:IsSpellLearned() and not VarWaitingForEssenceBreak) then
+			--[[actions.demonic+=/fel_rush,if=talent.demon_blades.enabled&!cooldown.eye_beam.ready&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			if A.FelRush:IsReady(unitID, true) and UseMovement and A.DemonBlades:IsTalentLearned() and A.EyeBeam:GetCooldown() > 0 and A.FelRush:GetSpellCharges() > 1 then
+				return A.FelRush:Show(icon)
+			end	]]
+			--actions.demonic+=/demons_bite,target_if=min:debuff.burning_wound.remains,if=runeforge.burning_wound.equipped&debuff.burning_wound.remains<4
+			if A.DemonsBite:IsReady(unit) and Player:HasLegendaryCraftingPower(A.BurningWound) and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
+				return A.DemonsBite:Show(icon)
+			end	
+			
+			--actions.demonic+=/demons_bite
+			if A.DemonsBite:IsReady(unit) then
+				return A.DemonsBite:Show(icon)
+			end	
+			
+			--actions.demonic+=/throw_glaive,if=buff.out_of_range.up
+			if A.ThrowGlaive:IsReady(unit) and Unit(unit):GetRange() >= 8 then
+				return A.ThrowGlaive:Show(icon)
+			end
+			
+			--actions.demonic+=/fel_rush,if=movement.distance>15|buff.out_of_range.up
+			--This can cause problems... Best to leave for now
+			
+			--actions.demonic+=/vengeful_retreat,if=movement.distance>15
+			--Can also cause problems.
+			
+			--actions.demonic+=/throw_glaive,if=talent.demon_blades.enabled	
+			if A.ThrowGlaive:IsReady(unit) and A.DemonBlades:IsTalentLearned() then
+				return A.ThrowGlaive:Show(icon)
+			end			
+		
+		end
+
+		--###########################
+		--##### NORMAL ROTATION #####
+		--###########################
+
+		local function NormalCall()
+		
+			--actions.normal=vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down&time>1
+			--Huh?
+			--[[actions.normal+=/fel_rush,if=(variable.waiting_for_momentum|talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
+			if A.FelRush:IsReady(unitID, true) and UseMovement and (VarWaitingForMomentum or A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0) and A.FelRush:GetSpellCharges() > 1 then
+				return A.FelRush:Show(icon)
+			end	]]
+
+			--Pseduo EssenceBreak
+			if A.EssenceBreak:IsReady(player) and Unit(unit):HasDeBuffs(A.EssenceBreak.ID, true) == 0 then
+				return A.EssenceBreak:Show(icon)
+			end	
+			
+			--actions.normal+=/fel_barrage,if=active_enemies>desired_targets|raid_event.adds.in>30
+			if A.FelBarrage:IsReady(unitID, true) and MultiUnits:GetByRange(5) >= 2 then
+				return A.FelBarrage:Show(icon)
+			end			
+			
+			--actions.normal+=/death_sweep,if=variable.blade_dance
+			if A.DeathSweep:IsReady(unit) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+				return A.DeathSweep:Show(icon)
+			end	
+			
+			--actions.normal+=/immolation_aura
+			if A.ImmolationAura:IsReady(unitID, true) then
+				return A.ImmolationAura:Show(icon)
+			end	
+			--actions.normal+=/glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
+			if A.GlaiveTempest:IsReady(unit) and not VarWaitingForMomentum and A.MultiUnits:GetByRange(5) >= 2 then
+				return A.SpectralSight:Show(icon)
+			end	
+			
+			--actions.normal+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up
+			if A.ThrowGlaive:IsReady(unit) and A.SerratedGlaive:IsSoulbindLearned() and A.EyeBeam:GetCooldown() < 6 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and Unit(unit):HasDeBuffs(A.ExposedWound.ID, true) == 0 then
+				return A.ThrowGlaive:Show(icon)
+			end	 
+			
+			--actions.normal+=/eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
+            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and MultiUnits:GetByRange(5) >= 2 and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not VarWaitingForMomentum then
                 -- Notification                    
-				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
-            end
-            
-            -- annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_essence_break
-            if A.Annihilation:IsReadyByPassCastGCD(unit) and CanCast and 
-            (
-                (
-                    A.DemonBlades:IsSpellLearned()  
-                    or
-                    Fury >= 40 
-                    or
-                    Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) < 5
-                )
-                and not VarPoolingForBladeDance and not VarWaitingForEssenceBreak
-            ) 
-            then
-                return A.Annihilation:Show(icon)
-            end
-            
-            -- chaos_strike
-            if A.ChaosStrike:IsReady(unit) and CanCast and (Fury > 40) then
-                return A.ChaosStrike:Show(icon)
-            end
-            
-            -- eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-            if A.EyeBeam:IsReady(unit) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and CanCast and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and Unit(unit):GetRange() <= EyeBeamRange and not Unit(unit):IsTotem() and HandleEyeBeam() and A.BlindFury:IsSpellLearned() then
+            end    
+			
+			--actions.normal+=/blade_dance,if=variable.blade_dance
+			if A.BladeDance:IsReady(unit) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+				return A.BladeDance:Show(icon)
+			end	
+			
+			--actions.normal+=/felblade,if=fury.deficit>=40
+			if A.Felblade:IsReady(unit) and Fury <= FelBladeFury and Unit(unit):GetRange() <= FelBladeRange and HandleFelBlade() then
+				return A.Felblade:Show(icon)
+			end	
+			
+			--actions.normal+=/eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_essence_break&raid_event.adds.in>cooldown
+            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not A.BlindFury:IsTalentLearned() and not VarWaitingForEssenceBreak then
                 -- Notification                    
-				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)                
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
-            end
-            
-            -- demons_bite
-            if A.DemonsBite:IsReady(unit) and CanCast and not A.DemonBlades:IsSpellLearned() then
-                return A.DemonsBite:Show(icon)
-            end
-            
-            -- felblade,if=movement.distance>15|buff.out_of_range.up
-            if A.Felblade:IsReady(unit) and HandleFelBlade() and Unit(unit):GetRange() > 7 and FelBladeOutOfRange and CanCast and A.Felblade:IsSpellLearned() and (Unit(unit):GetRange() > 15) and not A.Momentum:IsSpellLearned() then
-                return A.Felblade:Show(icon)
-            end
-            
-            -- throw_glaive,if=buff.out_of_range.up
-            if A.ThrowGlaive:IsReady(unit) and CanCast and (Unit(unit):GetRange() > 15) and A.ThrowGlaive:GetSpellCharges() > 1 and not A.Momentum:IsSpellLearned() then
-                return A.ThrowGlaive:Show(icon)
-            end
-            
-            -- throw_glaive,if=talent.demon_blades.enabled
-            if A.ThrowGlaive:IsReady(unit) and CanCast and (A.DemonBlades:IsSpellLearned() or A.ThrowGlaive:GetSpellCharges() == 2) then
-                return A.ThrowGlaive:Show(icon)
-            end
-        end
+            end    
+			
+			--actions.normal+=/annihilation,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30|buff.metamorphosis.remains<5)&!variable.pooling_for_blade_dance&!variable.waiting_for_essence_break
+			if A.Annihilation:IsReady(unit) and (A.DemonBlades:IsTalentLearned() or not VarWaitingForMomentum or FuryDeficit < 30 or Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) < 5) and not VarPoolingForBladeDance and not VarWaitingForEssenceBreak then
+				return A.Annihilation:Show(icon)
+			end	
+			
+			--actions.normal+=/chaos_strike,if=(talent.demon_blades.enabled|!variable.waiting_for_momentum|fury.deficit<30)&!variable.pooling_for_meta&!variable.pooling_for_blade_dance&!variable.waiting_for_essence_break
+			if A.ChaosStrike:IsReady(unit) and (A.DemonBlades:IsTalentLearned() or not VarWaitingForMomentum or FuryDeficit < 30) and not VarPoolingForMeta and not VarPoolingForBladeDance and not VarWaitingForEssenceBreak then
+				return A.ChaosStrike:Show(icon)
+			end
+			
+			--actions.normal+=/eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
+            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and A.BlindFury:IsTalentLearned() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) then
+                -- Notification                    
+				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
+                return A.EyeBeam:Show(icon)
+            end			
+			--actions.normal+=/demons_bite,target_if=min:debuff.burning_wound.remains,if=runeforge.burning_wound.equipped&debuff.burning_wound.remains<4
+			if A.DemonsBite:IsReady(unit) and Player:HasLegendaryCraftingPower(A.BurningWound) and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
+				return A.DemonsBite:Show(icon)
+			end				
+			
+			--actions.normal+=/demons_bite
+			if A.DemonsBite:IsReady(unit) then
+				return A.DemonsBite:Show(icon)
+			end	
+			--[[actions.normal+=/fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
+			if A.FelRush:IsReady(unitID, true) and UseMovement and not A.Momentum:IsTalentLearned() and A.FelRush:GetSpellCharges() > 1 and A.DemonBlades:IsTalentLearned() then
+				return A.FelRush:Show(icon)
+			end	]]
+			
+			--actions.normal+=/felblade,if=movement.distance>15|buff.out_of_range.up
+			if A.Felblade:IsReady(unit) and Fury <= FelBladeFury and Unit(unit):GetRange() <= FelBladeRange and HandleFelBlade() then
+				return A.Felblade:Show(icon)
+			end	
+			
+			--actions.normal+=/fel_rush,if=movement.distance>15|(buff.out_of_range.up&!talent.momentum.enabled)
+			--No.
+			
+			--actions.normal+=/vengeful_retreat,if=movement.distance>15
+			--Still no.
+			
+			--actions.normal+=/throw_glaive,if=talent.demon_blades.enabled		
+			if A.ThrowGlaive:IsReady(unit) and A.DemonBlades:IsTalentLearned() then
+				return A.ThrowGlaive:Show(icon)
+			end	
+		
+		end
+
+
+		--#############################
+		--##### ACTION LIST CALLS #####
+		--#############################
 
         -- PvP Rotation
         local function RotationPvP(unit)
@@ -1391,7 +1363,46 @@ A[3] = function(icon, isMulti)
         if A.IsInPvP and RotationPvP(unit) then 
             return true
         end
-        
+		
+		--Precombat
+        if not inCombat and Unit(unit):IsExists() then
+			return PrecombatCall()
+		end
+		
+		--actions+=/call_action_list,name=cooldown,if=gcd.remains=0
+		if inCombat and BurstIsON(unit) and CooldownCall() then
+			return true
+		end	
+		
+		--Covenant Call
+		if inCombat and A.GetToggle(1, "Covenant") and CovenantCall() then
+			return true
+		end
+		
+		--actions+=/pick_up_fragment,if=demon_soul_fragments>0
+		
+		--actions+=/pick_up_fragment,if=fury.deficit>=35&(!azerite.eyes_of_rage.enabled|cooldown.eye_beam.remains>1.4)
+
+		
+		--actions+=/throw_glaive,if=buff.fel_bombardment.stack=5&(buff.immolation_aura.up|!buff.metamorphosis.up)
+		if A.ThrowGlaive:IsReady(unit) and Unit(player):HasBuffsStacks(A.FelBombardment.ID, true) > 4 and (Unit(player):HasBuffs(A.ImmolationAura.ID, true) > 0 or Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0) then
+			return A.ThrowGlaive:Show(icon)
+		end 
+		
+		--[[actions+=/call_action_list,name=essence_break,if=talent.essence_break.enabled&(variable.waiting_for_essence_break|debuff.essence_break.up)
+		if VarWaitingForEssenceBreak or Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 then
+			return EssenceBreakCall()
+		end]]
+		
+		--actions+=/run_action_list,name=demonic,if=talent.demonic.enabled
+		if A.Demonic:IsTalentLearned() then
+			return DemonicCall()
+		end	
+		
+		--actions+=/run_action_list,name=normal		
+        if not A.Demonic:IsTalentLearned() then
+			return NormalCall()
+		end	
         
     end
     
@@ -1421,9 +1432,7 @@ A[3] = function(icon, isMulti)
 end 
 
 -- [4] AoE Rotation
-A[4] = function(icon)
-    return A[3](icon, true)
-end
+A[4] = nil
 
 -- [5] Trinket Rotation
 -- No specialization trinket actions 
@@ -1457,10 +1466,10 @@ local function ArenaRotation(unit)
 			
             -- Fel Eruption
             if A.FelEruption:IsReady(unit) and
-                A.FelEruption:IsSpellLearned() and
+                A.FelEruption:IsTalentLearned() and
                 A.FelEruption:GetCooldown() <= GetCurrentGCD() and
                 A.FelEruption:IsInRange(unit) and
-                A.ManaRift:IsSpellLearned() and
+                A.ManaRift:IsTalentLearned() and
                 A.ManaRift:IsInRange(unit) and
                 A.ManaRift:GetCooldown() <= GetGCD() + GetCurrentGCD() and
                 Unit(unit):IsHealer() and
@@ -1480,7 +1489,7 @@ local function ArenaRotation(unit)
 			
             -- Mana Rift
 			if A.ManaRift:IsReady(unit) and
-                A.ManaRift:IsSpellLearned() and
+                A.ManaRift:IsTalentLearned() and
                 A.ManaRift:GetCooldown() <= GetCurrentGCD() and
                 A.ManaRift:IsInRange(unit) and
                 Unit(unit):IsHealer() and
@@ -1511,7 +1520,7 @@ local function ArenaRotation(unit)
 		    end	
 			
             -- Imprison
-			local CurrentImprison = A.Detainment:IsSpellLearned() and A.ImprisonImproved or A.Imprison   			
+			local CurrentImprison = A.Detainment:IsTalentLearned() and A.ImprisonImproved or A.Imprison   			
 			if CurrentImprison:IsReady(unit) and
                 not UnitIsUnit(unit, "target") and
                 Unit("player"):HasBuffs(206803, true) == 0 and -- Rain from above
@@ -1521,7 +1530,7 @@ local function ArenaRotation(unit)
                    (
                         (
                             -- Detainment
-                            A.Detainment:IsSpellLearned() or
+                            A.Detainment:IsTalentLearned() or
                             Unit(unit):GetRealTimeDMG() == 0
                         ) and
                         Unit(unit):HasBuffs("DamageBuffs") > 4 and        
@@ -1573,7 +1582,7 @@ local function ArenaRotation(unit)
                 Action.IsUnitEnemy("mouseover") and
                 (
                     (
-                        not A.Tormentor:IsSpellLearned() and
+                        not A.Tormentor:IsTalentLearned() and
                         not Unit("mouseover"):IsPlayer() and
                         CombatTime("mouseover") > 0 and
                         A.Torment:GetCooldown() == 0 and
@@ -1589,7 +1598,7 @@ local function ArenaRotation(unit)
                         )
                     ) or
                     (
-                        A.Tormentor:IsSpellLearned() and
+                        A.Tormentor:IsTalentLearned() and
                         Unit("mouseover"):IsPlayer() and
                         A.Tormentor:GetCooldown() == 0 and
                         A.Tormentor:IsInRange("mouseover")

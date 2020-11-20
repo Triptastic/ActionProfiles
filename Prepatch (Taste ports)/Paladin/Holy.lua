@@ -2887,7 +2887,7 @@ A[3] = function(icon, isMulti)
                 Unit(mouseover):HasDeBuffs(A.Cyclone.ID, true) == 0 and -- Cyclone
                 (
                     not AoEON or
-                    HealingEngine.HealingBySpell("HolyPrismAoE", 114165) >= 2
+                    HealingEngine.HealingBySpell("HolyPrism", 114165) >= 2
                 ) and
                 A.HolyPrism:AbsentImun(mouseover, Temp.TotalAndMag, true)        
             ) or

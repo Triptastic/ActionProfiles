@@ -416,6 +416,8 @@ A[3] = function(icon, isMulti)
 	local profileStop = false	
 	local TargetsMissingAgony = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.AgonyDebuff.ID)
 	local AutoMultiDot = A.GetToggle(2, "AutoMultiDot")
+	local DrainLifeHP = A.GetToggle(2, "DrainLifeHP")	
+	local HealthFunnelHP = A.GetToggle(2, "HealthFunnelHP")
 	
 	--Refreshables
 	SiphonLifeRefreshable = (Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.SiphonLifeDebuff.ID, true) < 6)
@@ -566,18 +568,34 @@ A[3] = function(icon, isMulti)
                 return Interrupt:Show(icon)
             end	
 			
+			--Drain Soul TTD 2
+			if A.DrainSoul:IsReady(unit) and A.DrainSoul:IsTalentLearned() and Unit("target"):TimeToDie() <= 3 then
+				return A.DrainSoul:Show(icon)
+			end	
+			
+			--Drain Life below HP %
+			if A.DrainLife:IsReady(unit) and Unit(player):HealthPercent() <= DrainLifeHP then
+				return A.DrainLife:Show(icon)
+			end	
+			
+			--Health Funnel
+			if A.HealthFunnel:IsReady(player) and Unit("pet"):HealthPercent() <= HealthFunnelHP and Unit(player):HealthPercent() >= 30 then
+				return A.HealthFunnel:Show(icon)
+			end	
+			
+			
 			--actions=phantom_singularity
-			if A.PhantomSingularity:IsReady(unit, nil, nil, true) then
+			if A.PhantomSingularity:IsReady(unit, nil, nil, true) and Unit("target"):TimeToDie() >= 14 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.PhantomSingularity:Show(icon)
 			end
 			
 			--actions+=/vile_taint,if=soul_shard>1
-			if A.VileTaint:IsReady(unit, nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.VileTaint) and Player:SoulShardsP() > 1 then
+			if A.VileTaint:IsReady(unit, nil, nil, true) and (not isMoving) and not A.IsSpellInCasting(A.VileTaint) and Player:SoulShardsP() > 1 and Player:AreaTTD(40) > 9 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.VileTaint:Show(icon)
 			end
 
 			--actions+=/corruption,if=refreshable (AOE)
-			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 then
+			if A.SeedofCorruption:IsReady("target", nil, nil, true) and (not isMoving) and Temp.SeedofCorruptionDelay == 0 and CorruptionRefreshable and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.SeedofCorruptionDebuff.ID, true) == 0 and Player:AreaTTD(40) > 5 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.SeedofCorruption:Show(icon)
 			end					
 			
@@ -599,23 +617,23 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions+=/siphon_life,if=refreshable
-			if A.SiphonLife:IsReady(unit, nil, nil, true) and SiphonLifeRefreshable and Unit("target"):TimeToDie() > 5 then
+			if A.SiphonLife:IsReady(unit, nil, nil, true) and SiphonLifeRefreshable and Unit("target"):TimeToDie() > 5 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.SiphonLife:Show(icon)
 			end	
 			
 			--actions+=/agony,if=refreshable
-			if A.Agony:IsReady(unit, nil, nil, true) and AgonyRefreshable and Unit("target"):TimeToDie() > 5 then
+			if A.Agony:IsReady(unit, nil, nil, true) and AgonyRefreshable and Unit("target"):TimeToDie() > 5 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.Agony:Show(icon)
 			end				
 			
 			--actions+=/unstable_affliction,if=refreshable
-			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and (not isMoving) and Temp.UnstableAfflictionDelay == 0 and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) then
+			if A.UnstableAffliction:IsReady(unit, nil, nil, true) and (not isMoving) and Temp.UnstableAfflictionDelay == 0 and (Player:GetDeBuffsUnitCount(A.UnstableAffliction.ID) < 1 or (Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) > 0 and Unit("target"):HasDeBuffs(A.UnstableAffliction.ID, true) < 5)) and Unit("target"):TimeToDie() > 5 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.UnstableAffliction:Show(icon)
 			end
 			
 			
 			--actions+=/corruption,if=refreshable
-			if A.Corruption:IsReady(unit, nil, nil, true) and CorruptionRefreshable and Unit("target"):TimeToDie() > 5 and  MultiUnits:GetActiveEnemies() < 3 and not A.IsSpellInCasting(A.SeedofCorruption) and Player:GetDeBuffsUnitCount(A.SeedofCorruptionDebuff.ID) < 1 then
+			if A.Corruption:IsReady(unit, nil, nil, true) and CorruptionRefreshable and Unit("target"):TimeToDie() > 5 and  MultiUnits:GetActiveEnemies() < 3 and not A.IsSpellInCasting(A.SeedofCorruption) and Player:GetDeBuffsUnitCount(A.SeedofCorruptionDebuff.ID) < 1 and Unit(player):HealthPercent() >= DrainLifeHP then
 				return A.Corruption:Show(icon)
 			end				
 			
@@ -683,27 +701,27 @@ A[3] = function(icon, isMulti)
 			end	
 		
 			-- Trinket One
-			if A.Trinket1:IsReady("target") and BurstIsON("target") then 
+			if A.Trinket1:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
 				return A.Trinket1:Show(icon)
 			end 		
 			
 			-- Trinket Two
-			if A.Trinket1:IsReady("target") and BurstIsON("target") then 
+			if A.Trinket2:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
 				return A.Trinket2:Show(icon)
 			end 		
 			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
-			if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 and Unit("target"):TimeToDie() >= 3 then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking||cooldown.phantom_singularity.remains>12||soul_shard>3)
-			if A.MaleficRapture:IsReady("player") and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit("target"):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or A.PhantomSingularity:GetCooldown() > 12 or Player:SoulShardsP() > 3) and Unit("target"):TimeToDie() >= 3 then
 				return A.SpatialRift:Show(icon)
 			end	
 			
 			--actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-			if A.MaleficRapture:IsReady("player") and (not isMoving) and not A.PhantomSingularity:IsTalentLearned() and not A.VileTaint:IsTalentLearned() then
+			if A.MaleficRapture:IsReady("player") and (not isMoving) and not A.PhantomSingularity:IsTalentLearned() and not A.VileTaint:IsTalentLearned() and Unit("target"):TimeToDie() >= 3 then
 				return A.SpatialRift:Show(icon)
 			end			
 			

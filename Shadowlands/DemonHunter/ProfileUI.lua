@@ -18,7 +18,6 @@ local EnemyTeam				= A.EnemyTeam
 local FriendlyTeam			= A.FriendlyTeam
 local TeamCache				= A.TeamCache
 local InstanceInfo			= A.InstanceInfo
-local TR					= Action.TasteRotation
 local select, setmetatable	= select, setmetatable
 
 -- Shadowlands Spell Info fix for empty spells

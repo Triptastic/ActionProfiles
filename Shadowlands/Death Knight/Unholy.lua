@@ -947,32 +947,27 @@ A[3] = function(icon, isMulti)
 		
 
 		--actions+=/call_action_list,name=cooldowns
-		if A.BurstIsON(unit) and inCombat and Cooldowns() and Player:AreaTTD(10) >= 15 then
-                A.Toaster:SpawnByTimer("TripToast", 0, "Cooldowns", "Using Cooldowns!", A.UnholyAssault.ID)  	
+		if A.BurstIsON(unit) and inCombat and Cooldowns() and Player:AreaTTD(10) >= 15 then 	
 			return true
 		end
 
 		--actions+=/run_action_list,name=aoe_setup,if=active_enemies>=2&(cooldown.death_and_decay.remains<10&!talent.defile.enabled|cooldown.defile.remains<10&talent.defile.enabled)&!death_and_decay.ticking
-		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and ((A.DeathandDecay:GetCooldown() < 10 and not A.Defile:IsTalentLearned()) or (A.Defile:GetCooldown() < 10 and A.Defile:IsTalentLearned())) and not DeathandDecayTicking and UseAoE and inCombat then
-                A.Toaster:SpawnByTimer("TripToast", 0, "AoESetup", "Using AoESetup!", A.Epidemic.ID)  			
+		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and ((A.DeathandDecay:GetCooldown() < 10 and not A.Defile:IsTalentLearned()) or (A.Defile:GetCooldown() < 10 and A.Defile:IsTalentLearned())) and not DeathandDecayTicking and UseAoE and inCombat then 			
 			return AoESetup()
 		end
 		
 		--actions+=/run_action_list,name=aoe_burst,if=active_enemies>=2&death_and_decay.ticking
-		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and DeathandDecayTicking and UseAoE then
-                A.Toaster:SpawnByTimer("TripToast", 0, "AoEBurst", "Using AoEBurst!", A.DeathandDecay.ID)  			
+		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and DeathandDecayTicking and UseAoE then 			
 			return AoEBurst()
 		end	
 		
 		--actions+=/run_action_list,name=generic_aoe,if=active_enemies>=2&(!death_and_decay.ticking&(cooldown.death_and_decay.remains>10&!talent.defile.enabled|cooldown.defile.remains>10&talent.defile.enabled))
-		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (not DeathandDecayTicking and ((A.DeathandDecay:GetCooldown() > 10 and not A.Defile:IsTalentLearned()) or (A.Defile:GetCooldown() > 10 and A.Defile:IsTalentLearned()))) and UseAoE then
-                A.Toaster:SpawnByTimer("TripToast", 0, "GenericAOE", "Using GenericAOE!", A.FesteringStrike.ID)  			
+		if MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (not DeathandDecayTicking and ((A.DeathandDecay:GetCooldown() > 10 and not A.Defile:IsTalentLearned()) or (A.Defile:GetCooldown() > 10 and A.Defile:IsTalentLearned()))) and UseAoE then 			
 			return GenericAOE()
 		end	
 		
 		--actions+=/call_action_list,name=generic,if=active_enemies=1
-		if MultiUnits:GetByRange(10, AoETargets) < AoETargets then
-                A.Toaster:SpawnByTimer("TripToast", 0, "GenericST", "Using GenericST!", A.UnholyAssault.ID)  			
+		if MultiUnits:GetByRange(10, AoETargets) < AoETargets then 			
 			return GenericST()
 		end	
      

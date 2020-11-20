@@ -1,0 +1,7 @@
+Changelog:
+
+Affliction Warlock:
+Now more-accurately uses Drain Soul for capturing Soul Shards before death.
+Added HP slider for Drain Life.
+Added Health Funnel slider for pet.
+

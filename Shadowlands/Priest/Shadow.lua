@@ -614,7 +614,7 @@ A[3] = function(icon, isMulti)
 				if SWP_Nameplates then  
 					for SWP_UnitID in pairs(ActiveUnitPlates) do             
 						if not UnitIsUnit(unit, SWP_UnitID) then 
-							if (Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4) and Unit(SWP_UnitID):GetRange() <= 40 and (not A.SearingNightmare:IsTalentLearned()) and ((A.Zone == "none" and (Unit(SWP_UnitID):IsDummy() or Unit(SWP_UnitID):IsDummyPvP())) or Unit(SWP_UnitID):CombatTime() > 0) then 
+							if (Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4) and Unit(SWP_UnitID):GetRange() <= 40 and (not A.SearingNightmare:IsTalentLearned()) and A.Misery:IsTalentLearned() and ((A.Zone == "none" and (Unit(SWP_UnitID):IsDummy() or Unit(SWP_UnitID):IsDummyPvP())) or Unit(SWP_UnitID):CombatTime() > 0) then 
 								return A:Show(icon, ACTION_CONST_AUTOTARGET)
 							end
 						elseif Unit(SWP_UnitID):GetRange() > 40 or (not (A.Zone == "none" and (Unit(SWP_UnitID):IsDummy() or Unit(SWP_UnitID):IsDummyPvP())) and Unit(SWP_UnitID):CombatTime() == 0) then -- forces to re-pick target if /targetenemy selected out of range or out of combat unit 

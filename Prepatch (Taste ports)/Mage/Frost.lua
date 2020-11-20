@@ -686,7 +686,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
+			if A.MemoryofLucidDreams:IsReady(player) and BurstIsON(unit) then
 				return A.Darkflight:Show(icon)
 			end
 			
