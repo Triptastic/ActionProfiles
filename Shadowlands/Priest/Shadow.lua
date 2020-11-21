@@ -524,7 +524,6 @@ A[3] = function(icon, isMulti)
 	local PWSMove = GetToggle(2, "PWSMove")
 	local UsePWS = GetToggle(2, "UsePWS")
 	local MultiDotDistance = GetToggle(2, "MultiDotDistance")
-	local VTDelay = GetToggle(2, "VTDelay")
 	local VTRefreshable = (Unit("target"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)
 	local SWPRefreshable = (Unit("target"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4 or Unit("target"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0)	
     -- Multidots var
@@ -568,7 +567,7 @@ A[3] = function(icon, isMulti)
     end
 	
     if Temp.VampiricTouchDelay == 0 and Player:IsCasting() == "Vampiric Touch" then
-        Temp.VampiricTouchDelay = VTDelay
+        Temp.VampiricTouchDelay = 90
     end
     
     if Temp.VampiricTouchDelay > 0 then
@@ -658,7 +657,7 @@ A[3] = function(icon, isMulti)
 
 		--actions+=/call_action_list,name=cwc
 		--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
-		if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsTalentLearned() and Player:IsChanneling() == "Mind Sear" -- or  MissingShadowWordPain > 2 
+		if A.SearingNightmare:IsReady(player, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsTalentLearned() and Player:IsChanneling() == "Mind Sear" -- or  MissingShadowWordPain > 2 
 		then 
 			return A.SearingNightmare:Show(icon)
 		end	
