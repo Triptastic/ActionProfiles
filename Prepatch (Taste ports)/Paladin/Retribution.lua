@@ -154,7 +154,7 @@ Action[ACTION_CONST_PALADIN_RETRIBUTION] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
+	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for Heart of Azeroth		
 };
 
 -- To create covenant use next code:
@@ -592,42 +592,42 @@ A[3] = function(icon, isMulti)
             
  			-- guardian_of_azeroth
 			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			-- focused_azerite_beam
 			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			-- memory_of_lucid_dreams
 			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			-- blood_of_the_enemy
 			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			-- purifying_blast
 			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			--[[ ripple_in_space
 			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end]]
 			
 			-- concentrated_flame,line_cd=6
 			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
 			
 			-- reaping_flames
 			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+				return A.Regeneratin:Show(icon)
 			end
             
         end
@@ -656,7 +656,7 @@ A[3] = function(icon, isMulti)
             -- divine_storm,if=variable.ds_castable&!buff.vanquishers_hammer.up&((!talent.crusade.enabled|cooldown.crusade.remains>gcd*3)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd*3|spell_targets.divine_storm>=3)|spell_targets.divine_storm>=2&(talent.holy_avenger.enabled&cooldown.holy_avenger.remains<gcd*3|buff.crusade.up&buff.crusade.stack<10))
             if A.DivineStorm:IsReady(unit) and VarDsCastable and 
 			--not Unit("player"):HasBuffs(A.VanquishersHammerBuff.ID, true) and 
-			((not A.Crusade:IsSpellLearned() or A.Crusade:GetCooldown() > GetGCD() * 3) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() > GetGCD() * 3 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 3) or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and (A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() < GetGCD() * 3 or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) > 0 and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10)) then
+			(((not A.Crusade:IsSpellLearned() or A.Crusade:GetCooldown() > GetGCD() * 3) and (not A.ExecutionSentence:IsSpellLearned() or A.ExecutionSentence:GetCooldown() > GetGCD() * 3 or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 3) or MultiUnits:GetByRangeInCombat(8, 5, 10) >= 2 and (A.HolyAvenger:IsSpellLearned() and A.HolyAvenger:GetCooldown() < GetGCD() * 3 or Unit("player"):HasBuffs(A.CrusadeBuff.ID, true) > 0 and Unit("player"):HasBuffsStacks(A.CrusadeBuff.ID, true) < 10)) or not BurstIsON(unit)) then
                 return A.DivineStorm:Show(icon)
             end
             
