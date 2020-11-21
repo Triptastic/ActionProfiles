@@ -1,7 +1,20 @@
 Changelog:
 
-Affliction Warlock:
-Now more-accurately uses Drain Soul for capturing Soul Shards before death.
-Added HP slider for Drain Life.
-Added Health Funnel slider for pet.
+21 November 2020:
+	Destruction Warlock:
+		Added Drain Life and Health Funnel for HP % sliders.
 
+	Demonology Warlock:
+		Initial build.
+
+	Frost DK:
+		Added Death Strike with HP slider.
+
+	Unholy DK:
+		Added Death Strike with HP slider.	
+		
+	Shadow Priest:
+		Fixed Searing Nightmare.
+		
+	Retribution Paladin:
+		Divine Storm fix with Crusade talent.

@@ -1,6 +1,6 @@
---#####################################
---##### TRIP'S AFFLICTION WARLOCK #####
---#####################################
+--######################################
+--##### TRIP'S DESTRUCTION WARLOCK #####
+--######################################
 
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
@@ -209,7 +209,8 @@ Action[ACTION_CONST_WARLOCK_DESTRUCTION] = {
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
 	
 	-- Borrowed Bindings
-	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
+	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
+	RocketJump						= Action.Create({ Type = "Spell", ID = 69070 }), -- used for Heart of Azeroth	
 }
 
 -- To create essences use next code:
@@ -759,6 +760,16 @@ A[3] = function(icon, isMulti)
 			if Interrupt then 
 				return Interrupt:Show(icon)
 			end			
+
+			--Drain Life below HP %
+			if A.DrainLife:IsReady(unit) and Unit(player):HealthPercent() <= DrainLifeHP then
+				return A.DrainLife:Show(icon)
+			end	
+			
+			--Health Funnel
+			if A.HealthFunnel:IsReady(player) and Unit("pet"):HealthPercent() <= HealthFunnelHP and Unit(player):HealthPercent() >= 30 then
+				return A.HealthFunnel:Show(icon)
+			end	
 
 			if Unit(unit):HasDeBuffs(A.Havoc.ID) > 0 and unit ~= "mouseover" and MultiUnits:GetActiveEnemies() >= 2 and AutoHavoc then
 				return A:Show(icon, ACTION_CONST_AUTOTARGET) 
