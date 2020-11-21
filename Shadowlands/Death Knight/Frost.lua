@@ -526,9 +526,10 @@ A[3] = function(icon, isMulti)
 	local DeathandDecayTicking = A.DeathandDecay:GetSpellTimeSinceLastCast() <= 10
     local Racial = Action.GetToggle(1, "Racial")
 	local UseAoE = Action.GetToggle(2, "AoE")
+	local DeathStrikeHP = Action.GetToggle(2, "DeathStrikeHP")
 	local AoETargets = Action.GetToggle(2, "AoETargets")
 	local AutoSwitchRazorice = Action.GetToggle(2, "AutoSwitchRazorice")
-	local currentTargets = MultiUnits:GetByRange(7)		
+	local currentTargets = MultiUnits:GetByRange(7)	
 	local MissingRazorice = MultiUnits:GetByRangeMissedDoTs(10, 5, A.RazoriceDebuff.ID)
     local mainHandEnchantment, mainHandExpire, mainHandCarges, mainHandEnchantmentID, offHandEnchantment = GetWeaponEnchantInfo() 
 	local PotionIsReady = (Action.GetToggle(2, "AutoPotionSelect") == "UnbridledFuryPot" and A.PotionofUnbridledFury:IsReady("player"))	or (Action.GetToggle(2, "AutoPotionSelect") == "SpectralStrengthPot" and A.PotionofSpectralStrength:IsReady("player")) or (Action.GetToggle(2, "AutoPotionSelect") == "EmpoweredExorcismsPot" and A.PotionofEmpoweredExorcisms:IsReady("player")) or (Action.GetToggle(2, "AutoPotionSelect") == "PhantomFirePot" and A.PotionofPhantomFire:IsReady("player")) or (Action.GetToggle(2, "AutoPotionSelect") == "DeathlyFixationPot" and A.PotionofDeathlyFixation:IsReady("player"))	
@@ -542,6 +543,11 @@ A[3] = function(icon, isMulti)
 		if Interrupt then 
 			return Interrupt:Show(icon)
 		end	
+
+		--Death Strike below HP %
+		if A.DeathStrike:IsReady(unit) and Unit(player):HealthPercent() <= DeathStrikeHP then
+			return A.DeathStrike:Show(icon)
+		end			
 
 		--########################
 		--##### AOE ROTATION #####

@@ -527,6 +527,7 @@ A[3] = function(icon, isMulti)
 	local DeathandDecayTicking = A.DeathandDecay:GetSpellTimeSinceLastCast() <= 10
     local Racial = Action.GetToggle(1, "Racial")
 	local UseAoE = Action.GetToggle(2, "AoE")
+	local DeathStrikeHP = Action.GetToggle(2, "DeathStrikeHP")	
 	local AoETargets = Action.GetToggle(2, "AoETargets")
 	local AutoSwitchFesteringStrike = GetToggle(2, "AutoSwitchFesteringStrike")
 	local currentTargets = MultiUnits:GetByRange(7)	
@@ -545,6 +546,11 @@ A[3] = function(icon, isMulti)
             if Interrupt then 
                 return Interrupt:Show(icon)
             end	
+
+			--Death Strike below HP %
+			if A.DeathStrike:IsReady(unit) and Unit(player):HealthPercent() <= DeathStrikeHP then
+				return A.DeathStrike:Show(icon)
+			end	
 
 			-- Festering Strike auto target (credit to Taste for this)
 			if AutoSwitchFesteringStrike and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())

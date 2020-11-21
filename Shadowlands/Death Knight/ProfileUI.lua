@@ -231,6 +231,21 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },	
+                { -- DeathStrikeHP
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DeathStrikeHP",
+                    DBV = 40, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Death Strike HP (%)",
+                    }, 
+                    TT = { 
+                        ANY = "Will use Death Strike at this percent HP."
+					},					
+                    M = {},
+                },
 			},
             { -- LAYOUTSPACE
                 {
@@ -396,6 +411,21 @@ A.Data.ProfileUI = {
                     L = { 
                         ANY = "Spiritual Healing Potion HP (%)",
                     }, 
+                    M = {},
+                },
+                { -- DeathStrikeHP
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DeathStrikeHP",
+                    DBV = 40, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Death Strike HP (%)",
+                    }, 
+                    TT = { 
+                        ANY = "Will use Death Strike at this percent HP."
+					},					
                     M = {},
                 },	
 			},
