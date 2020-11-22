@@ -555,7 +555,7 @@ A.Data.ProfileUI                                     = {
                     DB = "UsePurify",
                     DBV = true,
                     L = { 
-                        ANY = "Auto Purify (NOT YET WORKING)"
+                        ANY = "Auto Purify"
                     },
                     TT = { 
 						ANY = "Uses Purify to cleanse auras listed in the Auras tab.",

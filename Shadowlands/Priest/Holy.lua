@@ -34,6 +34,7 @@ local ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
 local pairs                                     = pairs
 local HealingEngine 							= Action.HealingEngine
+local TeamCacheFriendly                         = TeamCache.Friendly
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
 local UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax = 
 UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax
@@ -493,8 +494,83 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 --########################
 		
 	local function DamageRotation(unit)
+
+			if TeamCacheFriendly.Size == 0 then
+			
+				--Purify
+				if CanCast and A.Purify:IsReady(player) and A.Purify:AbsentImun(player) and A.AuraIsValid(player, "UseDispel", "Dispel") and Unit(player):TimeToDie() > 5 then 
+					return A.Purify:Show(icon)
+				end 			
+			
+				-- OOC Renew
+				if CanCast and A.Renew:IsReady(player) and BlanketRenewOOC and (not inCombat) and Unit(player):HealthPercent() <= 99 and Unit(player):HasBuffs(A.Renew.ID, true) == 0 then
+					return A.Renew:Show(icon)
+				end	
+
+				-- Trinket 1
+				if inCombat and A.Trinket1:IsReady(player) and ((Player:ManaPercentage() <= TrinketMana) or (Unit(player):HealthPercent() <= TrinketHP)) then
+					return A.Trinket1:Show(icon)    
+				end
+
+				-- Trinket 2
+				if inCombat and A.Trinket2:IsReady(unit) and ((Player:ManaPercentage() <= TrinketMana) or (Unit(player):HealthPercent() <= TrinketHP)) then
+					return A.Trinket2:Show(icon)    
+				end			
+				
+				-- Apotheosis Single Target
+				if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then
+					return A.Apotheosis:Show(icon)
+				end	
+				
+				-- Apotheosis AoE
+				if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and (HealingEngine.GetIncomingDMGAVG() > (HealingEngine.GetIncomingHPSAVG() * 2)) and A.HolyWordSanctify:GetCooldown() > 8 then
+					return A.Apotheosis:Show(icon)
+				end			
+				
+				-- Guardian Spirit
+				if CanCast and inCombat and A.GuardianSpirit:IsReady(player) and Unit(player):HealthPercent() <= GuardianSpiritHP then
+					return A.GuardianSpirit:Show(icon)
+				end
+				
+				-- Sanctify @player
+				if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and Unit(player):HealthPercent() <= SanctifyHP then
+					return A.HolyWordSanctify:Show(icon)
+				end			
+				
+				-- Serenity
+				if CanCast and inCombat and A.HolyWordSerenity:IsReady(player) and Unit(player):HealthPercent() <= HolyWordSerenity then
+					return A.HolyWordSerenity:Show(icon)
+				end
+			
+				-- Halo
+				if CanCast and inCombat and A.Halo:IsReady(player) then
+					return A.Halo:Show(icon)
+				end	
 		
-		if Unit(player):PowerPercent() >= DPSMana then
+				-- Circle of Healing
+				if CanCast and inCombat and A.CircleofHealing:IsReady(player) and Unit(player):HealthPercent() <= CircleofHealingHP then
+					return A.RocketJump:Show(icon)
+				end	
+
+				--Divine Star - best I could come up with
+				if CanCast and inCombat and A.DivineStar:IsReady(player) and Unit(unit):GetRange() <= 20 then
+					return A.DivineStar:Show(icon)
+				end	
+
+				-- Flash Heal without SoL
+				if CanCast and A.FlashHeal:IsReady(player) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(player):HealthPercent() <= FlashHealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then
+					return A.FlashHeal:Show(icon)
+				end
+
+				-- Flash Heal with SoL
+				if CanCast and A.FlashHeal:IsReady(player) and A.HolyWordSerenity:GetCooldown() > 0 and Unit(player):HealthPercent() <= FlashHealSOLHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) > 0 then
+					return A.FlashHeal:Show(icon)
+				end		
+			
+			
+			end
+		
+		if (Unit(player):PowerPercent() >= DPSMana and TeamCacheFriendly.Size > 1) or TeamCacheFriendly.Size == 0 then
 	
 			if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() <= 20 then
 				return A.ShadowWordDeath:Show(icon)
@@ -528,10 +604,9 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 	local function HealingRotation(unit)
 	local useDispel, useShields, useHoTs, useUtils = HealingEngine.GetOptionsByUnitID(unit)
 	local unitGUID = UnitGUID(unit)	
-		--##### DUNGEON GROUP #####
 
-	--	if DungeonGroup then
-			
+
+		if TeamCacheFriendly.Size > 1 then
 			--Divine Star notification
 			if inCombat and (A.DivineStar:IsReady(player) or A.DivineStar:GetCooldown() <= 2) and A.DivineStar:IsTalentLearned() and MultiUnits:GetByRange(28, 2) > 1 then
 				A.Toaster:SpawnByTimer("TripToast", 0, "Divine Star!", "Divine Star will be ready soon! Position yourself!", A.DivineStar.ID)
@@ -695,9 +770,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 			if CanCast and A.Renew:IsReady(unit) and RenewMode == "EVERYONE" and Unit(unit):HealthPercent() <= 95 then
 				return A.Renew:Show(icon)
 			end
-			
-	--	end
-	
+		end
 	
 	end
 

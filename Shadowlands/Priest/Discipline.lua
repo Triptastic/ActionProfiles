@@ -339,6 +339,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 	local ShadowCovHP = A.GetToggle(2, "ShadowCovHP")
 	local ShadowCovMembers = A.GetToggle(2, "ShadowCovMembers")
 	local ShadowCovAtone = A.GetToggle(2, "ShadowCovAtone")
+	local UsePurify = A.GetToggle(2, "UsePurify")
     if not CanCast then -- Pooling Icon if can't cast
         return A.PoolResource:Show(icon)
     end
@@ -405,6 +406,21 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 	--############################
 
 	local function HealingRotation(unit)
+
+
+		--Healing Engine Purify Target
+		if A.Purify:IsReady() and UsePurify then
+			for i = 1, #getmembersAll do 
+				if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") then  
+					HealingEngine.SetTarget(getmembersAll[i].Unit)                  									
+				end				
+			end
+		end
+
+		--Purify
+		if CanCast and A.Purify:IsReady(unit) and A.Purify:AbsentImun(unit) and A.AuraIsValid(unit, "UseDispel", "Dispel") and Unit(unit):TimeToDie() > 5 then 
+			return A.Purify:Show(icon)
+		end 
 
 		--Power Word: Radiance
 		if A.PowerWordRadiance:IsReady(unit) and not isMoving and HealingEngine.GetBelowHealthPercentUnits(RadianceHP, 40) > RadianceMembers and HealingEngine.GetBuffsCount(81749, 1) <= 4 then
