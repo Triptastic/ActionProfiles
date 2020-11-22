@@ -1136,7 +1136,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.demonic+=/glaive_tempest,if=active_enemies>desired_targets|raid_event.adds.in>10
-			if A.GlaiveTempest:IsReady(unit) and A.MultiUnits:GetByRange(5) >= 2 then
+			if A.GlaiveTempest:IsReady(unit) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
 				return A.SpectralSight:Show(icon)
 			end	
 			
@@ -1240,7 +1240,7 @@ A[3] = function(icon, isMulti)
 				return A.ImmolationAura:Show(icon)
 			end	
 			--actions.normal+=/glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
-			if A.GlaiveTempest:IsReady(unit) and not VarWaitingForMomentum and A.MultiUnits:GetByRange(5) >= 2 then
+			if A.GlaiveTempest:IsReady(unit) and not VarWaitingForMomentum and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
 				return A.SpectralSight:Show(icon)
 			end	
 			
