@@ -138,7 +138,8 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
 	
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
+--	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for SweepingStrikes	
 };
 
 -- To create covenant use next code:
@@ -243,7 +244,7 @@ end
 GetByRange = A.MakeFunctionCachedDynamic(GetByRange)
 
 local function UpdateExecuteID()
-    Execute = A.Massacre:IsSpellLearned() and A.ExecuteMassacre or A.ExecuteDefault
+    Execute = A.Massacre:IsTalentLearned() and A.ExecuteMassacre or A.ExecuteDefault
 end
 
 --[[ [1] CC AntiFake Rotation
@@ -462,7 +463,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- deadly_calm
-				if A.DeadlyCalm:IsReady(unit) then
+				if A.DeadlyCalm:IsReady("player") then
 					return A.DeadlyCalm:Show(icon)
 				end
 				
@@ -472,7 +473,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,,if=cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2)
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2)) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
@@ -487,17 +488,17 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!spell_targets.whirlwind>1&!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and GetByRange(1, 8) or (not GetByRange(2, 8) and not A.Cleave:IsSpellLearned()) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and MultiUnits:GetByRange(8, 1) == 1 or (not MultiUnits:GetByRange(8, 2) > 1 and not A.Cleave:IsTalentLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=(spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3)|(spell_targets.whirlwind>3)
-				if A.Cleave:IsReady(unit) and (GetByRange(3, 8) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or GetByRange(4, 8) then
+				if A.Cleave:IsReady(unit) and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or MultiUnits:GetByRange(8, 4) > 3 then
 					return A.Cleave:Show(icon)
 				end
 				
 				-- bladestorm,if=!buff.memory_of_lucid_dreams.up&buff.test_of_might.up&rage<30&!buff.deadly_calm.up
-				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 and Player:Rage() < 30 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) then
+				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 and Player:Rage() < 30 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) then
 					return A.Bladestorm:Show(icon)
 				end
 				
@@ -542,27 +543,27 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,if=(cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2))
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsSpellLearned() and A.Warbreaker:GetCooldown() < 2)) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (GetByRange(3, 8) or not A.Cleave:IsSpellLearned()) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or not A.Cleave:IsTalentLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3
-				if A.Cleave:IsReady(unit) and (GetByRange(3, 8) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or GetByRange(4, 8) then
+				if A.Cleave:IsReady(unit) and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) then
 					return A.Cleave:Show(icon)
 				end
 				
 				-- colossus_smash,if=!essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>50)|essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>80)|talent.massacre.enabled&(target.time_to_pct_35>10|target.time_to_die>50)
-				if A.ColossusSmash:IsReady(unit) and (not A.CondensedLifeforce:IsSpellLearned() and not A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsSpellLearned() and not A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
+				if A.ColossusSmash:IsReady(unit) and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
 					return A.ColossusSmash:Show(icon)
 				end
 				
 				-- warbreaker,if=!essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>50)|essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>80)|talent.massacre.enabled&(target.time_to_pct_35>10|target.time_to_die>50)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not A.CondensedLifeforce:IsSpellLearned() and not A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsSpellLearned() and not A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsSpellLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
+				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
 					return A.Warbreaker:Show(icon)
 				end
 				
@@ -572,27 +573,27 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- bladestorm,if=cooldown.mortal_strike.remains&debuff.colossus_smash.down&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)&buff.memory_of_lucid_dreams.down&rage<40
-				if A.Bladestorm:IsReady(unit) and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsSpellLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and not A.TestofMight:GetAzeriteRank() > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Player:Rage() < 40) then
+				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsTalentLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and not A.TestofMight:GetAzeriteRank() > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Player:Rage() < 40) then
 					return A.Bladestorm:Show(icon)
 				end
 				
 				-- mortal_strike,if=spell_targets.whirlwind=1|!talent.cleave.enabled
-				if A.MortalStrike:IsReady(unit) and (GetByRange(3, 8) or not A.Cleave:IsSpellLearned()) then
+				if A.MortalStrike:IsReady(unit) and (MultiUnits:GetByRange(8, 2) == 1 or not A.Cleave:IsTalentLearned()) then
 					return A.MortalStrike:Show(icon)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2
-				if A.Cleave:IsReady(unit) and GetByRange(3, 8) then
+				if A.Cleave:IsReady(unit) and MultiUnits:GetByRange(8, 3) > 2 then
 					return A.Cleave:Show(icon)
 				end
 				
 				-- whirlwind,if=(((buff.memory_of_lucid_dreams.up)|(debuff.colossus_smash.up)|(buff.deadly_calm.up))&talent.fervor_of_battle.enabled)|((buff.memory_of_lucid_dreams.up|rage>89)&debuff.colossus_smash.up&buff.test_of_might.down&!talent.fervor_of_battle.enabled)
-				if A.Whirlwind:IsReady(unit) and ((((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0) or (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsSpellLearned()) or ((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsSpellLearned())) then
+				if A.Whirlwind:IsReady(player) and ((((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0) or (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or ((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned())) then
 					return A.Whirlwind:Show(icon)
 				end
 				
 				-- slam,if=!talent.fervor_of_battle.enabled&(buff.memory_of_lucid_dreams.up|debuff.colossus_smash.up)
-				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsSpellLearned() and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
 					return A.Slam:Show(icon)
 				end
 				
@@ -602,12 +603,12 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- whirlwind,if=talent.fervor_of_battle.enabled&(buff.test_of_might.up|debuff.colossus_smash.down&buff.test_of_might.down&rage>60)
-				if A.Whirlwind:IsReady(unit) and (A.FervorofBattle:IsSpellLearned() and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and Player:Rage() > 60)) then
+				if A.Whirlwind:IsReady("player") and (A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and Player:Rage() > 60)) then
 					return A.Whirlwind:Show(icon)
 				end
 				
 				-- slam,if=!talent.fervor_of_battle.enabled
-				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsSpellLearned()) then
+				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsTalentLearned()) then
 					return A.Slam:Show(icon)
 				end
 				
@@ -663,12 +664,12 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- avatar,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>45)
-				if A.Avatar:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) then
+				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) then
 					return A.Avatar:Show(icon)
 				end
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
-				if A.SweepingStrikes:IsReady(unit) and GetByRange(2, 8) and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0) then
+				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0) then
 					return A.SweepingStrikes:Show(icon)
 				end
 				
@@ -713,7 +714,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20
-				if ((A.Massacre:IsSpellLearned() and Unit(unit):HealthPercent() < 35) or Unit(unit):HealthPercent() < 20) then
+				if ((A.Massacre:IsTalentLearned() and Unit(unit):HealthPercent() < 35) or Unit(unit):HealthPercent() < 20) then
 					return Execute(unit)
 				else
 				-- run_action_list,name=single_target
@@ -772,7 +773,7 @@ local function ArenaRotation(icon, unit)
         -- Note: "arena1" is just identification of meta 6
         if (unit == "arena1" or unit == "arena2" or unit == "arena3") then 
             -- Reflect Casting BreakAble CC
-            if A.NetherWard:IsReady() and A.NetherWard:IsSpellLearned() and Action.ShouldReflect(EnemyTeam()) and EnemyTeam():IsCastingBreakAble(0.25) then 
+            if A.NetherWard:IsReady() and A.NetherWard:IsTalentLearned() and Action.ShouldReflect(EnemyTeam()) and EnemyTeam():IsCastingBreakAble(0.25) then 
                 return A.NetherWard:Show(icon)
             end 
         end
