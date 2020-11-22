@@ -569,7 +569,7 @@ A[3] = function(icon, isMulti)
             end	
 			
 			--Drain Soul TTD 2
-			if A.DrainSoul:IsReady(unit) and A.DrainSoul:IsTalentLearned() and Unit("target"):TimeToDie() <= 3 then
+			if A.DrainSoul:IsReady(unit) and A.DrainSoul:IsTalentLearned() and Unit("target"):TimeToDie() <= 3 and Player:SoulShards() < 5 then
 				return A.DrainSoul:Show(icon)
 			end	
 			

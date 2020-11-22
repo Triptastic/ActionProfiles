@@ -1,6 +1,7 @@
--------------------------------
--- Taste TMW Action Rotation --
--------------------------------
+--###############################
+--##### TRIP'S ARMS WARRIOR #####
+--###############################
+
 local TMW                                       = TMW
 local CNDT                                      = TMW.CNDT
 local Env                                       = CNDT.Env
@@ -493,7 +494,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- cleave,if=(spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3)|(spell_targets.whirlwind>3)
-				if A.Cleave:IsReady(unit) and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or MultiUnits:GetByRange(8, 4) > 3 then
+				if A.Cleave:IsReady("player") and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or MultiUnits:GetByRange(8, 4) > 3 then
 					return A.Cleave:Show(icon)
 				end
 				
@@ -553,7 +554,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3
-				if A.Cleave:IsReady(unit) and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) then
+				if A.Cleave:IsReady("player") and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) then
 					return A.Cleave:Show(icon)
 				end
 				
@@ -583,7 +584,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- cleave,if=spell_targets.whirlwind>2
-				if A.Cleave:IsReady(unit) and MultiUnits:GetByRange(8, 3) > 2 then
+				if A.Cleave:IsReady("player") and MultiUnits:GetByRange(8, 3) > 2 then
 					return A.Cleave:Show(icon)
 				end
 				
