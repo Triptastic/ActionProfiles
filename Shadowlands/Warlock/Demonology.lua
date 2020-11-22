@@ -929,17 +929,26 @@ A[3] = function(icon, isMulti)
 		local function SummonTyrant(unit)
 		
 			--actions.summon_tyrant=hand_of_guldan,if=soul_shard=5,line_cd=20
-			if A.HandofGuldan:IsReady(unit) and (not isMoving) and FutureShard == 5  then
+			if A.HandofGuldan:IsReady(unit) and TMW.time - (A.HandofGuldan.t1_start or 0) > 20 and (not isMoving) and FutureShard == 5 then
+				if A.HandofGuldan:IsSpellInCasting() then
+					A.HandofGuldan.t1_start = TMW.time
+				end
 				return A.HandofGuldan:Show(icon)
 			end	
 			
 			--actions.summon_tyrant+=/demonbolt,if=buff.demonic_core.up&(talent.demonic_consumption.enabled|buff.nether_portal.down),line_cd=20
-			if A.Demonbolt:IsReady(unit) and Unit(player):HasBuffs(A.DemonicCoreBuff.ID, true) > 0 and (A.DemonicConsumption:IsTalentLearned() or Unit(player):HasBuffs(A.NetherPortalBuff.ID, true) == 0) then
+			if A.Demonbolt:IsReady(unit) and TMW.time - (A.Demonbolt.t1_start or 0) > 20 and Unit(player):HasBuffs(A.DemonicCoreBuff.ID, true) > 0 and (A.DemonicConsumption:IsTalentLearned() or Unit(player):HasBuffs(A.NetherPortalBuff.ID, true) == 0) then
+				if A.Demonbolt:IsSpellInCasting() then
+					A.Demonbolt.t1_start = TMW.time
+				end
 				return A.Demonbolt:Show(icon)
-			end	
+			end 
 			
 			--actions.summon_tyrant+=/shadow_bolt,if=buff.wild_imps.stack+incoming_imps<4&(talent.demonic_consumption.enabled|buff.nether_portal.down),line_cd=20
-			if A.ShadowBolt:IsReady(unit) and (not isMoving) and Temp.ShadowBoltDelay == 0 and WildImpsCount < 4 and (A.DemonicConsumption:IsTalentLearned() or Unit(player):HasBuffs(A.NetherPortalBuff.ID, true) == 0) then
+			if A.ShadowBolt:IsReady(unit) and (not isMoving) and TMW.time - (A.ShadowBolt.t1_start or 0) > 20 and Temp.ShadowBoltDelay == 0 and WildImpsCount < 4 and (A.DemonicConsumption:IsTalentLearned() or Unit(player):HasBuffs(A.NetherPortalBuff.ID, true) == 0) then
+				if A.ShadowBolt:IsSpellInCasting() then
+					A.ShadowBolt.t1_start = TMW.time
+				end			
 				return A.ShadowBolt:Show(icon)
 			end	
 			

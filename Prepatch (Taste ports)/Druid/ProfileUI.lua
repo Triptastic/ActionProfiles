@@ -1006,7 +1006,7 @@ A.Data.ProfileUI = {
                 },	
 			},
 		},	
-        [ACTION_CONST_DRUID_GUARDIAN] = {
+		[ACTION_CONST_DRUID_GUARDIAN] = {
             { -- [7]
                 {
                     E = "Header",
@@ -1213,14 +1213,14 @@ A.Data.ProfileUI = {
                     DB = "UseStampedingRoar",
                     DBV = true,
                     L = { 
-                        enUS = "Auto" .. A.GetSpellInfo(77761), 
-                        ruRU = "Авто" .. A.GetSpellInfo(77761), 
-                        frFR = "Auto" .. A.GetSpellInfo(77761), 
+                        enUS = "Auto" .. GetSpellInfo(77761), 
+                        ruRU = "Авто" .. GetSpellInfo(77761), 
+                        frFR = "Auto" .. GetSpellInfo(77761), 
                     }, 
                     TT = { 
-                        enUS = "Automatically use " .. A.GetSpellInfo(77761), 
-                        ruRU = "Автоматически использовать " .. A.GetSpellInfo(77761), 
-                        frFR = "Utiliser automatiquement " .. A.GetSpellInfo(77761), 
+                        enUS = "Automatically use " .. GetSpellInfo(77761), 
+                        ruRU = "Автоматически использовать " .. GetSpellInfo(77761), 
+                        frFR = "Utiliser automatiquement " .. GetSpellInfo(77761), 
                     }, 
                     M = {},
                 },
@@ -1232,12 +1232,12 @@ A.Data.ProfileUI = {
                     DBV = 3, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(77761) .. " if moving for",
+                        ANY = GetSpellInfo(77761) .. " if moving for",
                     }, 
                     TT = { 
-                        enUS = "If " .. A.GetSpellInfo(77761) .. " is talented and ready, will use it if moving for set value.", 
-                        ruRU = "Если " .. A.GetSpellInfo(77761) .. " изучен и готов, будет использовать его при переходе на заданное значение.", 
-                        frFR = "Si " .. A.GetSpellInfo(77761) .. " est prêt, l'utilisera s'il se déplace pour la valeur définie.", 
+                        enUS = "If " .. GetSpellInfo(77761) .. " is talented and ready, will use it if moving for set value.", 
+                        ruRU = "Если " .. GetSpellInfo(77761) .. " изучен и готов, будет использовать его при переходе на заданное значение.", 
+                        frFR = "Si " .. GetSpellInfo(77761) .. " est prêt, l'utilisera s'il se déplace pour la valeur définie.", 
                     }, 
                     M = {},
                 },				
@@ -1246,7 +1246,7 @@ A.Data.ProfileUI = {
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. A.GetSpellInfo(299374) .. " -- ",
+                        ANY = " -- " .. GetSpellInfo(299374) .. " -- ",
                     },
                 },
             },
@@ -1259,9 +1259,9 @@ A.Data.ProfileUI = {
                     DBV     = 5,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(299374) .. "\n<= time to die (sec)", 
-                        ruRU = A.GetSpellInfo(299374) .. "\n<= time to die (sec)",  
-                        frFR = A.GetSpellInfo(299374) .. "\n<= time to die (sec)",  
+                        enUS = GetSpellInfo(299374) .. "\n<= time to die (sec)", 
+                        ruRU = GetSpellInfo(299374) .. "\n<= time to die (sec)",  
+                        frFR = GetSpellInfo(299374) .. "\n<= time to die (sec)",  
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition", 
@@ -1278,9 +1278,9 @@ A.Data.ProfileUI = {
                     DBV     = 20,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(299374) .. "\n<= health (%)", 
-                        ruRU = A.GetSpellInfo(299374) .. "\n<= health (%)",  
-                        frFR = A.GetSpellInfo(299374) .. "\n<= health (%)", 
+                        enUS = GetSpellInfo(299374) .. "\n<= health (%)", 
+                        ruRU = GetSpellInfo(299374) .. "\n<= health (%)",  
+                        frFR = GetSpellInfo(299374) .. "\n<= health (%)", 
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition",
@@ -1304,9 +1304,9 @@ A.Data.ProfileUI = {
                     DB = "BarkskinIgnoreBigDeff",
                     DBV = true,
                     L = { 
-                        enUS = A.GetSpellInfo(22812) .. "\nSkip if " .. A.GetSpellInfo(61336) .. " used",
-                        ruRU = A.GetSpellInfo(22812) .. "\nSkip if " .. A.GetSpellInfo(61336) .. " used",  
-                        frFR = A.GetSpellInfo(22812) .. "\nSkip if " .. A.GetSpellInfo(61336) .. " used", 
+                        enUS = GetSpellInfo(22812) .. "\nSkip if " .. GetSpellInfo(61336) .. " used",
+                        ruRU = GetSpellInfo(22812) .. "\nSkip if " .. GetSpellInfo(61336) .. " used",  
+                        frFR = GetSpellInfo(22812) .. "\nSkip if " .. GetSpellInfo(61336) .. " used", 
                     }, 
                     M = {},
                 }, 		    
@@ -1315,9 +1315,9 @@ A.Data.ProfileUI = {
                     DB = "BarkskinCatchKillStrike",
                     DBV = true,
                     L = { 
-                        enUS = A.GetSpellInfo(22812) .. "\nCatch death hit",
-                        ruRU = A.GetSpellInfo(22812) .. "\nCatch death hit",  
-                        frFR = A.GetSpellInfo(22812) .. "\nCatch death hit", 
+                        enUS = GetSpellInfo(22812) .. "\nCatch death hit",
+                        ruRU = GetSpellInfo(22812) .. "\nCatch death hit",  
+                        frFR = GetSpellInfo(22812) .. "\nCatch death hit", 
                     }, 
                     TT = { 
                         enUS = "Try to manage to use\nability before receiving a fatal strike\nThis option is not related to other triggers!", 
@@ -1336,9 +1336,9 @@ A.Data.ProfileUI = {
                     DBV     = 5,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(22812) .. "\n<= time to die (sec)", 
-                        ruRU = A.GetSpellInfo(22812) .. "\n<= time to die (sec)",  
-                        frFR = A.GetSpellInfo(22812) .. "\n<= time to die (sec)",  
+                        enUS = GetSpellInfo(22812) .. "\n<= time to die (sec)", 
+                        ruRU = GetSpellInfo(22812) .. "\n<= time to die (sec)",  
+                        frFR = GetSpellInfo(22812) .. "\n<= time to die (sec)",  
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition", 
@@ -1355,9 +1355,9 @@ A.Data.ProfileUI = {
                     DBV     = 20,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(22812) .. "\n<= health (%)", 
-                        ruRU = A.GetSpellInfo(22812) .. "\n<= health (%)",  
-                        frFR = A.GetSpellInfo(22812) .. "\n<= health (%)", 
+                        enUS = GetSpellInfo(22812) .. "\n<= health (%)", 
+                        ruRU = GetSpellInfo(22812) .. "\n<= health (%)",  
+                        frFR = GetSpellInfo(22812) .. "\n<= health (%)", 
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition",
@@ -1373,9 +1373,9 @@ A.Data.ProfileUI = {
                     DB = "SurvivalInstinctsCatchKillStrike",
                     DBV = true,
                     L = { 
-                        enUS = A.GetSpellInfo(61336) .. "\nCatch death hit",
-                        ruRU = A.GetSpellInfo(61336) .. "\nCatch death hit",  
-                        frFR = A.GetSpellInfo(61336) .. "\nCatch death hit", 
+                        enUS = GetSpellInfo(61336) .. "\nCatch death hit",
+                        ruRU = GetSpellInfo(61336) .. "\nCatch death hit",  
+                        frFR = GetSpellInfo(61336) .. "\nCatch death hit", 
                     }, 
                     TT = { 
                         enUS = "Try to manage to use\nability before receiving a fatal strike\nThis option is not related to other triggers!", 
@@ -1392,9 +1392,9 @@ A.Data.ProfileUI = {
                     DBV     = 5,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(61336) .. "\n<= time to die (sec)", 
-                        ruRU = A.GetSpellInfo(61336) .. "\n<= time to die (sec)",  
-                        frFR = A.GetSpellInfo(61336) .. "\n<= time to die (sec)",  
+                        enUS = GetSpellInfo(61336) .. "\n<= time to die (sec)", 
+                        ruRU = GetSpellInfo(61336) .. "\n<= time to die (sec)",  
+                        frFR = GetSpellInfo(61336) .. "\n<= time to die (sec)",  
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition", 
@@ -1411,9 +1411,9 @@ A.Data.ProfileUI = {
                     DBV     = 20,
                     ONLYOFF    = true,
                     L = { 
-                        enUS = A.GetSpellInfo(61336) .. "\n<= health (%)", 
-                        ruRU = A.GetSpellInfo(61336) .. "\n<= health (%)",  
-                        frFR = A.GetSpellInfo(61336) .. "\n<= health (%)", 
+                        enUS = GetSpellInfo(61336) .. "\n<= health (%)", 
+                        ruRU = GetSpellInfo(61336) .. "\n<= health (%)",  
+                        frFR = GetSpellInfo(61336) .. "\n<= health (%)", 
                     }, 
                     TT = { 
                         enUS = "OFF - The trigger is disabled\n0->100 Less than or equal to the specified percentage of your health\nWARNING: There must be at least one of several triggers turned on\nWhen selecting multiple triggers, they will be synchronized as one general condition",
@@ -1438,7 +1438,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(204066) .. " (%)",
+                        ANY = GetSpellInfo(204066) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1450,7 +1450,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(22842) .. " (%)",
+                        ANY = GetSpellInfo(22842) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1464,7 +1464,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(61336) .. " (%)",
+                        ANY = GetSpellInfo(61336) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1476,7 +1476,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(192081) .. " (%)",
+                        ANY = GetSpellInfo(192081) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1488,7 +1488,7 @@ A.Data.ProfileUI = {
                     DBV = 70, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(155835) .. "\nmin rage",
+                        ANY = GetSpellInfo(155835) .. "\nmin rage",
                     }, 
                     TT = { 
                         enUS = "Minimum rage required before using Bristling Fur", 
@@ -1506,7 +1506,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(298155) .. " (%)",
+                        ANY = GetSpellInfo(298155) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1518,7 +1518,7 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(301308) .. " (%)",
+                        ANY = GetSpellInfo(301308) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1621,7 +1621,7 @@ A.Data.ProfileUI = {
                     DB = "FearPvP",
                     DBV = "ON MELEE BURST",
                     L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(5782),
+                        ANY = "PvP " .. GetSpellInfo(5782),
                     }, 
                     TT = { 
                         enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
@@ -1647,7 +1647,7 @@ A.Data.ProfileUI = {
                         [4] = true,
                     }, 
                     L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(5782) .. " units",
+                        ANY = "PvP " .. GetSpellInfo(5782) .. " units",
                     }, 
                     TT = { 
                         enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 

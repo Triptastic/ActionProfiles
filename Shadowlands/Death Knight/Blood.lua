@@ -1,8 +1,12 @@
 -------------------------------
 -- Note TMW Action Rotation --
 -------------------------------
+
+--Full credit to Taste
+
 local _G, setmetatable                            = _G, setmetatable
 local A                                         = _G.Action
+local Covenant                                  = _G.LibStub("Covenant")
 local Listener                                    = Action.Listener
 local Create                                    = Action.Create
 local GetToggle                                    = Action.GetToggle
@@ -15,7 +19,6 @@ local BurstIsON                                    = Action.BurstIsON
 local AuraIsValid                                = Action.AuraIsValid
 local InterruptIsValid                            = Action.InterruptIsValid
 local FrameHasSpell                                = Action.FrameHasSpell
-local Azerite                                    = LibStub("AzeriteTraits")
 local Utils                                        = Action.Utils
 local TeamCache                                    = Action.TeamCache
 local EnemyTeam                                    = Action.EnemyTeam
@@ -81,25 +84,7 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     BloodFury                              = Action.Create({ Type = "Spell", ID = 20572 }),
     Berserking                             = Action.Create({ Type = "Spell", ID = 26297 }),
     Tombstone                              = Action.Create({ Type = "Spell", ID = 219809 }),
-    -- Trinkets  
-    AshvanesRazorCoral                     = Action.Create({ Type = "Trinket", ID = 169311, Hidden = true, QueueForbidden = true }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319, Hidden = true, QueueForbidden = true }),
-    AzsharasFontofPower                    = Action.Create({ Type = "Trinket", ID = 169314, Hidden = true, QueueForbidden = true }),
-    GalecallersBoon                        = Action.Create({ Type = "Trinket", ID = 159614, Hidden = true, QueueForbidden = true }),
-    PocketsizedComputationDevice           = Action.Create({ Type = "Trinket", ID = 167555, Hidden = true, QueueForbidden = true }),
-    RazdunksBigRedButton                   = Action.Create({ Type = "Trinket", ID = 159611, Hidden = true, QueueForbidden = true }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367, Hidden = true, QueueForbidden = true }),
-    KnotofAncientFuryAlliance              = Action.Create({ Type = "Trinket", ID = 161413, Hidden = true, QueueForbidden = true }),
-    KnotofAncientFuryHorde                 = Action.Create({ Type = "Trinket", ID = 166795, Hidden = true, QueueForbidden = true }),
-    FirstMatesSpyglass                     = Action.Create({ Type = "Trinket", ID = 158163, Hidden = true, QueueForbidden = true }),
-    GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574, Hidden = true, QueueForbidden = true }),
-    LurkersInsidiousGift                   = Action.Create({ Type = "Trinket", ID = 167866, Hidden = true, QueueForbidden = true }),
-    NotoriousGladiatorsBadge               = Action.Create({ Type = "Trinket", ID = 167380, Hidden = true, QueueForbidden = true }),
-    NotoriousGladiatorsMedallion           = Action.Create({ Type = "Trinket", ID = 167377, Hidden = true, QueueForbidden = true }),
-    SinisterGladiatorsBadge                = Action.Create({ Type = "Trinket", ID = 165058, Hidden = true, QueueForbidden = true }),
-    SinisterGladiatorsMedallion            = Action.Create({ Type = "Trinket", ID = 165055, Hidden = true, QueueForbidden = true }),
-    VialofAnimatedBlood                    = Action.Create({ Type = "Trinket", ID = 159625, Hidden = true, QueueForbidden = true }),
-    JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627, Hidden = true, QueueForbidden = true }),
+	RaiseDead                              = Action.Create({ Type = "Spell", ID = 46585 }),
     -- Defensives
     IceboundFortitude                      = Action.Create({ Type = "Spell", ID = 48792 }),
     AntiMagicShell                         = Action.Create({ Type = "Spell", ID = 48707 }),
@@ -109,6 +94,7 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     GorefiendsGrasp                        = Action.Create({ Type = "Spell", ID = 108199 }),    -- Mass Grip
     MarkofBlood                            = Action.Create({ Type = "Spell", ID = 206940 }),
     RuneTap                                = Action.Create({ Type = "Spell", ID = 194679 }),
+	SacrificialPact                        = Action.Create({ Type = "Spell", ID = 327574 }),
     -- Utilities
     DarkCommand                            = Action.Create({ Type = "Spell", ID = 56222     }), 
     WraithWalk                             = Action.Create({ Type = "Spell", ID = 212552     }), 
@@ -119,6 +105,7 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     ChainsofIce                            = Action.Create({ Type = "Spell", ID = 45524     }), -- 70% snare, 8sec
     RaiseAlly                              = Action.Create({ Type = "Spell", ID = 61999     }),     -- Battle rez
     DeathCaress                            = Action.Create({ Type = "Spell", ID = 195292 }),
+	BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
     -- Potions
     PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
@@ -129,81 +116,26 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
     PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
     -- Trinkets
-    AzsharasFontofPower                    = Action.Create({ Type = "Trinket", ID = 169314 }),
-    PocketsizedComputationDevice           = Action.Create({ Type = "Trinket", ID = 167555 }),
-    RotcrustedVoodooDoll                   = Action.Create({ Type = "Trinket", ID = 159624 }),
-    ShiverVenomRelic                       = Action.Create({ Type = "Trinket", ID = 168905 }),
-    AquipotentNautilus                     = Action.Create({ Type = "Trinket", ID = 169305 }),
-    TidestormCodex                         = Action.Create({ Type = "Trinket", ID = 165576 }),
-    VialofStorms                           = Action.Create({ Type = "Trinket", ID = 158224 }),
-    GalecallersBoon                        = Action.Create({ Type = "Trinket", ID = 159614 }),
-    InvocationOfYulon                      = Action.Create({ Type = "Trinket", ID = 165568 }),
-    LustrousGoldenPlumage                  = Action.Create({ Type = "Trinket", ID = 159617 }),
-    LurkersInsidiousGift                   = Action.Create({ Type = "Trinket", ID = 167866 }),
-    VigorTrinket                           = Action.Create({ Type = "Trinket", ID = 165572 }),
-    AshvanesRazorCoral                     = Action.Create({ Type = "Trinket", ID = 169311 }),
-    MalformedHeraldsLegwraps               = Action.Create({ Type = "Trinket", ID = 167835 }),
-    HyperthreadWristwraps                  = Action.Create({ Type = "Trinket", ID = 168989 }),
-    NotoriousAspirantsBadge                = Action.Create({ Type = "Trinket", ID = 167528 }),
-    NotoriousGladiatorsBadge               = Action.Create({ Type = "Trinket", ID = 167380 }),
-    SinisterGladiatorsBadge                = Action.Create({ Type = "Trinket", ID = 165058 }),
-    SinisterAspirantsBadge                 = Action.Create({ Type = "Trinket", ID = 165223 }),
-    DreadGladiatorsBadge                   = Action.Create({ Type = "Trinket", ID = 161902 }),
-    DreadAspirantsBadge                    = Action.Create({ Type = "Trinket", ID = 162966 }),
-    DreadCombatantsInsignia                = Action.Create({ Type = "Trinket", ID = 161676 }),
-    NotoriousAspirantsMedallion            = Action.Create({ Type = "Trinket", ID = 167525 }),
-    NotoriousGladiatorsMedallion           = Action.Create({ Type = "Trinket", ID = 167377 }),
-    SinisterGladiatorsMedallion            = Action.Create({ Type = "Trinket", ID = 165055 }),
-    SinisterAspirantsMedallion             = Action.Create({ Type = "Trinket", ID = 165220 }),
-    DreadGladiatorsMedallion               = Action.Create({ Type = "Trinket", ID = 161674 }),
-    DreadAspirantsMedallion                = Action.Create({ Type = "Trinket", ID = 162897 }),
-    DreadCombatantsMedallion               = Action.Create({ Type = "Trinket", ID = 161811 }),
-    IgnitionMagesFuse                      = Action.Create({ Type = "Trinket", ID = 159615 }),
-    TzanesBarkspines                       = Action.Create({ Type = "Trinket", ID = 161411 }),
-    AzurethosSingedPlumage                = Action.Create({ Type = "Trinket", ID = 161377 }),
-    AncientKnotofWisdomAlliance            = Action.Create({ Type = "Trinket", ID = 161417 }),
-    AncientKnotofWisdomHorde               = Action.Create({ Type = "Trinket", ID = 166793 }),
-    ShockbitersFang                        = Action.Create({ Type = "Trinket", ID = 169318 }),
-    NeuralSynapseEnhancer                  = Action.Create({ Type = "Trinket", ID = 168973 }),
-    BalefireBranch                         = Action.Create({ Type = "Trinket", ID = 159630 }),
-    GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-    BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-    RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-    VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-    JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-    GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    RazdunksBigRedButton                   = Action.Create({ Type = "Trinket", ID = 159611 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),    
-    GrongsPrimalRage                       = Action.Create({ Type = "Trinket", ID = 165574 }),
-    BygoneBeeAlmanac                       = Action.Create({ Type = "Trinket", ID = 163936 }),
-    RampingAmplitudeGigavoltEngine         = Action.Create({ Type = "Trinket", ID = 165580 }),
-    VisionofDemise                         = Action.Create({ Type = "Trinket", ID = 169307 }),
-    JesHowler                              = Action.Create({ Type = "Trinket", ID = 159627 }),
-    GalecallersBeak                        = Action.Create({ Type = "Trinket", ID = 161379 }),
-    DribblingInkpod                        = Action.Create({ Type = "Trinket", ID = 169319 }),
-    MerekthasFang                          = Action.Create({ Type = "Trinket", ID = 158367 }),
-    KnotofAncientFuryAlliance              = Action.Create({ Type = "Trinket", ID = 161413 }),
-    KnotofAncientFuryHorde                 = Action.Create({ Type = "Trinket", ID = 166795 }),
-    FirstMatesSpyglass                     = Action.Create({ Type = "Trinket", ID = 158163 }),
-    VialofAnimatedBlood                    = Action.Create({ Type = "Trinket", ID = 159625 }),
+	-- Covenant Abilities
+    SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739	}),
+    DoorofShadows                          = Action.Create({ Type = "Spell", ID = 300728	}),
+    Fleshcraft						       = Action.Create({ Type = "Spell", ID = 331180	}),
+    Soulshape                              = Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker                                = Action.Create({ Type = "Spell", ID = 324701	}),
+    ShackletheUnworthy                     = Action.Create({ Type = "Spell", ID = 312202	}),
+    SwarmingMist                           = Action.Create({ Type = "Spell", ID = 311648	}),	
+    AbominationLimb                        = Action.Create({ Type = "Spell", ID = 315443	}),
+    DeathsDue                              = Action.Create({ Type = "Spell", ID = 324128	}),	
+	--Generic Legendaries
+	DeathsEmbrace                          = Action.Create({ Type = "Spell", ID = 334728, Hidden = true	}),
+    GripoftheEverlasting                   = Action.Create({ Type = "Spell", ID = 334724, Hidden = true	}),
+    Phearomones                            = Action.Create({ Type = "Spell", ID = 335177, Hidden = true	}),
+    Superstain                             = Action.Create({ Type = "Spell", ID = 334974, Hidden = true	}),	
+	--ConduitsLATER
     -- Misc
     Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
     TargetEnemy                            = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)
-    StopCast                               = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit
-    CyclotronicBlast                       = Action.Create({ Type = "Spell", ID = 293491, Hidden = true}),
-    ConcentratedFlameBurn                  = Action.Create({ Type = "Spell", ID = 295368, Hidden = true}),
-    RazorCoralDebuff                       = Action.Create({ Type = "Spell", ID = 303568, Hidden = true     }),
-    ConductiveInkDebuff                    = Action.Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-    BonesoftheDamned                       = Action.Create({ Type = "Spell", ID = 279503, Hidden = true     }),
-    -- Hidden Heart of Azeroth
-    -- added all 3 ranks ids in case used by rotation
-    VisionofPerfectionMinor                = Action.Create({ Type = "Spell", ID = 296320, Hidden = true}),
-    VisionofPerfectionMinor2               = Action.Create({ Type = "Spell", ID = 299367, Hidden = true}),
-    VisionofPerfectionMinor3               = Action.Create({ Type = "Spell", ID = 299369, Hidden = true}),
-    UnleashHeartOfAzeroth                  = Action.Create({ Type = "Spell", ID = 280431, Hidden = true}), 
-    RecklessForceBuff                      = Action.Create({ Type = "Spell", ID = 302932, Hidden = true     }),  
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
+    StopCast                               = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit   
 };
 
 -- To create essences use next code:
@@ -690,6 +622,10 @@ A[3] = function(icon, isMulti)
             then
                 return A.BloodDrinker:Show(icon)
             end
+			
+			if A.MarkofBlood:IsSpellLearned() and A.MarkofBlood:IsReady(unit) and Unit(unit):HasDeBuffs(A.MarkofBlood.ID, true) == 0 then
+				return A.MarkofBlood:Show(icon)
+			end
             
             -- marrowrend,if=(buff.bone_shield.remains<=rune.time_to_3|buff.bone_shield.remains<=(gcd+cooldown.blooddrinker.ready*talent.blooddrinker.enabled*2)|buff.bone_shield.stack<3)&runic_power.deficit>=20
             if A.Marrowrend:IsReady(unit) and 
@@ -722,9 +658,14 @@ A[3] = function(icon, isMulti)
             end
             
             -- death_and_decay,if=spell_targets.death_and_decay>=3
-            if A.DeathandDecay:IsReadyByPassCastGCD(player) and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
+            if A.DeathandDecay:IsReadyByPassCastGCD(player) and not A.DeathsDue:IsSpellLearned() and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
                 return A.DeathandDecay:Show(icon)
             end
+			
+			-- deaths_due,if=spell_targets.deaths_due>=3
+			if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
+				return A.DeathsDue:Show(icon)
+			end
             
             -- death_strike
             local DeathStrike = Action.GetToggle(2, "DeathStrikeHP")
@@ -823,7 +764,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- death_and_decay,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.death_and_decay>=2
-            if A.DeathandDecay:IsReadyByPassCastGCD(player) and Player:IsStayingTime() >= 1.5 and 
+            if A.DeathandDecay:IsReadyByPassCastGCD(player) and Player:IsStayingTime() >= 1.5 and not A.DeathsDue:IsSpellLearned() and
             (
                 Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 
                 or
@@ -834,6 +775,17 @@ A[3] = function(icon, isMulti)
             then
                 return A.DeathandDecay:Show(icon)
             end
+			
+			--deaths_due,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.deathsdue>=2
+			if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Player:IsStayingTime() and
+			(
+				Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID,true) > 0
+				or
+				GetByRange(2, 15)
+			)
+			then
+				return A.DeathsDue:Show(icon)
+			end
             
             -- consumption
             if A.Consumption:IsReady(unit) then
@@ -856,15 +808,10 @@ A[3] = function(icon, isMulti)
                 return A.HeartStrike:Show(icon)
             end
             
-            -- use_item,name=grongs_primal_rage
+            --[[ use_item,name=grongs_primal_rage
             if A.GrongsPrimalRage:IsReady(unit) then
                 return A.GrongsPrimalRage:Show(icon)
-            end
-            
-            -- rune_strike
-            if A.RuneStrike:IsReady(unit) then
-                return A.RuneStrike:Show(icon)
-            end
+            end]]
             
         end
         Standard = A.MakeFunctionCachedDynamic(Standard)
@@ -916,8 +863,6 @@ A[3] = function(icon, isMulti)
             and not Unit(unit):IsExplosives()
             and not Unit(unit):IsDummy()
             and not Unit(unit):IsPlayer()
-            and not Unit(unit):NPCID() == 160966 -- Thing From Beyong
-            and not Unit(unit):NPCID() == 161895 -- Thing From Beyong
             and not Unit(unit):IsTotem() then
                 --  Try taunt enemy if no agro
                 if A.DarkCommand:IsReady(unit) then
@@ -937,94 +882,9 @@ A[3] = function(icon, isMulti)
                 end
             end
             
-            -- VigilantProtector
-            if A.VigilantProtector:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.VigilantProtector:Show(icon)
-            end
-            
-            -- EmpoweredNullBarrier
-            if A.EmpoweredNullBarrier:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.EmpoweredNullBarrier:Show(icon)
-            end
-            
-            -- AnimaofDeath
-            if A.AnimaofDeath:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AnimaofDeath:Show(icon)
-            end
-            
-            -- AzerothsUndyingGift
-            if A.AzerothsUndyingGift:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AzerothsUndyingGift:Show(icon)
-            end
-            
-            -- RippleinSpace
-            if A.RippleinSpace:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.RippleinSpace:Show(icon)
-            end
-            
-            -- AegisoftheDeep
-            if A.AegisoftheDeep:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AegisoftheDeep:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams
-            if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.MemoryofLucidDreams:Show(icon)
-            end
-
-            -- guardian_of_azeroth
-            if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- focused_azerite_beam
-            if A.FocusedAzeriteBeam:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams
-            if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- blood_of_the_enemy
-            if A.BloodoftheEnemy:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- purifying_blast
-            if A.PurifyingBlast:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            --[[ ripple_in_space
-            if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-                return A.Darkflight:Show(icon)
-            end]]
-            
-            -- concentrated_flame,line_cd=6
-            if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- reaping_flames
-            if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- the_unbound_force,if=buff.reckless_force.up
-            if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- worldvein_resonance
-            if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-                return A.Darkflight:Show(icon)
-            end
-            
-            -- concentrated_flame,if=buff.avatar.down&!dot.concentrated_flame_burn.remains>0|essence.the_crucible_of_flame.rank<3
-            if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 then
-                return A.ConcentratedFlame:Show(icon)
+            -- SwarmingMist
+            if A.SwarmingMist:IsReady(Unit) then
+                return A.SwarmingMist:Show(icon)
             end
             
             -- Taunt (Updated by KhalDrogo1988)
@@ -1115,26 +975,6 @@ A[3] = function(icon, isMulti)
             if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and A.Trinket2:GetItemCategory() ~= "DEFF" then 
                 return A.Trinket2:Show(icon)
             end 
-            
-            -- use_item,name=razdunks_big_red_button
-            if A.RazdunksBigRedButton:IsReady(unit) then
-                return A.RazdunksBigRedButton:Show(icon)
-            end
-            
-            -- use_item,name=merekthas_fang
-            if A.MerekthasFang:IsReady(unit) then
-                return A.MerekthasFang:Show(icon)
-            end
-            
-            -- use_item,name=ashvanes_razor_coral,if=debuff.razor_coral_debuff.down
-            if A.AshvanesRazorCoral:IsReady(unit) and Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) == 0 then
-                return A.AshvanesRazorCoral:Show(icon)
-            end
-            
-            -- use_item,name=ashvanes_razor_coral,if=buff.dancing_rune_weapon.up&debuff.razor_coral_debuff.up
-            if A.AshvanesRazorCoral:IsReady(unit) and Unit(player):HasBuffs(A.DancingRuneWeaponBuff.ID, true) > 0 and Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) > 0 then
-                return A.AshvanesRazorCoral:Show(icon)
-            end
             
             -- tombstone,if=buff.bone_shield.stack>=7
             if A.Tombstone:IsReady(unit) and A.Tombstone:IsSpellLearned() and Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) >= 7 then
@@ -1253,4 +1093,3 @@ A[8] = function(icon)
     end     
     return ArenaRotation(icon, "arena3")
 end
-
