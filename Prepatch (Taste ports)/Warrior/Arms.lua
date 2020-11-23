@@ -105,8 +105,10 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     Avatar                                 = Create({ Type = "Spell", ID = 107574 }),
     SweepingStrikes                        = Create({ Type = "Spell", ID = 260708 }),
     ReapingFlames                          = Create({ Type = "Spell", ID = 311195 }),
-    CondensedLifeforce                     = Create({ Type = "Spell", ID = 299357 }),	
-    -- Trinkets
+    CondensedLifeforce                     = Create({ Type = "Spell", ID = 299357 }),
+	IgnorePain							   = Create({ Type = "Spell", ID = 190456 }),
+	RallyingCry							   = Create({ Type = "Spell", ID = 97462 }),	
+    -- Trinkets	
     TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }), 
     TrinketTest2                           = Create({ Type = "Trinket", ID = 159611, QueueForbidden = true }), 
     AzsharasFontofPower                    = Create({ Type = "Trinket", ID = 169314, QueueForbidden = true }), 
@@ -140,7 +142,7 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
 	
 	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
---	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for SweepingStrikes	
+	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for SweepingStrikes	
 };
 
 -- To create covenant use next code:
@@ -319,45 +321,80 @@ end]]
 
 local function SelfDefensives()
     local HPLoosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
-    if Unit(player):CombatTime() == 0 then 
+    if Unit("player"):CombatTime() == 0 then 
         return 
     end 
     
     -- Rallying Cry
     local RallyingCry = A.GetToggle(2, "RallyingCry")
-    if     RallyingCry >= 0 and A.RallyingCry:IsReady(player) and 
+    if     RallyingCry >= 0 and A.RallyingCry:IsReady("player") and 
     (
         (     -- Auto 
             RallyingCry >= 100 and 
             (
                 -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 20 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.20 or 
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
                 -- TTD 
-                Unit(player):TimeToDieX(25) < 5 or 
+                Unit("player"):TimeToDieX(25) < 5 or 
                 (
                     A.IsInPvP and 
                     (
-                        Unit(player):UseDeff() or 
+                        Unit("player"):UseDeff() or 
                         (
                             Unit("player", 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
                         )
                     )
                 )
             ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
+            Unit("player"):HasBuffs("DeffBuffs", true) == 0
         ) 
         or 
         (    -- Custom
             RallyingCry < 100 and 
-            Unit(player):HealthPercent() <= RallyingCry
+            Unit("player"):HealthPercent() <= RallyingCry
         )
     ) 
     then 
         return A.RallyingCry
     end  
+	
+    local IgnorePain = A.GetToggle(2, "IgnorePain")
+    if     IgnorePain >= 0 and A.IgnorePain:IsReady("player") and 
+    (
+        (     -- Auto 
+            IgnorePain >= 100 and 
+            (
+                -- HP lose per sec >= 20
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
+                -- TTD 
+                Unit("player"):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit("player"):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit("player"):HasBuffs("DeffBuffs", true) == 0
+        ) 
+        or 
+        (    -- Custom
+            IgnorePain < 100 and 
+            Unit("player"):HealthPercent() <= IgnorePain
+        )
+    ) 
+    then 
+        return A.IgnorePain
+    end  	
     
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
@@ -489,7 +526,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!spell_targets.whirlwind>1&!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and MultiUnits:GetByRange(8, 1) == 1 or (not MultiUnits:GetByRange(8, 2) > 1 and not A.Cleave:IsTalentLearned()) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
 					return A.MortalStrike:Show(icon)
 				end
 				
@@ -549,7 +586,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or not A.Cleave:IsTalentLearned()) then
+				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
 					return A.MortalStrike:Show(icon)
 				end
 				
@@ -579,7 +616,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- mortal_strike,if=spell_targets.whirlwind=1|!talent.cleave.enabled
-				if A.MortalStrike:IsReady(unit) and (MultiUnits:GetByRange(8, 2) == 1 or not A.Cleave:IsTalentLearned()) then
+				if A.MortalStrike:IsReady(unit) and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
 					return A.MortalStrike:Show(icon)
 				end
 				
@@ -671,7 +708,7 @@ A[3] = function(icon, isMulti)
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
 				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0) then
-					return A.SweepingStrikes:Show(icon)
+					return A.Regeneratin:Show(icon)
 				end
 				
 				-- guardian_of_azeroth
@@ -727,7 +764,7 @@ A[3] = function(icon, isMulti)
     -- End on EnemyRotation()
 
     -- Defensive
-    --local SelfDefensive = SelfDefensives()
+    local SelfDefensive = SelfDefensives()
     if SelfDefensive then 
         return SelfDefensive:Show(icon)
     end 

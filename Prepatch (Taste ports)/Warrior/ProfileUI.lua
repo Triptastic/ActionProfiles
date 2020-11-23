@@ -25,7 +25,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v4.2.8 (02.08.2020)",
+    DateTime = "v1.1.0 (23 November 2020)",
 	-- Class Settings
     [2] = {        
         [ACTION_CONST_WARRIOR_FURY] = {
@@ -1033,11 +1033,11 @@ A.Data.ProfileUI                                     = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "DiebytheSword",
-                    DBV = 100, -- Set healthpercentage @30% life. 
+                    DB = "IgnorePain",
+                    DBV = 30, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(118038) .. " (%)",
+                        ANY = "Ignore Pain HP(%)",
                     }, 
                     M = {},
                 },
