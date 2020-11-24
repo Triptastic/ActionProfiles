@@ -349,6 +349,21 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
+                { -- DrainLife
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DrainLifeHP",
+                    DBV = 10, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Drain Life HP (%)",
+                    }, 
+                    TT = { 
+                        ANY = "Will use Drain Life at this percent HP."
+					},					
+                    M = {},
+                },				
             },
             { -- Healing Potion Slider
                 {

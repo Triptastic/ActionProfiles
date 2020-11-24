@@ -197,6 +197,26 @@ local function InRange(unit)
 end 
 InRange = A.MakeFunctionCachedDynamic(InRange)
 
+function Player:AreaTTD(range)
+    local ttdtotal = 0
+	local totalunits = 0
+    local r = range
+    
+	for _, unitID in pairs(ActiveUnitPlates) do 
+		if Unit(unitID):GetRange() <= r then 
+			local ttd = Unit(unitID):TimeToDie()
+			totalunits = totalunits + 1
+			ttdtotal = ttd + ttdtotal
+		end
+	end
+    
+	if totalunits == 0 then
+		return 0
+	end
+    
+	return ttdtotal / totalunits
+end	
+
 local function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isCheckEqual, isCheckCombat)
     -- @return boolean 
     local c = 0 
@@ -702,12 +722,12 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- avatar,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>45)
-				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) then
+				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) and Player:AreaTTD(10) > 9 then
 					return A.Avatar:Show(icon)
 				end
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
-				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and (A.Bladestorm:GetCooldown() > 10 or A.ColossusSmash:GetCooldown() > 8 or A.TestofMight:GetAzeriteRank() > 0) then
+				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and ((A.Bladestorm:GetCooldown() > 10 and not A.Ravager:IsTalentLearned()) or A.ColossusSmash:GetCooldown() > 8) and Player:AreaTTD(10) > 9 then
 					return A.Regeneratin:Show(icon)
 				end
 				

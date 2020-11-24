@@ -1060,7 +1060,7 @@ A[3] = function(icon, isMulti)
 			--Fleshcraft
 			if A.Fleshcraft:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit("player"):CombatTime() > 0 and (Unit("player"):IsExecuted() or (Unit("player"):HealthPercent() <= 40 and Unit("player"):TimeToDie() < 8)) then 
 			A.Toaster:SpawnByTimer("TripToast", 0, "Fleshcraft!", "Using Fleshcraft defensively! Don't move!", A.Fleshcraft.ID)			
-				return self.Fleshcraft:Show(icon)
+				return A.Fleshcraft:Show(icon)
 			end 
 			
 			--actions.cooldown+=/fodder_to_the_flame
@@ -1136,7 +1136,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.demonic+=/glaive_tempest,if=active_enemies>desired_targets|raid_event.adds.in>10
-			if A.GlaiveTempest:IsReady(unit) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
+			if A.GlaiveTempest:IsReady(unit) and (A.MultiUnits:GetByRange(5) >= 2 or (Unit(unit):IsBoss() and Unit(unit):GetRange() <= 5)) then
 				return A.SpectralSight:Show(icon)
 			end	
 			
