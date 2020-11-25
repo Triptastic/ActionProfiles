@@ -808,11 +808,6 @@ A[3] = function(icon, isMulti)
                 return A.HeartStrike:Show(icon)
             end
             
-            --[[ use_item,name=grongs_primal_rage
-            if A.GrongsPrimalRage:IsReady(unit) then
-                return A.GrongsPrimalRage:Show(icon)
-            end]]
-            
         end
         Standard = A.MakeFunctionCachedDynamic(Standard)
         

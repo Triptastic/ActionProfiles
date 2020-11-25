@@ -25,7 +25,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.0.0 (14.11.2020)",
+    DateTime = "v1.1.0 (26 November 2020)",
     -- Class settings
     [2] = {
         -- Unholy	
