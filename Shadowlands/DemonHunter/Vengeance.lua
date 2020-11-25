@@ -456,57 +456,7 @@ A[3] = function(icon, isMulti)
 			--Fiery Brand on cooldown
 			if A.FieryBrand:IsReady(unit) then 
 				return A.FieryBrand:Show(icon)
-			end
-			
-			--[[ guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- the_unbound_force,if=buff.reckless_force.up
-			if A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.RecklessForceBuff.ID, true)) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- worldvein_resonance
-			if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and A.BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end]]	
+			end	
 		
 			--Spirit Bomb if four or more souls and fury cap incoming
 			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Player:Fury() then
@@ -663,7 +613,7 @@ A[3] = function(icon, isMulti)
 			return true
 		end
 
-		if CovenantCall(unit) and inCombat and A.GetToggle(1, "Covenant") then
+		if CovenantCall(unit) and inCombat and A.GetToggle(1, "Covenant") and Unit("target"):TimeToDie() > 8 then
 			return true
 		end	
 		

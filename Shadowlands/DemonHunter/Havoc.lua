@@ -865,7 +865,7 @@ A[3] = function(icon, isMulti)
         
         -- Interrupts
         local Interrupt = Interrupts(unit)
-        if inCombat and Interrupt then 
+        if inCombat and CanCast and Interrupt then 
             return Interrupt:Show(icon)
         end 
         
@@ -946,46 +946,6 @@ A[3] = function(icon, isMulti)
 			if A.Metamorphosis:IsReady(unit) and A.EyeBeam:GetCooldown() > 20 and (not VarBladeDance or A.BladeDance:GetCooldown() > A.GetGCD()) and (Player:GetCovenant() ~= 2 or Unit(unit):HasDeBuffs(A.SinfulBrand.ID, true) == 0) and PotionReady then
 				return A.Metamorphosis:Show(icon)
 			end 			
-
-			-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Shadowmeld:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady(unit) and CanCast and BurstIsON(unit) then
-				return A.Shadowmeld:Show(icon)
-			end
 
 			--Trinket 1
             if A.Trinket1:IsReady(unit) then
@@ -1375,7 +1335,7 @@ A[3] = function(icon, isMulti)
 		end	
 		
 		--Covenant Call
-		if inCombat and A.GetToggle(1, "Covenant") and CovenantCall() then
+		if inCombat and A.GetToggle(1, "Covenant") and CovenantCall() and Unit("target"):TimeToDie() > 8 then
 			return true
 		end
 		
