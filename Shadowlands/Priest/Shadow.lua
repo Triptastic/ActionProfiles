@@ -665,7 +665,7 @@ A[3] = function(icon, isMulti)
 		--actions+=/run_action_list,name=main
 
 		--actions.main=void_eruption,if=variable.pi_or_vf_sync_condition&insanity>=40
-		if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) and Player:AreaTTD(40) > 15 then
+		if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.BurstIsON(unit) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) and Player:AreaTTD(40) > 15 then
 			return A.VoidEruption:Show(icon)
 		end	
 
