@@ -653,52 +653,6 @@ A[3] = function(icon, isMulti)
 			if A.DarkSoulMisery:IsReady("player") and BurstIsON("target") and A.SummonDarkglare:GetCooldown() > Unit("target"):TimeToDie() then
 				return A.DarkSoulMisery:Show(icon)
 			end	
-			
-			--[[actions+=/call_action_list,name=cooldowns
-			if BurstIsON(unit) then 
-				if Cooldowns(unit) then
-				return true
-			end]]
-			
-				-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end	
 		
 			-- Trinket One
 			if A.Trinket1:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
@@ -709,24 +663,26 @@ A[3] = function(icon, isMulti)
 			if A.Trinket2:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
 				return A.Trinket2:Show(icon)
 			end 		
+
+			--actions.covenant=impending_catastrophe,if=cooldown.summon_darkglare.remains<10|cooldown.summon_darkglare.remains>50
+			if A.ImpendingCatastrophe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") and (A.SummonDarkglare:GetCooldown() < 10 or A.SummonDarkglare:GetCooldown() > 50) then
+				return A.ImpendingCatastrophe:Show(icon)
+			end					
 			
-			--Temporary Covenants until they're simmed
+			--actions.covenant+=/decimating_bolt,if=cooldown.summon_darkglare.remains>5&(debuff.haunt.remains>4|!talent.haunt.enabled)
+			if A.DecimatingBolt:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") and A.SummonDarkglare:GetCooldown() > 5 and (Unit(unit):HasDeBuffs(A.Haunt.ID, true) > 4 or not A.Haunt:IsTalentLearned()) then
+				return A.DecimatingBolt:Show(icon)
+			end				
+			
+			--actions.covenant+=/soul_rot,if=cooldown.summon_darkglare.remains<5|cooldown.summon_darkglare.remains>50|cooldown.summon_darkglare.remains>25&conduit.corrupting_leer.enabled
+			if A.SoulRot:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") and (A.SummonDarkglare:GetCooldown() < 5 or A.SummonDarkglare:GetCooldown() > 50 or (A.SummonDarkglare:GetCooldown() > 25 and A.CorruptingLeer:IsSoulbindLearned())) then
+				return A.SoulRot:Show(icon)
+			end				
+			
+			--actions.covenant+=/scouring_tithe
 			if A.ScouringTithe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
 				return A.ScouringTithe:Show(icon)
 			end	
-			
-			if A.ImpendingCatastrophe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
-				return A.ImpendingCatastrophe:Show(icon)
-			end				
-			
-			if A.DecimatingBolt:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
-				return A.DecimatingBolt:Show(icon)
-			end	
-
-			if A.SoulRot:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
-				return A.SoulRot:Show(icon)
-			end	
-
 			
 			--actions+=/malefic_rapture,if=dot.vile_taint.ticking
 			if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 and Unit("target"):TimeToDie() >= 3 then
