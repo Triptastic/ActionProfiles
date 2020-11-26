@@ -560,12 +560,12 @@ A[3] = function(icon, isMulti)
 			
 			--actions.aoe+=/call_action_list,name=cds
 			--actions.cds=summon_infernal
-			if A.SummonInfernal:IsReady(player) and A.BurstIsON(unit) then
+			if A.SummonInfernal:IsReady(player) and A.BurstIsON("target") then
 				return A.SummonInfernal:Show(icon)
 			end
 			
 			--actions.cds+=/dark_soul_instability
-			if A.DarkSoulInstability:IsReady(player) and A.BurstIsON(unit) then
+			if A.DarkSoulInstability:IsReady(player) and A.BurstIsON("target") then
 				return A.DarkSoulInstability:Show(icon)
 			end	
 			
@@ -573,62 +573,19 @@ A[3] = function(icon, isMulti)
 			
 			
 			--actions.cds+=/berserking,if=pet.infernal.active
-			if A.Berserking:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.Berserking:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.Berserking:Show(icon)
 			end	
 			
 			--actions.cds+=/blood_fury,if=pet.infernal.active
-			if A.BloodFury:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.BloodFury:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.BloodFury:Show(icon)
 			end	
 			
 			--actions.cds+=/fireblood,if=pet.infernal.active
-			if A.Fireblood:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.Fireblood:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.Fireblood:Show(icon)
-			end	
-			
-			--actions.cds+=/use_items,if=pet.infernal.active|target.time_to_die<20			
-			
-			--actions.aoe+=/call_action_list,name=essences
-				-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady("target") and (not isMoving) and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end	
+			end			
 		
 			-- Trinket One
 			if A.Trinket1:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
@@ -767,12 +724,16 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--Health Funnel
-			if A.HealthFunnel:IsReady(player) and Unit("pet"):HealthPercent() <= HealthFunnelHP and Unit(player):HealthPercent() >= 30 then
+			if A.HealthFunnel:IsReady(player) and Pet:IsActive() and Unit("pet"):HealthPercent() <= HealthFunnelHP and Unit(player):HealthPercent() >= 30 then
 				return A.HealthFunnel:Show(icon)
 			end	
 
 			if Unit(unit):HasDeBuffs(A.Havoc.ID) > 0 and unit ~= "mouseover" and MultiUnits:GetActiveEnemies() >= 2 and AutoHavoc then
 				return A:Show(icon, ACTION_CONST_AUTOTARGET) 
+			end	
+
+			if A.Shadowburn:IsReady(unit) and A.Shadowburn:IsTalentLearned() and Unit("target"):HealthPercent() < 20 then
+				return A.Shadowburn:Show(icon)
 			end	
 			
 			--actions=call_action_list,name=havoc,if=havoc_active&active_enemies>1&active_enemies<5-talent.inferno.enabled+(talent.inferno.enabled&talent.internal_combustion.enabled)
@@ -810,12 +771,12 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions+=/call_action_list,name=cds
-			if A.SummonInfernal:IsReady(player) and A.BurstIsON(unit) then
+			if A.SummonInfernal:IsReady(player) and A.BurstIsON("target") then
 				return A.SummonInfernal:Show(icon)
 			end
 			
 			--actions.cds+=/dark_soul_instability
-			if A.DarkSoulInstability:IsReady(player) and A.BurstIsON(unit) then
+			if A.DarkSoulInstability:IsReady(player) and A.BurstIsON("target") then
 				return A.DarkSoulInstability:Show(icon)
 			end	
 			
@@ -823,62 +784,21 @@ A[3] = function(icon, isMulti)
 			
 			
 			--actions.cds+=/berserking,if=pet.infernal.active
-			if A.Berserking:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.Berserking:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.Berserking:Show(icon)
 			end	
 			
 			--actions.cds+=/blood_fury,if=pet.infernal.active
-			if A.BloodFury:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.BloodFury:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.BloodFury:Show(icon)
 			end	
 			
 			--actions.cds+=/fireblood,if=pet.infernal.active
-			if A.Fireblood:IsReady(player) and A.BurstIsON(unit) and InfernalIsActive() then
+			if A.Fireblood:IsReady(player) and A.BurstIsON("target") and InfernalIsActive() then
 				return A.Fireblood:Show(icon)
 			end	
 			
 			--actions.cds+=/use_items,if=pet.infernal.active|target.time_to_die<20			
-			
-			--actions.aoe+=/call_action_list,name=essences
-				-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady("target") and (not isMoving) and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end	
 		
 			-- Trinket One
 			if A.Trinket1:IsReady("target") and BurstIsON("target") and Player:AreaTTD(40) > 10 then 
