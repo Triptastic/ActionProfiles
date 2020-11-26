@@ -205,13 +205,13 @@ Action[ACTION_CONST_SHAMAN_RESTORATION] = {
 	Cyclone                                = Create({ Type = "Spell", ID = 33786, Hidden = true   }), -- Debuff check
 	Innervate                              = Create({ Type = "Spell", ID = 29166, Hidden = true     }),
 	-- Covenants
-    VesperTotem						= Action.Create({ Type = "Spell", ID = 306830	}),
+    VesperTotem						= Action.Create({ Type = "Spell", ID = 324386	}),
     SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
-    ChainHarvest					= Action.Create({ Type = "Spell", ID = 317009	}),
+    ChainHarvest					= Action.Create({ Type = "Spell", ID = 320674	}),
     DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
-    PrimordialWave					= Action.Create({ Type = "Spell", ID = 329554	}),
+    PrimordialWave					= Action.Create({ Type = "Spell", ID = 326059	}),
     Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
-    FaeTransfusion					= Action.Create({ Type = "Spell", ID = 323639	}),
+    FaeTransfusion					= Action.Create({ Type = "Spell", ID = 328923	}),
     Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
     Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),	
 	
