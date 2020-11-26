@@ -234,7 +234,18 @@ Action[ACTION_CONST_SHAMAN_ENCHANCEMENT] = {
     BlessingofProtection                   = Create({ Type = "Spell", ID = 1022, Hidden = true     }),	-- Used to check on offensive dispell 
     PoolResource                           = Create({ Type = "Spell", ID = 209274, Hidden = true     }),	
 	DummyTest                              = Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth		
+	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
+	-- Covenants
+    VesperTotem						= Action.Create({ Type = "Spell", ID = 306830	}),
+    SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
+    ChainHarvest					= Action.Create({ Type = "Spell", ID = 317009	}),
+    DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
+    PrimordialWave					= Action.Create({ Type = "Spell", ID = 329554	}),
+    Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
+    FaeTransfusion					= Action.Create({ Type = "Spell", ID = 323639	}),
+    Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),
+	
 };
 
 -- To create essences use next code:

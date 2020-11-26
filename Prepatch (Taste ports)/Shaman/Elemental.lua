@@ -212,6 +212,17 @@ Action[ACTION_CONST_SHAMAN_ELEMENTAL] = {
     UnleashHeartOfAzeroth                  = Action.Create({ Type = "Spell", ID = 280431, Hidden = true}),
     RecklessForceBuff                      = Action.Create({ Type = "Spell", ID = 302932, Hidden = true     }),     
 	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
+	-- Covenants
+    VesperTotem						= Action.Create({ Type = "Spell", ID = 306830	}),
+    SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
+    ChainHarvest					= Action.Create({ Type = "Spell", ID = 317009	}),
+    DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
+    PrimordialWave					= Action.Create({ Type = "Spell", ID = 329554	}),
+    Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
+    FaeTransfusion					= Action.Create({ Type = "Spell", ID = 323639	}),
+    Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),	
+	
 };
 
 -- To create essences use next code:
@@ -828,25 +839,25 @@ A[3] = function(icon, isMulti)
 			return A.Darkflight:Show(icon)
 		end
 		
-		--[[actions+=/primordial_wave,if=covenant.necrolord
-		if A.PrimordialWave:IsReady() then
+		--actions+=/primordial_wave,if=covenant.necrolord
+		if A.PrimordialWave:IsReady() and A.GetToggle(1, "Covenant") then
 			return A.PrimordialWave:Show(icon)
 		end
 		
 		--actions+=/vesper_totem,if=covenant.kyrian
-		if A.VesperTotem:IsReady() then
+		if A.VesperTotem:IsReady() and A.GetToggle(1, "Covenant") then
 			return A.VesperTotem:Show(icon)
 		end		
 		
 		--actions+=/chain_harvest,if=covenant.venthyr
-		if A.ChainHarvest:IsReady() then
+		if A.ChainHarvest:IsReady() and A.GetToggle(1, "Covenant") then
 			return A.ChainHarvest:Show(icon)
 		end		
 		
 		--actions+=/fae_transfusion,if=covenant.night_fae
-		if A.FaeTransfusion:IsReady() then
+		if A.FaeTransfusion:IsReady() and A.GetToggle(1, "Covenant") then
 			return A.FaeTransfusion:Show(icon)
-		end		]]
+		end
 		
 		--[[actions+=/run_action_list,name=single_target,if=active_enemies<=2
 		if MultiUnits:GetActiveEnemies() <= 2 then

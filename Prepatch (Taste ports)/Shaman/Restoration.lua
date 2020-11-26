@@ -204,6 +204,17 @@ Action[ACTION_CONST_SHAMAN_RESTORATION] = {
 	Fixate                                 = Create({ Type = "Spell", ID = 318078, Hidden = true     }), -- Wrathion Fixate
 	Cyclone                                = Create({ Type = "Spell", ID = 33786, Hidden = true   }), -- Debuff check
 	Innervate                              = Create({ Type = "Spell", ID = 29166, Hidden = true     }),
+	-- Covenants
+    VesperTotem						= Action.Create({ Type = "Spell", ID = 306830	}),
+    SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
+    ChainHarvest					= Action.Create({ Type = "Spell", ID = 317009	}),
+    DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
+    PrimordialWave					= Action.Create({ Type = "Spell", ID = 329554	}),
+    Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
+    FaeTransfusion					= Action.Create({ Type = "Spell", ID = 323639	}),
+    Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),	
+	
 };
 
 -- To create essences use next code:
