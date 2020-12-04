@@ -110,6 +110,7 @@ Action[ACTION_CONST_DEATHKNIGHT_FROST] = {
 	-- Normal Talents
     InexorableAssault				= Action.Create({ Type = "Spell", ID = 253593, Hidden = true	}),
     IcyTalons						= Action.Create({ Type = "Spell", ID = 194878, Hidden = true	}),
+    IcyTalonsBuff					= Action.Create({ Type = "Spell", ID = 194879, Hidden = true	}),	
     ColdHeart						= Action.Create({ Type = "Spell", ID = 281208, Hidden = true	}),
     ColdHeartBuff					= Action.Create({ Type = "Spell", ID = 281209, Hidden = true	}),	
     RunicAttenuation				= Action.Create({ Type = "Spell", ID = 207104, Hidden = true	}),
@@ -556,7 +557,7 @@ A[3] = function(icon, isMulti)
 		local function AoERotation(unit)
 		
 			--actions.aoe=remorseless_winter,if=talent.gathering_storm.enabled
-			if A.RemorselessWinter:IsReady(player) and A.GatheringStorm:IsTalentLearned() then
+			if A.RemorselessWinter:IsReady(player) and A.GatheringStorm:IsTalentLearned() and Unit(target):GetRange() <= 8 then
 				return A.RemorselessWinter:Show(icon)
 			end	
 			
@@ -607,7 +608,7 @@ A[3] = function(icon, isMulti)
 			
 			
 			--actions.aoe+=/remorseless_winter
-			if A.RemorselessWinter:IsReady(player) then
+			if A.RemorselessWinter:IsReady(player) and Unit(target):GetRange() <= 8 then
 				return A.RemorselessWinter:Show(icon)
 			end	
 			
@@ -923,6 +924,10 @@ A[3] = function(icon, isMulti)
 
 		local function ObliterationRotation()
 		
+			if A.FrostStrike:IsReady(unit) and A.IcyTalons:IsTalentLearned() and Unit(player):HasBuffs(A.IcyTalonsBuff.ID, true) <= A.GetGCD() then
+				return A.FrostStrike:Show(icon)
+			end	
+		
 			--actions.obliteration=remorseless_winter,if=talent.gathering_storm.enabled&active_enemies>=3
 			if A.RemorselessWinter:IsReady(unit) and A.GatheringStorm:IsTalentLearned() and MultiUnits:GetByRange(8, 3) >= 3 then
 				return A.RemorselessWinter:Show(icon)
@@ -957,6 +962,14 @@ A[3] = function(icon, isMulti)
 			if A.HowlingBlast:IsReady(unit) and Unit(player):HasBuffs(A.RimeBuff.ID, true) > 0 and MultiUnits:GetByRange(10, 2) >= 2 then
 				return A.HowlingBlast:Show(icon)
 			end
+			
+			if A.DeathandDecay:IsReady(player) and MultiUnits:GetByRange(10, 2) >= 2 and Player:GetCovenant() ~= 3 then
+				return A.DeathandDecay:Show(icon)
+			end	
+			
+			if A.DeathsDue:IsReady(player) and MultiUnits:GetByRange(10, 2) >= 2 and Player:GetCovenant() == 3 then
+				return A.DeathsDue:Show(icon)
+			end				
 			
 			--actions.obliteration+=/glacial_advance,if=spell_targets.glacial_advance>=2
 			if A.GlacialAdvance:IsReady(player) and MultiUnits:GetByRange(10, 2) >= 2 then
@@ -994,7 +1007,7 @@ A[3] = function(icon, isMulti)
 		local function StandardRotation()
 		
 			--actions.standard=remorseless_winter,if=talent.gathering_storm.enabled|conduit.everfrost.enabled|runeforge.biting_cold.equipped
-			if A.RemorselessWinter:IsReady(player) and (A.GatheringStorm:IsTalentLearned() or A.Everfrost:IsSoulbindLearned() or Player:HasLegendaryCraftingPower(A.BitingCold)) then
+			if A.RemorselessWinter:IsReady(player) and (A.GatheringStorm:IsTalentLearned() or A.Everfrost:IsSoulbindLearned() or Player:HasLegendaryCraftingPower(A.BitingCold)) and Unit(target):GetRange() <= 8 then
 				return A.RemorselessWinter:Show(icon)
 			end	
 			
@@ -1065,12 +1078,12 @@ A[3] = function(icon, isMulti)
 		end	
 			
 		--actions+=/glacial_advance,if=buff.icy_talons.remains<=gcd&buff.icy_talons.up&spell_targets.glacial_advance>=2&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-		if A.GlacialAdvance:IsReady(player) and Unit(player):HasBuffs(A.IcyTalons.ID, true) <= A.GetGCD() and Unit(player):HasBuffs(A.IcyTalons.ID, true) > 0 and MultiUnits:GetByRange(15, 2) >= 2 and (not A.BreathofSindragosa:IsTalentLearned() or not A.BurstIsON(unit) or (A.BurstIsON(unit) and A.BreathofSindragosa:GetCooldown() > 15)) then
+		if A.GlacialAdvance:IsReady(player) and Unit(player):HasBuffs(A.IcyTalonsBuff.ID, true) <= A.GetGCD() and Unit(player):HasBuffs(A.IcyTalonsBuff.ID, true) > 0 and MultiUnits:GetByRange(15, 2) >= 2 and (not A.BreathofSindragosa:IsTalentLearned() or not A.BurstIsON(unit) or (A.BurstIsON(unit) and A.BreathofSindragosa:GetCooldown() > 15)) then
 			return A.GlacialAdvance:Show(icon)
 		end	
 		
 		--actions+=/frost_strike,if=buff.icy_talons.remains<=gcd&buff.icy_talons.up&(!talent.breath_of_sindragosa.enabled|cooldown.breath_of_sindragosa.remains>15)
-		if A.FrostStrike:IsReady(player) and Unit(player):HasBuffs(A.IcyTalons.ID, true) <= A.GetGCD() and Unit(player):HasBuffs(A.IcyTalons.ID, true) > 0 and (not A.BreathofSindragosa:IsTalentLearned() or not A.BurstIsON(unit) or (A.BurstIsON(unit) and A.BreathofSindragosa:GetCooldown() > 15)) then
+		if A.FrostStrike:IsReady(player) and Unit(player):HasBuffs(A.IcyTalonsBuff.ID, true) <= A.GetGCD() and Unit(player):HasBuffs(A.IcyTalonsBuff.ID, true) > 0 and (not A.BreathofSindragosa:IsTalentLearned() or not A.BurstIsON(unit) or (A.BurstIsON(unit) and A.BreathofSindragosa:GetCooldown() > 15)) then
 			return A.FrostStrike:Show(icon)
 		end	
 
