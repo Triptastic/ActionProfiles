@@ -40,7 +40,6 @@ local next, pairs, type, print                  = next, pairs, type, print
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
-
 -- Spells
 Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     -- Racial
