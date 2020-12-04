@@ -211,6 +211,8 @@ Action[ACTION_CONST_WARLOCK_DEMONOLOGY] = {
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
+
+	HealthStoneItem					= Action.Create({ Type = "Item", ID = 5512, Hidden = true }), -- Just for notification icon really
 	
 	-- Borrowed Bindings
 	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
@@ -689,7 +691,7 @@ local function SelfDefensives()
     elseif A.IsUnitEnemy("target") then 
         unit = "target"
     end  
-		
+    
     -- UnendingResolve
     local UnendingResolve = A.GetToggle(2, "UnendingResolve")
     if     UnendingResolve >= 0 and A.UnendingResolve:IsReady("player") and 
@@ -724,11 +726,60 @@ local function SelfDefensives()
     then 
         return A.UnendingResolve
     end     
+
+	if not Player:IsStealthed() then 	
+		-- Healthstone | AbyssalHealingPotion
+		local Healthstone = GetToggle(1, "HealthStone") 
+		if Healthstone >= 0 then 
+			if A.HS:IsReady(player) then 					
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HealthStoneItem.ID)						
+						return A.HS
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then 
+					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HealthStoneItem.ID)				
+					return A.HS							 
+				end
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
+						return A.AbyssalHealingPotion
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then
+					A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)				
+					return A.AbyssalHealingPotion						 
+				end				
+			end 
+		end
+		
+		-- PhialofSerenity
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+			-- Healing 
+			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+			if PhialofSerenityOperator == "AND" then 
+				if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			else
+				if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			end 
+			
+			-- Dispel 
+			if AuraIsValidByPhialofSerenity() then 
+				return A.PhialofSerenity	
+			end 
+		end 
+	end
+    
     -- Stoneform on self dispel (only PvE)
     if A.Stoneform:IsRacialReady("player", true) and not A.IsInPvP and A.AuraIsValid("player", "UseDispel", "Dispel") then 
         return A.Stoneform
     end 
-	
+    
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
@@ -861,47 +912,6 @@ A[3] = function(icon, isMulti)
 		--####################
 		
 		local function Essences(unit)
-				
-			--actions.aoe+=/call_action_list,name=essences
-				-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady("target") and (not isMoving) and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady("target") and BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end	
 
 			--Temporary Covenants until they're simmed
 			if A.ScouringTithe:IsReady(unit) and (not isMoving) and A.GetToggle(1, "Covenant") then
@@ -1135,7 +1145,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions+=/demonic_strength
-			if A.DemonicStrength:IsReady(unit) and A.DemonicStrength:IsTalentLearned() then
+			if A.DemonicStrength:IsReady(unit) and A.DemonicStrength:IsTalentLearned() and Unit("pet"):IsCasting() ~= "Felstorm" and Unit("target"):TimeToDie() > 8 then
 				return A.DemonicStrength:Show(icon)
 			end	
 			

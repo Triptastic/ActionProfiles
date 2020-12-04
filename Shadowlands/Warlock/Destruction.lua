@@ -207,6 +207,8 @@ Action[ACTION_CONST_WARLOCK_DESTRUCTION] = {
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
+
+	HealthStoneItem					= Action.Create({ Type = "Item", ID = 5512, Hidden = true }), -- Just for notification icon really
 	
 	-- Borrowed Bindings
 	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
@@ -389,7 +391,7 @@ local function SelfDefensives()
     elseif A.IsUnitEnemy("target") then 
         unit = "target"
     end  
-		
+    
     -- UnendingResolve
     local UnendingResolve = A.GetToggle(2, "UnendingResolve")
     if     UnendingResolve >= 0 and A.UnendingResolve:IsReady("player") and 
@@ -424,11 +426,60 @@ local function SelfDefensives()
     then 
         return A.UnendingResolve
     end     
+
+	if not Player:IsStealthed() then 	
+		-- Healthstone | AbyssalHealingPotion
+		local Healthstone = GetToggle(1, "HealthStone") 
+		if Healthstone >= 0 then 
+			if A.HS:IsReady(player) then 					
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HealthStoneItem.ID)						
+						return A.HS
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then 
+					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HealthStoneItem.ID)				
+					return A.HS							 
+				end
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
+						return A.AbyssalHealingPotion
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then
+					A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)				
+					return A.AbyssalHealingPotion						 
+				end				
+			end 
+		end
+		
+		-- PhialofSerenity
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+			-- Healing 
+			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+			if PhialofSerenityOperator == "AND" then 
+				if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			else
+				if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			end 
+			
+			-- Dispel 
+			if AuraIsValidByPhialofSerenity() then 
+				return A.PhialofSerenity	
+			end 
+		end 
+	end
+    
     -- Stoneform on self dispel (only PvE)
     if A.Stoneform:IsRacialReady("player", true) and not A.IsInPvP and A.AuraIsValid("player", "UseDispel", "Dispel") then 
         return A.Stoneform
     end 
-	
+    
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
@@ -469,7 +520,7 @@ A[3] = function(icon, isMulti)
 	local UseAoE = A.GetToggle(2, "AoE")
 	local AutoHavoc = A.GetToggle(2, "AutoHavoc")
 
-    if Temp.ImmolateDelay == 0 and Unit(player):IsCasting() == "Immolate" then
+    if Temp.ImmolateDelay == 0 and (Unit(player):IsCasting() == "Immolate" or Unit(player):IsCasting() == "Cataclsym") then
         Temp.ImmolateDelay = 90
     end
     
@@ -549,7 +600,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.aoe+=/channel_demonfire,if=dot.immolate.remains>cast_time
-			if A.ChannelDemonfire:IsReady(player) and (not isMoving) and A.ChannelDemonfire:IsTalentLearned() and Unit(unit):HasDeBuffs(A.ImmolateDebuff.ID, true) >= Player:Execute_Time(A.Immolate.ID) then
+			if A.ChannelDemonfire:IsReady(player) and (not isMoving) and A.ChannelDemonfire:IsTalentLearned() and Unit("target"):HasDeBuffs(A.ImmolateDebuff.ID, true) >= Player:Execute_Time(A.Immolate.ID) then
 				return A.ChannelDemonfire:Show(icon)
 			end	
 			
@@ -812,7 +863,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions+=/call_action_list,name=essences
 			--actions+=/channel_demonfire
-			if A.ChannelDemonfire:IsReady(unit) and (not isMoving) then
+			if A.ChannelDemonfire:IsReady(player) and (not isMoving) then
 				return A.ChannelDemonfire:Show(icon)
 			end	
 			
