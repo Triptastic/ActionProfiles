@@ -17,6 +17,7 @@ local ShouldStop                                = Action.ShouldStop
 local BurstIsON                                 = Action.BurstIsON
 local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid                               = Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid                          = Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
 local Utils                                     = Action.Utils
@@ -83,7 +84,7 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
 	DemonSpikesBuff					= Action.Create({ Type = "Spell", ID = 203819	}),
 	FieryBrand						= Action.Create({ Type = "Spell", ID = 344867	}),
 	FieryBrandDebuff				= Action.Create({ Type = "Spell", ID = 207771, Hidden = true	}),
-	InfernalStrike					= Action.Create({ Type = "Spell", ID = 344865	}),
+	InfernalStrike					= Action.Create({ Type = "Spell", ID = 189110	}),
 	Shear							= Action.Create({ Type = "Spell", ID = 344859	}),
 	SigilofFlame					= Action.Create({ Type = "Spell", ID = 204596	}),
 	SigilofMisery					= Action.Create({ Type = "Spell", ID = 207684	}),
@@ -184,7 +185,8 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
     PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
-    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),  	
+    SpiritualHealingPotion			= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),  	
+	PhialofSerenity				    = Action.Create({ Type = "Item", ID = 177278 }),
 
     -- Misc
     Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
@@ -222,6 +224,7 @@ local Temp = {
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
     AuraTaunt                               = {A.Torment.ID},
+	InfernalStrikeDelay						= 0,
 }
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
@@ -257,11 +260,7 @@ end
 
 -- Interrupts spells
 local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-    else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
+    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
     local EnemiesCasting = MultiUnits:GetByRangeCasting(30, 5, true, "TargetMouseover")
     
     if castRemainsTime >= A.GetLatency() then    
@@ -374,6 +373,75 @@ local function IsInDanger(unit)
     return Unit("player"):GetHPS() < Unit("player"):GetDMG()
 end
 
+local function SelfDefensives()
+    if Unit(player):CombatTime() == 0 then 
+        return 
+    end 
+    
+    local unit
+    if A.IsUnitEnemy("mouseover") then 
+        unit = "mouseover"
+    elseif A.IsUnitEnemy("target") then 
+        unit = "target"
+    end  
+
+	if not Player:IsStealthed() then 	
+		-- Healthstone | AbyssalHealingPotion
+		local Healthstone = GetToggle(1, "HealthStone") 
+		if Healthstone >= 0 then 
+			if A.HS:IsReady(player) then 					
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HS.ID)						
+						return A.HS
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then 
+					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HS.ID)				
+					return A.HS							 
+				end
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+				if Healthstone >= 100 then -- AUTO 
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
+						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
+						return A.AbyssalHealingPotion
+					end 
+				elseif Unit(player):HealthPercent() <= Healthstone then
+					A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)				
+					return A.AbyssalHealingPotion						 
+				end				
+			end 
+		end
+		
+		-- PhialofSerenity
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+			-- Healing 
+			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+			if PhialofSerenityOperator == "AND" then 
+				if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			else
+				if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+					return A.PhialofSerenity
+				end 
+			end 
+			
+			-- Dispel 
+			if AuraIsValidByPhialofSerenity() then 
+				return A.PhialofSerenity	
+			end 
+		end 
+	end
+    
+    -- Stoneform on self dispel (only PvE)
+    if A.Stoneform:IsRacialReady("player", true) and not A.IsInPvP and A.AuraIsValid("player", "UseDispel", "Dispel") then 
+        return A.Stoneform
+    end 
+    
+    
+end 
+SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
+
 --- ======= ACTION LISTS =======
 -- [3] Single Rotation
 A[3] = function(icon, isMulti)
@@ -394,6 +462,16 @@ A[3] = function(icon, isMulti)
 	local MetaHP = Action.GetToggle(2, "MetamorphosisHP")
 	local FelDevDMG = Action.GetToggle(2, "FelDevastationDMG")
 	local FelDevHP = Action.GetToggle(2, "FelDevHP")
+	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
+	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
+
+	if Temp.InfernalStrikeDelay == 0 and Unit(player):IsCasting() == A.InfernalStrike:Info()  then
+			Temp.InfernalStrikeDelay = 90
+	end
+		
+	if Temp.InfernalStrikeDelay > 0 then
+			Temp.InfernalStrikeDelay = Temp.InfernalStrikeDelay - 1
+	end
     
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
@@ -429,12 +507,12 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.cooldown+=/elysian_decree
-			if A.ElysianDecree:IsReady(player) and MultiUnits:GetByRange(5, 2) >= 2 and Unit(unit):TimeToDie() >= 5 then
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and MultiUnits:GetByRange(5, 2) >= 2 and Unit(unit):TimeToDie() >= 5 then
 				return A.ElysianDecree:Show(icon)
 			end	
 
 			--actions.cooldown+=/elysian_decree
-			if A.ElysianDecree:IsReady(player) and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
 				return A.ElysianDecree:Show(icon)
 			end					
 		
@@ -449,7 +527,7 @@ A[3] = function(icon, isMulti)
 			end	
 		
 			--Infernal Strike if about to cap charges, range check for casting @player
-			if A.InfernalStrike:IsReady("player") and (A.LastPlayerCastID ~= A.InfernalStrike.ID) and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 then 
+			if A.InfernalStrike:IsReady("player") and Temp.InfernalStrikeDelay == 0 and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 then 
 				return A.InfernalStrike:Show(icon)
 			end
 			
@@ -458,10 +536,14 @@ A[3] = function(icon, isMulti)
 				return A.FieryBrand:Show(icon)
 			end	
 		
-			--Spirit Bomb if four or more souls and fury cap incoming
-			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Player:Fury() then
+			--Spirit Bomb if four or more souls
+			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 then
 				return A.SpiritBomb:Show(icon)
 			end
+			
+			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 3 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0 then
+				return A.SpiritBomb:Show(icon)
+			end			
 			
 			--Fel Devastation on cooldown
 			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
@@ -479,7 +561,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Soul Cleave to dump fury
-			if A.SoulCleave:IsReady(unit) and Player:Fury() >= 80 then
+			if A.SoulCleave:IsReady(unit) and Player:Fury() >= 80 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
 				return A.SoulCleave:Show(icon)
 			end
 
@@ -535,25 +617,7 @@ A[3] = function(icon, isMulti)
                 -- Notification                    
                 A.Toaster:SpawnByTimer("TripToast", 0, "Ouch!", "Using Defensive Potion!", A.PotionofHardenedShadows.ID)  
                 return A.PotionofHardenedShadows:Show(icon)
-            end
-			
-            if A.PotionofSpectralStamina:IsReady(unit) and AutoPotionSelect == "SpectralStaminaPot" and PotionTrue and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and
-			(
-				IsInDanger 
-				or                 
-				-- HP lose per sec >= 40
-				Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 40 
-				or 
-				Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.40 
-				or 
-				-- TTD 
-				Unit("player"):TimeToDieX(15) < 3 
-			)  			
-            then
-                -- Notification                    
-                A.Toaster:SpawnByTimer("TripToast", 0, "Ouch!", "Using Defensive Potion!", A.PotionofSpectralStamina.ID)  
-                return A.PotionofSpectralStamina:Show(icon)
-            end			
+            end	
 			
 		end
 			
@@ -582,7 +646,7 @@ A[3] = function(icon, isMulti)
 					return A.Torment:Show(icon)
 					-- else if all good on current target, switch to another one we know we dont currently tank
 				else
-					local Growl_Nameplates = MultiUnits:GetActiveUnitPlates()
+					local Torment_Nameplates = MultiUnits:GetActiveUnitPlates()
 					if Torment_Nameplates then  
 						for Torment_UnitID in pairs(Torment_Nameplates) do             
 							if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and Unit("player"):ThreatSituation(Torment_UnitID) ~= 3 then 
@@ -626,7 +690,7 @@ A[3] = function(icon, isMulti)
     -- End on EnemyRotation()
     
     -- Defensive
-    --local SelfDefensive = SelfDefensives()
+    local SelfDefensive = SelfDefensives()
     if SelfDefensive then 
         return SelfDefensive:Show(icon)
     end 
@@ -649,64 +713,3 @@ A[3] = function(icon, isMulti)
     end
 end
 -- Finished
-
--- [4] AoE Rotation
-A[4] = function(icon)
-    return A[3](icon, true)
-end
--- [5] Trinket Rotation
--- No specialization trinket actions 
--- Passive 
---[[local function FreezingTrapUsedByEnemy()
-    if     UnitCooldown:GetCooldown("arena", 3355) > UnitCooldown:GetMaxDuration("arena", 3355) - 2 and
-    UnitCooldown:IsSpellInFly("arena", 3355) and 
-    Unit("player"):GetDR("incapacitate") >= 50 
-    then 
-        local Caster = UnitCooldown:GetUnitID("arena", 3355)
-        if Caster and Unit(Caster):GetRange() <= 40 then 
-            return true 
-        end 
-    end 
-end 
-local function ArenaRotation(icon, unit)
-    if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then
-        -- Note: "arena1" is just identification of meta 6
-        if (unit == "arena1" or unit == "arena2" or unit == "arena3") then 
-            -- Reflect Casting BreakAble CC
-            if A.NetherWard:IsReady() and A.NetherWard:IsSpellLearned() and Action.ShouldReflect(unit) and EnemyTeam():IsCastingBreakAble(0.25) then 
-                return A.NetherWard:Show(icon)
-            end 
-        end
-    end 
-end 
-local function PartyRotation(unit)
-    if (unit == "party1" and not A.GetToggle(2, "PartyUnits")[1]) or (unit == "party2" and not A.GetToggle(2, "PartyUnits")[2]) then 
-        return false 
-    end
-
-      -- SingeMagic
-    if A.SingeMagic:IsCastable() and A.SingeMagic:AbsentImun(unit, Temp.TotalAndMag) and IsSchoolFree() and Action.AuraIsValid(unit, "UseDispel", "Magic") and not Unit(unit):InLOS() then
-        return A.SingeMagic:Show(icon)
-    end
-end 
-
-A[6] = function(icon)
-    return ArenaRotation(icon, "arena1")
-end
-
-A[7] = function(icon)
-    local Party = PartyRotation("party1") 
-    if Party then 
-        return Party:Show(icon)
-    end 
-    return ArenaRotation(icon, "arena2")
-end
-
-A[8] = function(icon)
-    local Party = PartyRotation("party2") 
-    if Party then 
-        return Party:Show(icon)
-    end     
-    return ArenaRotation(icon, "arena3")
-end]]--
-
