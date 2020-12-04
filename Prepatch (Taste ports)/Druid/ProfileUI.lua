@@ -1006,7 +1006,7 @@ A.Data.ProfileUI = {
                 },	
 			},
 		},	
-		[ACTION_CONST_DRUID_GUARDIAN] = {
+        [ACTION_CONST_DRUID_GUARDIAN] = {
             { -- [7]
                 {
                     E = "Header",
