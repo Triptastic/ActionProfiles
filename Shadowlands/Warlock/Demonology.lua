@@ -17,6 +17,7 @@ local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
 local Utils										= Action.Utils

@@ -17,6 +17,7 @@ local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
 local Utils										= Action.Utils
@@ -441,7 +442,7 @@ local function SelfDefensives()
 					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HealthStoneItem.ID)				
 					return A.HS							 
 				end
-			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp") and A.SpiritualHealingPotion:IsReady(player) then 
 				if Healthstone >= 100 then -- AUTO 
 					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
 						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
@@ -455,7 +456,7 @@ local function SelfDefensives()
 		end
 		
 		-- PhialofSerenity
-		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp") and A.PhialofSerenity:IsReady(player) then 
 			-- Healing 
 			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
 			if PhialofSerenityOperator == "AND" then 
@@ -783,7 +784,7 @@ A[3] = function(icon, isMulti)
 				return A.HealthFunnel:Show(icon)
 			end	
 
-			if Unit(unit):HasDeBuffs(A.Havoc.ID) > 0 and unit ~= "mouseover" and MultiUnits:GetActiveEnemies() >= 2 and AutoHavoc then
+			if Unit(unit):HasDeBuffs(A.Havoc.ID) > 0 and unit ~= "mouseover" and (not A.IsInPvP) and MultiUnits:GetActiveEnemies() >= 2 and AutoHavoc then
 				return A:Show(icon, ACTION_CONST_AUTOTARGET) 
 			end	
 
