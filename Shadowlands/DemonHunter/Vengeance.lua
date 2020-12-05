@@ -177,15 +177,15 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
 	
 
 	-- Potions
-    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
-    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
-    PotionofSpectralAgility			= Action.Create({ Type = "Potion", ID = 171270, QueueForbidden = true }),
-    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
-    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
-    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
-    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
-    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
-    SpiritualHealingPotion			= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),  	
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299	}), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489	}),
+    PotionofSpectralAgility			= Action.Create({ Type = "Potion", ID = 171270	}),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274	}),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352	}),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271	}),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349	}),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351	}),
+    SpiritualHealingPotion			= Action.Create({ Type = "Item", ID = 171267	}),  	
 	PhialofSerenity				    = Action.Create({ Type = "Item", ID = 177278 }),
 
     -- Misc
@@ -286,7 +286,7 @@ local function Interrupts(unit)
         end 
         
         -- Disrupt
-        if useKick and A.Disrupt:IsReady(unit) and A.Disrupt:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
+        if useKick and A.Disrupt:IsReady(unit) and not notInterruptable and A.Disrupt:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
             return A.Disrupt
         end     
         
@@ -527,12 +527,12 @@ A[3] = function(icon, isMulti)
 			end	
 		
 			--Infernal Strike if about to cap charges, range check for casting @player
-			if A.InfernalStrike:IsReady("player") and Temp.InfernalStrikeDelay == 0 and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 then 
+			if A.InfernalStrike:IsReady("player") and Temp.InfernalStrikeDelay == 0 and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 and not Unit(player):InVehicle() then 
 				return A.InfernalStrike:Show(icon)
 			end
 			
 			--Fiery Brand on cooldown
-			if A.FieryBrand:IsReady(unit) then 
+			if A.FieryBrand:IsReady(unit) and Unit(unit):TimeToDie() >= 8 then 
 				return A.FieryBrand:Show(icon)
 			end	
 		
@@ -551,7 +551,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Fracture if need fury/souls
-			if A.Fracture:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 75 then
+			if A.Fracture:IsReady(unit) and SoulFragments <= 4 then
 				return A.Fracture:Show(icon)
 			end	
 
@@ -566,7 +566,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) then
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() then
 				return A.SigilofFlame:Show(icon)
 			end
 

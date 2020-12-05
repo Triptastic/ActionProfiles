@@ -775,22 +775,22 @@ A[3] = function(icon, isMulti)
 	    end
 		
 		--actions+=/blood_fury,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.BloodFury:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.BloodFury:IsReady(player) and BurstIsON("target") and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.BloodFury:Show(icon)
 		end
 		
 		--actions+=/berserking,if=!talent.ascendance.enabled|buff.ascendance.up
-		if A.Berserking:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
+		if A.Berserking:IsReady(player) and BurstIsON("target") and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0) then
 			return A.Berserking:Show(icon)
 		end		
 		
 		--actions+=/fireblood,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.Fireblood:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.Fireblood:IsReady(player) and BurstIsON("target") and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.Fireblood:Show(icon)
 		end				
 		
 		--actions+=/ancestral_call,if=!talent.ascendance.enabled|buff.ascendance.up|cooldown.ascendance.remains>50
-		if A.AncestralCall:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
+		if A.AncestralCall:IsReady(player) and BurstIsON("target") and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) > 0 or A.Ascendance:GetCooldown() > 50) then
 			return A.AncestralCall:Show(icon)
 		end			
 		
@@ -798,46 +798,6 @@ A[3] = function(icon, isMulti)
 		if A.BagofTricks:IsReady(unit) and BurstIsON(unit) and AutoRacial and (not A.Ascendance:IsSpellLearned() or Unit("player"):HasBuffs(A.AscendanceBuff.ID) == 0) then
 			return A.BagofTricks:Show(icon)
 		end	
-
-		-- guardian_of_azeroth
-		if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- focused_azerite_beam
-		if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- memory_of_lucid_dreams
-		if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- blood_of_the_enemy
-		if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- purifying_blast
-		if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		--[[ ripple_in_space
-		if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-			return A.Darkflight:Show(icon)
-		end]]
-		
-		-- concentrated_flame,line_cd=6
-		if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
-		
-		-- reaping_flames
-		if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
-			return A.Darkflight:Show(icon)
-		end
 		
 		--actions+=/primordial_wave,if=covenant.necrolord
 		if A.PrimordialWave:IsReady() and A.GetToggle(1, "Covenant") then
@@ -915,12 +875,12 @@ A[3] = function(icon, isMulti)
 				end	
 				
 				--actions.single_target+=/stormkeeper,if=talent.stormkeeper.enabled
-				if A.Stormkeeper:IsReady(unit) then
+				if A.Stormkeeper:IsReady(player) then
 					return A.Stormkeeper:Show(icon)
 				end				
 				
 				--actions.single_target+=/liquid_magma_totem,if=talent.liquid_magma_totem.enabled
-				if A.LiquidMagmaTotem:IsReady(unit) then
+				if A.LiquidMagmaTotem:IsReady(player) then
 					return A.LiquidMagmaTotem:Show(icon)
 				end				
 				
@@ -930,7 +890,7 @@ A[3] = function(icon, isMulti)
 				end					
 				
 				--actions.single_target+=/ascendance,if=talent.ascendance.enabled
-				if A.Ascendance:IsReady(unit) and BurstIsON(unit) then
+				if A.Ascendance:IsReady(player) and BurstIsON("target") then
 					return A.Ascendance:Show(icon)
 				end	
 				

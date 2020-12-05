@@ -8,24 +8,48 @@ TellMeWhenDB = {
 				{
 				}, -- [2]
 			},
-			["TMW:textlayout:1Rh4g1a9S6Uf"] = {
+			["TMW:textlayout:1TMvg5InaYOw"] = {
 				{
-					["Outline"] = "OUTLINE",
-					["Shadow"] = 0.9,
 					["Anchors"] = {
 						{
-							["y"] = 58,
-							["relativeTo"] = "IconModule_CooldownSweepCooldown",
-							["relativePoint"] = "RIGHT",
-							["x"] = 12.2,
+							["y"] = -1.5,
+							["x"] = 1.5,
+							["point"] = "TOPLEFT",
+							["relativePoint"] = "TOPLEFT",
+						}, -- [1]
+					},
+					["DefaultText"] = "[ActionBurst]",
+					["Size"] = 6,
+				}, -- [1]
+				{
+					["Anchors"] = {
+						{
+							["y"] = 1,
+							["x"] = 0.5,
+							["point"] = "BOTTOMRIGHT",
+							["relativePoint"] = "BOTTOMRIGHT",
 						}, -- [1]
 					},
 					["Name"] = "Morpheus",
-					["Rotate"] = 90,
-					["Size"] = 35,
-				}, -- [1]
-				["GUID"] = "TMW:textlayout:1Rh4g1a9S6Uf",
-				["Name"] = "UserInterface_TextVertical",
+					["DefaultText"] = "[ActionAoE]",
+					["Size"] = 6,
+				}, -- [2]
+				{
+					["Anchors"] = {
+						{
+							["y"] = 1,
+							["x"] = 1.5,
+							["point"] = "BOTTOMLEFT",
+							["relativePoint"] = "BOTTOMLEFT",
+						}, -- [1]
+					},
+					["Name"] = "Morpheus",
+					["DefaultText"] = "[ActionMode]",
+					["Size"] = 6,
+				}, -- [3]
+				["GUID"] = "TMW:textlayout:1TMvg5InaYOw",
+				["Name"] = "ActionLayout",
+				["n"] = 3,
 			},
 			["TMW:textlayout:1RkGJEN4L5o_"] = {
 				{
@@ -103,48 +127,24 @@ TellMeWhenDB = {
 				["GUID"] = "TMW:textlayout:1S6ieoFev4r0",
 				["Name"] = "UserInterface_SmallerText",
 			},
-			["TMW:textlayout:1TMvg5InaYOw"] = {
+			["TMW:textlayout:1Rh4g1a9S6Uf"] = {
 				{
+					["Outline"] = "OUTLINE",
+					["Shadow"] = 0.9,
 					["Anchors"] = {
 						{
-							["y"] = -1.5,
-							["x"] = 1.5,
-							["point"] = "TOPLEFT",
-							["relativePoint"] = "TOPLEFT",
+							["y"] = 58,
+							["x"] = 12.2,
+							["relativePoint"] = "RIGHT",
+							["relativeTo"] = "IconModule_CooldownSweepCooldown",
 						}, -- [1]
 					},
-					["DefaultText"] = "[ActionBurst]",
-					["Size"] = 6,
+					["Name"] = "Morpheus",
+					["Rotate"] = 90,
+					["Size"] = 35,
 				}, -- [1]
-				{
-					["Anchors"] = {
-						{
-							["y"] = 1,
-							["x"] = 0.5,
-							["point"] = "BOTTOMRIGHT",
-							["relativePoint"] = "BOTTOMRIGHT",
-						}, -- [1]
-					},
-					["Name"] = "Morpheus",
-					["DefaultText"] = "[ActionAoE]",
-					["Size"] = 6,
-				}, -- [2]
-				{
-					["Anchors"] = {
-						{
-							["y"] = 1,
-							["x"] = 1.5,
-							["point"] = "BOTTOMLEFT",
-							["relativePoint"] = "BOTTOMLEFT",
-						}, -- [1]
-					},
-					["Name"] = "Morpheus",
-					["DefaultText"] = "[ActionMode]",
-					["Size"] = 6,
-				}, -- [3]
-				["GUID"] = "TMW:textlayout:1TMvg5InaYOw",
-				["Name"] = "ActionLayout",
-				["n"] = 3,
+				["GUID"] = "TMW:textlayout:1Rh4g1a9S6Uf",
+				["Name"] = "UserInterface_TextVertical",
 			},
 		},
 		["ShowGUIDs"] = true,
@@ -182,40 +182,15154 @@ TellMeWhenDB = {
 			}, -- [6]
 			["n"] = 6,
 		},
+		["Groups"] = {
+			{
+				["GUID"] = "TMW:group:1RCgER2LDYMA",
+				["Point"] = {
+					["y"] = -52.1353299047438,
+					["x"] = -29.9,
+					["point"] = "TOPLEFT",
+					["relativePoint"] = "TOPLEFT",
+				},
+				["Scale"] = 1.40016186237335,
+				["Locked"] = true,
+				["Enabled"] = false,
+				["Columns"] = 1,
+				["Icons"] = {
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1RCgCsBLK7pm",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "local icon = ...\nicon:SetInfo(\"texture\", 397907) \n\n\n\n",
+								["Event"] = "OnEventsRestored",
+								["Frequency"] = 0,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return chat()",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [1]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [65]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [66]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [67]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [68]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [69]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [70]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [71]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [72]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [73]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [74]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [75]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [76]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [77]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [78]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [79]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [80]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [81]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [82]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [83]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [84]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [85]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [86]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [87]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [88]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [89]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [90]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [91]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [92]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [93]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [94]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [95]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [96]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [97]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [98]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [99]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [100]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [101]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [102]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [103]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [104]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [105]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [106]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [107]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [108]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [109]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [110]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [111]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [112]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [113]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [114]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [115]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [116]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [117]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [118]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [119]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [120]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [121]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [122]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [123]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [124]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [125]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [126]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [127]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [128]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [129]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [130]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [131]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [132]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [133]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [134]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [135]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [136]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [137]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [138]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [139]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [140]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [141]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [142]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [143]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [144]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [145]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [146]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [147]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [148]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [149]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [150]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [151]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [152]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [153]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [154]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [155]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [156]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [157]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [158]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [159]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [160]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [161]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [162]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [163]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [164]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [165]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [166]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [167]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [168]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [169]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [170]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [171]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [172]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [173]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [174]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [175]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [176]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [177]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [178]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [179]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [180]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [181]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [182]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [183]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [184]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [185]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [186]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [187]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [188]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [189]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [190]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [191]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [192]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [193]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [194]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [195]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [196]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [197]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [198]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [199]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [200]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [201]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [202]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [203]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [204]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [205]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [206]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [207]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [208]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [209]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [210]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [211]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [212]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [213]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [214]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [215]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [216]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [217]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [218]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [219]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [220]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [221]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [222]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [223]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [224]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [225]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [226]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [227]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [228]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [229]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [230]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [231]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [232]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [233]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [234]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [235]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [236]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [237]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [238]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [239]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [240]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [241]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [242]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [243]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [244]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [245]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [246]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [247]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [248]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [249]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [250]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [251]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [252]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [253]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [254]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [255]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [256]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [257]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [258]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [259]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [260]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [261]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [262]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [263]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [264]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [265]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [266]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [267]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [268]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [269]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [270]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [271]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [272]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [273]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [274]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [275]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [276]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [277]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [278]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [279]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [280]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [281]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [282]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [283]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [284]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [285]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [286]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [287]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [288]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [289]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [290]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [291]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [292]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [293]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [294]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [295]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [296]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [297]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [298]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [299]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [300]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [301]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [302]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [303]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [304]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [305]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [306]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [307]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [308]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [309]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [310]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [311]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [312]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [313]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [314]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [315]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [316]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [317]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [318]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [319]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [320]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [321]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [322]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [323]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [324]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [325]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [326]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [327]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [328]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [329]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [330]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [331]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [332]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [333]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [334]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [335]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [336]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [337]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [338]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [339]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [340]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [341]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [342]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [343]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [344]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [345]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [346]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [347]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [348]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [349]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [350]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [351]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [352]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [353]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [354]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [355]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [356]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [357]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [358]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [359]
+					{
+						["ShowTimerText"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [360]
+				},
+				["EnabledProfiles"] = {
+					["[GGL] Monk"] = false,
+					["[DEV] All in One"] = false,
+					["[GGL] Template"] = false,
+					["[GGL] Test"] = false,
+					["[GGL] SimTest"] = false,
+				},
+				["Name"] = "[GGL] Chat trigger",
+			}, -- [1]
+			{
+				["GUID"] = "TMW:group:1RhHG3BLwtGX",
+				["Scale"] = 1.73339736461639,
+				["Enabled"] = false,
+				["Columns"] = 1,
+				["Icons"] = {
+					{
+						["Type"] = "conditionicon",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "open_toggle = not open_toggle\n",
+								["Event"] = "OnRightClick",
+							}, -- [1]
+							{
+								["Type"] = "Lua",
+								["Lua"] = "lclick_open_toggle = not lclick_open_toggle\n\n\n\n",
+								["Event"] = "OnLeftClick",
+							}, -- [2]
+							{
+								["Type"] = "Lua",
+								["Lua"] = "SystemToggles()\nLocalToggles()\n\n\n",
+								["Event"] = "OnEventsRestored",
+							}, -- [3]
+							["n"] = 3,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Toggle\n", -- [1]
+									"Toggle", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "219159",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+				},
+				["EnabledProfiles"] = {
+					["[GGL] Monk"] = false,
+					["[GGL] Template"] = false,
+					["[GGL] Test"] = false,
+					["[GGL] SimTest"] = false,
+				},
+				["Name"] = "[GGL] Anchor TOGGLES",
+				["Point"] = {
+					["y"] = 114.226554870605,
+					["x"] = -237.106316405631,
+					["point"] = "BOTTOMRIGHT",
+					["relativePoint"] = "BOTTOMRIGHT",
+				},
+			}, -- [2]
+			{
+				["GUID"] = "TMW:group:1RVRouwrKDKz",
+				["Point"] = {
+					["y"] = 30,
+					["relativeTo"] = "TMW:group:1RhHG3BLwtGX",
+					["point"] = "BOTTOMLEFT",
+					["relativePoint"] = "BOTTOMLEFT",
+				},
+				["Scale"] = 1.7334,
+				["Rows"] = 7,
+				["Locked"] = true,
+				["Enabled"] = false,
+				["Columns"] = 1,
+				["Icons"] = {
+					{
+						["Type"] = "conditionicon",
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not BasicRotation",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "LOSCheck = not LOSCheck\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 2\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 1\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\n\n",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"LOS\nSystem", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "189208",
+						["States"] = {
+							{
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["Type"] = "conditionicon",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "LOSCheck = not LOSCheck\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 1\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 2\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\n\n",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"LOS\nSystem", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "189208",
+						["States"] = {
+							{
+								["Color"] = "ff848484d",
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not BasicRotation",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [2]
+					{
+						["Type"] = "conditionicon",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "MSG_Toggle = not MSG_Toggle\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 4\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 3\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"MSG\nSystem", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "101059",
+						["States"] = {
+							{
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not BasicRotation",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [3]
+					{
+						["Type"] = "conditionicon",
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not BasicRotation",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "MSG_Toggle = not MSG_Toggle\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 3\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 4\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"MSG\nSystem", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "101059",
+						["States"] = {
+							{
+								["Color"] = "ff848484d",
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["Type"] = "conditionicon",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "Target_Toggle = not Target_Toggle\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 6\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 5\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Auto\nTarget", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "153911",
+						["States"] = {
+							{
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["Type"] = "conditionicon",
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "Target_Toggle = not Target_Toggle\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw enable global 3 5\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)\n\nDEFAULT_CHAT_FRAME.editBox:SetText(\"/tmw disable global 3 6\")\nChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox,0)",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Auto\nTarget", -- [1]
+									"Mouse_HEAL", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "153911",
+						["States"] = {
+							{
+								["Color"] = "ff848484d",
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["Type"] = "conditionicon",
+						["Enabled"] = true,
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "TMW.CNDT.Env.InPvP_Toggle = true\nTMW.CNDT.Env.InPvP_Status = not TMW.CNDT.Env.InPvP_Status\n\n",
+								["OnlyShown"] = true,
+								["Event"] = "OnLeftClick",
+								["PassThrough"] = false,
+							}, -- [1]
+							{
+								["Type"] = "Lua",
+								["Lua"] = "-- Reset\nTMW.CNDT.Env.InPvP_Toggle = false\nTMW.CNDT.Env.InPvP_Status = TMW.CNDT.Env.CheckInPvP()\n\n\n",
+								["OnlyShown"] = true,
+								["Event"] = "OnRightClick",
+								["PassThrough"] = false,
+							}, -- [2]
+							["n"] = 2,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"PvP / PvE\nRClick Reset", -- [1]
+									"[Stacks:Hide(0)]", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "269083",
+						["States"] = {
+							{
+							}, -- [1]
+							{
+								["Color"] = "ff848484d",
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return InPvP_Status",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+				},
+				["SortPriorities"] = {
+					{
+						["Method"] = "shown",
+						["Order"] = -1,
+					}, -- [1]
+					{
+						["Method"] = "id",
+						["Order"] = 1,
+					}, -- [2]
+				},
+				["LayoutDirection"] = 8,
+				["EnabledProfiles"] = {
+					["[GGL] Monk"] = false,
+					["[GGL] Template"] = false,
+					["[GGL] Test"] = false,
+					["[GGL] SimTest"] = false,
+				},
+				["Name"] = "[GGL] System TOGGLES",
+				["Conditions"] = {
+					{
+						["Type"] = "LUA",
+						["Name"] = "return lclick_open_toggle",
+					}, -- [1]
+					["n"] = 1,
+				},
+				["ShrinkGroup"] = true,
+			}, -- [3]
+			{
+				["GUID"] = "TMW:group:1RhKveUIDx_I",
+				["Scale"] = 0.725002586841583,
+				["Rows"] = 7,
+				["Locked"] = true,
+				["Enabled"] = false,
+				["Columns"] = 8,
+				["Icons"] = {
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1Rhgs3oNK7HV",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"PvP", -- [1]
+								},
+							},
+						},
+						["CustomTex"] = "272950",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return InPvP()",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [1]
+					{
+						["Type"] = "conditionicon",
+						["Name"] = "32612; 96243; 175833; 66; 110959; 198158",
+						["GUID"] = "TMW:icon:1RhikUwvZbG9",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Global \nInvisible", -- [1]
+									"", -- [2]
+								},
+							},
+						},
+						["CustomTex"] = "32612",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return global_invisible()",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Enabled"] = true,
+					}, -- [2]
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1Ri_L6d1VQu7",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"ShouldStop", -- [1]
+								},
+							},
+						},
+						["CustomTex"] = "97263",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return \n(\n    not ShouldStop() or\n    (       \n        IsGGLprofile and\n        select(2, UnitClass(\"player\")) == \"DEATHKNIGHT\" and\n        oDK[\"TargetInMelee\"] and\n        -- Wrath Walk\n        select(2, CastTime(212552)) > 0\n    ) or\n    (\n        -- Shadow Priest\n        UNITSpec(\"player\", 258) and\n        (\n            -- Mind Flay\n            select(2, CastTime(15407)) > 0 or\n            -- Mind Shear \n            select(2, CastTime(48045)) > 0 \n        ) \n    )\n)",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1Rk9KtRVbSzD",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "157267",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- AutoTarget\nreturn \nTarget_Toggle and\nnot IamHealer and\nCombatTime(\"player\") > 0 and\n(    \n    not UnitExists(\"target\") or\n    (\n        Zone ~= \"none\" and\n        not InPvP() and\n        CombatTime(\"target\") == 0 \n    )\n) and\n(\n    (\n        not InPvP() and\n        CombatUnits(1) \n    ) or\n    Zone == \"pvp\"\n)",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1Rhh3CH_ujtP",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "34976",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "NAME",
+								["Unit"] = "mouseover",
+								["Name"] = "Флаг Альянса; Флаг Орды: Флаг Пустоверти; Alliance Flag; Horde Flag; Netherstorm Flag",
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not UNITEnemy(\"mouseover\")",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [28]
+					{
+						["CLEUEvents"] = {
+							["SPELL_CAST_SUCCESS"] = true,
+							["SPELL_CAST_START"] = true,
+						},
+						["Type"] = "cleu",
+						["CLEUDur"] = 0.5,
+						["Name"] = "147362; 96231; 6552; 47528; 57994",
+						["SourceUnit"] = "arena1; arena2; arena3; target",
+						["GUID"] = "TMW:icon:1PH8MuGUll4D",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "spell_magic_polymorphrabbit.tga",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "BUFFDUR",
+								["Checked"] = true,
+								["Name"] = "642",
+							}, -- [1]
+							{
+								["Type"] = "CASTING",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["Type"] = "conditionicon",
+						["Icons"] = {
+							"TMW:icon:1M1UxqK_Do5g", -- [1]
+						},
+						["GUID"] = "TMW:icon:1OxuA9gGM14S",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "98008",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "REACT",
+								["Unit"] = "mouseover",
+								["Level"] = 1,
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "return not PvP.Unit(\"target\"):IsTotem() and PvP.Unit(\"mouseover\"):IsTotem()",
+							}, -- [2]
+							{
+								["Type"] = "NAME",
+								["Unit"] = "mouseover",
+								["Name"] = "Spirit Link Totem; Healing Tide Totem; Counterstrike Totem",
+							}, -- [3]
+							["n"] = 3,
+						},
+					}, -- [36]
+					{
+						["Sort"] = 1,
+						["Type"] = "meta",
+						["Icons"] = {
+							"TMW:icon:1Rhgs3oFr4Hu", -- [1]
+							"TMW:icon:1Rhgs3oIMZVD", -- [2]
+							"TMW:icon:1Rhgs3oKqXzt", -- [3]
+						},
+						["ShowTimerText"] = true,
+						["GUID"] = "TMW:icon:1Rhh3CIh0Y9Z",
+						["Enabled"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "EXISTS",
+								["Unit"] = "target",
+								["Level"] = 1,
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [37]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 4,
+						["GUID"] = "TMW:icon:1Rhgs3oFr4Hu",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "111771",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "target",
+								["Name"] = "arena1",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [38]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 4,
+						["GUID"] = "TMW:icon:1Rhgs3oIMZVD",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "45993",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "target",
+								["Name"] = "arena2",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [39]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 4,
+						["GUID"] = "TMW:icon:1Rhgs3oKqXzt",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "107141",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "target",
+								["Name"] = "arena3",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["Type"] = "item",
+						["Name"] = "5512",
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Level"] = 1,
+								["Icon"] = "TMW:icon:1RhikUwvZbG9",
+							}, -- [1]
+							{
+								["Type"] = "MOUNTED",
+								["Level"] = 1,
+							}, -- [2]
+							{
+								["Type"] = "COMBAT",
+							}, -- [3]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "5512",
+								["Level"] = 1,
+							}, -- [4]
+							{
+								["Type"] = "HEALTH",
+								["Operator"] = "<=",
+								["Level"] = 20,
+							}, -- [5]
+							["n"] = 5,
+						},
+						["GUID"] = "TMW:icon:1Rhh3CILU996",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "6262",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyInBags"] = true,
+						["Enabled"] = true,
+					}, -- [44]
+					{
+						["Sort"] = 1,
+						["Type"] = "meta",
+						["Icons"] = {
+							"TMW:icon:1Rhgs3oZwrgC", -- [1]
+							"TMW:icon:1Rhgs3ocU7BO", -- [2]
+							"TMW:icon:1Rhgs3ogb1qq", -- [3]
+						},
+						["ShowTimerText"] = true,
+						["GUID"] = "TMW:icon:1Rhh3CJKO5iI",
+						["Enabled"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "EXISTS",
+								["Unit"] = "focus",
+								["Level"] = 1,
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [45]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 20,
+						["GUID"] = "TMW:icon:1Rhgs3oZwrgC",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "111",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "focus",
+								["Name"] = "arena1",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [46]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 20,
+						["GUID"] = "TMW:icon:1Rhgs3ocU7BO",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "22200",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "focus",
+								["Name"] = "arena2",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [47]
+					{
+						["Type"] = "conditionicon",
+						["UnConditionDur"] = 20,
+						["GUID"] = "TMW:icon:1Rhgs3ogb1qq",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["UnConditionDurEnabled"] = true,
+						["CustomTex"] = "40875",
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["OnlyIfCounting"] = true,
+						["Enabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "focus",
+								["Name"] = "arena3",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [48]
+					{
+						["LoseControlTypes"] = {
+							["CYCLONE"] = true,
+							["POSSESS"] = true,
+							["POLYMORPH"] = true,
+							["FREEZE"] = true,
+							["SILENCE"] = true,
+							["INCAPACITATE"] = true,
+							["SCHOOL_INTERRUPT"] = 127,
+							["SHACKLE_UNDEAD"] = true,
+							["STUN"] = true,
+							["DISARM"] = true,
+							["SLEEP"] = true,
+							["ROOT"] = true,
+							["FEAR"] = true,
+							["DISORIENT"] = true,
+							["BANISH"] = true,
+							["SAP"] = true,
+							["PACIFYSILENCE"] = true,
+							["CHARM"] = true,
+							["HORROR"] = true,
+						},
+						["BuffOrDebuff"] = "HARMFUL",
+						["Type"] = "conditionicon",
+						["Name"] = "CrowdControl; Silenced; Stunned; Shatterable; Disoriented; Feared; Incapacitated; Rooted",
+						["GUID"] = "TMW:icon:1Rhh3CGegmj6",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "208683",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["Checked"] = true,
+								["BitFlags"] = 32,
+								["PrtsBefore"] = 1,
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["PrtsAfter"] = 1,
+								["Name"] = "return BasicRotation",
+								["AndOr"] = "OR",
+							}, -- [2]
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- PvP Trinket\nreturn \nLastPlayerCastID ~= SpellRace(\"TRINKET\") and\nGladiatorMedallion()",
+							}, -- [3]
+							["n"] = 3,
+						},
+						["Enabled"] = true,
+					}, -- [49]
+					{
+						["BuffOrDebuff"] = "HARMFUL",
+						["Type"] = "conditionicon",
+						["Name"] = "59752",
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Trinket Racials\nreturn \nLastPlayerCastID ~= 208683 and -- Gladiator Medallion\nSpellRace(\"TRINKET\")",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["GUID"] = "TMW:icon:1Rhgrx8VBehR",
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "local TMW = TMW\nlocal CNDT = TMW.CNDT\nlocal Env = CNDT.Env\nlocal id = Env.SpellRace(\"TRINKET\")\nlocal icon = ...\nicon:SetInfo(\"texture\", TMW.GetSpellTexture(id))",
+								["OnlyShown"] = true,
+								["Event"] = "WCSP",
+								["Frequency"] = 0.1,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Enabled"] = true,
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["Type"] = "meta",
+						["Icons"] = {
+							"TMW:icon:1RhjpSXX6h_u", -- [1]
+							"TMW:icon:1RhjpWnLooNm", -- [2]
+							"TMW:icon:1Rhjpb8wakbE", -- [3]
+							"TMW:icon:1Rhjpen1Qwun", -- [4]
+						},
+						["GUID"] = "TMW:icon:1RhjpNmE6Luk",
+						["Enabled"] = true,
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return \nBasicRotation and\nnot IsMounted() and\nCombatTime(\"player\") > 0 and\n(\n    PvPBuffs(\"player\", \"DamageBuffs\") > 0 or\n    PvPBuffs(\"player\", \"BurstHaste\") > 0\n)",
+							}, -- [1]
+							{
+								["Type"] = "LIBRANGECHECK",
+								["Unit"] = "target",
+								["Operator"] = "<=",
+								["PrtsBefore"] = 1,
+								["Level"] = 7,
+							}, -- [2]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[105] = true,
+									[63] = true,
+									[262] = true,
+									[256] = true,
+									[65] = true,
+									[265] = true,
+									[266] = true,
+									[267] = true,
+									[62] = true,
+									[64] = true,
+									[270] = true,
+									[102] = true,
+									[257] = true,
+									[258] = true,
+									[254] = true,
+									[253] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [3]
+							{
+								["Type"] = "LIBRANGECHECK",
+								["PrtsAfter"] = 2,
+								["Unit"] = "target",
+								["Operator"] = "<=",
+								["Level"] = 40,
+							}, -- [4]
+							["n"] = 4,
+						},
+					}, -- [52]
+					{
+						["OnlyEquipped"] = true,
+						["Type"] = "conditionicon",
+						["OnlyInBags"] = true,
+						["GUID"] = "TMW:icon:1RhjpSXX6h_u",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "179071",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Basic Slot 13\nreturn \nBasicRotation and\nUseItem(13)",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [53]
+					{
+						["OnlyEquipped"] = true,
+						["Type"] = "conditionicon",
+						["OnlyInBags"] = true,
+						["GUID"] = "TMW:icon:1RhjpWnLooNm",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "224540",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Basic Slot 14\nreturn \nBasicRotation and\nUseItem(14)",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [54]
+					{
+						["Type"] = "conditionicon",
+						["OnlyInBags"] = true,
+						["GUID"] = "TMW:icon:1Rhjpb8wakbE",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["CustomTex"] = "156426",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Level"] = 1,
+								["Icon"] = "TMW:icon:1Rhgs3oNK7HV",
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Basic Potion\nreturn \nBasicRotation and\nPvPBuffs(\"player\", \"BurstHaste\") > 0 and\n(\n    UNITLevel(\"target\") == -1 or\n    UnitIsPlayer(\"target\")\n)",
+							}, -- [2]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[63] = true,
+									[262] = true,
+									[264] = true,
+									[265] = true,
+									[266] = true,
+									[267] = true,
+									[62] = true,
+									[64] = true,
+									[270] = true,
+									[256] = true,
+									[257] = true,
+									[65] = true,
+									[105] = true,
+								},
+								["PrtsBefore"] = 2,
+							}, -- [3]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "163222",
+								["Level"] = 1,
+							}, -- [4]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 1,
+								["Name"] = "163222",
+							}, -- [5]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[252] = true,
+									[251] = true,
+									[250] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [6]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "163224",
+								["Level"] = 1,
+							}, -- [7]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 1,
+								["Name"] = "163224",
+							}, -- [8]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[260] = true,
+									[261] = true,
+									[263] = true,
+									[253] = true,
+									[577] = true,
+									[268] = true,
+									[255] = true,
+									[254] = true,
+									[259] = true,
+									[103] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [9]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "163223",
+								["Level"] = 1,
+							}, -- [10]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 1,
+								["Name"] = "163223",
+							}, -- [11]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[269] = true,
+									[66] = true,
+									[70] = true,
+									[72] = true,
+									[71] = true,
+									[104] = true,
+									[73] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [12]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "152560",
+								["Level"] = 1,
+							}, -- [13]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 1,
+								["Name"] = "152560",
+							}, -- [14]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[581] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [15]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "152557",
+								["Level"] = 1,
+							}, -- [16]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 1,
+								["Name"] = "152557",
+							}, -- [17]
+							{
+								["Type"] = "UNITSPEC",
+								["BitFlags"] = {
+									[102] = true,
+									[258] = true,
+								},
+								["PrtsBefore"] = 1,
+								["AndOr"] = "OR",
+							}, -- [18]
+							{
+								["Type"] = "ITEMINBAGS",
+								["Operator"] = ">=",
+								["Name"] = "152559",
+								["Level"] = 1,
+							}, -- [19]
+							{
+								["Type"] = "ITEMCD",
+								["PrtsAfter"] = 2,
+								["Name"] = "152559",
+							}, -- [20]
+							["n"] = 20,
+						},
+					}, -- [55]
+					{
+						["BuffOrDebuff"] = "HARMFUL",
+						["Type"] = "conditionicon",
+						["Name"] = "59752",
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- BASIC DAMAGE Racials\nreturn \nBasicRotation and \nSpellRace(\"DAMAGE\")",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["GUID"] = "TMW:icon:1Rhjpen1Qwun",
+						["Events"] = {
+							{
+								["Type"] = "Lua",
+								["Lua"] = "local TMW = TMW\nlocal CNDT = TMW.CNDT\nlocal Env = CNDT.Env\nlocal icon = ...\nicon:SetInfo(\"texture\", TMW.GetSpellTexture(Env.SpellRace(\"DAMAGE\")))",
+								["OnlyShown"] = true,
+								["Event"] = "WCSP",
+								["PassThrough"] = false,
+								["Frequency"] = 0.1,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["SettingsPerView"] = {
+							["icon"] = {
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Enabled"] = true,
+					}, -- [56]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [65]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [66]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [67]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [68]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [69]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [70]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [71]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [72]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [73]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [74]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [75]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [76]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [77]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [78]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [79]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [80]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [81]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [82]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [83]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [84]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [85]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [86]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [87]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [88]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [89]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [90]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [91]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [92]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [93]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [94]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [95]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [96]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [97]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [98]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [99]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [100]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [101]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [102]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [103]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [104]
+				},
+				["EnabledProfiles"] = {
+					["[GGL] Template"] = false,
+					["[GGL] Monk"] = false,
+					["[GGL] SimTest"] = false,
+				},
+				["Name"] = "[GGL] Basic features",
+				["Point"] = {
+					["y"] = -8.27309977087656,
+					["x"] = 893.789245605469,
+					["point"] = "TOPLEFT",
+					["relativePoint"] = "TOPLEFT",
+				},
+			}, -- [4]
+			{
+				["GUID"] = "TMW:group:1S0n1HVc4sYp",
+				["Point"] = {
+					["y"] = -26.9633894540324,
+					["x"] = 775.356628417969,
+					["point"] = "TOPLEFT",
+					["relativePoint"] = "TOPLEFT",
+				},
+				["Scale"] = 1.0819,
+				["Rows"] = 4,
+				["Role"] = 2,
+				["Locked"] = true,
+				["Enabled"] = false,
+				["Columns"] = 5,
+				["Icons"] = {
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "unitcooldown",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							{
+								["Type"] = "ALIVE",
+							}, -- [2]
+							["n"] = 2,
+						},
+						["Name"] = "187650: 30",
+						["GUID"] = "TMW:icon:1S0n1bXaEN_8",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"   Ready", -- [1]
+									"", -- [2]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Enabled"] = true,
+					}, -- [1]
+					{
+						["Unit"] = "arena1-3",
+						["DurationMin"] = 28,
+						["Type"] = "unitcooldown",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Name"] = "187650: 30",
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1HVgfB8b",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["GUID"] = "TMW:icon:1S0n1HVlc54v",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"  Used", -- [1]
+									"", -- [2]
+								},
+							},
+						},
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["DurationMinEnabled"] = true,
+						["Enabled"] = true,
+					}, -- [2]
+					{
+						["Unit"] = "arena1-3",
+						["CLEUEvents"] = {
+							["SPELL_CREATE"] = true,
+						},
+						["SourceConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["DurationMin"] = 28,
+						["Type"] = "cleu",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["CLEUDur"] = 30,
+						["Name"] = "187650: 30",
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1HVgfB8b",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["OnlySeen"] = "class",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"  Created", -- [1]
+									"", -- [2]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["GUID"] = "TMW:icon:1S0oHilBdwVP",
+						["DurationMinEnabled"] = true,
+						["SourceUnit"] = "arena1-3",
+						["Enabled"] = true,
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "unitcondition",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							{
+								["Type"] = "ALIVE",
+							}, -- [2]
+							["n"] = 2,
+						},
+						["GUID"] = "TMW:icon:1S0n1HVgfB8b",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"   NO TRAP\nDEBUFF", -- [1]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Trap is not appear\nreturn FriendlyTeam():GetDeBuffs(187650) == 0",
+							}, -- [1]
+							["n"] = 1,
+						},
+					}, -- [5]
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1S0oHTCM_b7y",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Used", -- [1]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1HVlc54v",
+							}, -- [1]
+							{
+								["Type"] = "ICON",
+								["AndOr"] = "OR",
+								["Icon"] = "TMW:icon:1S0oHilBdwVP",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [6]
+					{
+						["CLEUEvents"] = {
+							["SPELL_CAST_SUCCESS"] = true,
+						},
+						["SourceConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 4,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Type"] = "cleu",
+						["CLEUDur"] = 2,
+						["Name"] = "190925",
+						["DestUnit"] = "player",
+						["SourceUnit"] = "arena1-3",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									[2] = "",
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["GUID"] = "TMW:icon:1S0n1gQRow3c",
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1bXaEN_8",
+							}, -- [1]
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1HVgfB8b",
+							}, -- [2]
+							["n"] = 2,
+						},
+						["Enabled"] = true,
+					}, -- [7]
+					{
+						["Unit"] = "arena1-3",
+						["CLEUEvents"] = {
+							["SPELL_CAST_SUCCESS"] = true,
+						},
+						["SourceConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 1,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["DurationMin"] = 28,
+						["Type"] = "unitcooldown",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 1,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["CLEUDur"] = 2,
+						["Name"] = "107570: 30",
+						["FakeHidden"] = true,
+						["SourceUnit"] = "arena1-3",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"", -- [1]
+									"[Stacks:Hide(0)]", -- [2]
+								},
+							},
+						},
+						["States"] = {
+							{
+								["Alpha"] = 0,
+							}, -- [1]
+							{
+								["Alpha"] = 1,
+							}, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["DestUnit"] = "player",
+						["Enabled"] = true,
+						["GUID"] = "TMW:icon:1S0n1gQMwApf",
+						["DurationMinEnabled"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1bXaEN_8",
+							}, -- [1]
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1HVgfB8b",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [8]
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "unitcooldown",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 8,
+							}, -- [1]
+							{
+								["Type"] = "UNITISUNIT",
+								["Unit"] = "unittarget",
+								["Name"] = "player",
+								["Level"] = 1,
+							}, -- [2]
+							["n"] = 2,
+						},
+						["Name"] = "2094: 2:00",
+						["Conditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Some one in kidney\nreturn FriendlyTeam():GetDeBuffs(408) > 0",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["GUID"] = "TMW:icon:1S0nG30y7Kw4",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									[2] = "[Stacks:Hide(0)]",
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Enabled"] = true,
+					}, -- [9]
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "cast",
+						["UnitConditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "return Unit(thisunit):GetRange() <= 30",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Name"] = "5782; 118; 51514; 20066; 19386",
+						["GUID"] = "TMW:icon:1S0nG59aRU2U",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+							},
+						},
+						["CustomTex"] = "118",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["Checked"] = true,
+								["BitFlags"] = 1024,
+							}, -- [1]
+							["n"] = 1,
+						},
+						["Enabled"] = true,
+					}, -- [10]
+					{
+						["Type"] = "conditionicon",
+						["GUID"] = "TMW:icon:1S0n1gQUDw4M",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"Rooted", -- [1]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1bXaEN_8",
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "return PvPDeBuffs(\"player\", \"Rooted\") > 0",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [11]
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "unitcondition",
+						["UnitConditions"] = {
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- Make taunt while some one running to us\nreturn \nUNITMoving(thisunit, \"in\") and\nUnit(thisunit):GetRange() <= 8",
+							}, -- [1]
+							["n"] = 1,
+						},
+						["GUID"] = "TMW:icon:1S0_H=EB=uiW",
+						["Enabled"] = true,
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+								["Texts"] = {
+									"  TrapRun", -- [1]
+								},
+							},
+						},
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Conditions"] = {
+							{
+								["Type"] = "ICON",
+								["Icon"] = "TMW:icon:1S0n1bXaEN_8",
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "-- 8.5.6 thisunit hotfix\nreturn TELLMEWHEN_VERSIONNUMBER >= 85602 and not Unit(\"player\"):IsFocused()",
+							}, -- [2]
+							["n"] = 2,
+						},
+					}, -- [12]
+					{
+						["Unit"] = "arena1-3",
+						["Type"] = "cast",
+						["UnitConditions"] = {
+							{
+								["Type"] = "CLASS2",
+								["BitFlags"] = 128,
+							}, -- [1]
+							{
+								["Type"] = "LUA",
+								["Name"] = "return Unit(thisunit):GetRange() <= 30",
+							}, -- [2]
+							["n"] = 2,
+						},
+						["Name"] = "113724",
+						["GUID"] = "TMW:icon:1S0_oy7Zo1Ia",
+						["SettingsPerView"] = {
+							["icon"] = {
+								["TextLayout"] = "TMW:textlayout:1RFt2HZe_Cbk",
+							},
+						},
+						["CustomTex"] = "113724",
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+						["FakeHidden"] = true,
+						["Enabled"] = true,
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [65]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [66]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [67]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [68]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [69]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [70]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [71]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [72]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [73]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [74]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [75]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [76]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [77]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [78]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [79]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [80]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [81]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [82]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [83]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [84]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [85]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [86]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [87]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [88]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [89]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [90]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [91]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [92]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [93]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [94]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [95]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [96]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [97]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [98]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [99]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [100]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [101]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [102]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [103]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [104]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [105]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [106]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [107]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [108]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [109]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [110]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [111]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [112]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [113]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [114]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [115]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [116]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [117]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [118]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [119]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [120]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [121]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [122]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [123]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [124]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [125]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [126]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [127]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [128]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [129]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [130]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [131]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [132]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [133]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [134]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [135]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [136]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [137]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [138]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [139]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [140]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [141]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [142]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [143]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [144]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [145]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [146]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [147]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [148]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [149]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [150]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [151]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [152]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [153]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [154]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [155]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [156]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [157]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [158]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [159]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [160]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [161]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [162]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [163]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [164]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [165]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [166]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [167]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [168]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [169]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [170]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [171]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [172]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [173]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [174]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [175]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [176]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [177]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [178]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [179]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [180]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [181]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [182]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [183]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [184]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [185]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [186]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [187]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [188]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [189]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [190]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [191]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [192]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [193]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [194]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [195]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [196]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [197]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [198]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [199]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [200]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [201]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [202]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [203]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [204]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [205]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [206]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [207]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [208]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [209]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [210]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [211]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [212]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [213]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [214]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [215]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [216]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [217]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [218]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [219]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [220]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [221]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [222]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [223]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [224]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [225]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [226]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [227]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [228]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [229]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [230]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [231]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [232]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [233]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [234]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [235]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [236]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [237]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [238]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [239]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [240]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [241]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [242]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [243]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [244]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [245]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [246]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [247]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [248]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [249]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [250]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [251]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [252]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [253]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [254]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [255]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [256]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [257]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [258]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [259]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [260]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [261]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [262]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [263]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [264]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [265]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [266]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [267]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [268]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [269]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [270]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [271]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [272]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [273]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [274]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [275]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [276]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [277]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [278]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [279]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [280]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [281]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [282]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [283]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [284]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [285]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [286]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [287]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [288]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [289]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [290]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [291]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [292]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [293]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [294]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [295]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [296]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [297]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [298]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [299]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [300]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [301]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [302]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [303]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [304]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [305]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [306]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [307]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [308]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [309]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [310]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [311]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [312]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [313]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [314]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [315]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [316]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [317]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [318]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [319]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [320]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [321]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [322]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [323]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [324]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [325]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [326]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [327]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [328]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [329]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [330]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [331]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [332]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [333]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [334]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [335]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [336]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [337]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [338]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [339]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [340]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [341]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [342]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [343]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [344]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [345]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [346]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [347]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [348]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [349]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [350]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [351]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [352]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [353]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [354]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [355]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [356]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [357]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [358]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [359]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [360]
+				},
+				["EnabledProfiles"] = {
+					["[GGL] Monk"] = false,
+					["[GGL] Test"] = false,
+					["[GGL] Template"] = false,
+					["[GGL] Priest"] = false,
+					["[DEV] All in One"] = false,
+					["[GGL] Demon Hunter"] = false,
+				},
+				["Name"] = "[GGL] Hidden PvP Healer's Taunt",
+				["Conditions"] = {
+					{
+						["Type"] = "CLASS2",
+						["BitFlags"] = 1538,
+					}, -- [1]
+					{
+						["Type"] = "LUA",
+						["Name"] = "return\nZone == \"arena\" and\nIamHealer",
+					}, -- [2]
+					["n"] = 2,
+				},
+			}, -- [5]
+			{
+				["Icons"] = {
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+				},
+			}, -- [6]
+			{
+				["Icons"] = {
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [57]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [58]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [59]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [60]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [61]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [62]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [63]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [64]
+				},
+			}, -- [7]
+			{
+				["Icons"] = {
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+				},
+			}, -- [8]
+			{
+				["Icons"] = {
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [21]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [22]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [23]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [24]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [25]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [26]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [27]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [28]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [29]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [30]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [31]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [32]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [33]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [34]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [35]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [36]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [37]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [38]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [39]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [40]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [41]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [42]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [43]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [44]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [45]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [46]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [47]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [48]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [49]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [50]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [51]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [52]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [53]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [54]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [55]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [56]
+				},
+			}, -- [9]
+			{
+				["Icons"] = {
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [1]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [2]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [3]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [4]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [5]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [6]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [7]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [8]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [9]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [10]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [11]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [12]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [13]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [14]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [15]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [16]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [17]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [18]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [19]
+					{
+						["States"] = {
+							{
+							}, -- [1]
+							nil, -- [2]
+							{
+							}, -- [3]
+							{
+							}, -- [4]
+						},
+					}, -- [20]
+				},
+			}, -- [10]
+		},
 	},
 	["profiles"] = {
 		["[Trip] Priest"] = {
 			["Version"] = 90201,
-			["ForceNoBlizzCC"] = true,
-			["NumGroups"] = 4,
-			["TextureName"] = "Flat",
-			["CodeSnippets"] = {
-				{
-					["Name"] = "ProfileUI",
-					["Code"] = "--#############################\n--##### TRIP'S PRIEST UI ######\n--#############################\n\n\nlocal TMW                                            = TMW \nlocal CNDT                                            = TMW.CNDT\nlocal Env                                            = CNDT.Env\nlocal A                                                = Action\nlocal GetToggle                                        = A.GetToggle\nlocal InterruptIsValid                                = A.InterruptIsValid\nlocal UnitCooldown                                    = A.UnitCooldown\nlocal Unit                                            = A.Unit \nlocal Player                                        = A.Player \nlocal Pet                                            = A.Pet\nlocal LoC                                            = A.LossOfControl\nlocal MultiUnits                                    = A.MultiUnits\nlocal EnemyTeam                                        = A.EnemyTeam\nlocal FriendlyTeam                                    = A.FriendlyTeam\nlocal TeamCache                                        = A.TeamCache\nlocal InstanceInfo                                    = A.InstanceInfo\nlocal TR                                            = Action.TasteRotation\nlocal select, setmetatable                            = select, setmetatable\n\n-- Shadowlands Spell Info fix for empty spells\nlocal GetSpellInfo_original                                = _G.GetSpellInfo\nlocal function GetSpellInfo(...)\n    return GetSpellInfo_original(...) or \"\"\nend\n\nA.Data.ProfileEnabled[Action.CurrentProfile] = true\nA.Data.ProfileUI                                     = {    \n    DateTime = \"v1.1 (5 Nov 2020)\",\n    [2] = {        \n        [ACTION_CONST_PRIEST_SHADOW] = {             \n            { -- [1]                            \n                {\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use @mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use AoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                    }, \n                    M = {},\n                }, \n                { -- Auto Multi Dot\n                    E = \"Checkbox\", \n                    DB = \"AutoMultiDot\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Auto Multi DoT (BETA)\"\n                    }, \n                    TT = { \n                        ANY = \"Switch through enemies to apply DoTs automatically! Limited to five total targets per combat.\"\n                    }, \n                    M = {},\n                },                        \n            }, \n            { -- [2]\n                {\n                    E = \"Checkbox\", \n                    DB = \"ByPassSpells\",\n                    DBV = true,\n                    L = { \n                        enUS = \"ByPassSpells\", \n                    }, \n                    TT = { \n                        enUS = \"Spells\\nWill stop channeling\",\n                    }, \n                    M = {},\n                },         \n                {\n                    E = \"Checkbox\", \n                    DB = \"UsePWS\",\n                    DBV = false,\n                    L = { \n                        enUS = \"Use Power Word: Shield.\",\n                    }, \n                    TT = { \n                        enUS = \"Use Power Word: Shield for movement.\",\n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 7,                            \n                    DB = \"PWSMove\",\n                    DBV = 3, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"PW:S if moving for\",\n                    }, \n                    TT = { \n                        enUS = \"If \" .. GetSpellInfo(17) .. \" is talented and ready, will use it if moving for set value.\", \n                        ruRU = \"Если \" .. GetSpellInfo(17) .. \" изучен и готов, будет использовать его при переходе на заданное значение.\", \n                        frFR = \"Si \" .. GetSpellInfo(17) .. \" est prêt, l'utilisera s'il se déplace pour la valeur définie.\", \n                    }, \n                    M = {},\n                },                \n            },\n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            },                 \n            { -- [7] Spell Status Frame\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Vampiric Touch Delay -- \",\n                    },\n                },\n            },    \n            {\n                {    \n                    E = \"Label\",\n                    L = { \n                        enUS = \"Use this slider to adjust the delay for Vampiric Touch. If you're finding that it's casting Vampiric Touch twice in a row, increase the value. If you find that you're missing Unfurling Darkness procs, lower the value. Recommended to sit somewhere between 80-100.\", \n                        ruRU = \"Метка\", \n                    }, \n                },            \n                {\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 200,                            \n                    DB = \"VTDelay\",\n                    DBV = 90, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Vampiric Touch Delay\",\n                    },\n                    TT = { \n                        ANY = \"Use this slider to adjust the delay between Vampiric Touch casts.\"  \n                    },                    \n                    M = {},\n                },\n            },                \n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            }, \n            { -- [7] \n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Trinkets -- \",\n                    },\n                },\n            },\n            {\n                {\n                    E = \"Checkbox\", \n                    DB = \"TrinketsAoE\",\n                    DBV = false,\n                    L = { \n                        enUS = \"Trinkets\\nAoE only\", \n                        ruRU = \"Trinkets\\nAoE only\",  \n                        frFR = \"Trinkets\\nAoE only\",  \n                    }, \n                    TT = { \n                        enUS = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                        ruRU = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                        frFR = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 30,                            \n                    DB = \"TrinketsMinTTD\",\n                    DBV = 10, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Min TTD\",\n                    },\n                    TT = { \n                        enUS = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                        ruRU = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                        frFR = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                    },                    \n                    M = {},\n                },\n            },\n            {\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 2, \n                    MAX = 10,                            \n                    DB = \"TrinketsMinUnits\",\n                    DBV = 20, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Min Units\",\n                    },\n                    TT = { \n                        enUS = \"Minimum number of units in range to activate Trinkets.\", \n                        ruRU = \"Minimum number of units in range to activate Trinkets.\", \n                        frFR = \"Minimum number of units in range to activate Trinkets.\",  \n                    },                    \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 40,                            \n                    DB = \"TrinketsUnitsRange\",\n                    DBV = 20, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Max AoE range\",\n                    },\n                    TT = { \n                        enUS = \"Maximum range for units detection to automatically activate trinkets.\", \n                        ruRU = \"Maximum range for units detection to automatically activate trinkets.\", \n                        frFR = \"Maximum range for units detection to automatically activate trinkets.\",  \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            },    \n            { -- [3]\n                {\n                    E = \"Header\",\n                    L = {\n                        enUS = \" -- Defensives -- \",\n                    },\n                },\n            }, \n            { -- [4]     \n                {\n                    E = \"Slider\",                                                     \n                    MIN = -1, \n                    MAX = 100,                            \n                    DB = \"VampiricEmbrace\",\n                    DBV = 60, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = GetSpellInfo(15286) .. \" (%)\",\n                    }, \n                    M = {},\n                },\n            },            \n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            }, \n            { -- [7] \n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Dummy DPS Test -- \",\n                    },\n                },\n            },\n            { -- [3] 3rd Row                     \n                {\n                    E = \"Slider\",                                                     \n                    MIN = -1, \n                    MAX = 10,                            \n                    DB = \"DummyTime\",\n                    DBV = 5, -- Set healthpercentage @30% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"DPS Testing Time\",\n                    },\n                    TT = { \n                        enUS = \"Set the desired time for test in minutes.\\nWill show a notification icon when time is expired.\\nMin: 1 / Max: 10.\", \n                        ruRU = \"Установите желаемое время для теста в минутах.\\nПо истечении времени будет отображаться значок уведомления.\\nMin: 1 / Max: 10.\",  \n                        frFR = \"Définissez la durée souhaitée pour le test en minutes.\\nAffiche une icône de notification lorsque le temps est écoulé.\\nMin: 1 / Max: 10.\", \n                    },                     \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 15,                            \n                    DB = \"DummyStopDelay\",\n                    DBV = 10, -- 2sec\n                    ONOFF = true,\n                    L = { \n                        ANY = \"Stop Delay\",\n                    },\n                    TT = { \n                        enUS = \"After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\\nDefault value : 10 seconds.\", \n                        ruRU = \"После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\\nЗначение по умолчанию: 10 секунд.\", \n                        frFR = \"Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\\nValeur par défaut: 10 secondes.\", \n                    },                     \n                    M = {},\n                },\n            },           \n        },\n        \n        [ACTION_CONST_PRIEST_DISCIPLINE] = {          \n            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    \n            { -- General Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- General -- \",\n                    },\n                },\n            },\n            { -- General Content            \n                { -- Mouseover Checkbox\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@mouseover\", \n                        ruRU = \"Использовать\\n@mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                        ruRU = \"Разблокирует использование действий для @mouseover юнитов\\nНапример: Воскрешение, Хилинг\", \n                    }, \n                    M = {},\n                },\n                { -- TargetTarget Checkbox\n                    E = \"Checkbox\", \n                    DB = \"targettarget\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@targettarget\", \n                        ruRU = \"Использовать\\n@targettarget\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions\\nfor enemy @targettarget units\", \n                        ruRU = \"Разблокирует использование\\nдействий для вражеских @targettarget юнитов\", \n                    }, \n                    M = {},\n                },\n                { -- AoE Checkbox\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nAoE\", \n                        ruRU = \"Использовать\\nAoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                        ruRU = \"Включает действия для нескольких целей\", \n                    }, \n                    M = {},\n                },  \n                {\n                    E = \"Checkbox\", \n                    DB = \"UseRotationPassive\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nPassive\\nRotation\",\n                        ruRU = \"Включить\\nПассивную\\nРотацию\" \n                    },\n                    M = {},\n                },                                  \n            },     \n            { -- Header - Healing Engine\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Healing Engine -- \",\n                    },\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },            \n            { -- Healing Engine Options\n                { -- PW:S Tank\n                    E = \"Checkbox\", \n                    DB = \"ShieldTank\",\n                    DBV = true,\n                    L = { \n                        ANY = \"PW:S Tank On Cooldown\"\n                    },\n                    TT = { \n                        ANY = \"Always keep Power Word: Shield active on tank, whenever available.\",\n                    },\n                    M = {},\n                },\n                { -- PW:S Dropdown\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"TANK\", value = \"TANK\" },    \n                        { text = \"SELF\", value = \"SELF\" },   \n                        { text = \"ALL\", value = \"ALL\" },\n                    },                    \n                    DB = \"PWSWorkMode\",\n                    DBV = \"TANK\",\n                    L = { \n                        ANY = \"Power Word: Shield targets\",\n                    }, \n                    TT = { \n                        ANY = \"Choose what targets to use Power Word: Shield on. This is ignored when using Rapture or atonement ramps.\",\n                    },                    \n                    M = {},\n                },                \n                { -- Power Word: Shield Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"PowerWordShieldHP\",              \n                    DBV = 90,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Shield HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Power Word: Shield on group member.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Shadow Mend, No Atonement Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowMendHPNoAtone\",              \n                    DBV = 80,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Mend HP Without Atonement\",                        \n                    },   \n                    TT = { \n                        ANY = \"Shadow Mend when target HP % AND they don't currently have atonement.\",\n                    },                    \n                    M = {},\n                },\n                { -- Shadow Mend, Atonement Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowMendHPWithAtone\",              \n                    DBV = 70,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Mend HP With Atonement\",                        \n                    },   \n                    TT = { \n                        ANY = \"Shadow Mend when target HP % AND they currently have atonement.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {    \n                { -- Penance Heal Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"PenanceHeal\",              \n                    DBV = 60,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Friendly Penance HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"Friendly target HP % to use Penance as a healing spell.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Power Word: Radiance HP Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"RadianceHP\",              \n                    DBV = 90,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Radiance HP\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Power Word: Radiance.\",\n                    },                    \n                    M = {},\n                },\n                { -- Power Word: Radiance Members Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"RadianceMembers\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Radiance Targets\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to be hurt to use Power Word: Radiance.\",\n                    },                    \n                    M = {},\n                },                            \n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Shadow Covenant HP\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowCovHP\",              \n                    DBV = 80,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant HP\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Shadow Covenant\",\n                    },                    \n                    M = {},\n                },\n                { -- Shadow Covenant Members\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"ShadowCovMembers\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant Targets\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to be hurt to use Shadow Covenant.\",\n                    },                    \n                    M = {},\n                },    \n                { -- Shadow Covenant Members\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"ShadowCovAtone\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant Atonements\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to have the atonement buff before using Shadow Covenant.\",\n                    },                    \n                    M = {},\n                },                    \n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {            \n                { -- Purify Checkbox\n                    E = \"Checkbox\", \n                    DB = \"UsePurify\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Auto Purify (NOT YET WORKING)\"\n                    },\n                    TT = { \n                        ANY = \"Uses Purify to cleanse auras listed in the Auras tab.\",\n                    },\n                    M = {},\n                },            \n            },   \n            { -- Header - Trinkets\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Trinkets -- \",\n                    },\n                },\n            },    \n            { -- Trinket Options                \n                { -- How to use trinkets\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"Always\", value = \"Always\" },\n                        { text = \"Burst Synchronized\", value = \"BurstSync\" },                    \n                    },\n                    DB = \"TrinketBurstSyncUP\",\n                    DBV = \"Always\",\n                    L = { \n                        enUS = \"Damager: How to use trinkets\",\n                        ruRU = \"Урон: Как использовать аксессуары\", \n                    },\n                    TT = { \n                        enUS = \"Always: On cooldown\\nBurst Synchronized: By Burst Mode in 'General' tab\",\n                        ruRU = \"Always: По доступности\\nBurst Synchronized: От Режима Бурстов во вкладке 'Общее'\", \n                    }, \n                    M = {},\n                },\n                { -- Trinket Mana\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketMana\",\n                    DBV = 85,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Mana(%)\",\n                        ruRU = \"Trinket: Mana(%)\",\n                    },\n                    M = {},\n                },\n                { -- Trinket Healing\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketBurstHealing\",\n                    DBV = 75,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Healer: Target Health (%)\",\n                        ruRU = \"Лекарь: Здоровье Цели (%)\", \n                    },\n                    M = {},\n                },        \n            },\n            { -- Header - Mythic+\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Mythic + -- \",\n                    },\n                },\n            },    \n            { -- Mythic+ Options\n                { -- MythicPlusLogic\n                    E = \"Checkbox\", \n                    DB = \"MythicPlusLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Smart Mythic+\",\n                        ruRU = \"Smart Mythic+\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic depending of the current dungeon.\\nExample:Fulminating Zap in Junkyard\",\n                        ruRU = \"Enable this option to activate critical healing logic depending of the current dungeon.\\nExample:Fulminating Zap in Junkyard\",\n                    },\n                    M = {},\n                },    \n                { -- GrievousWoundsLogic\n                    E = \"Checkbox\", \n                    DB = \"GrievousWoundsLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Grievous Wounds\\nlogic\",\n                        ruRU = \"Grievous Wounds\\nlogic\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                        ruRU = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                    },\n                    M = {},\n                },\n                { -- GrievousWoundsMinStacks\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"GrievousWoundsMinStacks\",                    \n                    DBV = 2,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Grievous Wounds\\nmin stacks\",                        \n                    },   \n                    TT = { \n                        enUS = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                        ruRU = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                    },                    \n                    M = {},\n                },                \n                { -- StopCastQuake\n                    E = \"Checkbox\", \n                    DB = \"StopCastQuake\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Stop Cast\\nquaking\",\n                        ruRU = \"Stop Cast\\nquaking\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically stop your current cast before Quake.\",\n                        ruRU = \"Enable this option to automatically stop your current cast before Quake.\",\n                    },\n                    M = {},\n                },    \n                { -- StopCastQuakeSec\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 3,                            \n                    DB = \"StopCastQuakeSec\",                    \n                    DBV = 1,\n                    Precision = 1,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Stop Cast\\nquaking seconds\",                      \n                    },\n                    TT = { \n                        enUS = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                        ruRU = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Penance Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- \" .. GetSpellInfo(47540) .. \" -- \",\n                    },\n                }, \n            },\n            { -- Penance Options\n                { -- Penance Dropdown\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"BOTH\", value = \"BOTH\" },\n                        { text = \"HEAL\", value = \"HEAL\" },    \n                        { text = \"DMG\", value = \"DMG\" },                    \n                    },\n                    DB = \"PenanceWorkMode\",\n                    DBV = \"BOTH\",\n                    L = { \n                        ANY = GetSpellInfo(47540) .. \" Work Mode\",\n                    }, \n                    TT = { \n                        enUS = \"These conditions will be skiped if unit will dying in emergency (critical) situation\", \n                        ruRU = \"Эти условия будут пропущены если юнит будет умирать в чрезвычайной (критической) ситуациии\", \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Defensives Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Defensives -- \",\n                    },\n                }, \n            },\n            { -- Defensives Options\n                { -- Desperate Prayer\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"DesperatePrayer\",                    \n                    DBV = 50,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Desperate Prayer HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"% HP to use Desperate Prayer.\"\n                    },                    \n                    M = {},\n                }                \n            }\n        },\n        [ACTION_CONST_PRIEST_HOLY] = {          \n            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    \n            { -- GENERAL HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< GENERAL ><><><l \",\n                    },\n                },\n            },\n            { -- GENERAL SETTINGS                            \n                { -- MOUSEOVER\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@mouseover\", \n                        ruRU = \"Использовать\\n@mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                        ruRU = \"Разблокирует использование действий для @mouseover юнитов\\nНапример: Воскрешение, Хилинг\", \n                    }, \n                    M = {},\n                },\n                { -- TARGETTARGET\n                    E = \"Checkbox\", \n                    DB = \"targettarget\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@targettarget\", \n                        ruRU = \"Использовать\\n@targettarget\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions\\nfor enemy @targettarget units\", \n                        ruRU = \"Разблокирует использование\\nдействий для вражеских @targettarget юнитов\", \n                    }, \n                    M = {},\n                },\n                { -- AOE\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nAoE\", \n                        ruRU = \"Использовать\\nAoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                        ruRU = \"Включает действия для нескольких целей\", \n                    }, \n                    M = {},\n                },                                    \n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- DAMAGE STUFF HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< DAMAGE STUFF ><><><l \",\n                    },\n                },\n            },\n            {\n                { -- DPS MANA\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DPSMana\",\n                    DBV = 30,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"DPS while above mana(%)\"\n                    },\n                    TT = {\n                        ANY = \"Amount of mana (%) to have before using DPS abilities.\"\n                    },\n                    M = {},\n                },            \n                { -- Holy Nova Targets\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 10,                            \n                    DB = \"HolyNovaTargets\",\n                    DBV = 5,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Holy Nova enemy targets \",\n                    },\n                    TT = { \n                        ANY = \"How many targets to be in range of you to use Holy Nova. Only takes enemies into account.\"\n                    },                     \n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- HEALING ENGINE HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< HEALING ENGINE ><><><l \",\n                    },\n                },\n            },    \n            { \n                { -- MANA MANAGEMENT\n                    E = \"Checkbox\", \n                    DB = \"ManaManagement\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Boss Fight\\nManaSave\\n(PvE)\", \n                        ruRU = \"Бой с Боссом\\nУправление Маной\\n(PvE)\",\n                    }, \n                    TT = { \n                        enUS = \"Enable to keep small mana save tricks during boss fight\\nMana will keep going to save phase if Boss HP >= our Mana\", \n                        ruRU = \"Включает сохранение малого количества маны с помощью некоторых манипуляций в течении боя против Босса\\nМана будет переходить в фазу сохранения если ХП Босса >= нашей Маны\", \n                    }, \n                    M = {},\n                },             \n                { -- MANA POTION\n                    E = \"Checkbox\", \n                    DB = \"ManaPotion\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nMana Potion\",\n                        ruRU = \"Использовать\\nЗелье Маны\",\n                    },\n                    M = {},\n                },        \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- HOLY WORD SERENITY\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HolyWordSerenity\",\n                    DBV = 75,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Holy Word: Serenity HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Serenity.\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },             \n            {\n                { -- SANCTIFY ON @PLAYER\n                    E = \"Checkbox\", \n                    DB = \"UseSanctifyOnSelf\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Holy Word: Sanctify on yourself\"\n                    },\n                    TT = {\n                        ANY = \"Use Holy Word: Sanctify on yourself. Requires you to macro Holy Word: Sanctify to /cast [@player] Holy Word: Sanctify\"\n                    },\n                    M = {},\n                },\n                { -- SANCTIFY TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 6,                            \n                    DB = \"SanctifyTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Sanctify Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Holy Word: Sanctify.\"\n                    },\n                    M = {},\n                },\n                { -- SANCTIFY HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"SanctifyHP\",\n                    DBV = 85,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Sanctify HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Sanctify.\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- HEAL HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HealHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"(Binding)Heal HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Heal or Binding Heal. Binding Heal will be prioritised over Heal if talented.\"\n                    },\n                    M = {},\n                },\n                { -- RENEW MODE\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"TANK\", value = \"TANK\" },    \n                        { text = \"OFF\", value = \"OFF\" },                    \n                    },\n                    DB = \"RenewMode\",\n                    DBV = \"TANK\",\n                    L = { \n                        ANY = \"Renew Setting\",\n                    }, \n                    TT = { \n                        ANY = \"Choose how to use Renew.\" \n                    },                    \n                    M = {},\n                },\n                { -- BLANKET RENEW OOC\n                    E = \"Checkbox\", \n                    DB = \"BlanketRenewOOC\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Blanket Renew OOC\"\n                    },\n                    TT = {\n                        ANY = \"Use Renew to top up allies while out of combat (dungeon only).\"\n                    },\n                    M = {},\n                },                \n            },            \n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- FLASH HEAL HP (NO SOL)\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"FlashHealHP\",\n                    DBV = 70,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Flash Heal (no SoL) HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Flash Heal (excludes Surge of Light procs).\"\n                    },\n                    M = {},\n                },\n                { -- FLASH HEAL HP (SOL)\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"FlashHealSOLHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Flash Heal (with SoL) HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Flash Heal when you have a Surge of Light proc.\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- CIRCLE OF HEALING TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 5,                            \n                    DB = \"CircleofHealingTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Circle of Healing Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Circle of Healing. NOTE, I RECOMMEND TO BIND THIS AS A MACRO TO CAST ON YOURSELF DUE TO AWKWARD 30 YARD RANGE CHECK: /cast [@player] Circle of Healing\"\n                    },\n                    M = {},\n                },\n                { -- CIRCLE OF HEALING HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"CircleofHealingHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Circle of Healing HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Circle of Healing\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- PRAYER OF HEALING TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 5,                            \n                    DB = \"PrayerofHealingTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Prayer of Healing Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Prayer of Healing. \"\n                    },\n                    M = {},\n                },\n                { -- PRAYER OF HEALING HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"PrayerofHealingHP\",\n                    DBV = 80,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Prayer of Healing HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Prayer of Healing\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },\n            {\n                { -- HALO TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"HaloTargets\",\n                    DBV = 10,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Halo Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Halo. \"\n                    },\n                    M = {},\n                },\n                { -- HALO HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HaloHP\",\n                    DBV = 80,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Halo HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Halo\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },            \n            {\n                { -- SALVATION TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"SalvationTargets\",\n                    DBV = 10,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Salvation Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Holy Word: Salvation. \"\n                    },\n                    M = {},\n                },\n                { -- SALVATION HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"SalvationHP\",\n                    DBV = 70,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Salvation HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Salvation.\"\n                    },\n                    M = {},\n                },                \n            },            \n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- DIVINE HYMN TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"DivineHymnTargets\",\n                    DBV = 12,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Divine Hymn Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Divine Hymn. Set at 6 or higher to not use while in a dungeon group.\"\n                    },\n                    M = {},\n                },\n                { -- DIVINE HYMN HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DivineHymnHP\",\n                    DBV = 50,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Divine Hymn HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Group HP % to use Divine Hymn\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- GUARDIAN SPIRIT HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"GuardianSpiritHP\",\n                    DBV = 30,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Guardian Spirit HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Guardian Spirit\"\n                    },\n                    M = {},\n                },\n            },            \n            { -- LAYOUT SPACE              \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- TRINKETS\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< TRINKETS ><><><l \",\n                    },\n                },\n            },    \n            {                 \n                { -- TRINKET MANA\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketMana\",\n                    DBV = 85,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Mana(%)\",\n                        ruRU = \"Trinket: Mana(%)\",\n                    },\n                    M = {},\n                },\n                { -- TRINKET HEALING\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketHP\",\n                    DBV = 75,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Target Health (%)\",\n                        ruRU = \"Лекарь: Здоровье Цели (%)\", \n                    },\n                    M = {},\n                },        \n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- MYTHIC + HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< MYTHIC PLUS ><><><l \",\n                    },\n                },\n            },    \n            { -- MYTHIC + SETTINGS    \n                { -- GREVIOUS WOUNDS LOGIC\n                    E = \"Checkbox\", \n                    DB = \"GrievousWoundsLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Grievous Wounds\\nlogic\",\n                        ruRU = \"Grievous Wounds\\nlogic\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                        ruRU = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                    },\n                    M = {},\n                },\n                { -- GREVIOUS WOUNDS MINIMUM STACKS\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"GrievousWoundsMinStacks\",                    \n                    DBV = 2,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Grievous Wounds\\nmin stacks\",                        \n                    },   \n                    TT = { \n                        enUS = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                        ruRU = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                    },                    \n                    M = {},\n                },\n            },\n            {\n                { -- STOPCAST QUAKING\n                    E = \"Checkbox\", \n                    DB = \"StopCastQuake\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Stop Cast\\nquaking\",\n                        ruRU = \"Stop Cast\\nquaking\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically stop your current cast before Quake.\",\n                        ruRU = \"Enable this option to automatically stop your current cast before Quake.\",\n                    },\n                    M = {},\n                },    \n                { -- STOPCAST QUAKING TIMER\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 3,                            \n                    DB = \"StopCastQuakeSec\",                    \n                    DBV = 1,\n                    Precision = 1,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Stop Cast\\nquaking seconds\",                      \n                    },\n                    TT = { \n                        enUS = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                        ruRU = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                    },                    \n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE               \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },\n            { -- UTILITIES\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< UTILITIES ><><><l \",\n                    },\n                }, \n            },\n            {\n                {\n                    E = \"Checkbox\", \n                    DB = \"AngelicFeather\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Auto\\n\" .. GetSpellInfo(121536),\n                        ruRU = \"Auto\\n\" .. GetSpellInfo(121536),\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically use \" .. GetSpellInfo(121536),\n                        ruRU = \"Enable this option to automatically use \" .. GetSpellInfo(121536),\n                    },\n                    M = {},\n                },    \n                {\n                    E = \"Checkbox\", \n                    DB = \"LeapofFaith\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Auto\\n\" .. GetSpellInfo(73325),\n                        ruRU = \"Auto\\n\" .. GetSpellInfo(73325),\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically use \" .. GetSpellInfo(73325),\n                        ruRU = \"Enable this option to automatically use \" .. GetSpellInfo(73325),\n                    },\n                    M = {},\n                },    \n            },\n            { -- LAYOUT SPACE               \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- DEFENSIVES\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< DEFENSIVES ><><><l \",\n                    },\n                }, \n            },\n            {\n                { -- DESPERATE PRAYER\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DesperatePrayer\",\n                    DBV = 40,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Desperate Prayer HP (%)\"\n                    },\n                    M = {},\n                },      \n            },                                   \n        },        \n    },\n}\n\nfunction A.Main_CastBars(unit, list)\n    if not A.IsInitialized or A.IamHealer or (A.Zone ~= \"arena\" and A.Zone ~= \"pvp\") then \n        return false \n    end \n    \n    if A[A.PlayerSpec] and A[A.PlayerSpec].SpearHandStrike and A[A.PlayerSpec].SpearHandStrike:IsReadyP(unit, nil, true) and A[A.PlayerSpec].SpearHandStrike:AbsentImun(unit, {\"KickImun\", \"TotalImun\", \"DamagePhysImun\"}, true) and A.InterruptIsValid(unit, list) then \n        return true         \n    end \nend \n\nfunction A.Second_CastBars(unit)\n    if not A.IsInitialized or (A.Zone ~= \"arena\" and A.Zone ~= \"pvp\")  then \n        return false \n    end \n    \n    local Toggle = A.GetToggle(2, \"ParalysisPvP\")    \n    if Toggle and Toggle ~= \"OFF\" and A[A.PlayerSpec] and A[A.PlayerSpec].Paralysis and A[A.PlayerSpec].Paralysis:IsReadyP(unit, nil, true) and A[A.PlayerSpec].Paralysis:AbsentImun(unit, {\"CCTotalImun\", \"TotalImun\", \"DamagePhysImun\"}, true) and Unit(unit):IsControlAble(\"incapacitate\", 0) then \n        if Toggle == \"BOTH\" then \n            return select(2, A.InterruptIsValid(unit, \"Heal\", true)) or select(2, A.InterruptIsValid(unit, \"PvP\", true)) \n        else\n            return select(2, A.InterruptIsValid(unit, Toggle, true))         \n        end \n    end \nend \n\n",
-				}, -- [1]
-				{
-					["Order"] = 2,
-					["Name"] = "SHADOW",
-					["Code"] = "--##################################\n--###### TRIP'S SHADOW PRIEST ######\n--##################################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal Listener                                    = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                    = Action.GetToggle\nlocal SetToggle                                    = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                                = Action.GetCurrentGCD\nlocal GetPing                                    = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                    = Action.BurstIsON\nlocal AuraIsValid                                = Action.AuraIsValid\nlocal InterruptIsValid                            = Action.InterruptIsValid\nlocal FrameHasSpell                                = Action.FrameHasSpell\nlocal Azerite                                    = LibStub(\"AzeriteTraits\")\nlocal Utils                                        = Action.Utils\nlocal TeamCache                                    = Action.TeamCache\nlocal EnemyTeam                                    = Action.EnemyTeam\nlocal FriendlyTeam                                = Action.FriendlyTeam\nlocal LoC                                        = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                                = Action.UnitCooldown\nlocal Unit                                        = Action.Unit \nlocal IsUnitEnemy                                = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                            = MultiUnits:GetActiveUnitPlates()\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal TR                                        = Action.TasteRotation\nlocal pairs                                     = pairs\nlocal Pet                                       = LibStub(\"PetLibrary\")\n\n--Toaster stuff\nlocal ADDON_NAME, private                                                        = ...\nlocal _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset    = _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset\nlocal tremove                                                                    = table.remove\nlocal math_floor                                                                = math.floor\nlocal math_huge                                                                    = math.huge\nlocal math_max                                                                    = math.max\nlocal wipe                                                                        = _G.wipe\nlocal hooksecurefunc                                                            = _G.hooksecurefunc\nlocal CopyTable                                                                    = _G.CopyTable\nlocal UIParent                                                                    = _G.UIParent\nlocal Toaster                                                                    = _G.Toaster -- The Action _G.Toaster will be initilized first, then _G.Toaster will be replaced by original if Toaster addon will be loaded, but we will keep our local\nlocal LibStub                                                                    = _G.LibStub\nlocal GetSpellTexture                                                             = _G.TMW.GetSpellTexture\nlocal AceDB                                                                     = LibStub(\"AceDB-3.0\", true)\nlocal AceConfigRegistry                                                         = LibStub(\"AceConfigRegistry-3.0\", true)    \nlocal AceConfigDialog                                                             = LibStub(\"AceConfigDialog-3.0\", true)    \nlocal AceLocale                                                                    = LibStub(\"AceLocale-3.0\", true)\nlocal LibWindow                                                                 = LibStub(\"LibWindow-1.1\", true)\nlocal LibToast                                                                     = LibStub(\"LibToast-1.0\", true)\nlocal templates                                                                    = LibToast and LibToast.templates\nlocal unique_templates                                                            = LibToast and LibToast.unique_templates\nlocal active_toasts                                                                = LibToast and LibToast.active_toasts\nlocal DEFAULT_FADE_HOLD_TIME                                                    = 5\nlocal DEFAULT_WIDTH                                                                = 250\nlocal DEFAULT_HEIGHT                                                            = 50\n\nlocal TMW                                                                         = _G.TMW\n\nlocal toStr                                                                     = A.toStr\nlocal toNum                                                                     = A.toNum \nlocal CONST                                                                     = A.Const\nlocal Listener                                                                    = A.Listener\nlocal FormatGameLocale                                                            = A.FormatGameLocale\nlocal FormatedGameLocale                                                        = A.FormatedGameLocale\nlocal Unit                                                                         = A.Unit \n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\n-- Spells\nAction[ACTION_CONST_PRIEST_SHADOW] = {\n    -- Racial\n    ArcaneTorrent                          = Action.Create({ Type = \"Spell\", ID = 50613 }),\n    BloodFury                              = Action.Create({ Type = \"Spell\", ID = 20572 }),\n    Fireblood                              = Action.Create({ Type = \"Spell\", ID = 265221 }),\n    AncestralCall                          = Action.Create({ Type = \"Spell\", ID = 274738 }),\n    Berserking                             = Action.Create({ Type = \"Spell\", ID = 26297 }),\n    ArcanePulse                            = Action.Create({ Type = \"Spell\", ID = 260364 }),\n    QuakingPalm                            = Action.Create({ Type = \"Spell\", ID = 107079 }),\n    Haymaker                               = Action.Create({ Type = \"Spell\", ID = 287712 }), \n    WarStomp                               = Action.Create({ Type = \"Spell\", ID = 20549 }),\n    BullRush                               = Action.Create({ Type = \"Spell\", ID = 255654 }),    \n    GiftofNaaru                            = Action.Create({ Type = \"Spell\", ID = 59544 }),\n    Shadowmeld                             = Action.Create({ Type = \"Spell\", ID = 58984 }), -- usable in Action Core \n    Stoneform                              = Action.Create({ Type = \"Spell\", ID = 20594 }), \n    WilloftheForsaken                      = Action.Create({ Type = \"Spell\", ID = 7744  }), -- not usable in APL but user can Queue it    \n    EscapeArtist                           = Action.Create({ Type = \"Spell\", ID = 20589 }), -- not usable in APL but user can Queue it\n    EveryManforHimself                     = Action.Create({ Type = \"Spell\", ID = 59752 }), -- not usable in APL but user can Queue it\n    Darkflight                             = Create({ Type = \"Spell\", ID = 68992    }),\n    -- Generics\n    Shadowfiend                            = Action.Create({ Type = \"Spell\", ID = 34433 }),\n    -- Mindbender                             = Action.Create({ Type = \"Spell\", ID = 200174 }),\n    SurrenderToMadness                     = Action.Create({ Type = \"Spell\", ID = 319952 }),\n    VampiricTouch                          = Action.Create({ Type = \"Spell\", ID = 34914 }),\n    ShadowWordPain                         = Action.Create({ Type = \"Spell\", ID = 589 }),\n    MindBlast                              = Action.Create({ Type = \"Spell\", ID = 8092 }),\n    MindFlay                               = Action.Create({ Type = \"Spell\", ID = 15407 }),\n    MindSear                               = Action.Create({ Type = \"Spell\", ID = 48045 }),\n    VoidEruption                           = Action.Create({ Type = \"Spell\", ID = 228260 }),\n    VoidBolt                               = Action.Create({ Type = \"Spell\", ID = 205448 }),\n    ShadowCrash                            = Action.Create({ Type = \"Spell\", ID = 342834 }),\n    ShadowWordDeath                        = Action.Create({ Type = \"Spell\", ID = 32379 }),\n    VoidTorrent                            = Action.Create({ Type = \"Spell\", ID = 263165 }),\n    Misery                                 = Action.Create({ Type = \"Spell\", ID = 238558, Hidden = true }),\n    Shadowform                             = Action.Create({ Type = \"Spell\", ID = 232698 }),\n    ChorusofInsanity                       = Action.Create({ Type = \"Spell\", ID = 278661 }),\n    VoidformBuff                           = Action.Create({ Type = \"Spell\", ID = 194249, Hidden = true }),    \n    VampiricTouchDebuff                    = Action.Create({ Type = \"Spell\", ID = 34914, Hidden = true }),\n    ShadowWordPainDebuff                   = Action.Create({ Type = \"Spell\", ID = 589, Hidden = true }),\n    WeakenedSoulDebuff                     = Action.Create({ Type = \"Spell\", ID = 6788, Hidden = true }),\n    Damnation                              = Action.Create({ Type = \"Spell\", ID = 341374}),\n    UnfurlingDarknessBuff                  = Action.Create({ Type = \"Spell\", ID = 341282, Hidden = true}),\n    UnfurlingDarknessTalent                   = Action.Create({ Type = \"Spell\", ID = 341273, Hidden = true}), \n    SearingNightmare                       = Action.Create({ Type = \"Spell\", ID = 341385}),\n    PsychicLink                            = Action.Create({ Type = \"Spell\", ID = 199484}),\n    PowerInfusion                          = Action.Create({ Type = \"Spell\", ID = 10060}),\n    DevouringPlague                        = Action.Create({ Type = \"Spell\", ID = 335467}),\n    DarkThought                               = Action.Create({ Type = \"Spell\", ID = 341207, Hidden = true }),\n    HungeringVoid                           = Action.Create({ Type = \"Spell\", ID = 345128, Hidden = true }),\n    TwistofFateBuff                           = Action.Create({ Type = \"Spell\", ID = 123254, Hidden = true }),\n    TwistofFateTalent                       = Action.Create({ Type = \"Spell\", ID = 109142, Hidden = true }),\n    ShadowCrashDebuff                       = Action.Create({ Type = \"Spell\", ID = 342835, Hidden = true }),\n    BodyAndSoul                               = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true }),\n    --    DevouringPlagueDebuff                  = Action.Create({ Type = \"Spell\", ID = 335467, Hidden = true}),\n    -- PvP   \n    Silence                                = Action.Create({ Type = \"Spell\", ID = 15487 }),    \n    PsychicScream                          = Action.Create({ Type = \"Spell\", ID = 8122   }), -- Fear\n    PsychicHorror                          = Action.Create({ Type = \"Spell\", ID = 64044 }), -- Fear + Disarm\n    -- Covenant Abilities\n    AscendedBlast                          = Action.Create({ Type = \"Spell\", ID = 325283}), \n    AscendedNova                           = Action.Create({ Type = \"Spell\", ID = 325020}), \n    BoonoftheAscended                      = Action.Create({ Type = \"Spell\", ID = 325013}), \n    --    BoonoftheAscendedBuff                  = Action.Create({ Type = \"Spell\", ID = 325013}), \n    FaeGuardians                           = Action.Create({ Type = \"Spell\", ID = 327661}), \n    Mindgames                              = Action.Create({ Type = \"Spell\", ID = 323673}), \n    UnholyNova                             = Action.Create({ Type = \"Spell\", ID = 324724}), \n    -- Conduit Effects\n    DissonantEchoesBuff                    = Action.Create({ Type = \"Spell\", ID = 343144}), \n    -- Utilities \n    PowerWordFortitude                     = Action.Create({ Type = \"Spell\", ID = 21562 }),    -- Shield\n    DispelMagic                            = Action.Create({ Type = \"Spell\", ID = 528,   }),    \n    -- Defensives\n    PowerWordShield                        = Action.Create({ Type = \"Spell\", ID = 17    }), \n    VampiricEmbrace                        = Action.Create({ Type = \"Spell\", ID = 15286 }),\n    Dispersion                             = Action.Create({ Type = \"Spell\", ID = 47585 }),    \n    -- Oils\n    EmbalmersOil                           = Action.Create({ Type = \"Spell\", ID = 171286, QueueForbidden = true }), \n    ShadowcoreOil                          = Action.Create({ Type = \"Spell\", ID = 171285, QueueForbidden = true }),  \n    -- Potions\n    -- stats\n    PotionofSpectralAgility                = Action.Create({ Type = \"Potion\", ID = 171270, QueueForbidden = true }), \n    PotionofSpectralIntellect              = Action.Create({ Type = \"Potion\", ID = 171273, QueueForbidden = true }), \n    PotionofSpectralStrength               = Action.Create({ Type = \"Potion\", ID = 171275, QueueForbidden = true }), \n    PotionofSpectralStamina                = Action.Create({ Type = \"Potion\", ID = 171274, QueueForbidden = true }), \n    -- heal\n    SpiritualHealingPotion                 = Action.Create({ Type = \"Potion\", ID = 171267, QueueForbidden = true }), \n    SpiritualManaPotion                    = Action.Create({ Type = \"Potion\", ID = 171268, QueueForbidden = true }), \n    SpiritualRejuvenationPotion            = Action.Create({ Type = \"Potion\", ID = 171269, QueueForbidden = true }), \n    PotionofSpiritualClarity               = Action.Create({ Type = \"Potion\", ID = 171272, QueueForbidden = true }), \n    -- combat effects potions\n    PotionofDeathlyFixation                = Action.Create({ Type = \"Potion\", ID = 171351, QueueForbidden = true }), \n    PotionofEmpoweredExorcisms             = Action.Create({ Type = \"Potion\", ID = 171352, QueueForbidden = true }),\n    PotionofPhantomFire                    = Action.Create({ Type = \"Potion\", ID = 171349, QueueForbidden = true }),\n    PotionofDivineAwakening                = Action.Create({ Type = \"Potion\", ID = 171350, QueueForbidden = true }),\n    PotionofSacrificialAnima               = Action.Create({ Type = \"Potion\", ID = 176811, QueueForbidden = true }),\n    -- utilities potions\n    PotionofHardenedShadows                = Action.Create({ Type = \"Potion\", ID = 171271, QueueForbidden = true }),\n    PotionofShadedSight                    = Action.Create({ Type = \"Potion\", ID = 171264, QueueForbidden = true }),\n    PotionofSoulPurity                     = Action.Create({ Type = \"Potion\", ID = 171263, QueueForbidden = true }),\n    PotionofSpecterSwiftness               = Action.Create({ Type = \"Potion\", ID = 171370, QueueForbidden = true }),\n    PotionoftheHiddenSpirit                = Action.Create({ Type = \"Potion\", ID = 171266, QueueForbidden = true }),\n    PotionofthePsychopompsSpeed            = Action.Create({ Type = \"Potion\", ID = 184090, QueueForbidden = true }),\n    PotionofUnhinderedPassing              = Action.Create({ Type = \"Potion\", ID = 183823, QueueForbidden = true }),\n    -- Nathria Trinkets\n    SanguineVintage                        = Action.Create({ Type = \"Trinket\", ID = 184031 }),\n    ManaboundMirror                        = Action.Create({ Type = \"Trinket\", ID = 184029 }),\n    GluttonousSpike                        = Action.Create({ Type = \"Trinket\", ID = 184023 }),\n    DreadfireVessel                        = Action.Create({ Type = \"Trinket\", ID = 184030 }),\n    MemoryofPastSins                       = Action.Create({ Type = \"Trinket\", ID = 184025 }),\n    ConsumptiveInfusion                    = Action.Create({ Type = \"Trinket\", ID = 184022 }),\n    StoneLegionHeraldry                    = Action.Create({ Type = \"Trinket\", ID = 184027 }),\n    BargastsLeash                          = Action.Create({ Type = \"Trinket\", ID = 184017 }),\n    -- OP Dungeons Trinkets\n    BloodSpatteredScale                    = Action.Create({ Type = \"Trinket\", ID = 179331 }),\n    OverwhelmingPowerCrystal               = Action.Create({ Type = \"Trinket\", ID = 179342 }),\n    SunbloodAmethyst                       = Action.Create({ Type = \"Trinket\", ID = 178826 }),\n    PulsatingStoneheart                    = Action.Create({ Type = \"Trinket\", ID = 178825 }),\n    BladedancersArmorKit                   = Action.Create({ Type = \"Trinket\", ID = 178862 }),  \n    \n    -- Legendaries\n    PainbreakerPsalmChest                  = Action.Create({ Type = \"Spell\", ID = 173241 }),\n    PainbreakerPsalmCloak                  = Action.Create({ Type = \"Spell\", ID = 173242 }),\n    CalltotheVoidGloves                    = Action.Create({ Type = \"Spell\", ID = 173244 }),\n    CalltotheVoidWrists                    = Action.Create({ Type = \"Spell\", ID = 173249 }),\n    -- Misc\n    PoolResource                           = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),\n    TargetEnemy                            = Action.Create({ Type = \"Spell\", ID = 44603, Hidden = true }),-- Change Target (Tab button)\n    StopCast                               = Action.Create({ Type = \"Spell\", ID = 61721, Hidden = true }),    -- spell_magic_polymorphrabbit\n    DummyTest                              = Action.Create({ Type = \"Spell\", ID = 159999, Hidden = true     }), -- Dummy stop dps icon\n    ConcentratedFlame                       = Action.Create({ Type = \"Spell\", ID = 295373, }),\n    \n};\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_SHADOW)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_SHADOW], { __index = Action })\n\n\n------------------------------------------\n---------------- VARIABLES ---------------\n------------------------------------------\nlocal VarDotsUp = false;\nlocal VarAllDotsUp = false;\nlocal VarMindSearCutoff = 1;\nlocal VarSearingNightmareCutoff = false;\nlocal PainbreakerEquipped = (A.PainbreakerPsalmChest:IsExists() or A.PainbreakerPsalmCloak:IsExists())\nlocal CalltotheVoidEquipped = (A.CalltotheVoidGloves:IsExists() or A.CalltotheVoidWrists:IsExists())\n\nA.Listener:Add(\"ROTATION_VARS\", \"PLAYER_REGEN_ENABLED\", function()\n        VarDotsUp = false\n        VarAllDotsUp = false\n        VarMindSearCutoff = 1\n        VarSearingNightmareCutoff = false\nend)\n\nlocal function num(val)\n    if val then return 1 else return 0 end\nend\n\nlocal function bool(val)\n    return val ~= 0\nend\n\nlocal player = \"player\"\n\n------------------------------------------\n-------------- COMMON PREAPL -------------\n------------------------------------------\nlocal Temp = {\n    TotalAndPhys                            = {\"TotalImun\", \"DamagePhysImun\"},\n    TotalAndCC                              = {\"TotalImun\", \"CCTotalImun\"},\n    TotalAndPhysKick                        = {\"TotalImun\", \"DamagePhysImun\", \"KickImun\"},\n    TotalAndPhysAndCC                       = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\"},\n    TotalAndPhysAndStun                     = {\"TotalImun\", \"DamagePhysImun\", \"StunImun\"},\n    TotalAndPhysAndCCAndStun                = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\", \"StunImun\"},\n    TotalAndMag                             = {\"TotalImun\", \"DamageMagicImun\"},\n    TotalAndMagKick                         = {\"TotalImun\", \"DamageMagicImun\", \"KickImun\"},\n    DisablePhys                             = {\"TotalImun\", \"DamagePhysImun\", \"Freedom\", \"CCTotalImun\"},\n    DisableMag                              = {\"TotalImun\", \"DamageMagicImun\", \"Freedom\", \"CCTotalImun\"},\n    VampiricTouchDelay                      = 0,\n}\n\nlocal IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName\n\n--Register Toaster\nToaster:Register(\"TripToast\", function(toast, ...)\n        local title, message, spellID = ...\n        toast:SetTitle(title or \"nil\")\n        toast:SetText(message or \"nil\")\n        if spellID then \n            if type(spellID) ~= \"number\" then \n                error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n                toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n            else \n                toast:SetIconTexture((GetSpellTexture(spellID)))\n            end \n        else \n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        end \n        toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolFree()\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function InRange(unit)\n    -- @return boolean \n    return A.VampiricTouch:IsInRange(unit)\nend \nInRange = A.MakeFunctionCachedDynamic(InRange)\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat)\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\n-- ExecuteRange\nlocal function ExecuteRange()\n    return 20\nend\n\n-- DotsUp\nlocal function DotsUp(unitID, all)\n    if all then\n        return (Unit(unitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.DevouringPlague.ID, true) > 0)\n    else\n        return (Unit(unitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0)\n    end\nend\n\n-- Non GCD spell check\nlocal function countInterruptGCD(unit)\n    if not A.Silence:IsReadyByPassCastGCD(unit) or not A.Silence:AbsentImun(unit, Temp.TotalAndMagKick) then\n        return true\n    end\nend\n\n-- Interrupts spells\nlocal function Interrupts(unit)\n    \n    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))\n    \n    \n    if castRemainsTime >= A.GetLatency() then\n        -- Silence\n        if useKick and A.Silence:IsReady(unit) and A.Silence:AbsentImun(unit, Temp.TotalAndMagKick, true) then \n            -- Notification                    \n            Action.SendNotification(\"Silence interrupting...\", A.Silence.ID)\n            return A.Silence\n        end \n        \n        -- Fear Disarm\n        if useCC and A.PsychicHorror:IsReady(unit) and A.PsychicHorror:AbsentImun(unit, Temp.TotalAndMagKick, true) and Unit(unit):IsControlAble(\"stun\", 0) then \n            -- Notification                    \n            Action.SendNotification(\"Psychic Horror interrupting...\", A.PsychicHorror.ID)\n            return A.PsychicHorror              \n        end \n        \n        if useRacial and A.QuakingPalm:AutoRacial(unit) then \n            return A.QuakingPalm\n        end \n        \n        if useRacial and A.Haymaker:AutoRacial(unit) then \n            return A.Haymaker\n        end \n        \n        if useRacial and A.WarStomp:AutoRacial(unit) then \n            return A.WarStomp\n        end \n        \n        if useRacial and A.BullRush:AutoRacial(unit) then \n            return A.BullRush\n        end \n    end\nend\n\n-- Defensives\nlocal function SelfDefensives()\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local VampiricEmbrace = A.GetToggle(2, \"VampiricEmbrace\")\n    if    VampiricEmbrace >= 0 and A.VampiricEmbrace:IsReady(player) and \n    (\n        (     -- Auto \n            VampiricEmbrace >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            VampiricEmbrace < 100 and \n            Unit(player):HealthPercent() <= VampiricEmbrace\n        )\n    ) \n    then \n        return A.VampiricEmbrace\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\nfunction Player:AreaTTD(range)\n    local ttdtotal = 0\n    local totalunits = 0\n    local r = range\n    \n    for _, unitID in pairs(ActiveUnitPlates) do \n        if Unit(unitID):GetRange() <= r then \n            local ttd = Unit(unitID):TimeToDie()\n            totalunits = totalunits + 1\n            ttdtotal = ttd + ttdtotal\n        end\n    end\n    \n    if totalunits == 0 then\n        return 0\n    end\n    \n    return ttdtotal / totalunits\nend    \n\n-- Multidot Handler UI --\nlocal function HandleMultidots()\n    local choice = Action.GetToggle(2, \"AutoDotSelection\")\n    \n    if choice == \"In Raid\" then\n        if IsInRaid() then\n            return true\n        else\n            return false\n        end\n    elseif choice == \"In Dungeon\" then \n        if IsInGroup() then\n            return true\n        else\n            return false\n        end\n    elseif choice == \"In PvP\" then     \n        if A.IsInPvP then \n            return true\n        else\n            return false\n        end        \n    elseif choice == \"Everywhere\" then \n        return true\n    else\n        return false\n    end\n    --print(choice)\nend\n\n--[[ Insanity Drain \nlocal function InsanityDrain()\n    return (Unit(player):HasBuffs(A.VoidformBuff.ID, true) > 0) and (math.ceil(5 + Unit(player):HasBuffsStacks(A.VoidformBuff.ID, true) * 0.68)) or 0\nend]]\n\n--[[ CritCds\nlocal function CritCds(unit)\n    use_item,name=azsharas_font_of_power\n    if A.AzsharasFontofPower:IsReady(player) then\n    return A.AzsharasFontofPower\nend\n\n-- use_item,effect_name=cyclotronic_blast\nif A.CyclotronicBlast:IsReady(unit) then\n    return A.CyclotronicBlast\nend\n\n-- the_unbound_force\nif A.TheUnboundForce:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, \"HeartOfAzeroth\") then\n    return A.TheUnboundForce\nend\nend\nCritCds = A.MakeFunctionCachedStatic(CritCds)]]\n\n\n--- ======= ACTION LISTS =======\n-- [3] Single Rotation\nA[3] = function(icon, isMulti)\n    --------------------\n    --- ROTATION VAR ---\n    --------------------\n    local isMoving = A.Player:IsMoving()\n    local isMovingFor = A.Player:IsMovingTime()    \n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local ShouldStop = Action.ShouldStop()\n    local Pull = Action.BossMods:GetPullTimer()\n    local profileStop = false\n    local DBM = Action.GetToggle(1, \"BossMods\")\n    local HeartOfAzeroth = Action.GetToggle(1, \"HeartOfAzeroth\")\n    local Racial = Action.GetToggle(1, \"Racial\")\n    local Potion = Action.GetToggle(1, \"Potion\")\n    local UnbridledFuryAuto = GetToggle(2, \"UnbridledFuryAuto\")\n    local UnbridledFuryTTD = GetToggle(2, \"UnbridledFuryTTD\")\n    local UnbridledFuryWithBloodlust = GetToggle(2, \"UnbridledFuryWithBloodlust\")\n    local UnbridledFuryHP = GetToggle(2, \"UnbridledFuryHP\")\n    local UnbridledFuryWithExecute = GetToggle(2, \"UnbridledFuryWithExecute\")\n    local FocusedAzeriteBeamTTD = GetToggle(2, \"FocusedAzeriteBeamTTD\")\n    local FocusedAzeriteBeamUnits = GetToggle(2, \"FocusedAzeriteBeamUnits\")\n    local PWSMove = GetToggle(2, \"PWSMove\")\n    local UsePWS = GetToggle(2, \"UsePWS\")\n    local MultiDotDistance = GetToggle(2, \"MultiDotDistance\")\n    local VTDelay = GetToggle(2, \"VTDelay\")\n    local VTRefreshable = (Unit(\"target\"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(\"target\"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)\n    local SWPRefreshable = (Unit(\"target\"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4 or Unit(\"target\"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0)    \n    -- Multidots var\n    local MissingShadowWordPain = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local MissingVampiricTouch = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.VampiricTouch.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local AppliedShadowWordPain = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local AppliedVampiricTouch = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, A.VampiricTouch.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local ShadowWordPainToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, A.ShadowWordPain.ID, 6, 5)\n    local VampiricTouchToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, A.VampiricTouch.ID, 6, 5)\n    -- Trinkets vars\n    local Trinket1IsAllowed, Trinket2IsAllowed = TR:TrinketIsAllowed()\n    local TrinketsAoE = GetToggle(2, \"TrinketsAoE\")\n    local TrinketsMinTTD = GetToggle(2, \"TrinketsMinTTD\")\n    local TrinketsUnitsRange = GetToggle(2, \"TrinketsUnitsRange\")\n    local TrinketsMinUnits = GetToggle(2, \"TrinketsMinUnits\")\n    local StMActive = A.SurrenderToMadness:GetSpellTimeSinceLastCast() <= 25\n    local VoidFormActive = Unit(player):HasBuffs(A.VoidformBuff.ID, true) > 0\n    -- Azerite beam protection channel\n    local CanCast = true\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local TargetsMissingSWP = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.ShadowWordPainDebuff.ID)\n    local TargetsMissingVT = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.VampiricTouchDebuff.ID)    \n    local AutoMultiDot = A.GetToggle(2, \"AutoMultiDot\")    \n    -- Ensure all channel and cast are really safe\n    -- Double protection with check on current casts and also timestamp of the cast\n    if (spellID == A.FocusedAzeriteBeam.ID) then \n        if (CurrentCastLeft > 0 or secondsLeft > 0 or isChannel) then\n            if TMW.time < castEndTime then            \n                CanCast = false\n            else\n                CanCast = true\n            end\n        end\n    end\n    \n    -- Showing icon PoolResource to make sure nothing else is read by GG\n    if not CanCast then\n        return A.PoolResource:Show(icon)\n    end\n    \n    ------------------------------------\n    ---------- DUMMY DPS TEST ----------\n    ------------------------------------\n    local DummyTime = GetToggle(2, \"DummyTime\")\n    if DummyTime > 0 then\n        local unit = \"target\"\n        local endtimer = 0\n        \n        if Unit(unit):IsExists() and Unit(unit):IsDummy() then\n            if Unit(player):CombatTime() >= (DummyTime * 60) then\n                StopAttack()\n                endtimer = TMW.time\n                --ClearTarget() -- Protected ? \n                -- Notification                    \n                Action.SendNotification(DummyTime .. \" Minutes Dummy Test Concluded - Profile Stopped\", A.DummyTest.ID)            \n                \n                if endtimer < TMW.time + 5 then\n                    profileStop = true\n                    --return A.DummyTest:Show(icon)\n                end\n            end\n        end\n    end\n    \n    \n    if Temp.VampiricTouchDelay == 0 and Unit(player):IsCasting(A.VampiricTouch) then\n        Temp.VampiricTouchDelay = VTDelay\n    end\n    \n    if Temp.VampiricTouchDelay > 0 then\n        --    print(Temp.ImmolateDelay)\n        Temp.VampiricTouchDelay = Temp.VampiricTouchDelay - 1\n    end\n    ------------------------------------------------------\n    ---------------- ENEMY UNIT ROTATION -----------------\n    ------------------------------------------------------\n    \n    local function EnemyRotation(unit)\n        \n        --Variables\n        -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking\n        VarDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4)\n        \n        VarAllDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) > 2)        \n        \n        --Toaster for Unfurling Darkness alert\n        if Unit(player):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 then\n            A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Unfurling Darkness Active!\", \"Target a new enemy for instant-cast Vampiric Touch!\", A.VampiricTouch.ID)\n        end\n        \n        --actions.precombat+=/shadowform,if=!buff.shadowform.up\n        if A.Shadowform:IsReady(unit) and Unit(player):HasBuffsDown(A.Shadowform.ID, true) and not VoidFormActive then\n            return A.Shadowform:Show(icon)\n        end\n        \n        local Interrupt = Interrupts(unit)\n        if Interrupt then \n            return Interrupt:Show(icon)\n        end            \n        \n        --actions.precombat+=/arcane_torrent\n        if A.ArcaneTorrent:IsReady(unit) and useRacial and A.ArcaneTorrent:AutoRacial(unit) and Unit(player):CombatTime() == 0 then\n            return A.ArcaneTorrent:Show(icon)\n        end\n        \n        -- Auto Multi DoT\n        if AutoMultiDot and (VarDotsUp and unit ~= mouseover) and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingSWP > 0 and TargetsMissingSWP < 5 or Unit(\"target\"):IsDummy())\n        then\n            local SWP_Nameplates = MultiUnits:GetActiveUnitPlates()\n            if SWP_Nameplates then  \n                for SWP_UnitID in pairs(ActiveUnitPlates) do             \n                    if Unit(SWP_UnitID):GetRange() < 40 and not Unit(SWP_UnitID):InLOS() and (Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4) then \n                        return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                    end         \n                end \n            end\n        end\n        \n        if AutoMultiDot and (VarDotsUp and unit ~= mouseover) and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingVT > 0 and TargetsMissingVT < 5 or Unit(\"target\"):IsDummy())\n        then\n            local VT_Nameplates = MultiUnits:GetActiveUnitPlates()\n            if VT_Nameplates then  \n                for VT_UnitID in pairs(ActiveUnitPlates) do             \n                    if Unit(VT_UnitID):GetRange() < 40 and not Unit(VT_UnitID):InLOS() and (Unit(VT_UnitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 or Unit(VT_UnitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4) then \n                        return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                    end         \n                end \n            end\n        end            \n        \n        --[[actions.precombat+=/use_item,name=azsharas_font_of_power\n        if A.AzsharasFontofPower:IsReady(player) and noCombat then\n            A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Using Font of Power on pre-pull!\", \"Don't move!\", A.AzsharasFontofPower.ID)    \n            return A.AzsharasFontofPower:Show(icon)\n        end    ]]\n        \n        --MindBlast bypass MindFlay channel\n        if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Unit(\"player\"):HasBuffs(A.DarkThought.ID, true) > 0 and VarDotsUp and (not A.DevouringPlague:IsReady()) then\n            return A.MindBlast:Show(icon)\n        end\n        \n        -- vampiric_touch\n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and (Unit(\"player\"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit(\"player\"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then\n            return A.VampiricTouch:Show(icon)\n        end    \n        \n        --actions.precombat+=/vampiric_touch\n        if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and Unit(player):CombatTime() == 0 and not A.Damnation:IsReady() and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 then\n            return A.VampiricTouch:Show(icon)\n        end\n        \n        \n        --actions+=/call_action_list,name=cwc\n        --actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)\n        if A.SearingNightmare:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and A.SearingNightmare:IsSpellLearned() and Unit(player):IsChanneling(A.MindSear) -- or  MissingShadowWordPain > 2 \n        then \n            return A.SearingNightmare:Show(icon)\n        end    \n        \n        --actions+=/run_action_list,name=main\n        \n        --actions.main=void_eruption,if=variable.pi_or_vf_sync_condition&insanity>=40\n        if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) and Player:AreaTTD(40) > 15 then\n            return A.VoidEruption:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_pain,if=buff.fae_guardians.up&!debuff.wrathful_faerie.up\n        \n        \n        --actions.main+=/call_action_list,name=cds\n        --Use Silence on CD if legendary equipped\n        --[[Essence\n        if A.ConcentratedFlame:IsReady(unit) and BurstIsON then\n            return A.Darkflight:Show(icon)\n        end]]\n        \n        -- guardian_of_azeroth\n        if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        -- focused_azerite_beam\n        if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        -- memory_of_lucid_dreams\n        if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        -- blood_of_the_enemy\n        if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        -- purifying_blast\n        if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        --[[ ripple_in_space\n            if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then\n                return A.Darkflight:Show(icon)\n            end]]\n        \n        -- concentrated_flame,line_cd=6\n        if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        -- reaping_flames\n        if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then\n            return A.Darkflight:Show(icon)\n        end\n        \n        --Trinkets\n        -- Non SIMC Custom Trinket1\n        if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and    \n        (\n            TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD\n            or\n            not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     \n        )\n        then \n            return A.Trinket1:Show(icon)\n        end         \n        \n        -- Non SIMC Custom Trinket2\n        if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and        \n        (\n            TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD\n            or\n            not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     \n        )\n        then\n            return A.Trinket2:Show(icon)     \n        end    \n        \n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and ((VTRefreshable and Unit(unit):TimeToDie() > 6) or (A.Misery:IsTalentLearned() and SWPRefreshable)) then\n            return A.VampiricTouch:Show(icon)\n        end            \n        \n        --actions.main+=/mind_sear,target_if=talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1)&!dot.shadow_word_pain.ticking&!cooldown.Shadowfiend.up\n        if A.MindSear:IsReady(unit) and A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > 3 and  Unit(unit):HasBuffs(A.ShadowWordPainDebuff.ID, true) == 0 and A.Shadowfiend:GetCooldown() > 0 and (not isMoving or StMActive)then\n            return A.MindSear:Show(icon)\n        end            \n        \n        --actions.main+=/damnation,target_if=!variable.all_dots_up\n        if A.Damnation:IsReady(unit) and not VarAllDotsUp then\n            return A.Damnation:Show(icon)\n        end    \n        --actions.main+=/void_bolt,if=insanity<=85&((talent.hungering_void.enabled&spell_targets.mind_sear<5)|spell_targets.mind_sear=1)\n        if A.VoidBolt:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and VoidFormActive and Player:Insanity() <= 85 and ((A.HungeringVoid:IsSpellLearned() and MultiUnits:GetActiveEnemies() < 5) or MultiUnits:GetActiveEnemies() < 2) then\n            return A.VoidBolt:Show(icon)\n        end    \n        \n        --actions.main+=/devouring_plague,target_if=(refreshable|insanity>75)&!variable.pi_or_vf_sync_condition&(!talent.searing_nightmare.enabled|(talent.searing_nightmare.enabled&!variable.searing_nightmare_cutoff))\n        if A.DevouringPlague:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and ((Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) < 3 or Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) == 0) or Player:Insanity() > 75) and ((not A.VoidEruption:IsReady()) or VoidFormActive) and (not A.SearingNightmare:IsSpellLearned() or (A.SearingNightmare:IsSpellLearned() and MultiUnits:GetActiveEnemies() <= 3)) then\n            return A.DevouringPlague:Show(icon)\n        end    \n        \n        --actions.main+=/void_bolt,if=spell_targets.mind_sear<(4+conduit.dissonant_echoes.enabled)&insanity<=85\n        if A.VoidBolt:IsReady(unit) and MultiUnits:GetActiveEnemies() < 4 and Player:Insanity() <= 85 and VoidFormActive then\n            return A.VoidBolt:Show(icon)\n        end    \n        --actions.main+=/shadow_word_death,target_if=(target.health.pct<20&spell_targets.mind_sear<4)|(pet.fiend.active&runeforge.shadowflame_prism.equipped)\n        if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() < 20 and MultiUnits:GetActiveEnemies() < 4 then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        \n        --actions.main+=/surrender_to_madness,target_if=target.time_to_die<25&buff.voidform.down\n        if A.SurrenderToMadness:IsReady(unit) and Unit(unit):TimeToDie() < 25 and not VoidFormActive then\n            return A.SurrenderToMadness:Show(icon)\n        end\n        \n        --actions.main+=/Shadowfiend,if=dot.vampiric_touch.ticking&((talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1))|dot.shadow_word_pain.ticking)\n        if A.Shadowfiend:IsReady(unit) and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 then\n            return A.Shadowfiend:Show(icon)\n        end    \n        --actions.main+=/void_torrent,target_if=variable.dots_up&target.time_to_die>4&buff.voidform.down&spell_targets.mind_sear<(5+(6*talent.twist_of_fate.enabled))\n        if A.VoidTorrent:IsReady(unit) and (not isMoving or StMActive) and VarDotsUp and Unit(unit):TimeToDie() > 4 and not VoidFormActive and MultiUnits:GetActiveEnemies() < (5 + (6 * num(A.TwistofFateTalent:IsSpellLearned()))) then\n            return A.VoidTorrent:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_death,if=runeforge.painbreaker_psalm.equipped&variable.dots_up&target.time_to_pct_20>(cooldown.shadow_word_death.duration+gcd)\n        \n        \n        --actions.main+=/shadow_crash,if=spell_targets.shadow_crash=1&(cooldown.shadow_crash.charges=3|debuff.shadow_crash_debuff.up|action.shadow_crash.in_flight|target.time_to_die<cooldown.shadow_crash.full_recharge_time)&raid_event.adds.in>30\n        if A.ShadowCrash:IsReady(player) and MultiUnits:GetActiveEnemies() < 2 and (A.ShadowCrash:GetSpellCharges() > 2 or Unit(unit):HasDeBuffs(A.ShadowCrashDebuff.ID, true) > 0) then\n            return A.ShadowCrash:Show(icon)\n        end\n        \n        \n        --actions.main+=/shadow_crash,if=raid_event.adds.in>30&spell_targets.shadow_crash>1\n        if A.ShadowCrash:IsReady(player) and MultiUnits:GetActiveEnemies() > 1 then\n            return A.ShadowCrash:Show(icon)\n        end    \n        \n        --actions.main+=/mind_sear,target_if=spell_targets.mind_sear>variable.mind_sear_cutoff&buff.dark_thought.up,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2\n        \n        \n        --actions.main+=/mind_blast,if=variable.dots_up&raid_event.movement.in>cast_time+0.5&spell_targets.mind_sear<4\n        if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and VarDotsUp and MultiUnits:GetActiveEnemies() < 4 and (not isMoving or StMActive or Unit(player):HasBuffs(A.DarkThought.ID, true) > 0) then\n            return A.MindBlast:Show(icon)\n        end    \n        \n        --[[actions.main+=/vampiric_touch,target_if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)|buff.unfurling_darkness.up\n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 and Unit(unit):TimeToDie() > 6 then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        --[[if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0))) and Unit(unit):TimeToDie() > 6 and (not isMoving or StMActive) then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        \n        --[[or (A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp) then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        --actions.main+=/shadow_word_pain,if=refreshable&target.time_to_die>4&!talent.misery.enabled&talent.psychic_link.enabled&spell_targets.mind_sear>2\n        if A.ShadowWordPain:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() then\n            return    A.ShadowWordPain:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_pain,target_if=refreshable&target.time_to_die>4&!talent.misery.enabled&!(talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1))&(!talent.psychic_link.enabled|(talent.psychic_link.enabled&spell_targets.mind_sear<=2))\n        \n        \n        --actions.main+=/mind_sear,target_if=spell_targets.mind_sear>variable.mind_sear_cutoff,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2\n        if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() > 2 and (not isMoving or StMActive) then\n            return A.MindSear:Show(icon)\n        end    \n        \n        --actions.main+=/mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&cooldown.void_bolt.up\n        if A.MindFlay:IsReady(unit) and (not isMoving or StMActive) then\n            return A.MindFlay:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_death\n        if A.ShadowWordDeath:IsReady(unit) and isMoving and inCombat then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        --PWS Moving\n        if isMovingFor > Action.GetToggle(2, \"PWSMove\") and Unit(\"player\"):HasDeBuffs(A.WeakenedSoulDebuff.ID) == 0 and Action.GetToggle(2, \"UsePWS\") and A.BodyAndSoul:IsSpellLearned() then\n            -- Notification                    \n            A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Speed Boost!\", \"Using Power Word: Shield!\", A.PowerWordShield.ID)\n            return A.PowerWordShield:Show(icon)\n        end\n        \n        --actions.main+=/shadow_word_pain\n        if A.ShadowWordPain:IsReady(unit) and isMoving and inCombat then\n            return A.ShadowWordPain:Show(icon)\n        end    \n        \n        \n    end\n    \n    -- End on EnemyRotation()\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Mouseover\n    if A.IsUnitEnemy(\"mouseover\") then\n        unit = \"mouseover\"\n        if EnemyRotation(unit) then \n            return true \n        end \n    end \n    \n    -- Target  \n    if A.IsUnitEnemy(\"target\") then \n        unit = \"target\"\n        if EnemyRotation(unit) then \n            return true\n        end \n        \n    end\nend\n-- Finished\n\n-- [4] AoE Rotation\nA[4] = function(icon)\n    return A[3](icon, true)\nend\n-- [5] Trinket Rotation\n-- No specialization trinket actions \n-- Passive \nlocal function FreezingTrapUsedByEnemy()\n    if     UnitCooldown:GetCooldown(\"arena\", 3355) > UnitCooldown:GetMaxDuration(\"arena\", 3355) - 2 and\n    UnitCooldown:IsSpellInFly(\"arena\", 3355) and \n    Unit(player):GetDR(\"incapacitate\") >= 50 \n    then \n        local Caster = UnitCooldown:GetUnitID(\"arena\", 3355)\n        if Caster and Unit(Caster):GetRange() <= 40 then \n            return true \n        end \n    end \nend \nlocal function ArenaRotation(icon, unit)\n    if A.IsInPvP and (A.Zone == \"pvp\" or A.Zone == \"arena\") and not Player:IsStealthed() and not Player:IsMounted() then\n        -- Note: \"arena1\" is just identification of meta 6\n        if (unit == \"arena1\" or unit == \"arena2\" or unit == \"arena3\") then  \n            -- Interrupt\n            local Interrupt = Interrupts(unit)\n            if Interrupt then \n                return Interrupt:Show(icon)\n            end    \n        end\n    end \nend \nlocal function PartyRotation(unit)\n    if (unit == \"party1\" and not A.GetToggle(2, \"PartyUnits\")[1]) or (unit == \"party2\" and not A.GetToggle(2, \"PartyUnits\")[2]) then \n        return false \n    end\n    \nend \n\nA[6] = function(icon)\n    return ArenaRotation(icon, \"arena1\")\nend\n\nA[7] = function(icon)\n    --  local Party = PartyRotation(\"party1\") \n    if Party then \n        return Party:Show(icon)\n    end \n    return ArenaRotation(icon, \"arena2\")\nend\n\nA[8] = function(icon)\n    -- local Party = PartyRotation(\"party2\") \n    if Party then \n        return Party:Show(icon)\n    end     \n    return ArenaRotation(icon, \"arena3\")\nend",
-				}, -- [2]
-				{
-					["Order"] = 2,
-					["Name"] = "Prediction Healing",
-					["Code"] = "local _G, math, error                = _G, math, error\nlocal math_ceil                        = math.ceil\nlocal math_max                        = math.max\n\nlocal TMW                             = _G.TMW\n\nlocal A                             = _G.Action\nlocal CONST                         = A.Const\nlocal HealingEngine                    = Action.HealingEngine\nlocal Unit                             = A.Unit \nlocal GetCurrentGCD                    = A.GetCurrentGCD\nlocal GetSpellDescription            = A.GetSpellDescription\nlocal GetToggle                        = A.GetToggle\nlocal GetLatency                    = A.GetLatency\n\nlocal HealingEngineIsManaSave        = HealingEngine.IsManaSave\n\nlocal UnitIsUnit                    = _G.UnitIsUnit\n\nlocal AtonementBuff = 0\n\nfunction A:PredictHeal(unitID, variation, enemies)  \n    -- @usage obj:PredictHeal(unitID[, variation]) \n    -- @return boolean, number \n    -- Returns:\n    -- [1] true if action can be used\n    -- [2] total amount of predicted missed health \n    -- Any healing spell can be applied     \n    if Unit(unitID):IsPenalty() then\n        return true, 0\n    end     \n    \n    local PO = GetToggle(8, \"PredictOptions\")\n    -- PO[1] incHeal\n    -- PO[2] incDMG\n    -- PO[3] threat -- not usable in prediction\n    -- PO[4] HoTs\n    -- PO[5] absorbPossitive\n    -- PO[6] absorbNegative\n    local defaultVariation, isManaSave\n    local variation = variation or 1\n    if A.IamHealer and HealingEngineIsManaSave(unitID) then \n        isManaSave = true \n        defaultVariation = variation\n        variation = math_max(variation - 1 + GetToggle(8, \"ManaManagementPredictVariation\"), 1)        \n    end    \n    \n    local enemies = enemies or 0\n    \n    -- Class things\n    -- Discipline\n    if Unit(\"player\"):HasSpec(256) then \n        AtonementBuff = Unit(unitID):HasBuffs(81749, \"player\", true)\n        AtonementBuff = (AtonementBuff > A.GetGCD() + A.GetCurrentGCD() and AtonementBuff) or 0\n    elseif AtonementBuff ~= 0 then \n        AtonementBuff = 0\n    end \n    \n    -- Spells\n    if self.predictName == \"PenanceHeal\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total         \n    end \n    \n    if self.predictName == \"PenanceDMG\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * 0.55 * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total                  \n    end \n    \n    -- Power Word: Shield\n    if self.predictName == \"PowerWordShield\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Power Word: Radiance\n    if self.predictName == \"PowerWordRadiance\" then  \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total                    \n    end \n    \n    if self.predictName == \"ShadowMend\" then  \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total               \n    end \n    \n    if self.predictName == \"DivineStar\" then               \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total        \n    end    \n    \n    if self.predictName == \"Halo\" then  \n        \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        local cast = Unit(\"player\"):CastTime(120517) + A.GetCurrentGCD()\n        local withoutOptions = (desc[1] * variation) + ((AtonementBuff > cast and desc[1] * 0.55 * enemies) or 0) \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    if self.predictName == \"HolyNova\" then   \n        \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = (desc[2] * variation) + ((AtonementBuff > 0 and desc[1] * 0.55 * enemies) or 0) \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total           \n    end \n    \n    if self.predictName == \"ShadowCovenant\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation + desc[2] \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total  \n        \n    end \n    \n    -- Holy \n    -- Note about Mastery: Regarding overwrite previous effect by any next spell here is no reason to add that \n    -- Holy Word: Sanctify \n    if self.predictName == \"HolyWordSanctify\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total    \n    end \n    \n    -- Holy Word: Serenity \n    if self.predictName == \"HolyWordSerenity\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Circle of Healing \n    if self.predictName == \"CircleOfHealing\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer Of Mending    \n    if self.predictName == \"PrayerofMending\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer Of Mending HoT   \n    if self.predictName == \"PrayerofMendingHoT\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer of Healing\n    if self.predictName == \"PrayerOfHealing\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Binding Heal\n    if self.predictName == \"BindingHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Renew \n    if self.predictName == \"Renew\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[2] * variation + (desc[1] * 15)\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total              \n        \n    end \n    \n    -- Flash Heal\n    if self.predictName == \"FlashHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Heal \n    if self.predictName == \"Heal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Apotheosis\n    if self.predictName == \"Apotheosis\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local Serenity = A.GetSpellDescription(2050)[1] * variation \n        local Sancify = A.GetSpellDescription(34861)[1] * variation        \n        local withoutOptions = Serenity + Sancify\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n        \n    end \n    \n    -- PvP: Greater Heal \n    if self.predictName == \"GreaterHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Debug \n    if not self.predictName then \n        error((self:GetKeyName() or \"Unknown action name\") .. \" doesn't contain predictName\")        \n    end \n    \n    return false, 0\n    \nend\n\n\n",
-				}, -- [3]
-				{
-					["Order"] = 2,
-					["Name"] = "DISCIPLINE",
-					["Code"] = "--######################################\n--###### TRIP'S DISCIPLINE PRIEST ######\n--######################################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal TMW                                 = _G.TMW\nlocal Listener                                    = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                    = Action.GetToggle\nlocal SetToggle                                    = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                                = Action.GetCurrentGCD\nlocal GetPing                                    = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                    = Action.BurstIsON\nlocal AuraIsValid                                = Action.AuraIsValid\nlocal InterruptIsValid                            = Action.InterruptIsValid\nlocal FrameHasSpell                                = Action.FrameHasSpell\nlocal Utils                                        = Action.Utils\nlocal TeamCache                                    = Action.TeamCache\nlocal TeamCacheFriendly                         = TeamCache.Friendly\nlocal TeamCacheFriendlyIndexToPLAYERs           = TeamCacheFriendly.IndexToPLAYERs\nlocal TeamCacheFriendlyUNITs            = TeamCacheFriendly.UNITs             -- unitID to GUID \nlocal TeamCacheFriendlyGUIDs            = TeamCacheFriendly.GUIDs             -- GUID to unitID \nlocal EnemyTeam                                    = Action.EnemyTeam\nlocal FriendlyTeam                                = Action.FriendlyTeam\nlocal LoC                                        = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                                = Action.UnitCooldown\nlocal Unit                                        = Action.Unit \nlocal IsUnitEnemy                                = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                            = MultiUnits:GetActiveUnitPlates()\nlocal HealingEngine                             = A.HealingEngine\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax = \nUnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax\n\n--Toaster stuff\nlocal Toaster                        = _G.Toaster -- The Action _G.Toaster will be initilized first, then _G.Toaster will be replaced by original if Toaster addon will be loaded, but we will keep our local\nlocal GetSpellTexture                 = _G.TMW.GetSpellTexture\n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\nAction[ACTION_CONST_PRIEST_DISCIPLINE] = { -- Register spells\n    -- Racial\n    ArcaneTorrent                          = Action.Create({ Type = \"Spell\", ID = 50613 }),\n    BloodFury                              = Action.Create({ Type = \"Spell\", ID = 20572 }),\n    Fireblood                              = Action.Create({ Type = \"Spell\", ID = 265221 }),\n    AncestralCall                          = Action.Create({ Type = \"Spell\", ID = 274738 }),\n    Berserking                             = Action.Create({ Type = \"Spell\", ID = 26297 }),\n    ArcanePulse                            = Action.Create({ Type = \"Spell\", ID = 260364 }),\n    QuakingPalm                            = Action.Create({ Type = \"Spell\", ID = 107079 }),\n    Haymaker                               = Action.Create({ Type = \"Spell\", ID = 287712 }), \n    WarStomp                               = Action.Create({ Type = \"Spell\", ID = 20549 }),\n    BullRush                               = Action.Create({ Type = \"Spell\", ID = 255654 }),    \n    GiftofNaaru                            = Action.Create({ Type = \"Spell\", ID = 59544 }),\n    Shadowmeld                             = Action.Create({ Type = \"Spell\", ID = 58984 }), -- usable in Action Core \n    Stoneform                              = Action.Create({ Type = \"Spell\", ID = 20594 }), \n    WilloftheForsaken                      = Action.Create({ Type = \"Spell\", ID = 7744  }), -- not usable in APL but user can Queue it    \n    EscapeArtist                           = Action.Create({ Type = \"Spell\", ID = 20589 }), -- not usable in APL but user can Queue it\n    EveryManforHimself                     = Action.Create({ Type = \"Spell\", ID = 59752 }), -- not usable in APL but user can Queue it\n    Darkflight                             = Action.Create({ Type = \"Spell\", ID = 68992 }),\n    \n    --Priest General\n    DesperatePrayer                        = Action.Create({ Type = \"Spell\", ID = 19236 }),\n    DispelMagic                               = Action.Create({ Type = \"Spell\", ID = 528 }),\n    Fade                                   = Action.Create({ Type = \"Spell\", ID = 586 }),\n    LeapofFaith                               = Action.Create({ Type = \"Spell\", ID = 73325 }),\n    Levitate                               = Action.Create({ Type = \"Spell\", ID = 1706 }),\n    MassDispel                               = Action.Create({ Type = \"Spell\", ID = 32375 }),\n    MindBlast                               = Action.Create({ Type = \"Spell\", ID = 8092 }),\n    MindControl                               = Action.Create({ Type = \"Spell\", ID = 605 }),\n    MindVision                               = Action.Create({ Type = \"Spell\", ID = 2096 }),\n    PowerWordFortitude                       = Action.Create({ Type = \"Spell\", ID = 21562 }),\n    PowerWordShield                           = Action.Create({ Type = \"Spell\", ID = 17 }),\n    PsychicScream                           = Action.Create({ Type = \"Spell\", ID = 8122 }),\n    Resurrection                           = Action.Create({ Type = \"Spell\", ID = 2006 }),\n    ShackleUndead                           = Action.Create({ Type = \"Spell\", ID = 9484 }),\n    ShadowWordDeath                           = Action.Create({ Type = \"Spell\", ID = 32379 }),\n    ShadowWordPain                           = Action.Create({ Type = \"Spell\", ID = 589 }),    \n    Smite                                   = Action.Create({ Type = \"Spell\", ID = 585 }),\n    FocusedWill                               = Action.Create({ Type = \"Spell\", ID = 45243, Hidden = true }),\n    MindSoothe                               = Action.Create({ Type = \"Spell\", ID = 453 }),\n    PowerInfusion                           = Action.Create({ Type = \"Spell\", ID = 10060 }),\n    \n    --Discipline Specific\n    HolyNova                               = Action.Create({ Type = \"Spell\", ID = 132157 }), --possibly changes to ID 322112 at level 56?\n    MassResurrection                       = Action.Create({ Type = \"Spell\", ID = 212036 }),\n    MindSear                               = Action.Create({ Type = \"Spell\", ID = 48045 }),\n    PainSuppression                           = Action.Create({ Type = \"Spell\", ID = 33206 }),\n    Penance                                   = Action.Create({ Type = \"Spell\", ID = 47540 }),\n    PenanceDMG                                = Action.Create({ Type = \"Spell\", ID = 47540, Texture = 23018, Hidden = true }),\n    PowerWordBarrier                       = Action.Create({ Type = \"Spell\", ID = 62618 }),\n    PowerWordRadiance                       = Action.Create({ Type = \"Spell\", ID = 194509 }),\n    Purify                                   = Action.Create({ Type = \"Spell\", ID = 527 }),\n    Rapture                                   = Action.Create({ Type = \"Spell\", ID = 47536 }),\n    ShadowMend                               = Action.Create({ Type = \"Spell\", ID = 186263 }),\n    Shadowfiend                               = Action.Create({ Type = \"Spell\", ID = 34433 }),\n    Atonement                               = Action.Create({ Type = \"Spell\", ID = 81749, Hidden = true }),\n    MasteryGrace                           = Action.Create({ Type = \"Spell\", ID = 271534, Hidden = true }),\n    PoweroftheDarkSide                       = Action.Create({ Type = \"Spell\", ID = 198068, Hidden = true }),\n    \n    --Talents\n    Castigation                               = Action.Create({ Type = \"Spell\", ID = 193134, Hidden = true }),\n    TwistofFate                               = Action.Create({ Type = \"Spell\", ID = 265259, Hidden = true }),\n    Schism                                   = Action.Create({ Type = \"Spell\", ID = 214621 }),\n    BodyandSoul                               = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true }),\n    Masochism                               = Action.Create({ Type = \"Spell\", ID = 193063, Hidden = true }),\n    AngelicFeather                           = Action.Create({ Type = \"Spell\", ID = 121536 }),\n    ShieldDiscipline                       = Action.Create({ Type = \"Spell\", ID = 197045, Hidden = true }),\n    Mindbender                               = Action.Create({ Type = \"Spell\", ID = 123040 }),\n    PowerWordSolace                           = Action.Create({ Type = \"Spell\", ID = 129250 }),\n    PsychicVoice                           = Action.Create({ Type = \"Spell\", ID = 196704, Hidden = true }),\n    DominantMind                           = Action.Create({ Type = \"Spell\", ID = 205367, Hidden = true }),\n    ShiningForce                           = Action.Create({ Type = \"Spell\", ID = 204263 }),\n    SinsoftheMany                           = Action.Create({ Type = \"Spell\", ID = 280391, Hidden = true }),\n    Contrition                               = Action.Create({ Type = \"Spell\", ID = 197419, Hidden = true }),\n    ShadowCovenant                           = Action.Create({ Type = \"Spell\", ID = 314867 }),\n    PurgetheWicked                           = Action.Create({ Type = \"Spell\", ID = 204197 }),\n    DivineStar                               = Action.Create({ Type = \"Spell\", ID = 110744 }),\n    Halo                                   = Action.Create({ Type = \"Spell\", ID = 120517 }),\n    Lenience                               = Action.Create({ Type = \"Spell\", ID = 238063, Hidden = true }),\n    SpiritShell                               = Action.Create({ Type = \"Spell\", ID = 109964 }),\n    Evangelism                               = Action.Create({ Type = \"Spell\", ID = 246287 }),\n    \n    --PvP Talents\n    Purification                           = Action.Create({ Type = \"Spell\", ID = 196162, Hidden = true }),\n    PurifiedResolve                           = Action.Create({ Type = \"Spell\", ID = 196439, Hidden = true }),\n    Trinity                                   = Action.Create({ Type = \"Spell\", ID = 214205, Hidden = true }),\n    StrengthofSoul                           = Action.Create({ Type = \"Spell\", ID = 197535, Hidden = true }),\n    UltimateRadiance                       = Action.Create({ Type = \"Spell\", ID = 236499, Hidden = true }),\n    DomeofLight                               = Action.Create({ Type = \"Spell\", ID = 197590, Hidden = true }),\n    Archangel                               = Action.Create({ Type = \"Spell\", ID = 197862 }),\n    DarkArchangel                           = Action.Create({ Type = \"Spell\", ID = 197871 }),\n    Thoughtsteal                           = Action.Create({ Type = \"Spell\", ID = 316262 }),\n    SearingLight                           = Action.Create({ Type = \"Spell\", ID = 215768, Hidden = true }),\n    \n    --Misc\n    WeakenedSoul                           = Action.Create({ Type = \"Spell\", ID = 6788, Hidden = true }),\n    \n    --Covenants to come\n    \n};\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_DISCIPLINE)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_DISCIPLINE], { __index = Action })\n\nlocal player = \"player\"\nlocal targettarget = \"targettarget\"\nlocal target = \"target\"\nlocal mouseover = \"mouseover\"\n\nToaster:Register(\"TripToast\", function(toast, ...) -- Register Toaster\n        local title, message, spellID = ...\n        toast:SetTitle(title or \"nil\")\n        toast:SetText(message or \"nil\")\n        if spellID then \n            if type(spellID) ~= \"number\" then \n                error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n                toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n            else \n                toast:SetIconTexture((GetSpellTexture(spellID)))\n            end \n        else \n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        end \n        toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolHolyFree() -- Holy locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"HOLY\") == 0\nend \n\nlocal function IsSchoolShadowFree() -- Shadow locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function IsSchoolFireFree() -- Fire locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"FIRE\") == 0\nend \n\nfunction HealingEngine.GetMembersAll()\n    -- @return array table of all select able units \n    return SortedUnitIDs \nend \n\nlocal function GetValidMembers(IsPlayer) -- Get Friendly Group Members\n    local HealingEngineMembersALL = A.HealingEngine.GetMembersAll()\n    if not IsPlayer then \n        return #HealingEngineMembersALL\n    else \n        local total = 0 \n        if #HealingEngineMembersALL > 0 then \n            for i = 1, #HealingEngineMembersALL do\n                if Unit(HealingEngineMembersALL[i].Unit):IsPlayer() then\n                    total = total + 1\n                end\n            end \n        end \n        return total \n    end \nend\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat) -- Range check function\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\nlocal function SelfDefensives() -- Defensives\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local DesperatePrayer = A.GetToggle(2, \"DesperatePrayer\")\n    if    DesperatePrayer >= 0 and A.DesperatePrayer:IsReady(player) and \n    (\n        (     -- Auto \n            DesperatePrayer >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            DesperatePrayer < 100 and \n            Unit(player):HealthPercent() <= DesperatePrayer\n        )\n    ) \n    then \n        return A.DesperatePrayer\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\n--- ======= ACTION LISTS =======\nA[3] = function(icon, isMulti) -- Single target icon displayer\n    \n    --#####################\n    --##### VARIABLES #####\n    --#####################\n    \n    local isMoving = A.Player:IsMoving()\n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local CanCast = true\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local getmembersAll = HealingEngine.GetMembersAll()\n    local PenDMG = A.GetToggle(2, \"PenanceWorkMode\") ~= \"HEAL\"\n    local PenHEAL = A.GetToggle(2, \"PenanceWorkMode\") ~= \"DMG\"\n    local AoE = A.GetToggle(2, \"AoE\")\n    local PWSHP = A.GetToggle(2, \"PowerWordShieldHP\")\n    local PWSTank = A.GetToggle(2, \"PWSWorkMode\") ~= \"SELF\"\n    local PWSSelf = A.GetToggle(2, \"PWSWorkMode\") ~= \"TANK\"\n    local PWSAll = A.GetToggle(2, \"PWSWorkMode\") == \"ALL\"\n    local ShieldTank = A.GetToggle(2, \"ShieldTank\")\n    local SMendNoAtone = A.GetToggle(2, \"ShadowMendHPNoAtone\")\n    local SMendAtone = A.GetToggle(2, \"ShadowMendHPWithAtone\")\n    local PenanceHeal = A.GetToggle(2, \"PenanceHeal\")\n    local RadianceHP = A.GetToggle(2, \"RadianceHP\")\n    local RadianceMembers = A.GetToggle(2, \"RadianceMembers\")\n    local ShadowCovHP = A.GetToggle(2, \"ShadowCovHP\")\n    local ShadowCovMembers = A.GetToggle(2, \"ShadowCovMembers\")\n    local ShadowCovAtone = A.GetToggle(2, \"ShadowCovAtone\")\n    if not CanCast then -- Pooling Icon if can't cast\n        return A.PoolResource:Show(icon)\n    end\n    \n    --########################    \n    --##### DMG ROTATION #####\n    --########################\n    \n    local function DamageRotation(unit) -- Damage rotation\n        \n        if A.ShadowWordDeath:IsReady(unit) and Unit(targettarget):HealthPercent() <= 20 then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        if A.ShadowWordPain:IsReady(unit) and not A.PurgetheWicked:IsTalentLearned() and (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 5) then\n            return A.ShadowWordPain:Show(icon)\n        end    \n        \n        if A.PurgetheWicked:IsReady(unit) and (Unit(unit):HasDeBuffs(A.PurgetheWicked.ID, true) == 0 or Unit(unit):HasDeBuffs(A.PurgetheWicked.ID, true) < 5) then\n            return A.PurgetheWicked:Show(icon)\n        end    \n        \n        if A.Schism:IsReady(unit) and not isMoving then\n            return A.Schism:Show(icon)\n        end\n        \n        if A.Halo:IsReady(player) and not isMoving then\n            return A.Halo:Show(icon)\n        end\n        \n        if A.DivineStar:IsReady(player) and Unit(unit):GetRange() <= 24 then\n            return A.DivineStar:Show(icon)\n        end    \n        \n        if A.MindBlast:IsReady(unit) and not isMoving then\n            return A.MindBlast:Show(icon)\n        end\n        \n        if A.PowerWordSolace:IsReady(unit) then\n            return A.PowerWordSolace:Show(icon)\n        end\n        \n        if A.Penance:IsReady(unit) and PenDMG then\n            return A.PenanceDMG:Show(icon)\n        end    \n        \n        if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() >= 2 and AoE and not isMoving then\n            return A.MindSear:Show(icon)\n        end                \n        \n        if A.Smite:IsReady(unit) and not isMoving then\n            return A.Smite:Show(icon)\n        end\n        \n        if A.MindSear:IsReady(unit) and not isMoving then\n            return A.MindSear:Show(icon)\n        end    \n        \n    end\n    \n    \n    --############################    \n    --##### HEALING ROTATION #####\n    --############################\n    \n    local function HealingRotation(unit)\n        \n        --Power Word: Radiance\n        if A.PowerWordRadiance:IsReady(unit) and not isMoving and HealingEngine.GetBelowHealthPercentUnits(RadianceHP, 40) > RadianceMembers and HealingEngine.GetBuffsCount(81749, 1) <= 4 then\n            return A.PowerWordRadiance:Show(icon)\n        end    \n        \n        --Shadow Covenants\n        if A.ShadowCovenant:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(ShadowCovHP, 30) > ShadowCovMembers and HealingEngine.GetBuffsCount(81749, 5) >= ShadowCovAtone then\n            return A.ShadowCovenant:Show(icon)\n        end    \n        \n        --Penance Heal\n        if A.Penance:IsReady(unit) and Unit(unit):HealthPercent() <= PenanceHeal and PenHEAL then\n            return A.Penance:Show(icon)\n        end    \n        \n        --ShadowMend with Atonement\n        if A.ShadowMend:IsReady(unit) and not isMoving and Unit(unit):HealthPercent() <= SMendAtone and Unit(unit):HasBuffs(A.Atonement.ID, true) > 0 then\n            return A.ShadowMend:Show(icon)\n        end    \n        \n        --ShadowMend without Atonement\n        if A.ShadowMend:IsReady(unit) and not isMoving and Unit(unit):HealthPercent() <= SMendNoAtone and Unit(unit):HasBuffs(A.Atonement.ID, true) == 0 then\n            return A.ShadowMend:Show(icon)\n        end    \n        \n        --PW:S Tank on cooldown\n        if A.PowerWordShield:IsReady(unit) and ShieldTank and Unit(unit):IsTank() and Unit(unit):HasDeBuffs(A.WeakenedSoul.ID, true) == 0 then\n            return A.PowerWordShield:Show(icon)\n        end    \n        \n        --PW:S\n        if A.PowerWordShield:IsReady(unit) and Unit(unit):HasDeBuffs(A.WeakenedSoul.ID, true) == 0 and Unit(unit):HasBuffs(A.PowerWordShield.ID, true) == 0 and Unit(unit):HasBuffs(A.Atonement.ID, true) < 2 and Unit(unit):HealthPercent() <= PWSHP and (PWSAll or (UnitIsUnit(\"target\", \"player\") and PWSSelf) or (Unit(unit):IsTank() and PWSTank)) then \n            return A.PowerWordShield:Show(icon)\n        end        \n        \n    end\n    \n    --#############################\n    --##### MAIN ACTION CALLS #####\n    --#############################\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Friendly Mouseover\n    if A.IsUnitFriendly(mouseover) then \n        unit = mouseover  \n        \n        if HealingRotation(unit) then \n            return true \n        end             \n    end\n    \n    -- Heal Target \n    if A.IsUnitFriendly(target) then \n        unit = target \n        \n        if HealingRotation(unit) then \n            return true \n        end \n    end    \n    \n    -- Enemy Mouseover \n    if A.IsUnitEnemy(mouseover) then \n        unit = mouseover    \n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS Target     \n    if A.IsUnitEnemy(target) then \n        unit = target\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS targettarget     \n    if A.IsUnitEnemy(targettarget) then \n        unit = targettarget\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    \nend \n\n-- End of Rotation\n\nA[4] = nil -- AoE icon display\n\nA[5] = nil -- Trinket icon display\n\nlocal function FreezingTrapUsedByEnemy()\n    if     UnitCooldown:GetCooldown(\"arena\", 3355) > UnitCooldown:GetMaxDuration(\"arena\", 3355) - 2 and\n    UnitCooldown:IsSpellInFly(\"arena\", 3355) and \n    Unit(player):GetDR(\"incapacitate\") >= 50 \n    then \n        local Caster = UnitCooldown:GetUnitID(\"arena\", 3355)\n        if Caster and Unit(Caster):GetRange() <= 40 then \n            return true \n        end \n    end \nend \nlocal function ArenaRotation(icon, unit)\n    if A.IsInPvP and (A.Zone == \"pvp\" or A.Zone == \"arena\") and not Player:IsStealthed() and not Player:IsMounted() then\n        -- Note: \"arena1\" is just identification of meta 6\n        if (unit == \"arena1\" or unit == \"arena2\" or unit == \"arena3\") then  \n            -- Interrupt\n            local Interrupt = Interrupts(unit)\n            if Interrupt then \n                return Interrupt:Show(icon)\n            end    \n        end\n    end \nend \nlocal function PartyRotation(unit)\n    if (unit == \"party1\" and not A.GetToggle(2, \"PartyUnits\")[1]) or (unit == \"party2\" and not A.GetToggle(2, \"PartyUnits\")[2]) then \n        return false \n    end\n    \nend \n\nA[6] = function(icon)\n    return ArenaRotation(icon, \"arena1\")\nend\n\nA[7] = function(icon)\n    --  local Party = PartyRotation(\"party1\") \n    if Party then \n        return Party:Show(icon)\n    end \n    return ArenaRotation(icon, \"arena2\")\nend\n\nA[8] = function(icon)\n    -- local Party = PartyRotation(\"party2\") \n    if Party then \n        return Party:Show(icon)\n    end     \n    return ArenaRotation(icon, \"arena3\")\nend",
-				}, -- [4]
-				{
-					["Order"] = 2,
-					["Name"] = "HOLY",
-					["Code"] = "--##############################\n--##### TRIP'S HOLY PRIEST #####\n--##############################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal Covenant                                    = _G.LibStub(\"Covenant\")\nlocal TMW                                        = _G.TMW\nlocal Listener                                  = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                 = Action.GetToggle\nlocal SetToggle                                 = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                             = Action.GetCurrentGCD\nlocal GetPing                                   = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                 = Action.BurstIsON\nlocal CovenantIsON                                = Action.CovenantIsON\nlocal AuraIsValid                               = Action.AuraIsValid\nlocal InterruptIsValid                          = Action.InterruptIsValid\nlocal FrameHasSpell                             = Action.FrameHasSpell\nlocal Utils                                     = Action.Utils\nlocal TeamCache                                 = Action.TeamCache\nlocal EnemyTeam                                 = Action.EnemyTeam\nlocal FriendlyTeam                              = Action.FriendlyTeam\nlocal LoC                                       = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                              = Action.UnitCooldown\nlocal Unit                                      = Action.Unit \nlocal IsUnitEnemy                               = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal pairs                                     = pairs\nlocal HealingEngine                             = Action.HealingEngine\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax = \nUnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax\n\n--For Toaster\nlocal Toaster                                    = _G.Toaster\nlocal GetSpellTexture                             = _G.TMW.GetSpellTexture\n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\n\nAction[ACTION_CONST_PRIEST_HOLY] = {\n    -- Racial\n    ArcaneTorrent                    = Action.Create({ Type = \"Spell\", ID = 50613    }),\n    BloodFury                        = Action.Create({ Type = \"Spell\", ID = 20572    }),\n    Fireblood                        = Action.Create({ Type = \"Spell\", ID = 265221    }),\n    AncestralCall                    = Action.Create({ Type = \"Spell\", ID = 274738    }),\n    Berserking                        = Action.Create({ Type = \"Spell\", ID = 26297    }),\n    ArcanePulse                        = Action.Create({ Type = \"Spell\", ID = 260364    }),\n    QuakingPalm                        = Action.Create({ Type = \"Spell\", ID = 107079    }),\n    Haymaker                        = Action.Create({ Type = \"Spell\", ID = 287712    }), \n    WarStomp                        = Action.Create({ Type = \"Spell\", ID = 20549    }),\n    BullRush                        = Action.Create({ Type = \"Spell\", ID = 255654    }),  \n    GiftofNaaru                        = Action.Create({ Type = \"Spell\", ID = 59544    }),\n    Shadowmeld                        = Action.Create({ Type = \"Spell\", ID = 58984    }), -- Used for HoA\n    Stoneform                        = Action.Create({ Type = \"Spell\", ID = 20594    }), \n    BagofTricks                        = Action.Create({ Type = \"Spell\", ID = 312411    }),\n    WilloftheForsaken                = Action.Create({ Type = \"Spell\", ID = 7744        }), -- not usable in APL but user can Queue it   \n    EscapeArtist                    = Action.Create({ Type = \"Spell\", ID = 20589    }), -- not usable in APL but user can Queue it\n    EveryManforHimself                = Action.Create({ Type = \"Spell\", ID = 59752    }), -- not usable in APL but user can Queue it\n    RocketJump                        = Action.Create({ Type = \"Spell\", ID = 69070     }), -- used for Circle of Healing\n\n    --Priest General\n    DesperatePrayer                    = Action.Create({ Type = \"Spell\", ID = 19236     }),\n    DispelMagic                        = Action.Create({ Type = \"Spell\", ID = 528         }),\n    Fade                            = Action.Create({ Type = \"Spell\", ID = 586         }),\n    FlashHeal                        = Action.Create({ Type = \"Spell\", ID = 2061     }),\n    LeapofFaith                        = Action.Create({ Type = \"Spell\", ID = 73325     }),\n    Levitate                        = Action.Create({ Type = \"Spell\", ID = 1706     }),\n    MassDispel                        = Action.Create({ Type = \"Spell\", ID = 32375     }),\n    MindBlast                        = Action.Create({ Type = \"Spell\", ID = 8092     }),\n    MindControl                        = Action.Create({ Type = \"Spell\", ID = 605         }),\n    MindVision                        = Action.Create({ Type = \"Spell\", ID = 2096     }),\n    PowerWordFortitude                = Action.Create({ Type = \"Spell\", ID = 21562     }),\n    PowerWordShield                    = Action.Create({ Type = \"Spell\", ID = 17         }),\n    PsychicScream                    = Action.Create({ Type = \"Spell\", ID = 8122     }),\n    Resurrection                    = Action.Create({ Type = \"Spell\", ID = 2006     }),\n    ShackleUndead                    = Action.Create({ Type = \"Spell\", ID = 9484     }),\n    ShadowWordDeath                    = Action.Create({ Type = \"Spell\", ID = 32379     }),\n    ShadowWordPain                    = Action.Create({ Type = \"Spell\", ID = 589         }),    \n    Smite                            = Action.Create({ Type = \"Spell\", ID = 585         }),\n    FocusedWill                        = Action.Create({ Type = \"Spell\", ID = 45243, Hidden = true     }),\n    MindSoothe                        = Action.Create({ Type = \"Spell\", ID = 453         }),\n    PowerInfusion                    = Action.Create({ Type = \"Spell\", ID = 10060     }),\n    \n    -- Holy Specific\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),\n    DivineHymn                        = Action.Create({ Type = \"Spell\", ID = 64843    }),\n    GuardianSpirit                    = Action.Create({ Type = \"Spell\", ID = 47788    }),    \n    Heal                            = Action.Create({ Type = \"Spell\", ID = 2060        }),    \n    HolyFire                        = Action.Create({ Type = \"Spell\", ID = 14914    }),\n    HolyNova                        = Action.Create({ Type = \"Spell\", ID = 132157    }),\n    HolyWordChastise                = Action.Create({ Type = \"Spell\", ID = 88625    }),    \n    HolyWordSanctify                = Action.Create({ Type = \"Spell\", ID = 34861    }),    \n    HolyWordSerenity                = Action.Create({ Type = \"Spell\", ID = 2050        }),\n    MassResurrection                = Action.Create({ Type = \"Spell\", ID = 212036    }),\n    PrayerofHealing                    = Action.Create({ Type = \"Spell\", ID = 596        }),\n    PrayerofMending                    = Action.Create({ Type = \"Spell\", ID = 33076    }),\n    PrayerofMendingBuff                = Action.Create({ Type = \"Spell\", ID = 41635, Hidden = true     }),    \n    Purify                            = Action.Create({ Type = \"Spell\", ID = 527        }),\n    Renew                            = Action.Create({ Type = \"Spell\", ID = 139        }),    \n    SymbolofHope                    = Action.Create({ Type = \"Spell\", ID = 64901    }),\n    MasteryEchoofLight                = Action.Create({ Type = \"Spell\", ID = 77485, Hidden = true        }),\n    SpiritofRedemption                = Action.Create({ Type = \"Spell\", ID = 20711, Hidden = true        }),    \n\n    -- Normal Talents\n    Enlightenment                    = Action.Create({ Type = \"Spell\", ID = 193155, Hidden = true    }),\n    TrailofLight                    = Action.Create({ Type = \"Spell\", ID = 200128, Hidden = true    }),    \n    RenewedFaith                    = Action.Create({ Type = \"Spell\", ID = 341997, Hidden = true    }),\n    AngelsMercy                        = Action.Create({ Type = \"Spell\", ID = 238100, Hidden = true    }),\n    BodyandSoul                        = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true     }),\n    AngelicFeather                    = Action.Create({ Type = \"Spell\", ID = 121536    }),    \n    CosmicRipple                    = Action.Create({ Type = \"Spell\", ID = 238136, Hidden = true    }),    \n    GuardianAngel                    = Action.Create({ Type = \"Spell\", ID = 200209, Hidden = true    }),\n    Afterlife                        = Action.Create({ Type = \"Spell\", ID = 196707, Hidden = true    }),    \n    PsychicVoice                    = Action.Create({ Type = \"Spell\", ID = 196704, Hidden = true    }),\n    Censure                            = Action.Create({ Type = \"Spell\", ID = 200199, Hidden = true    }),    \n    ShiningForce                    = Action.Create({ Type = \"Spell\", ID = 204263    }),    \n    SurgeofLight                    = Action.Create({ Type = \"Spell\", ID = 109186, Hidden = true    }),\n    SurgeofLightBuff                = Action.Create({ Type = \"Spell\", ID = 114255, Hidden = true    }),    \n    BindingHeal                        = Action.Create({ Type = \"Spell\", ID = 32546    }),    \n    PrayerCircle                    = Action.Create({ Type = \"Spell\", ID = 321377, Hidden = true    }),    \n    Benediction                        = Action.Create({ Type = \"Spell\", ID = 193157, Hidden = true    }),    \n    DivineStar                        = Action.Create({ Type = \"Spell\", ID = 110744    }),\n    Halo                            = Action.Create({ Type = \"Spell\", ID = 120517    }),\n    LightoftheNaaru                    = Action.Create({ Type = \"Spell\", ID = 196985, Hidden = true    }),    \n    Apotheosis                        = Action.Create({ Type = \"Spell\", ID = 200183    }),\n    HolyWordSalvation                = Action.Create({ Type = \"Spell\", ID = 265202    }),\n\n    -- PvP Talents\n    HolyWard                        = Action.Create({ Type = \"Spell\", ID = 213610    }),\n    HolyWordConcentration            = Action.Create({ Type = \"Spell\", ID = 289657    }),\n    GreaterHeal                        = Action.Create({ Type = \"Spell\", ID = 289666    }),\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),    \n    CardinalMending                    = Action.Create({ Type = \"Spell\", ID = 328529, Hidden = true    }),\n    MiracleWorker                    = Action.Create({ Type = \"Spell\", ID = 235587, Hidden = true    }),    \n    SpiritoftheRedeemer                = Action.Create({ Type = \"Spell\", ID = 215982    }),    \n    RayofHope                        = Action.Create({ Type = \"Spell\", ID = 197268    }),\n    GreaterFade                        = Action.Create({ Type = \"Spell\", ID = 213602    }),\n    DeliveredfromEvil                = Action.Create({ Type = \"Spell\", ID = 196611, Hidden = true    }),\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),    \n    Thoughtsteal                    = Action.Create({ Type = \"Spell\", ID = 316262    }),\n    DivineAscension                    = Action.Create({ Type = \"Spell\", ID = 328530    }),    \n\n    -- Covenant Abilities\n    BoonoftheAscended                = Action.Create({ Type = \"Spell\", ID = 325013    }),\n    SummonSteward                    = Action.Create({ Type = \"Spell\", ID = 324739    }),\n    Mindgames                        = Action.Create({ Type = \"Spell\", ID = 323673    }),\n    DoorofShadows                    = Action.Create({ Type = \"Spell\", ID = 300728    }),\n    UnholyNova                        = Action.Create({ Type = \"Spell\", ID = 324724    }),\n    Fleshcraft                        = Action.Create({ Type = \"Spell\", ID = 331180    }),\n    FaeGuardians                    = Action.Create({ Type = \"Spell\", ID = 327661    }),\n    Soulshape                        = Action.Create({ Type = \"Spell\", ID = 310143    }),\n    Flicker                            = Action.Create({ Type = \"Spell\", ID = 324701    }),\n\n    -- Conduits\n    -- Holy Conduits\n    FocusedMending                    = Action.Create({ Type = \"Spell\", ID = 337914    }),\n    HolyOration                        = Action.Create({ Type = \"Spell\", ID = 338345    }),\n    LastingSpirit                    = Action.Create({ Type = \"Spell\", ID = 337811    }),    \n    ResonantWords                    = Action.Create({ Type = \"Spell\", ID = 337947    }),\n    -- Covenant Conduits\n    CourageousAscension                = Action.Create({ Type = \"Spell\", ID = 337966    }),\n    ShatteredPerceptions            = Action.Create({ Type = \"Spell\", ID = 338315    }),\n    FesteringTransfusion            = Action.Create({ Type = \"Spell\", ID = 337979    }),\n    FaeFermata                        = Action.Create({ Type = \"Spell\", ID = 338305    }),\n    -- Endurance Conduits\n    CharitableSoul                    = Action.Create({ Type = \"Spell\", ID = 337715    }),\n    LightsInspiration                = Action.Create({ Type = \"Spell\", ID = 337748    }),\n    TranslucentImage                = Action.Create({ Type = \"Spell\", ID = 337662    }),\n    -- Finese Conduits\n    ClearMind                        = Action.Create({ Type = \"Spell\", ID = 337707    }),\n    MentalRecovery                    = Action.Create({ Type = \"Spell\", ID = 337954    }),\n    MoveWithGrace                    = Action.Create({ Type = \"Spell\", ID = 337678    }),\n    PowerUntoOthers                    = Action.Create({ Type = \"Spell\", ID = 337762    }),    \n    -- Legendaries\n    -- General Legendaries\n    CauterizingShadows                = Action.Create({ Type = \"Spell\", ID = 336370    }),\n    MeasuredContemplation            = Action.Create({ Type = \"Spell\", ID = 341804    }),    \n    TwinsoftheSunPriestess            = Action.Create({ Type = \"Spell\", ID = 336897    }),\n    VaultofHeavens                    = Action.Create({ Type = \"Spell\", ID = 336470    }),\n\n    --Anima Powers - to add later...\n    DivineImage                        = Action.Create({ Type = \"Spell\", ID = 336400    }),\n    FlashConcentration                = Action.Create({ Type = \"Spell\", ID = 336266    }),\n    HarmoniousApparatus                = Action.Create({ Type = \"Spell\", ID = 336314    }),\n    Xanshi                            = Action.Create({ Type = \"Spell\", ID = 337477    }),    \n    \n    -- Trinkets\n    \n\n    -- Potions\n    PotionofUnbridledFury            = Action.Create({ Type = \"Potion\", ID = 169299, QueueForbidden = true }),     \n    SuperiorPotionofUnbridledFury    = Action.Create({ Type = \"Potion\", ID = 168489, QueueForbidden = true }),\n    PotionofSpectralAgility            = Action.Create({ Type = \"Potion\", ID = 171270, QueueForbidden = true }),\n    PotionofSpectralStamina            = Action.Create({ Type = \"Potion\", ID = 171274, QueueForbidden = true }),\n    PotionofEmpoweredExorcisms        = Action.Create({ Type = \"Potion\", ID = 171352, QueueForbidden = true }),\n    PotionofHardenedShadows            = Action.Create({ Type = \"Potion\", ID = 171271, QueueForbidden = true }),\n    PotionofPhantomFire                = Action.Create({ Type = \"Potion\", ID = 171349, QueueForbidden = true }),\n    PotionofDeathlyFixation            = Action.Create({ Type = \"Potion\", ID = 171351, QueueForbidden = true }),\n    SpiritualHealingPotion            = Action.Create({ Type = \"Potion\", ID = 171267, QueueForbidden = true }),      \n\n    -- Misc\n    Channeling                      = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),    -- Show an icon during channeling\n    TargetEnemy                     = Action.Create({ Type = \"Spell\", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)\n    StopCast                        = Action.Create({ Type = \"Spell\", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit\n    PoolResource                    = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),\n    Quake                           = Action.Create({ Type = \"Spell\", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)\n}\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_HOLY)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_HOLY], { __index = Action })\n\nlocal Temp                                     = {\n    TotalAndPhys                            = {\"TotalImun\", \"DamagePhysImun\"},\n    TotalAndPhysKick                        = {\"TotalImun\", \"DamagePhysImun\", \"KickImun\"},\n    TotalAndPhysAndCC                        = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\"},\n    TotalAndPhysAndStun                     = {\"TotalImun\", \"DamagePhysImun\", \"StunImun\"},\n    TotalAndPhysAndCCAndStun                 = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\", \"StunImun\"},\n    TotalAndMag                                = {\"TotalImun\", \"DamageMagicImun\"},\n}\n\nlocal player = \"player\"\nlocal targettarget = \"targettarget\"\nlocal target = \"target\"\nlocal mouseover = \"mouseover\"\n\nToaster:Register(\"TripToast\", function(toast, ...) -- Register Toaster\n    local title, message, spellID = ...\n    toast:SetTitle(title or \"nil\")\n    toast:SetText(message or \"nil\")\n    if spellID then \n        if type(spellID) ~= \"number\" then \n            error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        else \n            toast:SetIconTexture((GetSpellTexture(spellID)))\n        end \n    else \n        toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n    end \n    toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolHolyFree() -- Holy locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"HOLY\") == 0\nend \n\nlocal function IsSchoolShadowFree() -- Shadow locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function IsSchoolFireFree() -- Fire locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"FIRE\") == 0\nend \n\nlocal function GetValidMembers(IsPlayer) -- Get Friendly Group Members\n    local HealingEngineMembersALL = A.HealingEngine.GetMembersAll()\n    if not IsPlayer then \n        return #HealingEngineMembersALL\n    else \n        local total = 0 \n        if #HealingEngineMembersALL > 0 then \n            for i = 1, #HealingEngineMembersALL do\n                if Unit(HealingEngineMembersALL[i].Unit):IsPlayer() then\n                    total = total + 1\n                end\n            end \n        end \n        return total \n    end \nend\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat) -- Range check function\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\nlocal function Interrupts(unit)\n    local useKick, useCC, useRacial = A.InterruptIsValid(unit)\n    \n    if useCC and A.HolyWordChastise:IsReady(unit) and A.HolyWordChastise:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and ((Unit(unit):IsControlAble(\"incapacitate\", 0) and not A.Censure:IsTalentLearned()) or (Unit(unit):IsControlAble(\"stun\", 0) and A.Censure:IsTalentLearned())) then \n        return A.HolyWordChastise              \n    end             \n    \n    if useRacial and A.QuakingPalm:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.QuakingPalm\n    end \n    \n    if useRacial and A.Haymaker:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.Haymaker\n    end \n    \n    if useRacial and A.WarStomp:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.WarStomp\n    end \n    \n    if useRacial and A.BullRush:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.BullRush\n    end      \n    \nend \nInterrupts = A.MakeFunctionCachedDynamic(Interrupts)\n\nlocal function SelfDefensives() -- Defensives\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local DesperatePrayer = A.GetToggle(2, \"DesperatePrayer\")\n    if    DesperatePrayer >= 0 and A.DesperatePrayer:IsReady(player) and \n    (\n        (     -- Auto \n            DesperatePrayer >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            DesperatePrayer < 100 and \n            Unit(player):HealthPercent() <= DesperatePrayer\n        )\n    ) \n    then \n        return A.DesperatePrayer\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\nlocal function RenewOnTank()\n    local CurrentTanks = HealingEngine.GetMembersByMode(\"TANK\")\n    local total = 0\n    for i = 1, #CurrentTanks do \n        if Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, player, true) > 0 then\n            total = total + 1\n        end\n    end\n    return total\nend\n\n\n--- ======= ACTION LISTS =======\nA[3] = function(icon, isMulti) -- Single target icon displayer\n\n--#####################\n--##### VARIABLES #####\n--#####################\n\n    local isMoving = A.Player:IsMoving()\n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local AoEON = A.GetToggle(2, \"AoE\")\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local getmembersAll = HealingEngine.GetMembersAll()\n    local CurrentTanks = A.HealingEngine.GetMembersByMode(\"TANK\")    \n    local DungeonEmergency = HealingEngine.GetTimeToDieUnits(3) >= 1\n    local HolyNovaTargets = A.GetToggle(2, \"HolyNovaTargets\")\n    local DungeonGroup = TeamCache.Friendly.Size >= 2 and TeamCache.Friendly.Size <= 5\n    local RaidGroup = TeamCache.Friendly.Size >= 5\n    local HolyWordSerenity = A.GetToggle(2, \"HolyWordSerenity\")\n    local UseSanctifyOnSelf = A.GetToggle(2, \"UseSanctifyOnSelf\")\n    local SanctifyHP = A.GetToggle(2, \"SanctifyHP\")\n    local SanctifyTargets = A.GetToggle(2, \"SanctifyTargets\")\n    local CircleofHealingHP = A.GetToggle(2, \"CircleofHealingHP\")\n    local CircleofHealingTargets = A.GetToggle(2, \"CircleofHealingTargets\")    \n    local DivineHymnHP = A.GetToggle(2, \"DivineHymnHP\")\n    local DivineHymnTargets = A.GetToggle(2, \"DivineHymnTargets\")\n    local GuardianSpiritHP = A.GetToggle(2, \"GuardianSpiritHP\")\n    local HealHP = A.GetToggle(2, \"HealHP\")\n    local FlashHealHP = A.GetToggle(2, \"FlashHealHP\")\n    local FlashHealSOLHP = A.GetToggle(2, \"FlashHealSOLHP\")\n    local PrayerofHealingHP = A.GetToggle(2, \"PrayerofHealingHP\")\n    local PrayerofHealingTargets = A.GetToggle(2, \"PrayerofHealingTargets\")\n    local HaloHP = A.GetToggle(2, \"HaloHP\")\n    local HaloTargets = A.GetToggle(2, \"HaloTargets\")\n    local SalvationHP = A.GetToggle(2, \"SalvationHP\")\n    local SalvationTargets = A.GetToggle(2, \"SalvationTargets\")    \n    local RenewMode = A.GetToggle(2, \"RenewMode\")\n    local BlanketRenewOOC = A.GetToggle(2, \"BlanketRenewOOC\")\n    local TrinketMana = A.GetToggle(2, \"TrinketMana\")\n    local TrinketHP = A.GetToggle(2, \"TrinketHP\")\n    local DPSMana = A.GetToggle(2, \"DPSMana\")\n    local AngelicFeather = A.GetToggle(2, \"AngelicFeather\")\n\n    local CanCast = true\n    if inCombat and (spellID == A.DivineHymn.ID) then \n        if secondsLeft > 0 + A.GetPing() then\n            CanCast = false\n        else\n            CanCast = true\n        end\n    end\n    \n--#################\n--##### PURGE #####\n--#################\n\n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"MagicMovement\") then\n        return A.DispelMagic:Show(icon)\n    end\n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"PurgeHigh\") then\n        return A.DispelMagic:Show(icon)\n    end\n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"PurgeLow\") then\n        return A.DispelMagic:Show(icon)\n    end\n\n    \n--########################    \n--##### DMG ROTATION #####\n--########################\n        \n    local function DamageRotation(unit)\n        \n        if Unit(player):PowerPercent() >= DPSMana then\n    \n            if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() <= 20 then\n                return A.ShadowWordDeath:Show(icon)\n            end    \n            \n            if A.HolyNova:IsReady(player) and MultiUnits:GetByRange(12, 10) >= HolyNovaTargets and AoEON then\n                return A.HolyNova:Show(icon)\n            end    \n            \n            if A.ShadowWordPain:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 5) then\n                return A.ShadowWordPain:Show(icon)\n            end    \n            \n            if A.HolyFire:IsReady(unit) and not isMoving then\n                return A.HolyFire:Show(icon)\n            end            \n            \n            if A.Smite:IsReady(unit) and not isMoving then\n                return A.Smite:Show(icon)\n            end\n        \n        end\n    \n    end\n\n\n    --############################    \n    --##### HEALING ROTATION #####\n    --############################\n\n    local function HealingRotation(unit)\n    local useDispel, useShields, useHoTs, useUtils = HealingEngine.GetOptionsByUnitID(unit)\n    local unitGUID = UnitGUID(unit)    \n\n        --##### DUNGEON GROUP #####\n\n    --    if DungeonGroup then\n            \n            --Divine Star notification\n            if inCombat and (A.DivineStar:IsReady(player) or A.DivineStar:GetCooldown() <= 2) and A.DivineStar:IsTalentLearned() and MultiUnits:GetByRange(28, 2) > 1 then\n                A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Divine Star!\", \"Divine Star will be ready soon! Position yourself!\", A.DivineStar.ID)\n            end\n\n            --[[Healing Engine Purify Target\n            if A.Purify:IsReady() then\n                for i = 1, #getmembersAll do \n                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, \"UseDispel\", \"Dispel\") then  \n                        HealingEngine.SetTarget(getmembersAll[i].Unit)                                                      \n                    end                \n                end\n            end]]\n\n            --Purify\n            if CanCast and A.Purify:IsReady(unit) and A.Purify:AbsentImun(unit) and A.AuraIsValid(unit, \"UseDispel\", \"Dispel\") and Unit(unit):TimeToDie() > 5 then \n                return A.Purify:Show(icon)\n            end \n            \n            -- OOC Renew\n            if CanCast and A.Renew:IsReady(unit) and BlanketRenewOOC and (not inCombat) and Unit(unit):HealthPercent() <= 99 and Unit(unit):HasBuffs(A.Renew.ID, true) == 0 then\n                return A.Renew:Show(icon)\n            end    \n    \n            --[[ OOC Renew Targeting\n            if CanCast and A.Renew:IsReady(unit) and BlanketRenewOOC and (not inCombat) and Unit(unit):HasBuffs(A.Renew.ID, true) > 0 then\n                for i = 1, #getmembersAll do\n                    if Unit(getmembersAll[i].Unit):HealthPercent() <= 99 \n                    then\n                        HealingEngine.SetTarget(getmembersAll[i].Unit, 0.5)\n                    end\n                end\n            end]]\n            \n            -- Trinket 1\n            if inCombat and A.Trinket1:IsReady(unit) and ((Player:Mana() <= TrinketMana) or (Unit(unit):HealthPercent() <= TrinketHP and A.IsUnitFriendly(unit))) then\n                return A.Trinket1:Show(icon)    \n            end\n\n            -- Trinket 2\n            if inCombat and A.Trinket2:IsReady(unit) and ((Player:Mana() <= TrinketMana) or (Unit(unit):HealthPercent() <= TrinketHP and A.IsUnitFriendly(unit))) then\n                return A.Trinket2:Show(icon)    \n            end            \n            \n            --Holy Word: Salvation\n            if CanCast and inCombat and A.HolyWordSalvation:IsReady(player) and A.HolyWordSalvation:IsTalentLearned() and HealingEngine.GetBelowHealthPercentUnits(SalvationHP, 40) >= SalvationTargets then \n                return A.HolyWordSalvation:Show(icon)\n            end    \n            \n            -- Apotheosis Single Target\n            if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end    \n            \n            -- Apotheosis AoE\n            if CanCast and inCombat and A.Apotheosis:IsReady(unit) and A.Apotheosis:IsTalentLearned() and (HealingEngine.GetIncomingDMGAVG() > (HealingEngine.GetIncomingHPSAVG() * 2)) and A.HolyWordSanctify:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end            \n            \n            -- Guardian Spirit\n            if CanCast and inCombat and A.GuardianSpirit:IsReady(unit) and Unit(unit):HealthPercent() <= GuardianSpiritHP then\n                return A.GuardianSpirit:Show(icon)\n            end\n            \n            -- Sanctify @player\n            if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and UseSanctifyOnSelf and HealingEngine.GetBelowHealthPercentUnits(SanctifyHP, 10) >= SanctifyTargets then\n                return A.HolyWordSanctify:Show(icon)\n            end    \n            \n            -- Sanctify GTAoE\n            if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and (not UseSanctifyOnSelf) and HealingEngine.GetBelowHealthPercentUnits(SanctifyHP, 40) >= SanctifyTargets then\n                return A.HolyWordSanctify:Show(icon)\n            end                \n            \n            -- Serenity\n            if CanCast and inCombat and A.HolyWordSerenity:IsReady(unit) and Unit(unit):HealthPercent() <= HolyWordSerenity then\n                return A.HolyWordSerenity:Show(icon)\n            end\n        \n            -- Halo\n            if CanCast and inCombat and A.Halo:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(HaloHP, 30) >= HaloTargets then\n                return A.Halo:Show(icon)\n            end    \n    \n            -- Circle of Healing\n            if CanCast and inCombat and A.CircleofHealing:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(CircleofHealingHP, 30) >= CircleofHealingTargets then\n                return A.RocketJump:Show(icon)\n            end    \n\n            --Prayer of Mending\n            if CanCast and inCombat and A.PrayerofMending:IsReady(unit) and Unit(unit):IsTank() and Unit(unit):HasBuffs(A.PrayerofMendingBuff.ID, true) == 0 then\n                return A.PrayerofMending:Show(icon)\n            end    \n\n            --Divine Star - best I could come up with\n            if CanCast and inCombat and A.DivineStar:IsReady(player) and inCombat and MultiUnits:GetByRange(28, 2) > 1 then\n                return A.DivineStar:Show(icon)\n            end    \n\n            --Renew Tank\n            if CanCast and A.Renew:IsReady(unit) and RenewMode == \"TANK\" and RenewOnTank() == 0 then\n                for i = 1, #CurrentTanks do \n                    if Unit(CurrentTanks[i].Unit):GetRange() <= 40 then \n                        if Unit(CurrentTanks[i].Unit):IsPlayer() and Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, true) < 1 then    \n                            HealingEngine.SetTarget(CurrentTanks[i].Unit)\n                            return A.Renew:Show(icon)                        \n                        end                    \n                    end                \n                end    \n            end\n\n            -- Divine Hymn\n            if CanCast and inCombat and A.BurstIsON(unit) and A.DivineHymn:IsReady(player) and (not isMoving) and combatTime > 0 and HealingEngine.GetBelowHealthPercentUnits(DivineHymnHP) >= DivineHymnTargets then\n                A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Divine Hymn!\", \"Stop moving! Using Divine Hymn!\", A.DivineHymn.ID)            \n                return A.DivineHymn:Show(icon)\n            end\n\n            -- Prayer of Healing\n            if CanCast and inCombat and A.PrayerofHealing:IsReady(unit) and (not isMoving) and (not DungeonEmergency) and HealingEngine.GetBelowHealthPercentUnits(PrayerofHealingHP) >= PrayerofHealingTargets and A.HolyWordSanctify:GetCooldown() > 0 then\n                return A.PrayerofHealing:Show(icon)\n            end    \n\n            -- Flash Heal without SoL\n            if CanCast and A.FlashHeal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(unit):HealthPercent() <= FlashHealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then\n                return A.FlashHeal:Show(icon)\n            end\n\n            -- Flash Heal with SoL\n            if CanCast and A.FlashHeal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and Unit(unit):HealthPercent() <= FlashHealSOLHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) > 0 then\n                return A.FlashHeal:Show(icon)\n            end            \n\n            -- Binding Heal\n            if CanCast and A.BindingHeal:IsReady(unit) and A.BindingHeal:IsTalentLearned() and A.HolyWordSerenity:GetCooldown() > 0 and A.HolyWordSanctify:GetCooldown() > 0 and HealingEngine.GetBelowHealthPercentUnits(95) >= 2 and (not isMoving) and Unit(unit):HealthPercent() <= HealHP then\n                return A.BindingHeal:Show(icon)\n            end\n            \n            -- Heal\n            if CanCast and A.Heal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(unit):HealthPercent() <= HealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then\n                return A.Heal:Show(icon)\n            end\n\n            -- Interrupts\n            if unit == \"target\" and A.IsUnitEnemy(\"targettarget\") and CanCast then \n                local Interrupt = Interrupts(\"targettarget\")\n                if Interrupt then \n                    return Interrupt:Show(icon)\n                end \n            end   \n\n            --Angelic Feather\n            if CanCast and Player:IsMovingTime() > 0.5 and A.AngelicFeather:IsReady(player) and (not Player:IsMounted()) and AngelicFeather then \n                return A.AngelicFeather:Show(icon)\n            end    \n            \n            --Leap of Faith\n            if CanCast and A.LeapofFaith:IsReady(unit) and Unit(unit):GetRange() <= 38 and (not Unit(unit):IsTank()) and (not UnitIsUnit(\"target\", \"player\")) and Unit(unit):TimeToDie() <= GetGCD() + GetCurrentGCD() and Unit(unit):HasBuffs(\"TotalImun\") == 0 and Unit(unit):HasDeBuffs(\"Rooted\") == 0 then\n                return A.LeapofFaith:Show(icon)\n            end    \n            \n            if CanCast and A.Renew:IsReady(unit) and RenewMode == \"EVERYONE\" and Unit(unit):HealthPercent() <= 95 then\n                return A.Renew:Show(icon)\n            end\n            \n    --    end\n    \n    \n    end\n\n    --#############################\n    --##### MAIN ACTION CALLS #####\n    --#############################\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Friendly Mouseover\n    if A.IsUnitFriendly(mouseover) then \n        unit = mouseover  \n        \n        if HealingRotation(unit) then \n            return true \n        end             \n    end\n    \n    -- Heal Target \n    if A.IsUnitFriendly(target) then \n        unit = target \n        \n        if HealingRotation(unit) then \n            return true \n        end \n    end    \n    \n    -- Enemy Mouseover \n    if A.IsUnitEnemy(mouseover) then \n        unit = mouseover    \n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS Target     \n    if A.IsUnitEnemy(target) then \n        unit = target\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n\n    -- DPS targettarget     \n    if A.IsUnitEnemy(targettarget) then \n        unit = targettarget\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n\n        \nend \n    \n    -- End of Rotation",
-				}, -- [5]
-				["n"] = 5,
-			},
 			["Groups"] = {
 				{
 					["TimerBar_MiddleColor"] = "ff000000",
@@ -7518,12 +22632,6 @@ TellMeWhenDB = {
 					},
 				}, -- [3]
 				{
-					["Point"] = {
-						["y"] = 7.918154239654541,
-						["x"] = 204.4966278076172,
-						["point"] = "BOTTOMLEFT",
-						["relativePoint"] = "BOTTOMLEFT",
-					},
 					["Scale"] = 2.5,
 					["Level"] = 11,
 					["Columns"] = 1,
@@ -11526,6 +26634,12 @@ TellMeWhenDB = {
 						["n"] = 1,
 					},
 					["GUID"] = "TMW:group:1TMvhh5X05mC",
+					["Point"] = {
+						["y"] = 5.547979831695557,
+						["x"] = 204.0225830078125,
+						["point"] = "BOTTOMLEFT",
+						["relativePoint"] = "BOTTOMLEFT",
+					},
 				}, -- [4]
 				{
 					["Icons"] = {
@@ -25456,6 +40570,36 @@ TellMeWhenDB = {
 					},
 				}, -- [21]
 			},
+			["NumGroups"] = 4,
+			["TextureName"] = "Flat",
+			["CodeSnippets"] = {
+				{
+					["Name"] = "ProfileUI",
+					["Code"] = "--#############################\n--##### TRIP'S PRIEST UI ######\n--#############################\n\n\nlocal TMW                                            = TMW \nlocal CNDT                                            = TMW.CNDT\nlocal Env                                            = CNDT.Env\nlocal A                                                = Action\nlocal GetToggle                                        = A.GetToggle\nlocal InterruptIsValid                                = A.InterruptIsValid\nlocal UnitCooldown                                    = A.UnitCooldown\nlocal Unit                                            = A.Unit \nlocal Player                                        = A.Player \nlocal Pet                                            = A.Pet\nlocal LoC                                            = A.LossOfControl\nlocal MultiUnits                                    = A.MultiUnits\nlocal EnemyTeam                                        = A.EnemyTeam\nlocal FriendlyTeam                                    = A.FriendlyTeam\nlocal TeamCache                                        = A.TeamCache\nlocal InstanceInfo                                    = A.InstanceInfo\nlocal TR                                            = Action.TasteRotation\nlocal select, setmetatable                            = select, setmetatable\n\n-- Shadowlands Spell Info fix for empty spells\nlocal GetSpellInfo_original                                = _G.GetSpellInfo\nlocal function GetSpellInfo(...)\n    return GetSpellInfo_original(...) or \"\"\nend\n\nA.Data.ProfileEnabled[Action.CurrentProfile] = true\nA.Data.ProfileUI                                     = {    \n    DateTime = \"v1.1 (5 Nov 2020)\",\n    [2] = {        \n        [ACTION_CONST_PRIEST_SHADOW] = {             \n            { -- [1]                            \n                {\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use @mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use AoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                    }, \n                    M = {},\n                }, \n                { -- Auto Multi Dot\n                    E = \"Checkbox\", \n                    DB = \"AutoMultiDot\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Auto Multi DoT (BETA)\"\n                    }, \n                    TT = { \n                        ANY = \"Switch through enemies to apply DoTs automatically! Limited to five total targets per combat.\"\n                    }, \n                    M = {},\n                },                        \n            }, \n            { -- [2]\n                {\n                    E = \"Checkbox\", \n                    DB = \"ByPassSpells\",\n                    DBV = true,\n                    L = { \n                        enUS = \"ByPassSpells\", \n                    }, \n                    TT = { \n                        enUS = \"Spells\\nWill stop channeling\",\n                    }, \n                    M = {},\n                },         \n                {\n                    E = \"Checkbox\", \n                    DB = \"UsePWS\",\n                    DBV = false,\n                    L = { \n                        enUS = \"Use Power Word: Shield.\",\n                    }, \n                    TT = { \n                        enUS = \"Use Power Word: Shield for movement.\",\n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 7,                            \n                    DB = \"PWSMove\",\n                    DBV = 3, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"PW:S if moving for\",\n                    }, \n                    TT = { \n                        enUS = \"If \" .. GetSpellInfo(17) .. \" is talented and ready, will use it if moving for set value.\", \n                        ruRU = \"Если \" .. GetSpellInfo(17) .. \" изучен и готов, будет использовать его при переходе на заданное значение.\", \n                        frFR = \"Si \" .. GetSpellInfo(17) .. \" est prêt, l'utilisera s'il se déplace pour la valeur définie.\", \n                    }, \n                    M = {},\n                },                \n            },\n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            },                                \n            { -- [7] \n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Trinkets -- \",\n                    },\n                },\n            },\n            {\n                {\n                    E = \"Checkbox\", \n                    DB = \"TrinketsAoE\",\n                    DBV = false,\n                    L = { \n                        enUS = \"Trinkets\\nAoE only\", \n                        ruRU = \"Trinkets\\nAoE only\",  \n                        frFR = \"Trinkets\\nAoE only\",  \n                    }, \n                    TT = { \n                        enUS = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                        ruRU = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                        frFR = \"Enable this to option to trinkets for AoE usage ONLY.\", \n                    }, \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 30,                            \n                    DB = \"TrinketsMinTTD\",\n                    DBV = 10, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Min TTD\",\n                    },\n                    TT = { \n                        enUS = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                        ruRU = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                        frFR = \"Minimum Time To Die for units in range before using Trinkets.\\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.\", \n                    },                    \n                    M = {},\n                },\n            },\n            {\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 2, \n                    MAX = 10,                            \n                    DB = \"TrinketsMinUnits\",\n                    DBV = 20, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Min Units\",\n                    },\n                    TT = { \n                        enUS = \"Minimum number of units in range to activate Trinkets.\", \n                        ruRU = \"Minimum number of units in range to activate Trinkets.\", \n                        frFR = \"Minimum number of units in range to activate Trinkets.\",  \n                    },                    \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 40,                            \n                    DB = \"TrinketsUnitsRange\",\n                    DBV = 20, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"Max AoE range\",\n                    },\n                    TT = { \n                        enUS = \"Maximum range for units detection to automatically activate trinkets.\", \n                        ruRU = \"Maximum range for units detection to automatically activate trinkets.\", \n                        frFR = \"Maximum range for units detection to automatically activate trinkets.\",  \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            },    \n            { -- [3]\n                {\n                    E = \"Header\",\n                    L = {\n                        enUS = \" -- Defensives -- \",\n                    },\n                },\n            }, \n            { -- [4]     \n                {\n                    E = \"Slider\",                                                     \n                    MIN = -1, \n                    MAX = 100,                            \n                    DB = \"VampiricEmbrace\",\n                    DBV = 60, -- Set healthpercentage @60% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = GetSpellInfo(15286) .. \" (%)\",\n                    }, \n                    M = {},\n                },\n            },            \n            { -- Line Divider\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \"___________________________________\",\n                    },\n                },\n            }, \n            { -- [7] \n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Dummy DPS Test -- \",\n                    },\n                },\n            },\n            { -- [3] 3rd Row                     \n                {\n                    E = \"Slider\",                                                     \n                    MIN = -1, \n                    MAX = 10,                            \n                    DB = \"DummyTime\",\n                    DBV = 5, -- Set healthpercentage @30% life. \n                    ONOFF = true,\n                    L = { \n                        ANY = \"DPS Testing Time\",\n                    },\n                    TT = { \n                        enUS = \"Set the desired time for test in minutes.\\nWill show a notification icon when time is expired.\\nMin: 1 / Max: 10.\", \n                        ruRU = \"Установите желаемое время для теста в минутах.\\nПо истечении времени будет отображаться значок уведомления.\\nMin: 1 / Max: 10.\",  \n                        frFR = \"Définissez la durée souhaitée pour le test en minutes.\\nAffiche une icône de notification lorsque le temps est écoulé.\\nMin: 1 / Max: 10.\", \n                    },                     \n                    M = {},\n                },\n                {\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 15,                            \n                    DB = \"DummyStopDelay\",\n                    DBV = 10, -- 2sec\n                    ONOFF = true,\n                    L = { \n                        ANY = \"Stop Delay\",\n                    },\n                    TT = { \n                        enUS = \"After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\\nDefault value : 10 seconds.\", \n                        ruRU = \"После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\\nЗначение по умолчанию: 10 секунд.\", \n                        frFR = \"Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\\nValeur par défaut: 10 secondes.\", \n                    },                     \n                    M = {},\n                },\n            },           \n        },\n        \n        [ACTION_CONST_PRIEST_DISCIPLINE] = {          \n            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    \n            { -- General Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- General -- \",\n                    },\n                },\n            },\n            { -- General Content            \n                { -- Mouseover Checkbox\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@mouseover\", \n                        ruRU = \"Использовать\\n@mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                        ruRU = \"Разблокирует использование действий для @mouseover юнитов\\nНапример: Воскрешение, Хилинг\", \n                    }, \n                    M = {},\n                },\n                { -- TargetTarget Checkbox\n                    E = \"Checkbox\", \n                    DB = \"targettarget\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@targettarget\", \n                        ruRU = \"Использовать\\n@targettarget\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions\\nfor enemy @targettarget units\", \n                        ruRU = \"Разблокирует использование\\nдействий для вражеских @targettarget юнитов\", \n                    }, \n                    M = {},\n                },\n                { -- AoE Checkbox\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nAoE\", \n                        ruRU = \"Использовать\\nAoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                        ruRU = \"Включает действия для нескольких целей\", \n                    }, \n                    M = {},\n                },  \n                {\n                    E = \"Checkbox\", \n                    DB = \"UseRotationPassive\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nPassive\\nRotation\",\n                        ruRU = \"Включить\\nПассивную\\nРотацию\" \n                    },\n                    M = {},\n                },                                  \n            },     \n            { -- Header - Healing Engine\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Healing Engine -- \",\n                    },\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },            \n            { -- Healing Engine Options\n                { -- PW:S Tank\n                    E = \"Checkbox\", \n                    DB = \"ShieldTank\",\n                    DBV = true,\n                    L = { \n                        ANY = \"PW:S Tank On Cooldown\"\n                    },\n                    TT = { \n                        ANY = \"Always keep Power Word: Shield active on tank, whenever available.\",\n                    },\n                    M = {},\n                },\n                { -- PW:S Dropdown\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"TANK\", value = \"TANK\" },    \n                        { text = \"SELF\", value = \"SELF\" },   \n                        { text = \"ALL\", value = \"ALL\" },\n                    },                    \n                    DB = \"PWSWorkMode\",\n                    DBV = \"TANK\",\n                    L = { \n                        ANY = \"Power Word: Shield targets\",\n                    }, \n                    TT = { \n                        ANY = \"Choose what targets to use Power Word: Shield on. This is ignored when using Rapture or atonement ramps.\",\n                    },                    \n                    M = {},\n                },                \n                { -- Power Word: Shield Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"PowerWordShieldHP\",              \n                    DBV = 90,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Shield HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Power Word: Shield on group member.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Shadow Mend, No Atonement Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowMendHPNoAtone\",              \n                    DBV = 80,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Mend HP Without Atonement\",                        \n                    },   \n                    TT = { \n                        ANY = \"Shadow Mend when target HP % AND they don't currently have atonement.\",\n                    },                    \n                    M = {},\n                },\n                { -- Shadow Mend, Atonement Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowMendHPWithAtone\",              \n                    DBV = 70,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Mend HP With Atonement\",                        \n                    },   \n                    TT = { \n                        ANY = \"Shadow Mend when target HP % AND they currently have atonement.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {    \n                { -- Penance Heal Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"PenanceHeal\",              \n                    DBV = 60,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Friendly Penance HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"Friendly target HP % to use Penance as a healing spell.\",\n                    },                    \n                    M = {},\n                },\n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Power Word: Radiance HP Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"RadianceHP\",              \n                    DBV = 90,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Radiance HP\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Power Word: Radiance.\",\n                    },                    \n                    M = {},\n                },\n                { -- Power Word: Radiance Members Slider\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"RadianceMembers\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Power Word: Radiance Targets\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to be hurt to use Power Word: Radiance.\",\n                    },                    \n                    M = {},\n                },                            \n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {\n                { -- Shadow Covenant HP\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"ShadowCovHP\",              \n                    DBV = 80,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant HP\",                        \n                    },   \n                    TT = { \n                        ANY = \"HP % to use Shadow Covenant\",\n                    },                    \n                    M = {},\n                },\n                { -- Shadow Covenant Members\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"ShadowCovMembers\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant Targets\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to be hurt to use Shadow Covenant.\",\n                    },                    \n                    M = {},\n                },    \n                { -- Shadow Covenant Members\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"ShadowCovAtone\",              \n                    DBV = 4,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Shadow Covenant Atonements\",                        \n                    },   \n                    TT = { \n                        ANY = \"Amount of party members to have the atonement buff before using Shadow Covenant.\",\n                    },                    \n                    M = {},\n                },                    \n            },\n            {\n                E = \"LayoutSpace\",\n            },\n            {            \n                { -- Purify Checkbox\n                    E = \"Checkbox\", \n                    DB = \"UsePurify\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Auto Purify (NOT YET WORKING)\"\n                    },\n                    TT = { \n                        ANY = \"Uses Purify to cleanse auras listed in the Auras tab.\",\n                    },\n                    M = {},\n                },            \n            },   \n            { -- Header - Trinkets\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Trinkets -- \",\n                    },\n                },\n            },    \n            { -- Trinket Options                \n                { -- How to use trinkets\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"Always\", value = \"Always\" },\n                        { text = \"Burst Synchronized\", value = \"BurstSync\" },                    \n                    },\n                    DB = \"TrinketBurstSyncUP\",\n                    DBV = \"Always\",\n                    L = { \n                        enUS = \"Damager: How to use trinkets\",\n                        ruRU = \"Урон: Как использовать аксессуары\", \n                    },\n                    TT = { \n                        enUS = \"Always: On cooldown\\nBurst Synchronized: By Burst Mode in 'General' tab\",\n                        ruRU = \"Always: По доступности\\nBurst Synchronized: От Режима Бурстов во вкладке 'Общее'\", \n                    }, \n                    M = {},\n                },\n                { -- Trinket Mana\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketMana\",\n                    DBV = 85,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Mana(%)\",\n                        ruRU = \"Trinket: Mana(%)\",\n                    },\n                    M = {},\n                },\n                { -- Trinket Healing\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketBurstHealing\",\n                    DBV = 75,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Healer: Target Health (%)\",\n                        ruRU = \"Лекарь: Здоровье Цели (%)\", \n                    },\n                    M = {},\n                },        \n            },\n            { -- Header - Mythic+\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Mythic + -- \",\n                    },\n                },\n            },    \n            { -- Mythic+ Options\n                { -- MythicPlusLogic\n                    E = \"Checkbox\", \n                    DB = \"MythicPlusLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Smart Mythic+\",\n                        ruRU = \"Smart Mythic+\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic depending of the current dungeon.\\nExample:Fulminating Zap in Junkyard\",\n                        ruRU = \"Enable this option to activate critical healing logic depending of the current dungeon.\\nExample:Fulminating Zap in Junkyard\",\n                    },\n                    M = {},\n                },    \n                { -- GrievousWoundsLogic\n                    E = \"Checkbox\", \n                    DB = \"GrievousWoundsLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Grievous Wounds\\nlogic\",\n                        ruRU = \"Grievous Wounds\\nlogic\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                        ruRU = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                    },\n                    M = {},\n                },\n                { -- GrievousWoundsMinStacks\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"GrievousWoundsMinStacks\",                    \n                    DBV = 2,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Grievous Wounds\\nmin stacks\",                        \n                    },   \n                    TT = { \n                        enUS = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                        ruRU = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                    },                    \n                    M = {},\n                },                \n                { -- StopCastQuake\n                    E = \"Checkbox\", \n                    DB = \"StopCastQuake\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Stop Cast\\nquaking\",\n                        ruRU = \"Stop Cast\\nquaking\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically stop your current cast before Quake.\",\n                        ruRU = \"Enable this option to automatically stop your current cast before Quake.\",\n                    },\n                    M = {},\n                },    \n                { -- StopCastQuakeSec\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 3,                            \n                    DB = \"StopCastQuakeSec\",                    \n                    DBV = 1,\n                    Precision = 1,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Stop Cast\\nquaking seconds\",                      \n                    },\n                    TT = { \n                        enUS = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                        ruRU = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Penance Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- \" .. GetSpellInfo(47540) .. \" -- \",\n                    },\n                }, \n            },\n            { -- Penance Options\n                { -- Penance Dropdown\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"BOTH\", value = \"BOTH\" },\n                        { text = \"HEAL\", value = \"HEAL\" },    \n                        { text = \"DMG\", value = \"DMG\" },                    \n                    },\n                    DB = \"PenanceWorkMode\",\n                    DBV = \"BOTH\",\n                    L = { \n                        ANY = GetSpellInfo(47540) .. \" Work Mode\",\n                    }, \n                    TT = { \n                        enUS = \"These conditions will be skiped if unit will dying in emergency (critical) situation\", \n                        ruRU = \"Эти условия будут пропущены если юнит будет умирать в чрезвычайной (критической) ситуациии\", \n                    },                    \n                    M = {},\n                },\n            },\n            { -- Defensives Header\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" -- Defensives -- \",\n                    },\n                }, \n            },\n            { -- Defensives Options\n                { -- Desperate Prayer\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 100,                            \n                    DB = \"DesperatePrayer\",                    \n                    DBV = 50,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Desperate Prayer HP %\",                        \n                    },   \n                    TT = { \n                        ANY = \"% HP to use Desperate Prayer.\"\n                    },                    \n                    M = {},\n                }                \n            }\n        },\n        [ACTION_CONST_PRIEST_HOLY] = {          \n            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    \n            { -- GENERAL HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< GENERAL ><><><l \",\n                    },\n                },\n            },\n            { -- GENERAL SETTINGS                            \n                { -- MOUSEOVER\n                    E = \"Checkbox\", \n                    DB = \"mouseover\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@mouseover\", \n                        ruRU = \"Использовать\\n@mouseover\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions for @mouseover units\\nExample: Resuscitate, Healing\", \n                        ruRU = \"Разблокирует использование действий для @mouseover юнитов\\nНапример: Воскрешение, Хилинг\", \n                    }, \n                    M = {},\n                },\n                { -- TARGETTARGET\n                    E = \"Checkbox\", \n                    DB = \"targettarget\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\n@targettarget\", \n                        ruRU = \"Использовать\\n@targettarget\", \n                    }, \n                    TT = { \n                        enUS = \"Will unlock use actions\\nfor enemy @targettarget units\", \n                        ruRU = \"Разблокирует использование\\nдействий для вражеских @targettarget юнитов\", \n                    }, \n                    M = {},\n                },\n                { -- AOE\n                    E = \"Checkbox\", \n                    DB = \"AoE\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nAoE\", \n                        ruRU = \"Использовать\\nAoE\", \n                    }, \n                    TT = { \n                        enUS = \"Enable multiunits actions\", \n                        ruRU = \"Включает действия для нескольких целей\", \n                    }, \n                    M = {},\n                },                                    \n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- DAMAGE STUFF HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< DAMAGE STUFF ><><><l \",\n                    },\n                },\n            },\n            {\n                { -- DPS MANA\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DPSMana\",\n                    DBV = 30,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"DPS while above mana(%)\"\n                    },\n                    TT = {\n                        ANY = \"Amount of mana (%) to have before using DPS abilities.\"\n                    },\n                    M = {},\n                },            \n                { -- Holy Nova Targets\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 10,                            \n                    DB = \"HolyNovaTargets\",\n                    DBV = 5,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Holy Nova enemy targets \",\n                    },\n                    TT = { \n                        ANY = \"How many targets to be in range of you to use Holy Nova. Only takes enemies into account.\"\n                    },                     \n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- HEALING ENGINE HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< HEALING ENGINE ><><><l \",\n                    },\n                },\n            },    \n            { \n                { -- MANA MANAGEMENT\n                    E = \"Checkbox\", \n                    DB = \"ManaManagement\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Boss Fight\\nManaSave\\n(PvE)\", \n                        ruRU = \"Бой с Боссом\\nУправление Маной\\n(PvE)\",\n                    }, \n                    TT = { \n                        enUS = \"Enable to keep small mana save tricks during boss fight\\nMana will keep going to save phase if Boss HP >= our Mana\", \n                        ruRU = \"Включает сохранение малого количества маны с помощью некоторых манипуляций в течении боя против Босса\\nМана будет переходить в фазу сохранения если ХП Босса >= нашей Маны\", \n                    }, \n                    M = {},\n                },             \n                { -- MANA POTION\n                    E = \"Checkbox\", \n                    DB = \"ManaPotion\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Use\\nMana Potion\",\n                        ruRU = \"Использовать\\nЗелье Маны\",\n                    },\n                    M = {},\n                },        \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- HOLY WORD SERENITY\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HolyWordSerenity\",\n                    DBV = 75,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Holy Word: Serenity HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Serenity.\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },             \n            {\n                { -- SANCTIFY ON @PLAYER\n                    E = \"Checkbox\", \n                    DB = \"UseSanctifyOnSelf\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Holy Word: Sanctify on yourself\"\n                    },\n                    TT = {\n                        ANY = \"Use Holy Word: Sanctify on yourself. Requires you to macro Holy Word: Sanctify to /cast [@player] Holy Word: Sanctify\"\n                    },\n                    M = {},\n                },\n                { -- SANCTIFY TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 6,                            \n                    DB = \"SanctifyTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Sanctify Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Holy Word: Sanctify.\"\n                    },\n                    M = {},\n                },\n                { -- SANCTIFY HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"SanctifyHP\",\n                    DBV = 85,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Sanctify HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Sanctify.\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- HEAL HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HealHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"(Binding)Heal HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Heal or Binding Heal. Binding Heal will be prioritised over Heal if talented.\"\n                    },\n                    M = {},\n                },\n                { -- RENEW MODE\n                    E = \"Dropdown\",                                                         \n                    OT = {\n                        { text = \"TANK\", value = \"TANK\" },\n                        { text = \"EVERYONE\", value = \"EVERYONE\" },                         \n                        { text = \"OFF\", value = \"OFF\" },                    \n                    },\n                    DB = \"RenewMode\",\n                    DBV = \"TANK\",\n                    L = { \n                        ANY = \"Renew Setting\",\n                    }, \n                    TT = { \n                        ANY = \"Choose how to use Renew.\" \n                    },                    \n                    M = {},\n                },\n                { -- BLANKET RENEW OOC\n                    E = \"Checkbox\", \n                    DB = \"BlanketRenewOOC\",\n                    DBV = true,\n                    L = { \n                        ANY = \"Blanket Renew OOC\"\n                    },\n                    TT = {\n                        ANY = \"Use Renew to top up allies while out of combat (dungeon only).\"\n                    },\n                    M = {},\n                },                \n            },            \n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- FLASH HEAL HP (NO SOL)\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"FlashHealHP\",\n                    DBV = 70,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Flash Heal (no SoL) HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Flash Heal (excludes Surge of Light procs).\"\n                    },\n                    M = {},\n                },\n                { -- FLASH HEAL HP (SOL)\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"FlashHealSOLHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Flash Heal (with SoL) HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Flash Heal when you have a Surge of Light proc.\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- CIRCLE OF HEALING TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 5,                            \n                    DB = \"CircleofHealingTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Circle of Healing Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Circle of Healing. NOTE, I RECOMMEND TO BIND THIS AS A MACRO TO CAST ON YOURSELF DUE TO AWKWARD 30 YARD RANGE CHECK: /cast [@player] Circle of Healing\"\n                    },\n                    M = {},\n                },\n                { -- CIRCLE OF HEALING HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"CircleofHealingHP\",\n                    DBV = 90,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Circle of Healing HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Circle of Healing\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- PRAYER OF HEALING TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 5,                            \n                    DB = \"PrayerofHealingTargets\",\n                    DBV = 3,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Prayer of Healing Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Prayer of Healing. \"\n                    },\n                    M = {},\n                },\n                { -- PRAYER OF HEALING HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"PrayerofHealingHP\",\n                    DBV = 80,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Prayer of Healing HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Prayer of Healing\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },\n            {\n                { -- HALO TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"HaloTargets\",\n                    DBV = 10,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Halo Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Halo. \"\n                    },\n                    M = {},\n                },\n                { -- HALO HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"HaloHP\",\n                    DBV = 80,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Halo HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Halo\"\n                    },\n                    M = {},\n                },                \n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },            \n            {\n                { -- SALVATION TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"SalvationTargets\",\n                    DBV = 10,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Salvation Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Holy Word: Salvation. \"\n                    },\n                    M = {},\n                },\n                { -- SALVATION HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"SalvationHP\",\n                    DBV = 70,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"HW: Salvation HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Holy Word: Salvation.\"\n                    },\n                    M = {},\n                },                \n            },            \n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- DIVINE HYMN TARGETS\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 40,                            \n                    DB = \"DivineHymnTargets\",\n                    DBV = 12,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Divine Hymn Targets\"\n                    },\n                    TT = {\n                        ANY = \"Amount of targets before using Divine Hymn. Set at 6 or higher to not use while in a dungeon group.\"\n                    },\n                    M = {},\n                },\n                { -- DIVINE HYMN HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DivineHymnHP\",\n                    DBV = 50,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Divine Hymn HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Group HP % to use Divine Hymn\"\n                    },\n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE   \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },                 \n            {\n                { -- GUARDIAN SPIRIT HP\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"GuardianSpiritHP\",\n                    DBV = 30,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Guardian Spirit HP (%)\"\n                    },\n                    TT = {\n                        ANY = \"Target HP % to use Guardian Spirit\"\n                    },\n                    M = {},\n                },\n            },            \n            { -- LAYOUT SPACE              \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- TRINKETS\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< TRINKETS ><><><l \",\n                    },\n                },\n            },    \n            {                 \n                { -- TRINKET MANA\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketMana\",\n                    DBV = 85,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Mana(%)\",\n                        ruRU = \"Trinket: Mana(%)\",\n                    },\n                    M = {},\n                },\n                { -- TRINKET HEALING\n                    E = \"Slider\",                                                     \n                    MIN = 5, \n                    MAX = 100,                            \n                    DB = \"TrinketHP\",\n                    DBV = 75,\n                    ONLYOFF = false,\n                    L = { \n                        enUS = \"Trinket: Target Health (%)\",\n                        ruRU = \"Лекарь: Здоровье Цели (%)\", \n                    },\n                    M = {},\n                },        \n            },\n            { -- LAYOUT SPACE\n                \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- MYTHIC + HEADER\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< MYTHIC PLUS ><><><l \",\n                    },\n                },\n            },    \n            { -- MYTHIC + SETTINGS    \n                { -- GREVIOUS WOUNDS LOGIC\n                    E = \"Checkbox\", \n                    DB = \"GrievousWoundsLogic\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Grievous Wounds\\nlogic\",\n                        ruRU = \"Grievous Wounds\\nlogic\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                        ruRU = \"Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.\",\n                    },\n                    M = {},\n                },\n                { -- GREVIOUS WOUNDS MINIMUM STACKS\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 5,                            \n                    DB = \"GrievousWoundsMinStacks\",                    \n                    DBV = 2,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Grievous Wounds\\nmin stacks\",                        \n                    },   \n                    TT = { \n                        enUS = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                        ruRU = \"How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.\", \n                    },                    \n                    M = {},\n                },\n            },\n            {\n                { -- STOPCAST QUAKING\n                    E = \"Checkbox\", \n                    DB = \"StopCastQuake\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Stop Cast\\nquaking\",\n                        ruRU = \"Stop Cast\\nquaking\",\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically stop your current cast before Quake.\",\n                        ruRU = \"Enable this option to automatically stop your current cast before Quake.\",\n                    },\n                    M = {},\n                },    \n                { -- STOPCAST QUAKING TIMER\n                    E = \"Slider\",                                                     \n                    MIN = 1, \n                    MAX = 3,                            \n                    DB = \"StopCastQuakeSec\",                    \n                    DBV = 1,\n                    Precision = 1,\n                    ONOFF = false,\n                    L = { \n                        ANY = \"Stop Cast\\nquaking seconds\",                      \n                    },\n                    TT = { \n                        enUS = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                        ruRU = \"Define the value you want to stop your cast before next Quake hit.\\nValue is in seconds.\\nExample: 1 means you will stop cast at 1sec remaining on Quaking.\",            \n                    },                    \n                    M = {},\n                },\n            },\n            { -- LAYOUT SPACE               \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },\n            { -- UTILITIES\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< UTILITIES ><><><l \",\n                    },\n                }, \n            },\n            {\n                {\n                    E = \"Checkbox\", \n                    DB = \"AngelicFeather\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Auto\\n\" .. GetSpellInfo(121536),\n                        ruRU = \"Auto\\n\" .. GetSpellInfo(121536),\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically use \" .. GetSpellInfo(121536),\n                        ruRU = \"Enable this option to automatically use \" .. GetSpellInfo(121536),\n                    },\n                    M = {},\n                },    \n                {\n                    E = \"Checkbox\", \n                    DB = \"LeapofFaith\",\n                    DBV = true,\n                    L = { \n                        enUS = \"Auto\\n\" .. GetSpellInfo(73325),\n                        ruRU = \"Auto\\n\" .. GetSpellInfo(73325),\n                    },\n                    TT = { \n                        enUS = \"Enable this option to automatically use \" .. GetSpellInfo(73325),\n                        ruRU = \"Enable this option to automatically use \" .. GetSpellInfo(73325),\n                    },\n                    M = {},\n                },    \n            },\n            { -- LAYOUT SPACE               \n                {\n                    E = \"LayoutSpace\",                                                                         \n                },\n            },              \n            { -- DEFENSIVES\n                {\n                    E = \"Header\",\n                    L = {\n                        ANY = \" l><><>< DEFENSIVES ><><><l \",\n                    },\n                }, \n            },\n            {\n                { -- DESPERATE PRAYER\n                    E = \"Slider\",                                                     \n                    MIN = 0, \n                    MAX = 100,                            \n                    DB = \"DesperatePrayer\",\n                    DBV = 40,\n                    ONLYOFF = true,\n                    L = { \n                        ANY = \"Desperate Prayer HP (%)\"\n                    },\n                    M = {},\n                },      \n            },                                   \n        },        \n    },\n}\n\nfunction A.Main_CastBars(unit, list)\n    if not A.IsInitialized or A.IamHealer or (A.Zone ~= \"arena\" and A.Zone ~= \"pvp\") then \n        return false \n    end \n    \n    if A[A.PlayerSpec] and A[A.PlayerSpec].SpearHandStrike and A[A.PlayerSpec].SpearHandStrike:IsReadyP(unit, nil, true) and A[A.PlayerSpec].SpearHandStrike:AbsentImun(unit, {\"KickImun\", \"TotalImun\", \"DamagePhysImun\"}, true) and A.InterruptIsValid(unit, list) then \n        return true         \n    end \nend \n\nfunction A.Second_CastBars(unit)\n    if not A.IsInitialized or (A.Zone ~= \"arena\" and A.Zone ~= \"pvp\")  then \n        return false \n    end \n    \n    local Toggle = A.GetToggle(2, \"ParalysisPvP\")    \n    if Toggle and Toggle ~= \"OFF\" and A[A.PlayerSpec] and A[A.PlayerSpec].Paralysis and A[A.PlayerSpec].Paralysis:IsReadyP(unit, nil, true) and A[A.PlayerSpec].Paralysis:AbsentImun(unit, {\"CCTotalImun\", \"TotalImun\", \"DamagePhysImun\"}, true) and Unit(unit):IsControlAble(\"incapacitate\", 0) then \n        if Toggle == \"BOTH\" then \n            return select(2, A.InterruptIsValid(unit, \"Heal\", true)) or select(2, A.InterruptIsValid(unit, \"PvP\", true)) \n        else\n            return select(2, A.InterruptIsValid(unit, Toggle, true))         \n        end \n    end \nend \n\n",
+				}, -- [1]
+				{
+					["Order"] = 2,
+					["Name"] = "SHADOW",
+					["Code"] = "--##################################\n--###### TRIP'S SHADOW PRIEST ######\n--##################################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal Listener                                    = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                    = Action.GetToggle\nlocal SetToggle                                    = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                                = Action.GetCurrentGCD\nlocal GetPing                                    = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                    = Action.BurstIsON\nlocal AuraIsValid                                = Action.AuraIsValid\nlocal InterruptIsValid                            = Action.InterruptIsValid\nlocal FrameHasSpell                                = Action.FrameHasSpell\nlocal Azerite                                    = LibStub(\"AzeriteTraits\")\nlocal Utils                                        = Action.Utils\nlocal TeamCache                                    = Action.TeamCache\nlocal EnemyTeam                                    = Action.EnemyTeam\nlocal FriendlyTeam                                = Action.FriendlyTeam\nlocal LoC                                        = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                                = Action.UnitCooldown\nlocal Unit                                        = Action.Unit \nlocal IsUnitEnemy                                = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                            = MultiUnits:GetActiveUnitPlates()\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal TR                                        = Action.TasteRotation\nlocal pairs                                     = pairs\nlocal Pet                                       = LibStub(\"PetLibrary\")\n\n--Toaster stuff\nlocal ADDON_NAME, private                                                        = ...\nlocal _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset    = _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset\nlocal tremove                                                                    = table.remove\nlocal math_floor                                                                = math.floor\nlocal math_huge                                                                    = math.huge\nlocal math_max                                                                    = math.max\nlocal wipe                                                                        = _G.wipe\nlocal hooksecurefunc                                                            = _G.hooksecurefunc\nlocal CopyTable                                                                    = _G.CopyTable\nlocal UIParent                                                                    = _G.UIParent\nlocal Toaster                                                                    = _G.Toaster -- The Action _G.Toaster will be initilized first, then _G.Toaster will be replaced by original if Toaster addon will be loaded, but we will keep our local\nlocal LibStub                                                                    = _G.LibStub\nlocal GetSpellTexture                                                             = _G.TMW.GetSpellTexture\nlocal AceDB                                                                     = LibStub(\"AceDB-3.0\", true)\nlocal AceConfigRegistry                                                         = LibStub(\"AceConfigRegistry-3.0\", true)    \nlocal AceConfigDialog                                                             = LibStub(\"AceConfigDialog-3.0\", true)    \nlocal AceLocale                                                                    = LibStub(\"AceLocale-3.0\", true)\nlocal LibWindow                                                                 = LibStub(\"LibWindow-1.1\", true)\nlocal LibToast                                                                     = LibStub(\"LibToast-1.0\", true)\nlocal templates                                                                    = LibToast and LibToast.templates\nlocal unique_templates                                                            = LibToast and LibToast.unique_templates\nlocal active_toasts                                                                = LibToast and LibToast.active_toasts\nlocal DEFAULT_FADE_HOLD_TIME                                                    = 5\nlocal DEFAULT_WIDTH                                                                = 250\nlocal DEFAULT_HEIGHT                                                            = 50\n\nlocal TMW                                                                         = _G.TMW\n\nlocal toStr                                                                     = A.toStr\nlocal toNum                                                                     = A.toNum \nlocal CONST                                                                     = A.Const\nlocal Listener                                                                    = A.Listener\nlocal FormatGameLocale                                                            = A.FormatGameLocale\nlocal FormatedGameLocale                                                        = A.FormatedGameLocale\nlocal Unit                                                                         = A.Unit \n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\n-- Spells\nAction[ACTION_CONST_PRIEST_SHADOW] = {\n    -- Racial\n    ArcaneTorrent                          = Action.Create({ Type = \"Spell\", ID = 50613 }),\n    BloodFury                              = Action.Create({ Type = \"Spell\", ID = 20572 }),\n    Fireblood                              = Action.Create({ Type = \"Spell\", ID = 265221 }),\n    AncestralCall                          = Action.Create({ Type = \"Spell\", ID = 274738 }),\n    Berserking                             = Action.Create({ Type = \"Spell\", ID = 26297 }),\n    ArcanePulse                            = Action.Create({ Type = \"Spell\", ID = 260364 }),\n    QuakingPalm                            = Action.Create({ Type = \"Spell\", ID = 107079 }),\n    Haymaker                               = Action.Create({ Type = \"Spell\", ID = 287712 }), \n    WarStomp                               = Action.Create({ Type = \"Spell\", ID = 20549 }),\n    BullRush                               = Action.Create({ Type = \"Spell\", ID = 255654 }),    \n    GiftofNaaru                            = Action.Create({ Type = \"Spell\", ID = 59544 }),\n    Shadowmeld                             = Action.Create({ Type = \"Spell\", ID = 58984 }), -- usable in Action Core \n    Stoneform                              = Action.Create({ Type = \"Spell\", ID = 20594 }), \n    WilloftheForsaken                      = Action.Create({ Type = \"Spell\", ID = 7744  }), -- not usable in APL but user can Queue it    \n    EscapeArtist                           = Action.Create({ Type = \"Spell\", ID = 20589 }), -- not usable in APL but user can Queue it\n    EveryManforHimself                     = Action.Create({ Type = \"Spell\", ID = 59752 }), -- not usable in APL but user can Queue it\n    Darkflight                             = Action.Create({ Type = \"Spell\", ID = 68992    }),\n    -- Generics\n    Shadowfiend                            = Action.Create({ Type = \"Spell\", ID = 34433 }),\n    -- Mindbender                             = Action.Create({ Type = \"Spell\", ID = 200174 }),\n    SurrenderToMadness                     = Action.Create({ Type = \"Spell\", ID = 319952 }),\n    VampiricTouch                          = Action.Create({ Type = \"Spell\", ID = 34914 }),\n    ShadowWordPain                         = Action.Create({ Type = \"Spell\", ID = 589 }),\n    MindBlast                              = Action.Create({ Type = \"Spell\", ID = 8092 }),\n    MindFlay                               = Action.Create({ Type = \"Spell\", ID = 15407 }),\n    MindSear                               = Action.Create({ Type = \"Spell\", ID = 48045 }),\n    VoidEruption                           = Action.Create({ Type = \"Spell\", ID = 228260 }),\n    VoidBolt                               = Action.Create({ Type = \"Spell\", ID = 205448 }),\n    ShadowCrash                            = Action.Create({ Type = \"Spell\", ID = 342834 }),\n    ShadowWordDeath                        = Action.Create({ Type = \"Spell\", ID = 32379 }),\n    VoidTorrent                            = Action.Create({ Type = \"Spell\", ID = 263165 }),\n    Misery                                 = Action.Create({ Type = \"Spell\", ID = 238558, Hidden = true }),\n    Shadowform                             = Action.Create({ Type = \"Spell\", ID = 232698 }),\n    ChorusofInsanity                       = Action.Create({ Type = \"Spell\", ID = 278661 }),\n    VoidformBuff                           = Action.Create({ Type = \"Spell\", ID = 194249, Hidden = true }),    \n    VampiricTouchDebuff                    = Action.Create({ Type = \"Spell\", ID = 34914, Hidden = true }),\n    ShadowWordPainDebuff                   = Action.Create({ Type = \"Spell\", ID = 589, Hidden = true }),\n    WeakenedSoulDebuff                     = Action.Create({ Type = \"Spell\", ID = 6788, Hidden = true }),\n    Damnation                              = Action.Create({ Type = \"Spell\", ID = 341374}),\n    UnfurlingDarknessBuff                  = Action.Create({ Type = \"Spell\", ID = 341282, Hidden = true}),\n    UnfurlingDarknessTalent                   = Action.Create({ Type = \"Spell\", ID = 341273, Hidden = true}), \n    SearingNightmare                       = Action.Create({ Type = \"Spell\", ID = 341385}),\n    PsychicLink                            = Action.Create({ Type = \"Spell\", ID = 199484}),\n    PowerInfusion                          = Action.Create({ Type = \"Spell\", ID = 10060}),\n    DevouringPlague                        = Action.Create({ Type = \"Spell\", ID = 335467}),\n    DarkThought                               = Action.Create({ Type = \"Spell\", ID = 341207, Hidden = true }),\n    HungeringVoid                           = Action.Create({ Type = \"Spell\", ID = 345128, Hidden = true }),\n    TwistofFateBuff                           = Action.Create({ Type = \"Spell\", ID = 123254, Hidden = true }),\n    TwistofFateTalent                       = Action.Create({ Type = \"Spell\", ID = 109142, Hidden = true }),\n    ShadowCrashDebuff                       = Action.Create({ Type = \"Spell\", ID = 342835, Hidden = true }),\n    BodyAndSoul                               = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true }),\n    --    DevouringPlagueDebuff                  = Action.Create({ Type = \"Spell\", ID = 335467, Hidden = true}),\n    -- PvP   \n    Silence                                = Action.Create({ Type = \"Spell\", ID = 15487 }),    \n    PsychicScream                          = Action.Create({ Type = \"Spell\", ID = 8122   }), -- Fear\n    PsychicHorror                          = Action.Create({ Type = \"Spell\", ID = 64044 }), -- Fear + Disarm\n    -- Covenant Abilities\n    AscendedBlast                          = Action.Create({ Type = \"Spell\", ID = 325283}), \n    AscendedNova                           = Action.Create({ Type = \"Spell\", ID = 325020}), \n    BoonoftheAscended                      = Action.Create({ Type = \"Spell\", ID = 325013}), \n    --    BoonoftheAscendedBuff                  = Action.Create({ Type = \"Spell\", ID = 325013}), \n    FaeGuardians                           = Action.Create({ Type = \"Spell\", ID = 327661}), \n    Mindgames                              = Action.Create({ Type = \"Spell\", ID = 323673}), \n    UnholyNova                             = Action.Create({ Type = \"Spell\", ID = 324724}), \n    -- Conduit Effects\n    DissonantEchoesBuff                    = Action.Create({ Type = \"Spell\", ID = 343144}), \n    -- Utilities \n    PowerWordFortitude                     = Action.Create({ Type = \"Spell\", ID = 21562 }),    -- Shield\n    DispelMagic                            = Action.Create({ Type = \"Spell\", ID = 528,   }),    \n    -- Defensives\n    PowerWordShield                        = Action.Create({ Type = \"Spell\", ID = 17    }), \n    VampiricEmbrace                        = Action.Create({ Type = \"Spell\", ID = 15286 }),\n    Dispersion                             = Action.Create({ Type = \"Spell\", ID = 47585 }),    \n    -- Oils\n    EmbalmersOil                           = Action.Create({ Type = \"Spell\", ID = 171286, QueueForbidden = true }), \n    ShadowcoreOil                          = Action.Create({ Type = \"Spell\", ID = 171285, QueueForbidden = true }),  \n    -- Potions\n    -- stats\n    PotionofSpectralAgility                = Action.Create({ Type = \"Potion\", ID = 171270, QueueForbidden = true }), \n    PotionofSpectralIntellect              = Action.Create({ Type = \"Potion\", ID = 171273, QueueForbidden = true }), \n    PotionofSpectralStrength               = Action.Create({ Type = \"Potion\", ID = 171275, QueueForbidden = true }), \n    PotionofSpectralStamina                = Action.Create({ Type = \"Potion\", ID = 171274, QueueForbidden = true }), \n    -- heal\n    SpiritualHealingPotion                 = Action.Create({ Type = \"Potion\", ID = 171267, QueueForbidden = true }), \n    SpiritualManaPotion                    = Action.Create({ Type = \"Potion\", ID = 171268, QueueForbidden = true }), \n    SpiritualRejuvenationPotion            = Action.Create({ Type = \"Potion\", ID = 171269, QueueForbidden = true }), \n    PotionofSpiritualClarity               = Action.Create({ Type = \"Potion\", ID = 171272, QueueForbidden = true }), \n    -- combat effects potions\n    PotionofDeathlyFixation                = Action.Create({ Type = \"Potion\", ID = 171351, QueueForbidden = true }), \n    PotionofEmpoweredExorcisms             = Action.Create({ Type = \"Potion\", ID = 171352, QueueForbidden = true }),\n    PotionofPhantomFire                    = Action.Create({ Type = \"Potion\", ID = 171349, QueueForbidden = true }),\n    PotionofDivineAwakening                = Action.Create({ Type = \"Potion\", ID = 171350, QueueForbidden = true }),\n    PotionofSacrificialAnima               = Action.Create({ Type = \"Potion\", ID = 176811, QueueForbidden = true }),\n    -- utilities potions\n    PotionofHardenedShadows                = Action.Create({ Type = \"Potion\", ID = 171271, QueueForbidden = true }),\n    PotionofShadedSight                    = Action.Create({ Type = \"Potion\", ID = 171264, QueueForbidden = true }),\n    PotionofSoulPurity                     = Action.Create({ Type = \"Potion\", ID = 171263, QueueForbidden = true }),\n    PotionofSpecterSwiftness               = Action.Create({ Type = \"Potion\", ID = 171370, QueueForbidden = true }),\n    PotionoftheHiddenSpirit                = Action.Create({ Type = \"Potion\", ID = 171266, QueueForbidden = true }),\n    PotionofthePsychopompsSpeed            = Action.Create({ Type = \"Potion\", ID = 184090, QueueForbidden = true }),\n    PotionofUnhinderedPassing              = Action.Create({ Type = \"Potion\", ID = 183823, QueueForbidden = true }),\n    -- Nathria Trinkets\n    SanguineVintage                        = Action.Create({ Type = \"Trinket\", ID = 184031 }),\n    ManaboundMirror                        = Action.Create({ Type = \"Trinket\", ID = 184029 }),\n    GluttonousSpike                        = Action.Create({ Type = \"Trinket\", ID = 184023 }),\n    DreadfireVessel                        = Action.Create({ Type = \"Trinket\", ID = 184030 }),\n    MemoryofPastSins                       = Action.Create({ Type = \"Trinket\", ID = 184025 }),\n    ConsumptiveInfusion                    = Action.Create({ Type = \"Trinket\", ID = 184022 }),\n    StoneLegionHeraldry                    = Action.Create({ Type = \"Trinket\", ID = 184027 }),\n    BargastsLeash                          = Action.Create({ Type = \"Trinket\", ID = 184017 }),\n    -- OP Dungeons Trinkets\n    BloodSpatteredScale                    = Action.Create({ Type = \"Trinket\", ID = 179331 }),\n    OverwhelmingPowerCrystal               = Action.Create({ Type = \"Trinket\", ID = 179342 }),\n    SunbloodAmethyst                       = Action.Create({ Type = \"Trinket\", ID = 178826 }),\n    PulsatingStoneheart                    = Action.Create({ Type = \"Trinket\", ID = 178825 }),\n    BladedancersArmorKit                   = Action.Create({ Type = \"Trinket\", ID = 178862 }),  \n    \n    -- Legendaries\n    PainbreakerPsalmChest                  = Action.Create({ Type = \"Spell\", ID = 173241 }),\n    PainbreakerPsalmCloak                  = Action.Create({ Type = \"Spell\", ID = 173242 }),\n    CalltotheVoidGloves                    = Action.Create({ Type = \"Spell\", ID = 173244 }),\n    CalltotheVoidWrists                    = Action.Create({ Type = \"Spell\", ID = 173249 }),\n    -- Misc\n    PoolResource                           = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),\n    TargetEnemy                            = Action.Create({ Type = \"Spell\", ID = 44603, Hidden = true }),-- Change Target (Tab button)\n    StopCast                               = Action.Create({ Type = \"Spell\", ID = 61721, Hidden = true }),    -- spell_magic_polymorphrabbit\n    DummyTest                              = Action.Create({ Type = \"Spell\", ID = 159999, Hidden = true     }), -- Dummy stop dps icon\n    ConcentratedFlame                       = Action.Create({ Type = \"Spell\", ID = 295373, }),\n    EscapeArtist                           = Action.Create({ Type = \"Spell\", ID = 20589, }), -- SearingNightmare\n    \n};\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_SHADOW)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_SHADOW], { __index = Action })\n\n\n------------------------------------------\n---------------- VARIABLES ---------------\n------------------------------------------\nlocal VarDotsUp = false;\nlocal VarAllDotsUp = false;\nlocal VarMindSearCutoff = 1;\nlocal VarSearingNightmareCutoff = false;\nlocal PainbreakerEquipped = (A.PainbreakerPsalmChest:IsExists() or A.PainbreakerPsalmCloak:IsExists())\nlocal CalltotheVoidEquipped = (A.CalltotheVoidGloves:IsExists() or A.CalltotheVoidWrists:IsExists())\n\nA.Listener:Add(\"ROTATION_VARS\", \"PLAYER_REGEN_ENABLED\", function()\n        VarDotsUp = false\n        VarAllDotsUp = false\n        VarMindSearCutoff = 1\n        VarSearingNightmareCutoff = false\nend)\n\nlocal function num(val)\n    if val then return 1 else return 0 end\nend\n\nlocal function bool(val)\n    return val ~= 0\nend\n\nlocal player = \"player\"\n\n------------------------------------------\n-------------- COMMON PREAPL -------------\n------------------------------------------\nlocal Temp = {\n    TotalAndPhys                            = {\"TotalImun\", \"DamagePhysImun\"},\n    TotalAndCC                              = {\"TotalImun\", \"CCTotalImun\"},\n    TotalAndPhysKick                        = {\"TotalImun\", \"DamagePhysImun\", \"KickImun\"},\n    TotalAndPhysAndCC                       = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\"},\n    TotalAndPhysAndStun                     = {\"TotalImun\", \"DamagePhysImun\", \"StunImun\"},\n    TotalAndPhysAndCCAndStun                = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\", \"StunImun\"},\n    TotalAndMag                             = {\"TotalImun\", \"DamageMagicImun\"},\n    TotalAndMagKick                         = {\"TotalImun\", \"DamageMagicImun\", \"KickImun\"},\n    DisablePhys                             = {\"TotalImun\", \"DamagePhysImun\", \"Freedom\", \"CCTotalImun\"},\n    DisableMag                              = {\"TotalImun\", \"DamageMagicImun\", \"Freedom\", \"CCTotalImun\"},\n    VampiricTouchDelay                      = 0,\n}\n\nlocal IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName\n\n--Register Toaster\nToaster:Register(\"TripToast\", function(toast, ...)\n        local title, message, spellID = ...\n        toast:SetTitle(title or \"nil\")\n        toast:SetText(message or \"nil\")\n        if spellID then \n            if type(spellID) ~= \"number\" then \n                error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n                toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n            else \n                toast:SetIconTexture((GetSpellTexture(spellID)))\n            end \n        else \n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        end \n        toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolFree()\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function InRange(unit)\n    -- @return boolean \n    return A.VampiricTouch:IsInRange(unit)\nend \nInRange = A.MakeFunctionCachedDynamic(InRange)\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat)\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\n-- ExecuteRange\nlocal function ExecuteRange()\n    return 20\nend\n\n-- DotsUp\nlocal function DotsUp(unitID, all)\n    if all then\n        return (Unit(unitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.DevouringPlague.ID, true) > 0)\n    else\n        return (Unit(unitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 and Unit(unitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0)\n    end\nend\n\n-- Non GCD spell check\nlocal function countInterruptGCD(unit)\n    if not A.Silence:IsReadyByPassCastGCD(unit) or not A.Silence:AbsentImun(unit, Temp.TotalAndMagKick) then\n        return true\n    end\nend\n\n-- Interrupts spells\nlocal function Interrupts(unit)\n    \n    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))\n    \n    \n    if castRemainsTime >= A.GetLatency() then\n        -- Silence\n        if useKick and A.Silence:IsReady(unit) and A.Silence:AbsentImun(unit, Temp.TotalAndMagKick, true) then \n            return A.Silence\n        end \n        \n        -- Fear Disarm\n        if useCC and A.PsychicHorror:IsReady(unit) and A.PsychicHorror:AbsentImun(unit, Temp.TotalAndMagKick, true) and Unit(unit):IsControlAble(\"stun\", 0) then \n            return A.PsychicHorror              \n        end \n        \n        if useRacial and A.QuakingPalm:AutoRacial(unit) then \n            return A.QuakingPalm\n        end \n        \n        if useRacial and A.Haymaker:AutoRacial(unit) then \n            return A.Haymaker\n        end \n        \n        if useRacial and A.WarStomp:AutoRacial(unit) then \n            return A.WarStomp\n        end \n        \n        if useRacial and A.BullRush:AutoRacial(unit) then \n            return A.BullRush\n        end \n    end\nend\n\n-- Defensives\nlocal function SelfDefensives()\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local VampiricEmbrace = A.GetToggle(2, \"VampiricEmbrace\")\n    if    VampiricEmbrace >= 0 and A.VampiricEmbrace:IsReady(player) and \n    (\n        (     -- Auto \n            VampiricEmbrace >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            VampiricEmbrace < 100 and \n            Unit(player):HealthPercent() <= VampiricEmbrace\n        )\n    ) \n    then \n        return A.VampiricEmbrace\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\nfunction Player:AreaTTD(range)\n    local ttdtotal = 0\n    local totalunits = 0\n    local r = range\n    \n    for _, unitID in pairs(ActiveUnitPlates) do \n        if Unit(unitID):GetRange() <= r then \n            local ttd = Unit(unitID):TimeToDie()\n            totalunits = totalunits + 1\n            ttdtotal = ttd + ttdtotal\n        end\n    end\n    \n    if totalunits == 0 then\n        return 0\n    end\n    \n    return ttdtotal / totalunits\nend    \n\n-- Multidot Handler UI --\nlocal function HandleMultidots()\n    local choice = Action.GetToggle(2, \"AutoDotSelection\")\n    \n    if choice == \"In Raid\" then\n        if IsInRaid() then\n            return true\n        else\n            return false\n        end\n    elseif choice == \"In Dungeon\" then \n        if IsInGroup() then\n            return true\n        else\n            return false\n        end\n    elseif choice == \"In PvP\" then     \n        if A.IsInPvP then \n            return true\n        else\n            return false\n        end        \n    elseif choice == \"Everywhere\" then \n        return true\n    else\n        return false\n    end\n    --print(choice)\nend\n\n\n--- ======= ACTION LISTS =======\n-- [3] Single Rotation\nA[3] = function(icon, isMulti)\n    --------------------\n    --- ROTATION VAR ---\n    --------------------\n    local isMoving = A.Player:IsMoving()\n    local isMovingFor = A.Player:IsMovingTime()    \n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local ShouldStop = Action.ShouldStop()\n    local Pull = Action.BossMods:GetPullTimer()\n    local profileStop = false\n    local DBM = Action.GetToggle(1, \"BossMods\")\n    local HeartOfAzeroth = Action.GetToggle(1, \"HeartOfAzeroth\")\n    local Racial = Action.GetToggle(1, \"Racial\")\n    local Potion = Action.GetToggle(1, \"Potion\")\n    local UnbridledFuryAuto = GetToggle(2, \"UnbridledFuryAuto\")\n    local UnbridledFuryTTD = GetToggle(2, \"UnbridledFuryTTD\")\n    local UnbridledFuryWithBloodlust = GetToggle(2, \"UnbridledFuryWithBloodlust\")\n    local UnbridledFuryHP = GetToggle(2, \"UnbridledFuryHP\")\n    local UnbridledFuryWithExecute = GetToggle(2, \"UnbridledFuryWithExecute\")\n    local FocusedAzeriteBeamTTD = GetToggle(2, \"FocusedAzeriteBeamTTD\")\n    local FocusedAzeriteBeamUnits = GetToggle(2, \"FocusedAzeriteBeamUnits\")\n    local PWSMove = GetToggle(2, \"PWSMove\")\n    local UsePWS = GetToggle(2, \"UsePWS\")\n    local MultiDotDistance = GetToggle(2, \"MultiDotDistance\")\n    local VTRefreshable = (Unit(\"target\"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(\"target\"):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0)\n    local SWPRefreshable = (Unit(\"target\"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4 or Unit(\"target\"):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0)    \n    -- Multidots var\n    local MissingShadowWordPain = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local MissingVampiricTouch = MultiUnits:GetByRangeMissedDoTs(MultiDotDistance, 5, A.VampiricTouch.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local AppliedShadowWordPain = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, A.ShadowWordPain.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local AppliedVampiricTouch = MultiUnits:GetByRangeAppliedDoTs(MultiDotDistance, 5, A.VampiricTouch.ID) --MultiDots(40, A.FlameShockDebuff, 15, 4) --MultiUnits:GetByRangeMissedDoTs(40, 10, 188389)  MultiUnits:GetByRangeMissedDoTs(range, stop, dots, ttd)\n    local ShadowWordPainToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, A.ShadowWordPain.ID, 6, 5)\n    local VampiricTouchToRefresh = MultiUnits:GetByRangeDoTsToRefresh(MultiDotDistance, 5, A.VampiricTouch.ID, 6, 5)\n    -- Trinkets vars\n    local Trinket1IsAllowed, Trinket2IsAllowed = TR:TrinketIsAllowed()\n    local TrinketsAoE = GetToggle(2, \"TrinketsAoE\")\n    local TrinketsMinTTD = GetToggle(2, \"TrinketsMinTTD\")\n    local TrinketsUnitsRange = GetToggle(2, \"TrinketsUnitsRange\")\n    local TrinketsMinUnits = GetToggle(2, \"TrinketsMinUnits\")\n    local StMActive = A.SurrenderToMadness:GetSpellTimeSinceLastCast() <= 25\n    local VoidFormActive = Unit(player):HasBuffs(A.VoidformBuff.ID, true) > 0\n    -- Azerite beam protection channel\n    local CanCast = true\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local TargetsMissingSWP = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.ShadowWordPainDebuff.ID)\n    local TargetsMissingVT = MultiUnits:GetByRangeMissedDoTs(nil, 5, A.VampiricTouchDebuff.ID)    \n    local AutoMultiDot = A.GetToggle(2, \"AutoMultiDot\")    \n    -- Ensure all channel and cast are really safe\n    -- Double protection with check on current casts and also timestamp of the cast\n    if (spellID == A.FocusedAzeriteBeam.ID) then \n        if (CurrentCastLeft > 0 or secondsLeft > 0 or isChannel) then\n            if TMW.time < castEndTime then            \n                CanCast = false\n            else\n                CanCast = true\n            end\n        end\n    end\n    \n    -- Showing icon PoolResource to make sure nothing else is read by GG\n    if not CanCast then\n        return A.PoolResource:Show(icon)\n    end\n    \n    if Temp.VampiricTouchDelay == 0 and Player:IsCasting() == \"Vampiric Touch\" then\n        Temp.VampiricTouchDelay = 90\n    end\n    \n    if Temp.VampiricTouchDelay > 0 then\n        --print(Temp.VampiricTouchDelay)\n        Temp.VampiricTouchDelay = Temp.VampiricTouchDelay - 1\n    end\n    ------------------------------------------------------\n    ---------------- ENEMY UNIT ROTATION -----------------\n    ------------------------------------------------------\n    \n    local function EnemyRotation(unit)\n        \n        --Variables\n        -- variable,name=dots_up,op=set,value=dot.shadow_word_pain.ticking&dot.vampiric_touch.ticking\n        VarDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4)\n        \n        VarAllDotsUp = (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 4 and Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) > 2)        \n        \n        --Toaster for Unfurling Darkness alert\n        if Unit(player):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 then\n            A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Unfurling Darkness Active!\", \"Target a new enemy for instant-cast Vampiric Touch!\", A.VampiricTouch.ID)\n        end\n        \n        --actions.precombat+=/shadowform,if=!buff.shadowform.up\n        if A.Shadowform:IsReady(unit) and Unit(player):HasBuffsDown(A.Shadowform.ID, true) and not VoidFormActive then\n            return A.Shadowform:Show(icon)\n        end\n        \n        local Interrupt = Interrupts(unit)\n        if Interrupt then \n            return Interrupt:Show(icon)\n        end            \n        \n        --actions.precombat+=/arcane_torrent\n        if A.ArcaneTorrent:IsReady(unit) and useRacial and A.ArcaneTorrent:AutoRacial(unit) and Unit(player):CombatTime() == 0 then\n            return A.ArcaneTorrent:Show(icon)\n        end\n        \n        -- Auto Multi DoT\n        if AutoMultiDot and (VarDotsUp and unit ~= mouseover) and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingSWP > 0 and TargetsMissingSWP < 5 or Unit(\"target\"):IsDummy())\n        then\n            local SWP_Nameplates = MultiUnits:GetActiveUnitPlates()\n            if SWP_Nameplates then  \n                for SWP_UnitID in pairs(ActiveUnitPlates) do             \n                    if not UnitIsUnit(unit, SWP_UnitID) then \n                        if (Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(SWP_UnitID):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 4) and Unit(SWP_UnitID):GetRange() <= 40 and (not A.SearingNightmare:IsTalentLearned()) and A.Misery:IsTalentLearned() and ((A.Zone == \"none\" and (Unit(SWP_UnitID):IsDummy() or Unit(SWP_UnitID):IsDummyPvP())) or Unit(SWP_UnitID):CombatTime() > 0) then \n                            return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                        end\n                    elseif Unit(SWP_UnitID):GetRange() > 40 or (not (A.Zone == \"none\" and (Unit(SWP_UnitID):IsDummy() or Unit(SWP_UnitID):IsDummyPvP())) and Unit(SWP_UnitID):CombatTime() == 0) then -- forces to re-pick target if /targetenemy selected out of range or out of combat unit \n                        return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                    end         \n                end \n            end         \n        end \n        \n        if AutoMultiDot and (VarDotsUp and unit ~= mouseover) and Player:AreaTTD(40) > 8 and MultiUnits:GetActiveEnemies() >= 2 and (TargetsMissingVT > 0 and TargetsMissingVT < 5 or Unit(\"target\"):IsDummy())\n        then\n            local VT_Nameplates = MultiUnits:GetActiveUnitPlates()\n            if VT_Nameplates then  \n                for VT_UnitID in pairs(ActiveUnitPlates) do             \n                    if not UnitIsUnit(unit, VT_UnitID) then \n                        if (Unit(VT_UnitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 or Unit(VT_UnitID):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4) and Unit(VT_UnitID):GetRange() <= 40 and ((A.Zone == \"none\" and (Unit(VT_UnitID):IsDummy() or Unit(VT_UnitID):IsDummyPvP())) or Unit(VT_UnitID):CombatTime() > 0) then \n                            return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                        end\n                    elseif Unit(VT_UnitID):GetRange() > 40 or (not (A.Zone == \"none\" and (Unit(VT_UnitID):IsDummy() or Unit(VT_UnitID):IsDummyPvP())) and Unit(VT_UnitID):CombatTime() == 0) then -- forces to re-pick target if /targetenemy selected out of range or out of combat unit \n                        return A:Show(icon, ACTION_CONST_AUTOTARGET)\n                    end         \n                end \n            end         \n        end    \n        \n        --MindBlast bypass MindFlay channel\n        if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Unit(\"player\"):HasBuffs(A.DarkThought.ID, true) > 0 and VarDotsUp and (not A.DevouringPlague:IsReady()) then\n            return A.MindBlast:Show(icon)\n        end\n        \n        -- vampiric_touch\n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and (Unit(\"player\"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit(\"player\"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then\n            return A.VampiricTouch:Show(icon)\n        end    \n        \n        --actions.precombat+=/vampiric_touch\n        if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and Unit(player):CombatTime() == 0 and not A.Damnation:IsReady() and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 then\n            return A.VampiricTouch:Show(icon)\n        end\n        \n        \n        --actions+=/call_action_list,name=cwc\n        --actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)\n        if A.SearingNightmare:IsReady(player, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and A.SearingNightmare:IsTalentLearned() and Player:IsChanneling() == \"Mind Sear\" -- or  MissingShadowWordPain > 2 \n        then \n            return A.EscapeArtist:Show(icon)\n        end    \n        \n        --actions+=/run_action_list,name=main\n        \n        --actions.main=void_eruption,if=variabl5e.pi_or_vf_sync_condition&insanity>=40\n        if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and A.BurstIsON(unit) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) and Player:AreaTTD(40) > 15 then\n            return A.VoidEruption:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_pain,if=buff.fae_guardians.up&!debuff.wrathful_faerie.up\n        \n        \n        --actions.main+=/call_action_list,name=cds\n        --Use Silence on CD if legendary equipped\n        --[[Essence\n        if A.ConcentratedFlame:IsReady(unit) and BurstIsON then\n            return A.Darkflight:Show(icon)\n        end]]\n        \n        --actions.cds+=/mindgames,target_if=insanity<90&(variable.all_dots_up|buff.voidform.up)&(!talent.hungering_void.enabled|debuff.hungering_void.up|!buff.voidform.up)&(!talent.searing_nightmare.enabled|spell_targets.mind_sear<5)\n        if A.Mindgames:IsReady(unit) and BurstIsON(unit) and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then\n            return A.Mindgames:Show(icon)\n        end    \n        \n        \n        --Trinkets\n        -- Non SIMC Custom Trinket1\n        if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and    \n        (\n            TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD\n            or\n            not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     \n        )\n        then \n            return A.Trinket1:Show(icon)\n        end         \n        \n        -- Non SIMC Custom Trinket2\n        if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and        \n        (\n            TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD\n            or\n            not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     \n        )\n        then\n            return A.Trinket2:Show(icon)     \n        end    \n        \n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and ((VTRefreshable and Unit(unit):TimeToDie() > 6) or (A.Misery:IsTalentLearned() and SWPRefreshable)) then\n            return A.VampiricTouch:Show(icon)\n        end            \n        \n        --actions.main+=/mind_sear,target_if=talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1)&!dot.shadow_word_pain.ticking&!cooldown.Shadowfiend.up\n        if A.MindSear:IsReady(unit) and A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > 3 and  Unit(unit):HasBuffs(A.ShadowWordPainDebuff.ID, true) == 0 and A.Shadowfiend:GetCooldown() > 0 and (not isMoving or StMActive)then\n            return A.MindSear:Show(icon)\n        end            \n        \n        --actions.main+=/damnation,target_if=!variable.all_dots_up\n        if A.Damnation:IsReady(unit) and not VarAllDotsUp then\n            return A.Damnation:Show(icon)\n        end    \n        --actions.main+=/void_bolt,if=insanity<=85&((talent.hungering_void.enabled&spell_targets.mind_sear<5)|spell_targets.mind_sear=1)\n        if A.VoidBolt:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and VoidFormActive and Player:Insanity() <= 85 and ((A.HungeringVoid:IsSpellLearned() and MultiUnits:GetActiveEnemies() < 5) or MultiUnits:GetActiveEnemies() < 2) then\n            return A.VoidBolt:Show(icon)\n        end    \n        \n        --actions.main+=/devouring_plague,target_if=(refreshable|insanity>75)&!variable.pi_or_vf_sync_condition&(!talent.searing_nightmare.enabled|(talent.searing_nightmare.enabled&!variable.searing_nightmare_cutoff))\n        if A.DevouringPlague:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and ((Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) < 3 or Unit(unit):HasDeBuffs(A.DevouringPlague.ID, true) == 0) or Player:Insanity() > 75) and ((not A.VoidEruption:IsReady()) or VoidFormActive) and (not A.SearingNightmare:IsSpellLearned() or (A.SearingNightmare:IsSpellLearned() and MultiUnits:GetActiveEnemies() <= 3)) then\n            return A.DevouringPlague:Show(icon)\n        end    \n        \n        --actions.main+=/void_bolt,if=spell_targets.mind_sear<(4+conduit.dissonant_echoes.enabled)&insanity<=85\n        if A.VoidBolt:IsReady(unit) and MultiUnits:GetActiveEnemies() < 4 and Player:Insanity() <= 85 and VoidFormActive then\n            return A.VoidBolt:Show(icon)\n        end    \n        --actions.main+=/shadow_word_death,target_if=(target.health.pct<20&spell_targets.mind_sear<4)|(pet.fiend.active&runeforge.shadowflame_prism.equipped)\n        if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() < 20 and MultiUnits:GetActiveEnemies() < 4 then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        \n        --actions.main+=/surrender_to_madness,target_if=target.time_to_die<25&buff.voidform.down\n        if A.SurrenderToMadness:IsReady(unit) and Unit(unit):TimeToDie() < 25 and not VoidFormActive then\n            return A.SurrenderToMadness:Show(icon)\n        end\n        \n        --actions.main+=/Shadowfiend,if=dot.vampiric_touch.ticking&((talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1))|dot.shadow_word_pain.ticking)\n        if A.Shadowfiend:IsReady(unit) and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) > 0 and Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) > 0 then\n            return A.Shadowfiend:Show(icon)\n        end    \n        --actions.main+=/void_torrent,target_if=variable.dots_up&target.time_to_die>4&buff.voidform.down&spell_targets.mind_sear<(5+(6*talent.twist_of_fate.enabled))\n        if A.VoidTorrent:IsReady(unit) and (not isMoving or StMActive) and VarDotsUp and Unit(unit):TimeToDie() > 4 and not VoidFormActive and MultiUnits:GetActiveEnemies() < (5 + (6 * num(A.TwistofFateTalent:IsSpellLearned()))) then\n            return A.VoidTorrent:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_death,if=runeforge.painbreaker_psalm.equipped&variable.dots_up&target.time_to_pct_20>(cooldown.shadow_word_death.duration+gcd)\n        \n        \n        --actions.main+=/shadow_crash,if=spell_targets.shadow_crash=1&(cooldown.shadow_crash.charges=3|debuff.shadow_crash_debuff.up|action.shadow_crash.in_flight|target.time_to_die<cooldown.shadow_crash.full_recharge_time)&raid_event.adds.in>30\n        if A.ShadowCrash:IsReady(player) and MultiUnits:GetActiveEnemies() < 2 and (A.ShadowCrash:GetSpellCharges() > 2 or Unit(unit):HasDeBuffs(A.ShadowCrashDebuff.ID, true) > 0) then\n            return A.ShadowCrash:Show(icon)\n        end\n        \n        \n        --actions.main+=/shadow_crash,if=raid_event.adds.in>30&spell_targets.shadow_crash>1\n        if A.ShadowCrash:IsReady(player) and MultiUnits:GetActiveEnemies() > 1 then\n            return A.ShadowCrash:Show(icon)\n        end    \n        \n        --actions.main+=/mind_sear,target_if=spell_targets.mind_sear>variable.mind_sear_cutoff&buff.dark_thought.up,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2\n        \n        \n        --actions.main+=/mind_blast,if=variable.dots_up&raid_event.movement.in>cast_time+0.5&spell_targets.mind_sear<4\n        if A.MindBlast:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and VarDotsUp and MultiUnits:GetActiveEnemies() < 4 and (not isMoving or StMActive or Unit(player):HasBuffs(A.DarkThought.ID, true) > 0) then\n            return A.MindBlast:Show(icon)\n        end    \n        \n        --[[actions.main+=/vampiric_touch,target_if=refreshable&target.time_to_die>6|(talent.misery.enabled&dot.shadow_word_pain.refreshable)|buff.unfurling_darkness.up\n        if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and (not isMoving or Unit(player):HasBuffs(A.SurrenderToMadness.ID, true) > 0) and Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0 and Unit(unit):TimeToDie() > 6 then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        --[[if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and Temp.VampiricTouchDelay == 0 and ((A.Misery:IsSpellLearned() and not VarDotsUp) or (not A.Misery:IsSpellLearned() and (Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) < 4 or Unit(unit):HasDeBuffs(A.VampiricTouchDebuff.ID, true) == 0))) and Unit(unit):TimeToDie() > 6 and (not isMoving or StMActive) then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        \n        --[[or (A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and A.Misery:IsSpellLearned() and not VarDotsUp) then\n            return A.VampiricTouch:Show(icon)\n        end]]\n        \n        --actions.main+=/shadow_word_pain,if=refreshable&target.time_to_die>4&!talent.misery.enabled&talent.psychic_link.enabled&spell_targets.mind_sear>2\n        if A.ShadowWordPain:IsReady(unit, nil, nil, A.GetToggle(2, \"ByPassSpells\")) and (Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPainDebuff.ID, true) < 3) and Unit(unit):TimeToDie() > 4 and not A.Misery:IsSpellLearned() then\n            return    A.ShadowWordPain:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_pain,target_if=refreshable&target.time_to_die>4&!talent.misery.enabled&!(talent.searing_nightmare.enabled&spell_targets.mind_sear>(variable.mind_sear_cutoff+1))&(!talent.psychic_link.enabled|(talent.psychic_link.enabled&spell_targets.mind_sear<=2))\n        \n        \n        --actions.main+=/mind_sear,target_if=spell_targets.mind_sear>variable.mind_sear_cutoff,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2\n        if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() > 2 and (not isMoving or StMActive) then\n            return A.MindSear:Show(icon)\n        end    \n        \n        --actions.main+=/mind_flay,chain=1,interrupt_immediate=1,interrupt_if=ticks>=2&cooldown.void_bolt.up\n        if A.MindFlay:IsReady(unit) and (not isMoving or StMActive) then\n            return A.MindFlay:Show(icon)\n        end    \n        \n        --actions.main+=/shadow_word_death\n        if A.ShadowWordDeath:IsReady(unit) and isMoving and inCombat then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        --PWS Moving\n        if isMovingFor > Action.GetToggle(2, \"PWSMove\") and Unit(\"player\"):HasDeBuffs(A.WeakenedSoulDebuff.ID) == 0 and Action.GetToggle(2, \"UsePWS\") and A.BodyAndSoul:IsSpellLearned() then\n            -- Notification                    \n            A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Speed Boost!\", \"Using Power Word: Shield!\", A.PowerWordShield.ID)\n            return A.PowerWordShield:Show(icon)\n        end\n        \n        --actions.main+=/shadow_word_pain\n        if A.ShadowWordPain:IsReady(unit) and isMoving and inCombat then\n            return A.ShadowWordPain:Show(icon)\n        end    \n        \n        \n    end\n    \n    -- End on EnemyRotation()\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Mouseover\n    if A.IsUnitEnemy(\"mouseover\") then\n        unit = \"mouseover\"\n        if EnemyRotation(unit) then \n            return true \n        end \n    end \n    \n    -- Target  \n    if A.IsUnitEnemy(\"target\") then \n        unit = \"target\"\n        if EnemyRotation(unit) then \n            return true\n        end \n        \n    end\nend\n-- Finished",
+				}, -- [2]
+				{
+					["Order"] = 2,
+					["Name"] = "Prediction Healing",
+					["Code"] = "local _G, math, error                = _G, math, error\nlocal math_ceil                        = math.ceil\nlocal math_max                        = math.max\n\nlocal TMW                             = _G.TMW\n\nlocal A                             = _G.Action\nlocal CONST                         = A.Const\nlocal HealingEngine                    = Action.HealingEngine\nlocal Unit                             = A.Unit \nlocal GetCurrentGCD                    = A.GetCurrentGCD\nlocal GetSpellDescription            = A.GetSpellDescription\nlocal GetToggle                        = A.GetToggle\nlocal GetLatency                    = A.GetLatency\n\nlocal HealingEngineIsManaSave        = HealingEngine.IsManaSave\n\nlocal UnitIsUnit                    = _G.UnitIsUnit\n\nlocal AtonementBuff = 0\n\nfunction A:PredictHeal(unitID, variation, enemies)  \n    -- @usage obj:PredictHeal(unitID[, variation]) \n    -- @return boolean, number \n    -- Returns:\n    -- [1] true if action can be used\n    -- [2] total amount of predicted missed health \n    -- Any healing spell can be applied     \n    if Unit(unitID):IsPenalty() then\n        return true, 0\n    end     \n    \n    local PO = GetToggle(8, \"PredictOptions\")\n    -- PO[1] incHeal\n    -- PO[2] incDMG\n    -- PO[3] threat -- not usable in prediction\n    -- PO[4] HoTs\n    -- PO[5] absorbPossitive\n    -- PO[6] absorbNegative\n    local defaultVariation, isManaSave\n    local variation = variation or 1\n    if A.IamHealer and HealingEngineIsManaSave(unitID) then \n        isManaSave = true \n        defaultVariation = variation\n        variation = math_max(variation - 1 + GetToggle(8, \"ManaManagementPredictVariation\"), 1)        \n    end    \n    \n    local enemies = enemies or 0\n    \n    -- Class things\n    -- Discipline\n    if Unit(\"player\"):HasSpec(256) then \n        AtonementBuff = Unit(unitID):HasBuffs(81749, \"player\", true)\n        AtonementBuff = (AtonementBuff > A.GetGCD() + A.GetCurrentGCD() and AtonementBuff) or 0\n    elseif AtonementBuff ~= 0 then \n        AtonementBuff = 0\n    end \n    \n    -- Spells\n    if self.predictName == \"PenanceHeal\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total         \n    end \n    \n    if self.predictName == \"PenanceDMG\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * 0.55 * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total                  \n    end \n    \n    -- Power Word: Shield\n    if self.predictName == \"PowerWordShield\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Power Word: Radiance\n    if self.predictName == \"PowerWordRadiance\" then  \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total                    \n    end \n    \n    if self.predictName == \"ShadowMend\" then  \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total               \n    end \n    \n    if self.predictName == \"DivineStar\" then               \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total        \n    end    \n    \n    if self.predictName == \"Halo\" then  \n        \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        local cast = Unit(\"player\"):CastTime(120517) + A.GetCurrentGCD()\n        local withoutOptions = (desc[1] * variation) + ((AtonementBuff > cast and desc[1] * 0.55 * enemies) or 0) \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    if self.predictName == \"HolyNova\" then   \n        \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = (desc[2] * variation) + ((AtonementBuff > 0 and desc[1] * 0.55 * enemies) or 0) \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total           \n    end \n    \n    if self.predictName == \"ShadowCovenant\" then\n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation + desc[2] \n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total  \n        \n    end \n    \n    -- Holy \n    -- Note about Mastery: Regarding overwrite previous effect by any next spell here is no reason to add that \n    -- Holy Word: Sanctify \n    if self.predictName == \"HolyWordSanctify\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total    \n    end \n    \n    -- Holy Word: Serenity \n    if self.predictName == \"HolyWordSerenity\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Circle of Healing \n    if self.predictName == \"CircleOfHealing\" then       \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer Of Mending    \n    if self.predictName == \"PrayerofMending\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer Of Mending HoT   \n    if self.predictName == \"PrayerofMendingHoT\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Prayer of Healing\n    if self.predictName == \"PrayerOfHealing\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Binding Heal\n    if self.predictName == \"BindingHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Renew \n    if self.predictName == \"Renew\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[2] * variation + (desc[1] * 15)\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total              \n        \n    end \n    \n    -- Flash Heal\n    if self.predictName == \"FlashHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Heal \n    if self.predictName == \"Heal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Apotheosis\n    if self.predictName == \"Apotheosis\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local Serenity = A.GetSpellDescription(2050)[1] * variation \n        local Sancify = A.GetSpellDescription(34861)[1] * variation        \n        local withoutOptions = Serenity + Sancify\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n        \n    end \n    \n    -- PvP: Greater Heal \n    if self.predictName == \"GreaterHeal\" then   \n        local desc = self:GetSpellDescription()\n        local castTime = self:GetSpellCastTime()\n        \n        -- Add current GCD to pre-pare \n        if castTime > 0 then \n            castTime = castTime + GetCurrentGCD()\n        end \n        \n        local incHeal, incDMG, HoTs, absorbPossitive, absorbNegative = 0, 0, 0, 0, 0\n        if PO[1] and castTime > 0 then \n            incHeal = Unit(unitID):GetIncomingHeals()\n        end \n        \n        if PO[2] and castTime > 0 then \n            incDMG = Unit(unitID):GetDMG() * castTime\n        end \n        \n        if PO[4] and castTime > 0 then -- 4 here!\n            HoTs = Unit(unitID):GetHEAL() * castTime\n        end \n        \n        if PO[5] then \n            absorbPossitive = Unit(unitID):GetAbsorb()\n            -- Better don't touch it, not tested anyway\n            if absorbPossitive >= Unit(unitID):HealthDeficit() then \n                absorbPossitive = 0\n            end \n        end \n        \n        if PO[6] then \n            absorbNegative = Unit(unitID):GetTotalHealAbsorbs()\n        end \n        \n        local withoutOptions = desc[1] * variation\n        local total = withoutOptions + incHeal - incDMG + HoTs + absorbPossitive - absorbNegative\n        \n        return Unit(unitID):HealthDeficit() >= total, total \n    end \n    \n    -- Debug \n    if not self.predictName then \n        error((self:GetKeyName() or \"Unknown action name\") .. \" doesn't contain predictName\")        \n    end \n    \n    return false, 0\n    \nend\n\n\n",
+				}, -- [3]
+				{
+					["Order"] = 2,
+					["Name"] = "DISCIPLINE",
+					["Code"] = "--######################################\n--###### TRIP'S DISCIPLINE PRIEST ######\n--######################################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal TMW                                 = _G.TMW\nlocal Listener                                    = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                    = Action.GetToggle\nlocal SetToggle                                    = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                                = Action.GetCurrentGCD\nlocal GetPing                                    = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                    = Action.BurstIsON\nlocal AuraIsValid                                = Action.AuraIsValid\nlocal InterruptIsValid                            = Action.InterruptIsValid\nlocal FrameHasSpell                                = Action.FrameHasSpell\nlocal Utils                                        = Action.Utils\nlocal TeamCache                                    = Action.TeamCache\nlocal TeamCacheFriendly                         = TeamCache.Friendly\nlocal TeamCacheFriendlyIndexToPLAYERs           = TeamCacheFriendly.IndexToPLAYERs\nlocal TeamCacheFriendlyUNITs            = TeamCacheFriendly.UNITs             -- unitID to GUID \nlocal TeamCacheFriendlyGUIDs            = TeamCacheFriendly.GUIDs             -- GUID to unitID \nlocal EnemyTeam                                    = Action.EnemyTeam\nlocal FriendlyTeam                                = Action.FriendlyTeam\nlocal LoC                                        = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                                = Action.UnitCooldown\nlocal Unit                                        = Action.Unit \nlocal IsUnitEnemy                                = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                            = MultiUnits:GetActiveUnitPlates()\nlocal HealingEngine                             = A.HealingEngine\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax = \nUnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax\n\n--Toaster stuff\nlocal Toaster                        = _G.Toaster -- The Action _G.Toaster will be initilized first, then _G.Toaster will be replaced by original if Toaster addon will be loaded, but we will keep our local\nlocal GetSpellTexture                 = _G.TMW.GetSpellTexture\n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\nAction[ACTION_CONST_PRIEST_DISCIPLINE] = { -- Register spells\n    -- Racial\n    ArcaneTorrent                          = Action.Create({ Type = \"Spell\", ID = 50613 }),\n    BloodFury                              = Action.Create({ Type = \"Spell\", ID = 20572 }),\n    Fireblood                              = Action.Create({ Type = \"Spell\", ID = 265221 }),\n    AncestralCall                          = Action.Create({ Type = \"Spell\", ID = 274738 }),\n    Berserking                             = Action.Create({ Type = \"Spell\", ID = 26297 }),\n    ArcanePulse                            = Action.Create({ Type = \"Spell\", ID = 260364 }),\n    QuakingPalm                            = Action.Create({ Type = \"Spell\", ID = 107079 }),\n    Haymaker                               = Action.Create({ Type = \"Spell\", ID = 287712 }), \n    WarStomp                               = Action.Create({ Type = \"Spell\", ID = 20549 }),\n    BullRush                               = Action.Create({ Type = \"Spell\", ID = 255654 }),    \n    GiftofNaaru                            = Action.Create({ Type = \"Spell\", ID = 59544 }),\n    Shadowmeld                             = Action.Create({ Type = \"Spell\", ID = 58984 }), -- usable in Action Core \n    Stoneform                              = Action.Create({ Type = \"Spell\", ID = 20594 }), \n    WilloftheForsaken                      = Action.Create({ Type = \"Spell\", ID = 7744  }), -- not usable in APL but user can Queue it    \n    EscapeArtist                           = Action.Create({ Type = \"Spell\", ID = 20589 }), -- not usable in APL but user can Queue it\n    EveryManforHimself                     = Action.Create({ Type = \"Spell\", ID = 59752 }), -- not usable in APL but user can Queue it\n    Darkflight                             = Action.Create({ Type = \"Spell\", ID = 68992 }),\n    \n    --Priest General\n    DesperatePrayer                        = Action.Create({ Type = \"Spell\", ID = 19236 }),\n    DispelMagic                               = Action.Create({ Type = \"Spell\", ID = 528 }),\n    Fade                                   = Action.Create({ Type = \"Spell\", ID = 586 }),\n    LeapofFaith                               = Action.Create({ Type = \"Spell\", ID = 73325 }),\n    Levitate                               = Action.Create({ Type = \"Spell\", ID = 1706 }),\n    MassDispel                               = Action.Create({ Type = \"Spell\", ID = 32375 }),\n    MindBlast                               = Action.Create({ Type = \"Spell\", ID = 8092 }),\n    MindControl                               = Action.Create({ Type = \"Spell\", ID = 605 }),\n    MindVision                               = Action.Create({ Type = \"Spell\", ID = 2096 }),\n    PowerWordFortitude                       = Action.Create({ Type = \"Spell\", ID = 21562 }),\n    PowerWordShield                           = Action.Create({ Type = \"Spell\", ID = 17 }),\n    PsychicScream                           = Action.Create({ Type = \"Spell\", ID = 8122 }),\n    Resurrection                           = Action.Create({ Type = \"Spell\", ID = 2006 }),\n    ShackleUndead                           = Action.Create({ Type = \"Spell\", ID = 9484 }),\n    ShadowWordDeath                           = Action.Create({ Type = \"Spell\", ID = 32379 }),\n    ShadowWordPain                           = Action.Create({ Type = \"Spell\", ID = 589 }),    \n    Smite                                   = Action.Create({ Type = \"Spell\", ID = 585 }),\n    FocusedWill                               = Action.Create({ Type = \"Spell\", ID = 45243, Hidden = true }),\n    MindSoothe                               = Action.Create({ Type = \"Spell\", ID = 453 }),\n    PowerInfusion                           = Action.Create({ Type = \"Spell\", ID = 10060 }),\n    \n    --Discipline Specific\n    HolyNova                               = Action.Create({ Type = \"Spell\", ID = 132157 }), --possibly changes to ID 322112 at level 56?\n    MassResurrection                       = Action.Create({ Type = \"Spell\", ID = 212036 }),\n    MindSear                               = Action.Create({ Type = \"Spell\", ID = 48045 }),\n    PainSuppression                           = Action.Create({ Type = \"Spell\", ID = 33206 }),\n    Penance                                   = Action.Create({ Type = \"Spell\", ID = 47540 }),\n    PenanceDMG                                = Action.Create({ Type = \"Spell\", ID = 47540, Texture = 23018, Hidden = true }),\n    PowerWordBarrier                       = Action.Create({ Type = \"Spell\", ID = 62618 }),\n    PowerWordRadiance                       = Action.Create({ Type = \"Spell\", ID = 194509 }),\n    Purify                                   = Action.Create({ Type = \"Spell\", ID = 527 }),\n    Rapture                                   = Action.Create({ Type = \"Spell\", ID = 47536 }),\n    ShadowMend                               = Action.Create({ Type = \"Spell\", ID = 186263 }),\n    Shadowfiend                               = Action.Create({ Type = \"Spell\", ID = 34433 }),\n    Atonement                               = Action.Create({ Type = \"Spell\", ID = 81749, Hidden = true }),\n    MasteryGrace                           = Action.Create({ Type = \"Spell\", ID = 271534, Hidden = true }),\n    PoweroftheDarkSide                       = Action.Create({ Type = \"Spell\", ID = 198068, Hidden = true }),\n    \n    --Talents\n    Castigation                               = Action.Create({ Type = \"Spell\", ID = 193134, Hidden = true }),\n    TwistofFate                               = Action.Create({ Type = \"Spell\", ID = 265259, Hidden = true }),\n    Schism                                   = Action.Create({ Type = \"Spell\", ID = 214621 }),\n    BodyandSoul                               = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true }),\n    Masochism                               = Action.Create({ Type = \"Spell\", ID = 193063, Hidden = true }),\n    AngelicFeather                           = Action.Create({ Type = \"Spell\", ID = 121536 }),\n    ShieldDiscipline                       = Action.Create({ Type = \"Spell\", ID = 197045, Hidden = true }),\n    Mindbender                               = Action.Create({ Type = \"Spell\", ID = 123040 }),\n    PowerWordSolace                           = Action.Create({ Type = \"Spell\", ID = 129250 }),\n    PsychicVoice                           = Action.Create({ Type = \"Spell\", ID = 196704, Hidden = true }),\n    DominantMind                           = Action.Create({ Type = \"Spell\", ID = 205367, Hidden = true }),\n    ShiningForce                           = Action.Create({ Type = \"Spell\", ID = 204263 }),\n    SinsoftheMany                           = Action.Create({ Type = \"Spell\", ID = 280391, Hidden = true }),\n    Contrition                               = Action.Create({ Type = \"Spell\", ID = 197419, Hidden = true }),\n    ShadowCovenant                           = Action.Create({ Type = \"Spell\", ID = 314867 }),\n    PurgetheWicked                           = Action.Create({ Type = \"Spell\", ID = 204197 }),\n    DivineStar                               = Action.Create({ Type = \"Spell\", ID = 110744 }),\n    Halo                                   = Action.Create({ Type = \"Spell\", ID = 120517 }),\n    Lenience                               = Action.Create({ Type = \"Spell\", ID = 238063, Hidden = true }),\n    SpiritShell                               = Action.Create({ Type = \"Spell\", ID = 109964 }),\n    Evangelism                               = Action.Create({ Type = \"Spell\", ID = 246287 }),\n    \n    --PvP Talents\n    Purification                           = Action.Create({ Type = \"Spell\", ID = 196162, Hidden = true }),\n    PurifiedResolve                           = Action.Create({ Type = \"Spell\", ID = 196439, Hidden = true }),\n    Trinity                                   = Action.Create({ Type = \"Spell\", ID = 214205, Hidden = true }),\n    StrengthofSoul                           = Action.Create({ Type = \"Spell\", ID = 197535, Hidden = true }),\n    UltimateRadiance                       = Action.Create({ Type = \"Spell\", ID = 236499, Hidden = true }),\n    DomeofLight                               = Action.Create({ Type = \"Spell\", ID = 197590, Hidden = true }),\n    Archangel                               = Action.Create({ Type = \"Spell\", ID = 197862 }),\n    DarkArchangel                           = Action.Create({ Type = \"Spell\", ID = 197871 }),\n    Thoughtsteal                           = Action.Create({ Type = \"Spell\", ID = 316262 }),\n    SearingLight                           = Action.Create({ Type = \"Spell\", ID = 215768, Hidden = true }),\n    \n    --Misc\n    WeakenedSoul                           = Action.Create({ Type = \"Spell\", ID = 6788, Hidden = true }),\n    \n    --Covenants to come\n    \n};\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_DISCIPLINE)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_DISCIPLINE], { __index = Action })\n\nlocal player = \"player\"\nlocal targettarget = \"targettarget\"\nlocal target = \"target\"\nlocal mouseover = \"mouseover\"\n\nToaster:Register(\"TripToast\", function(toast, ...) -- Register Toaster\n        local title, message, spellID = ...\n        toast:SetTitle(title or \"nil\")\n        toast:SetText(message or \"nil\")\n        if spellID then \n            if type(spellID) ~= \"number\" then \n                error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n                toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n            else \n                toast:SetIconTexture((GetSpellTexture(spellID)))\n            end \n        else \n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        end \n        toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolHolyFree() -- Holy locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"HOLY\") == 0\nend \n\nlocal function IsSchoolShadowFree() -- Shadow locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function IsSchoolFireFree() -- Fire locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"FIRE\") == 0\nend \n\nfunction HealingEngine.GetMembersAll()\n    -- @return array table of all select able units \n    return SortedUnitIDs \nend \n\nlocal function GetValidMembers(IsPlayer) -- Get Friendly Group Members\n    local HealingEngineMembersALL = A.HealingEngine.GetMembersAll()\n    if not IsPlayer then \n        return #HealingEngineMembersALL\n    else \n        local total = 0 \n        if #HealingEngineMembersALL > 0 then \n            for i = 1, #HealingEngineMembersALL do\n                if Unit(HealingEngineMembersALL[i].Unit):IsPlayer() then\n                    total = total + 1\n                end\n            end \n        end \n        return total \n    end \nend\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat) -- Range check function\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\nlocal function SelfDefensives() -- Defensives\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local DesperatePrayer = A.GetToggle(2, \"DesperatePrayer\")\n    if    DesperatePrayer >= 0 and A.DesperatePrayer:IsReady(player) and \n    (\n        (     -- Auto \n            DesperatePrayer >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            DesperatePrayer < 100 and \n            Unit(player):HealthPercent() <= DesperatePrayer\n        )\n    ) \n    then \n        return A.DesperatePrayer\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\n--- ======= ACTION LISTS =======\nA[3] = function(icon, isMulti) -- Single target icon displayer\n    \n    --#####################\n    --##### VARIABLES #####\n    --#####################\n    \n    local isMoving = A.Player:IsMoving()\n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local CanCast = true\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local getmembersAll = HealingEngine.GetMembersAll()\n    local PenDMG = A.GetToggle(2, \"PenanceWorkMode\") ~= \"HEAL\"\n    local PenHEAL = A.GetToggle(2, \"PenanceWorkMode\") ~= \"DMG\"\n    local AoE = A.GetToggle(2, \"AoE\")\n    local PWSHP = A.GetToggle(2, \"PowerWordShieldHP\")\n    local PWSTank = A.GetToggle(2, \"PWSWorkMode\") ~= \"SELF\"\n    local PWSSelf = A.GetToggle(2, \"PWSWorkMode\") ~= \"TANK\"\n    local PWSAll = A.GetToggle(2, \"PWSWorkMode\") == \"ALL\"\n    local ShieldTank = A.GetToggle(2, \"ShieldTank\")\n    local SMendNoAtone = A.GetToggle(2, \"ShadowMendHPNoAtone\")\n    local SMendAtone = A.GetToggle(2, \"ShadowMendHPWithAtone\")\n    local PenanceHeal = A.GetToggle(2, \"PenanceHeal\")\n    local RadianceHP = A.GetToggle(2, \"RadianceHP\")\n    local RadianceMembers = A.GetToggle(2, \"RadianceMembers\")\n    local ShadowCovHP = A.GetToggle(2, \"ShadowCovHP\")\n    local ShadowCovMembers = A.GetToggle(2, \"ShadowCovMembers\")\n    local ShadowCovAtone = A.GetToggle(2, \"ShadowCovAtone\")\n    if not CanCast then -- Pooling Icon if can't cast\n        return A.PoolResource:Show(icon)\n    end\n    \n    --########################    \n    --##### DMG ROTATION #####\n    --########################\n    \n    local function DamageRotation(unit) -- Damage rotation\n        \n        if A.ShadowWordDeath:IsReady(unit) and Unit(targettarget):HealthPercent() <= 20 then\n            return A.ShadowWordDeath:Show(icon)\n        end    \n        \n        if A.ShadowWordPain:IsReady(unit) and not A.PurgetheWicked:IsTalentLearned() and (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 5) then\n            return A.ShadowWordPain:Show(icon)\n        end    \n        \n        if A.PurgetheWicked:IsReady(unit) and (Unit(unit):HasDeBuffs(A.PurgetheWicked.ID, true) == 0 or Unit(unit):HasDeBuffs(A.PurgetheWicked.ID, true) < 5) then\n            return A.PurgetheWicked:Show(icon)\n        end    \n        \n        if A.Schism:IsReady(unit) and not isMoving then\n            return A.Schism:Show(icon)\n        end\n        \n        if A.Halo:IsReady(player) and not isMoving then\n            return A.Halo:Show(icon)\n        end\n        \n        if A.DivineStar:IsReady(player) and Unit(unit):GetRange() <= 24 then\n            return A.DivineStar:Show(icon)\n        end    \n        \n        if A.MindBlast:IsReady(unit) and not isMoving then\n            return A.MindBlast:Show(icon)\n        end\n        \n        if A.PowerWordSolace:IsReady(unit) then\n            return A.PowerWordSolace:Show(icon)\n        end\n        \n        if A.Penance:IsReady(unit) and PenDMG then\n            return A.PenanceDMG:Show(icon)\n        end    \n        \n        if A.MindSear:IsReady(unit) and MultiUnits:GetActiveEnemies() >= 2 and AoE and not isMoving then\n            return A.MindSear:Show(icon)\n        end                \n        \n        if A.Smite:IsReady(unit) and not isMoving then\n            return A.Smite:Show(icon)\n        end\n        \n        if A.MindSear:IsReady(unit) and not isMoving then\n            return A.MindSear:Show(icon)\n        end    \n        \n    end\n    \n    \n    --############################    \n    --##### HEALING ROTATION #####\n    --############################\n    \n    local function HealingRotation(unit)\n        \n        --Power Word: Radiance\n        if A.PowerWordRadiance:IsReady(unit) and not isMoving and HealingEngine.GetBelowHealthPercentUnits(RadianceHP, 40) > RadianceMembers and HealingEngine.GetBuffsCount(81749, 1) <= 4 then\n            return A.PowerWordRadiance:Show(icon)\n        end    \n        \n        --Shadow Covenants\n        if A.ShadowCovenant:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(ShadowCovHP, 30) > ShadowCovMembers and HealingEngine.GetBuffsCount(81749, 5) >= ShadowCovAtone then\n            return A.ShadowCovenant:Show(icon)\n        end    \n        \n        --Penance Heal\n        if A.Penance:IsReady(unit) and Unit(unit):HealthPercent() <= PenanceHeal and PenHEAL then\n            return A.Penance:Show(icon)\n        end    \n        \n        --ShadowMend with Atonement\n        if A.ShadowMend:IsReady(unit) and not isMoving and Unit(unit):HealthPercent() <= SMendAtone and Unit(unit):HasBuffs(A.Atonement.ID, true) > 0 then\n            return A.ShadowMend:Show(icon)\n        end    \n        \n        --ShadowMend without Atonement\n        if A.ShadowMend:IsReady(unit) and not isMoving and Unit(unit):HealthPercent() <= SMendNoAtone and Unit(unit):HasBuffs(A.Atonement.ID, true) == 0 then\n            return A.ShadowMend:Show(icon)\n        end    \n        \n        --PW:S Tank on cooldown\n        if A.PowerWordShield:IsReady(unit) and ShieldTank and Unit(unit):IsTank() and Unit(unit):HasDeBuffs(A.WeakenedSoul.ID, true) == 0 then\n            return A.PowerWordShield:Show(icon)\n        end    \n        \n        --PW:S\n        if A.PowerWordShield:IsReady(unit) and Unit(unit):HasDeBuffs(A.WeakenedSoul.ID, true) == 0 and Unit(unit):HasBuffs(A.PowerWordShield.ID, true) == 0 and Unit(unit):HasBuffs(A.Atonement.ID, true) < 2 and Unit(unit):HealthPercent() <= PWSHP and (PWSAll or (UnitIsUnit(\"target\", \"player\") and PWSSelf) or (Unit(unit):IsTank() and PWSTank)) then \n            return A.PowerWordShield:Show(icon)\n        end        \n        \n    end\n    \n    --#############################\n    --##### MAIN ACTION CALLS #####\n    --#############################\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Friendly Mouseover\n    if A.IsUnitFriendly(mouseover) then \n        unit = mouseover  \n        \n        if HealingRotation(unit) then \n            return true \n        end             \n    end\n    \n    -- Heal Target \n    if A.IsUnitFriendly(target) then \n        unit = target \n        \n        if HealingRotation(unit) then \n            return true \n        end \n    end    \n    \n    -- Enemy Mouseover \n    if A.IsUnitEnemy(mouseover) then \n        unit = mouseover    \n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS Target     \n    if A.IsUnitEnemy(target) then \n        unit = target\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS targettarget     \n    if A.IsUnitEnemy(targettarget) then \n        unit = targettarget\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    \nend \n\n-- End of Rotation\n\nA[4] = nil -- AoE icon display\n\nA[5] = nil -- Trinket icon display\n\nlocal function FreezingTrapUsedByEnemy()\n    if     UnitCooldown:GetCooldown(\"arena\", 3355) > UnitCooldown:GetMaxDuration(\"arena\", 3355) - 2 and\n    UnitCooldown:IsSpellInFly(\"arena\", 3355) and \n    Unit(player):GetDR(\"incapacitate\") >= 50 \n    then \n        local Caster = UnitCooldown:GetUnitID(\"arena\", 3355)\n        if Caster and Unit(Caster):GetRange() <= 40 then \n            return true \n        end \n    end \nend \nlocal function ArenaRotation(icon, unit)\n    if A.IsInPvP and (A.Zone == \"pvp\" or A.Zone == \"arena\") and not Player:IsStealthed() and not Player:IsMounted() then\n        -- Note: \"arena1\" is just identification of meta 6\n        if (unit == \"arena1\" or unit == \"arena2\" or unit == \"arena3\") then  \n            -- Interrupt\n            local Interrupt = Interrupts(unit)\n            if Interrupt then \n                return Interrupt:Show(icon)\n            end    \n        end\n    end \nend \nlocal function PartyRotation(unit)\n    if (unit == \"party1\" and not A.GetToggle(2, \"PartyUnits\")[1]) or (unit == \"party2\" and not A.GetToggle(2, \"PartyUnits\")[2]) then \n        return false \n    end\n    \nend \n\nA[6] = function(icon)\n    return ArenaRotation(icon, \"arena1\")\nend\n\nA[7] = function(icon)\n    --  local Party = PartyRotation(\"party1\") \n    if Party then \n        return Party:Show(icon)\n    end \n    return ArenaRotation(icon, \"arena2\")\nend\n\nA[8] = function(icon)\n    -- local Party = PartyRotation(\"party2\") \n    if Party then \n        return Party:Show(icon)\n    end     \n    return ArenaRotation(icon, \"arena3\")\nend",
+				}, -- [4]
+				{
+					["Order"] = 2,
+					["Name"] = "HOLY",
+					["Code"] = "--##############################\n--##### TRIP'S HOLY PRIEST #####\n--##############################\n\nlocal _G, setmetatable                            = _G, setmetatable\nlocal A                                         = _G.Action\nlocal Covenant                                    = _G.LibStub(\"Covenant\")\nlocal TMW                                        = _G.TMW\nlocal Listener                                  = Action.Listener\nlocal Create                                    = Action.Create\nlocal GetToggle                                 = Action.GetToggle\nlocal SetToggle                                 = Action.SetToggle\nlocal GetGCD                                    = Action.GetGCD\nlocal GetCurrentGCD                             = Action.GetCurrentGCD\nlocal GetPing                                   = Action.GetPing\nlocal ShouldStop                                = Action.ShouldStop\nlocal BurstIsON                                 = Action.BurstIsON\nlocal CovenantIsON                                = Action.CovenantIsON\nlocal AuraIsValid                               = Action.AuraIsValid\nlocal InterruptIsValid                          = Action.InterruptIsValid\nlocal FrameHasSpell                             = Action.FrameHasSpell\nlocal Utils                                     = Action.Utils\nlocal TeamCache                                 = Action.TeamCache\nlocal EnemyTeam                                 = Action.EnemyTeam\nlocal FriendlyTeam                              = Action.FriendlyTeam\nlocal LoC                                       = Action.LossOfControl\nlocal Player                                    = Action.Player \nlocal MultiUnits                                = Action.MultiUnits\nlocal UnitCooldown                              = Action.UnitCooldown\nlocal Unit                                      = Action.Unit \nlocal IsUnitEnemy                               = Action.IsUnitEnemy\nlocal IsUnitFriendly                            = Action.IsUnitFriendly\nlocal ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal pairs                                     = pairs\nlocal HealingEngine                             = Action.HealingEngine\nlocal TeamCacheFriendly                         = TeamCache.Friendly\nlocal IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit\nlocal UnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax = \nUnitExists, UnitIsPlayer, UnitClass, UnitCreatureType, UnitInRange, UnitInRaid, UnitInParty, UnitGUID, UnitPower, UnitPowerMax\n\n--For Toaster\nlocal Toaster                                    = _G.Toaster\nlocal GetSpellTexture                             = _G.TMW.GetSpellTexture\n\n--- ============================ CONTENT ===========================\n--- ======= APL LOCALS =======\n-- luacheck: max_line_length 9999\n\n\nAction[ACTION_CONST_PRIEST_HOLY] = {\n    -- Racial\n    ArcaneTorrent                    = Action.Create({ Type = \"Spell\", ID = 50613    }),\n    BloodFury                        = Action.Create({ Type = \"Spell\", ID = 20572    }),\n    Fireblood                        = Action.Create({ Type = \"Spell\", ID = 265221    }),\n    AncestralCall                    = Action.Create({ Type = \"Spell\", ID = 274738    }),\n    Berserking                        = Action.Create({ Type = \"Spell\", ID = 26297    }),\n    ArcanePulse                        = Action.Create({ Type = \"Spell\", ID = 260364    }),\n    QuakingPalm                        = Action.Create({ Type = \"Spell\", ID = 107079    }),\n    Haymaker                        = Action.Create({ Type = \"Spell\", ID = 287712    }), \n    WarStomp                        = Action.Create({ Type = \"Spell\", ID = 20549    }),\n    BullRush                        = Action.Create({ Type = \"Spell\", ID = 255654    }),  \n    GiftofNaaru                        = Action.Create({ Type = \"Spell\", ID = 59544    }),\n    Shadowmeld                        = Action.Create({ Type = \"Spell\", ID = 58984    }), -- Used for HoA\n    Stoneform                        = Action.Create({ Type = \"Spell\", ID = 20594    }), \n    BagofTricks                        = Action.Create({ Type = \"Spell\", ID = 312411    }),\n    WilloftheForsaken                = Action.Create({ Type = \"Spell\", ID = 7744        }), -- not usable in APL but user can Queue it   \n    EscapeArtist                    = Action.Create({ Type = \"Spell\", ID = 20589    }), -- not usable in APL but user can Queue it\n    EveryManforHimself                = Action.Create({ Type = \"Spell\", ID = 59752    }), -- not usable in APL but user can Queue it\n    RocketJump                        = Action.Create({ Type = \"Spell\", ID = 69070     }), -- used for Circle of Healing\n    \n    --Priest General\n    DesperatePrayer                    = Action.Create({ Type = \"Spell\", ID = 19236     }),\n    DispelMagic                        = Action.Create({ Type = \"Spell\", ID = 528         }),\n    Fade                            = Action.Create({ Type = \"Spell\", ID = 586         }),\n    FlashHeal                        = Action.Create({ Type = \"Spell\", ID = 2061     }),\n    LeapofFaith                        = Action.Create({ Type = \"Spell\", ID = 73325     }),\n    Levitate                        = Action.Create({ Type = \"Spell\", ID = 1706     }),\n    MassDispel                        = Action.Create({ Type = \"Spell\", ID = 32375     }),\n    MindBlast                        = Action.Create({ Type = \"Spell\", ID = 8092     }),\n    MindControl                        = Action.Create({ Type = \"Spell\", ID = 605         }),\n    MindVision                        = Action.Create({ Type = \"Spell\", ID = 2096     }),\n    PowerWordFortitude                = Action.Create({ Type = \"Spell\", ID = 21562     }),\n    PowerWordShield                    = Action.Create({ Type = \"Spell\", ID = 17         }),\n    PsychicScream                    = Action.Create({ Type = \"Spell\", ID = 8122     }),\n    Resurrection                    = Action.Create({ Type = \"Spell\", ID = 2006     }),\n    ShackleUndead                    = Action.Create({ Type = \"Spell\", ID = 9484     }),\n    ShadowWordDeath                    = Action.Create({ Type = \"Spell\", ID = 32379     }),\n    ShadowWordPain                    = Action.Create({ Type = \"Spell\", ID = 589         }),    \n    Smite                            = Action.Create({ Type = \"Spell\", ID = 585         }),\n    FocusedWill                        = Action.Create({ Type = \"Spell\", ID = 45243, Hidden = true     }),\n    MindSoothe                        = Action.Create({ Type = \"Spell\", ID = 453         }),\n    PowerInfusion                    = Action.Create({ Type = \"Spell\", ID = 10060     }),\n    \n    -- Holy Specific\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),\n    DivineHymn                        = Action.Create({ Type = \"Spell\", ID = 64843    }),\n    GuardianSpirit                    = Action.Create({ Type = \"Spell\", ID = 47788    }),    \n    Heal                            = Action.Create({ Type = \"Spell\", ID = 2060        }),    \n    HolyFire                        = Action.Create({ Type = \"Spell\", ID = 14914    }),\n    HolyNova                        = Action.Create({ Type = \"Spell\", ID = 132157    }),\n    HolyWordChastise                = Action.Create({ Type = \"Spell\", ID = 88625    }),    \n    HolyWordSanctify                = Action.Create({ Type = \"Spell\", ID = 34861    }),    \n    HolyWordSerenity                = Action.Create({ Type = \"Spell\", ID = 2050        }),\n    MassResurrection                = Action.Create({ Type = \"Spell\", ID = 212036    }),\n    PrayerofHealing                    = Action.Create({ Type = \"Spell\", ID = 596        }),\n    PrayerofMending                    = Action.Create({ Type = \"Spell\", ID = 33076    }),\n    PrayerofMendingBuff                = Action.Create({ Type = \"Spell\", ID = 41635, Hidden = true     }),    \n    Purify                            = Action.Create({ Type = \"Spell\", ID = 527        }),\n    Renew                            = Action.Create({ Type = \"Spell\", ID = 139        }),    \n    SymbolofHope                    = Action.Create({ Type = \"Spell\", ID = 64901    }),\n    MasteryEchoofLight                = Action.Create({ Type = \"Spell\", ID = 77485, Hidden = true        }),\n    SpiritofRedemption                = Action.Create({ Type = \"Spell\", ID = 20711, Hidden = true        }),    \n    \n    -- Normal Talents\n    Enlightenment                    = Action.Create({ Type = \"Spell\", ID = 193155, Hidden = true    }),\n    TrailofLight                    = Action.Create({ Type = \"Spell\", ID = 200128, Hidden = true    }),    \n    RenewedFaith                    = Action.Create({ Type = \"Spell\", ID = 341997, Hidden = true    }),\n    AngelsMercy                        = Action.Create({ Type = \"Spell\", ID = 238100, Hidden = true    }),\n    BodyandSoul                        = Action.Create({ Type = \"Spell\", ID = 64129, Hidden = true     }),\n    AngelicFeather                    = Action.Create({ Type = \"Spell\", ID = 121536    }),    \n    CosmicRipple                    = Action.Create({ Type = \"Spell\", ID = 238136, Hidden = true    }),    \n    GuardianAngel                    = Action.Create({ Type = \"Spell\", ID = 200209, Hidden = true    }),\n    Afterlife                        = Action.Create({ Type = \"Spell\", ID = 196707, Hidden = true    }),    \n    PsychicVoice                    = Action.Create({ Type = \"Spell\", ID = 196704, Hidden = true    }),\n    Censure                            = Action.Create({ Type = \"Spell\", ID = 200199, Hidden = true    }),    \n    ShiningForce                    = Action.Create({ Type = \"Spell\", ID = 204263    }),    \n    SurgeofLight                    = Action.Create({ Type = \"Spell\", ID = 109186, Hidden = true    }),\n    SurgeofLightBuff                = Action.Create({ Type = \"Spell\", ID = 114255, Hidden = true    }),    \n    BindingHeal                        = Action.Create({ Type = \"Spell\", ID = 32546    }),    \n    PrayerCircle                    = Action.Create({ Type = \"Spell\", ID = 321377, Hidden = true    }),    \n    Benediction                        = Action.Create({ Type = \"Spell\", ID = 193157, Hidden = true    }),    \n    DivineStar                        = Action.Create({ Type = \"Spell\", ID = 110744    }),\n    Halo                            = Action.Create({ Type = \"Spell\", ID = 120517    }),\n    LightoftheNaaru                    = Action.Create({ Type = \"Spell\", ID = 196985, Hidden = true    }),    \n    Apotheosis                        = Action.Create({ Type = \"Spell\", ID = 200183    }),\n    HolyWordSalvation                = Action.Create({ Type = \"Spell\", ID = 265202    }),\n    \n    -- PvP Talents\n    HolyWard                        = Action.Create({ Type = \"Spell\", ID = 213610    }),\n    HolyWordConcentration            = Action.Create({ Type = \"Spell\", ID = 289657    }),\n    GreaterHeal                        = Action.Create({ Type = \"Spell\", ID = 289666    }),\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),    \n    CardinalMending                    = Action.Create({ Type = \"Spell\", ID = 328529, Hidden = true    }),\n    MiracleWorker                    = Action.Create({ Type = \"Spell\", ID = 235587, Hidden = true    }),    \n    SpiritoftheRedeemer                = Action.Create({ Type = \"Spell\", ID = 215982    }),    \n    RayofHope                        = Action.Create({ Type = \"Spell\", ID = 197268    }),\n    GreaterFade                        = Action.Create({ Type = \"Spell\", ID = 213602    }),\n    DeliveredfromEvil                = Action.Create({ Type = \"Spell\", ID = 196611, Hidden = true    }),\n    CircleofHealing                    = Action.Create({ Type = \"Spell\", ID = 204883    }),    \n    Thoughtsteal                    = Action.Create({ Type = \"Spell\", ID = 316262    }),\n    DivineAscension                    = Action.Create({ Type = \"Spell\", ID = 328530    }),    \n    \n    -- Covenant Abilities\n    BoonoftheAscended                = Action.Create({ Type = \"Spell\", ID = 325013    }),\n    SummonSteward                    = Action.Create({ Type = \"Spell\", ID = 324739    }),\n    Mindgames                        = Action.Create({ Type = \"Spell\", ID = 323673    }),\n    DoorofShadows                    = Action.Create({ Type = \"Spell\", ID = 300728    }),\n    UnholyNova                        = Action.Create({ Type = \"Spell\", ID = 324724    }),\n    Fleshcraft                        = Action.Create({ Type = \"Spell\", ID = 331180    }),\n    FaeGuardians                    = Action.Create({ Type = \"Spell\", ID = 327661    }),\n    Soulshape                        = Action.Create({ Type = \"Spell\", ID = 310143    }),\n    Flicker                            = Action.Create({ Type = \"Spell\", ID = 324701    }),\n    \n    -- Conduits\n    -- Holy Conduits\n    FocusedMending                    = Action.Create({ Type = \"Spell\", ID = 337914    }),\n    HolyOration                        = Action.Create({ Type = \"Spell\", ID = 338345    }),\n    LastingSpirit                    = Action.Create({ Type = \"Spell\", ID = 337811    }),    \n    ResonantWords                    = Action.Create({ Type = \"Spell\", ID = 337947    }),\n    -- Covenant Conduits\n    CourageousAscension                = Action.Create({ Type = \"Spell\", ID = 337966    }),\n    ShatteredPerceptions            = Action.Create({ Type = \"Spell\", ID = 338315    }),\n    FesteringTransfusion            = Action.Create({ Type = \"Spell\", ID = 337979    }),\n    FaeFermata                        = Action.Create({ Type = \"Spell\", ID = 338305    }),\n    -- Endurance Conduits\n    CharitableSoul                    = Action.Create({ Type = \"Spell\", ID = 337715    }),\n    LightsInspiration                = Action.Create({ Type = \"Spell\", ID = 337748    }),\n    TranslucentImage                = Action.Create({ Type = \"Spell\", ID = 337662    }),\n    -- Finese Conduits\n    ClearMind                        = Action.Create({ Type = \"Spell\", ID = 337707    }),\n    MentalRecovery                    = Action.Create({ Type = \"Spell\", ID = 337954    }),\n    MoveWithGrace                    = Action.Create({ Type = \"Spell\", ID = 337678    }),\n    PowerUntoOthers                    = Action.Create({ Type = \"Spell\", ID = 337762    }),    \n    -- Legendaries\n    -- General Legendaries\n    CauterizingShadows                = Action.Create({ Type = \"Spell\", ID = 336370    }),\n    MeasuredContemplation            = Action.Create({ Type = \"Spell\", ID = 341804    }),    \n    TwinsoftheSunPriestess            = Action.Create({ Type = \"Spell\", ID = 336897    }),\n    VaultofHeavens                    = Action.Create({ Type = \"Spell\", ID = 336470    }),\n    \n    --Anima Powers - to add later...\n    DivineImage                        = Action.Create({ Type = \"Spell\", ID = 336400    }),\n    FlashConcentration                = Action.Create({ Type = \"Spell\", ID = 336266    }),\n    HarmoniousApparatus                = Action.Create({ Type = \"Spell\", ID = 336314    }),\n    Xanshi                            = Action.Create({ Type = \"Spell\", ID = 337477    }),    \n    \n    -- Trinkets\n    \n    \n    -- Potions\n    PotionofUnbridledFury            = Action.Create({ Type = \"Potion\", ID = 169299, QueueForbidden = true }),     \n    SuperiorPotionofUnbridledFury    = Action.Create({ Type = \"Potion\", ID = 168489, QueueForbidden = true }),\n    PotionofSpectralAgility            = Action.Create({ Type = \"Potion\", ID = 171270, QueueForbidden = true }),\n    PotionofSpectralStamina            = Action.Create({ Type = \"Potion\", ID = 171274, QueueForbidden = true }),\n    PotionofEmpoweredExorcisms        = Action.Create({ Type = \"Potion\", ID = 171352, QueueForbidden = true }),\n    PotionofHardenedShadows            = Action.Create({ Type = \"Potion\", ID = 171271, QueueForbidden = true }),\n    PotionofPhantomFire                = Action.Create({ Type = \"Potion\", ID = 171349, QueueForbidden = true }),\n    PotionofDeathlyFixation            = Action.Create({ Type = \"Potion\", ID = 171351, QueueForbidden = true }),\n    SpiritualHealingPotion            = Action.Create({ Type = \"Potion\", ID = 171267, QueueForbidden = true }),      \n    \n    -- Misc\n    Channeling                      = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),    -- Show an icon during channeling\n    TargetEnemy                     = Action.Create({ Type = \"Spell\", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)\n    StopCast                        = Action.Create({ Type = \"Spell\", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit\n    PoolResource                    = Action.Create({ Type = \"Spell\", ID = 209274, Hidden = true     }),\n    Quake                           = Action.Create({ Type = \"Spell\", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)\n}\n\n-- To create essences use next code:\nAction:CreateEssencesFor(ACTION_CONST_PRIEST_HOLY)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)\nlocal A = setmetatable(Action[ACTION_CONST_PRIEST_HOLY], { __index = Action })\n\nlocal Temp                                     = {\n    TotalAndPhys                            = {\"TotalImun\", \"DamagePhysImun\"},\n    TotalAndPhysKick                        = {\"TotalImun\", \"DamagePhysImun\", \"KickImun\"},\n    TotalAndPhysAndCC                        = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\"},\n    TotalAndPhysAndStun                     = {\"TotalImun\", \"DamagePhysImun\", \"StunImun\"},\n    TotalAndPhysAndCCAndStun                 = {\"TotalImun\", \"DamagePhysImun\", \"CCTotalImun\", \"StunImun\"},\n    TotalAndMag                                = {\"TotalImun\", \"DamageMagicImun\"},\n}\n\nlocal player = \"player\"\nlocal targettarget = \"targettarget\"\nlocal target = \"target\"\nlocal mouseover = \"mouseover\"\n\nToaster:Register(\"TripToast\", function(toast, ...) -- Register Toaster\n        local title, message, spellID = ...\n        toast:SetTitle(title or \"nil\")\n        toast:SetText(message or \"nil\")\n        if spellID then \n            if type(spellID) ~= \"number\" then \n                error(tostring(spellID) .. \" (spellID) is not a number for TripToast!\")\n                toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n            else \n                toast:SetIconTexture((GetSpellTexture(spellID)))\n            end \n        else \n            toast:SetIconTexture(\"Interface\\FriendsFrame\\Battlenet-WoWicon\")\n        end \n        toast:SetUrgencyLevel(\"normal\") \nend)\n\nlocal function IsSchoolHolyFree() -- Holy locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"HOLY\") == 0\nend \n\nlocal function IsSchoolShadowFree() -- Shadow locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"SHADOW\") == 0\nend \n\nlocal function IsSchoolFireFree() -- Fire locked\n    return LoC:IsMissed(\"SILENCE\") and LoC:Get(\"SCHOOL_INTERRUPT\", \"FIRE\") == 0\nend \n\nlocal function GetValidMembers(IsPlayer) -- Get Friendly Group Members\n    local HealingEngineMembersALL = HealingEngine.Data.SortedUnitIDs\n    if not IsPlayer then \n        return #HealingEngineMembersALL\n    else \n        local total = 0 \n        if #HealingEngineMembersALL > 0 then \n            for i = 1, #HealingEngineMembersALL do\n                if Unit(HealingEngineMembersALL[i].Unit):IsPlayer() then\n                    total = total + 1\n                end\n            end \n        end \n        return total \n    end \nend\n\nlocal function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isStrictlyEqual, isCheckEqual, isCheckCombat) -- Range check function\n    -- @return boolean \n    local c = 0 \n    \n    if isStrictlySuperior == nil then\n        isStrictlySuperior = false\n    end\n    \n    if isStrictlyInferior == nil then\n        isStrictlyInferior = false\n    end    \n    \n    if isStrictlyEqual == nil then\n        isStrictlyEqual = false\n    end\n    \n    for unit in pairs(ActiveUnitPlates) do \n        if (not isCheckEqual or not UnitIsUnit(\"target\", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then \n            if InRange(unit) then \n                c = c + 1\n            elseif range then \n                local r = Unit(unit):GetRange()\n                if r > 0 and r <= range then \n                    c = c + 1\n                end \n            end \n            -- Strictly superior than >\n            if isStrictlySuperior and not isStrictlyInferior and not isStrictlyEqual then\n                if c > count then\n                    return true\n                end\n            end\n            \n            -- Strictly inferior <\n            if isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c < count then\n                    return true\n                end\n            end\n            \n            -- Strictly equal ==\n            if not isStrictlyInferior and not isStrictlySuperior and isStrictlyEqual then\n                if c == count then\n                    return true\n                end\n            end    \n            \n            -- Classic >=\n            if not isStrictlyInferior and not isStrictlySuperior and not isStrictlyEqual then\n                if c >= count then \n                    return true \n                end \n            end\n        end \n        \n    end\n    \nend  \nGetByRange = A.MakeFunctionCachedDynamic(GetByRange)\n\nlocal function Interrupts(unit)\n    local useKick, useCC, useRacial = A.InterruptIsValid(unit)\n    \n    if useCC and A.HolyWordChastise:IsReady(unit) and A.HolyWordChastise:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and ((Unit(unit):IsControlAble(\"incapacitate\", 0) and not A.Censure:IsTalentLearned()) or (Unit(unit):IsControlAble(\"stun\", 0) and A.Censure:IsTalentLearned())) then \n        return A.HolyWordChastise              \n    end             \n    \n    if useRacial and A.QuakingPalm:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.QuakingPalm\n    end \n    \n    if useRacial and A.Haymaker:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.Haymaker\n    end \n    \n    if useRacial and A.WarStomp:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.WarStomp\n    end \n    \n    if useRacial and A.BullRush:AutoRacial(unit, nil, nil, isSoothingMistCasting) then \n        return A.BullRush\n    end      \n    \nend \nInterrupts = A.MakeFunctionCachedDynamic(Interrupts)\n\nlocal function SelfDefensives() -- Defensives\n    if Unit(player):CombatTime() == 0 then  \n        return \n    end\n    \n    local DesperatePrayer = A.GetToggle(2, \"DesperatePrayer\")\n    if    DesperatePrayer >= 0 and A.DesperatePrayer:IsReady(player) and \n    (\n        (     -- Auto \n            DesperatePrayer >= 100 and \n            (\n                (\n                    not A.IsInPvP and \n                    Unit(player):HealthPercent() < 80 and \n                    Unit(player):TimeToDieX(20) < 8 \n                ) or \n                (\n                    A.IsInPvP and \n                    (\n                        Unit(player):UseDeff() or \n                        (\n                            Unit(player, 5):HasFlags() and \n                            Unit(player):GetRealTimeDMG() > 0 and \n                            Unit(player):IsFocused(nil, true)                                 \n                        )\n                    )\n                )\n            ) and \n            Unit(player):HasBuffs(\"DeffBuffs\") == 0\n        ) or \n        (    -- Custom\n            DesperatePrayer < 100 and \n            Unit(player):HealthPercent() <= DesperatePrayer\n        )\n    ) \n    then \n        return A.DesperatePrayer\n    end \nend \nSelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)\n\nlocal function RenewOnTank()\n    local CurrentTanks = HealingEngine.GetMembersByMode(\"TANK\")\n    local total = 0\n    for i = 1, #CurrentTanks do \n        if Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, player, true) > 0 then\n            total = total + 1\n        end\n    end\n    return total\nend\n\n\n--- ======= ACTION LISTS =======\nA[3] = function(icon, isMulti) -- Single target icon displayer\n    \n    --#####################\n    --##### VARIABLES #####\n    --#####################\n    \n    local isMoving = A.Player:IsMoving()\n    local inCombat = Unit(player):CombatTime() > 0\n    local combatTime = Unit(player):CombatTime()\n    local AoEON = A.GetToggle(2, \"AoE\")\n    local TotalCast, CurrentCastLeft, CurrentCastDone = Unit(player):CastTime()\n    local _, castStartedTime, castEndTime = Unit(player):IsCasting()\n    local secondsLeft, percentLeft, spellID, spellName, notInterruptable, isChannel = Unit(player):IsCastingRemains()\n    local getmembersAll = HealingEngine.Data.SortedUnitIDs\n    local CurrentTanks = A.HealingEngine.GetMembersByMode(\"TANK\")    \n    local DungeonEmergency = HealingEngine.GetTimeToDieUnits(3) >= 1\n    local HolyNovaTargets = A.GetToggle(2, \"HolyNovaTargets\")\n    local DungeonGroup = TeamCache.Friendly.Size >= 2 and TeamCache.Friendly.Size <= 5\n    local RaidGroup = TeamCache.Friendly.Size >= 5\n    local HolyWordSerenity = A.GetToggle(2, \"HolyWordSerenity\")\n    local UseSanctifyOnSelf = A.GetToggle(2, \"UseSanctifyOnSelf\")\n    local SanctifyHP = A.GetToggle(2, \"SanctifyHP\")\n    local SanctifyTargets = A.GetToggle(2, \"SanctifyTargets\")\n    local CircleofHealingHP = A.GetToggle(2, \"CircleofHealingHP\")\n    local CircleofHealingTargets = A.GetToggle(2, \"CircleofHealingTargets\")    \n    local DivineHymnHP = A.GetToggle(2, \"DivineHymnHP\")\n    local DivineHymnTargets = A.GetToggle(2, \"DivineHymnTargets\")\n    local GuardianSpiritHP = A.GetToggle(2, \"GuardianSpiritHP\")\n    local HealHP = A.GetToggle(2, \"HealHP\")\n    local FlashHealHP = A.GetToggle(2, \"FlashHealHP\")\n    local FlashHealSOLHP = A.GetToggle(2, \"FlashHealSOLHP\")\n    local PrayerofHealingHP = A.GetToggle(2, \"PrayerofHealingHP\")\n    local PrayerofHealingTargets = A.GetToggle(2, \"PrayerofHealingTargets\")\n    local HaloHP = A.GetToggle(2, \"HaloHP\")\n    local HaloTargets = A.GetToggle(2, \"HaloTargets\")\n    local SalvationHP = A.GetToggle(2, \"SalvationHP\")\n    local SalvationTargets = A.GetToggle(2, \"SalvationTargets\")    \n    local RenewMode = A.GetToggle(2, \"RenewMode\")\n    local BlanketRenewOOC = A.GetToggle(2, \"BlanketRenewOOC\")\n    local TrinketMana = A.GetToggle(2, \"TrinketMana\")\n    local TrinketHP = A.GetToggle(2, \"TrinketHP\")\n    local DPSMana = A.GetToggle(2, \"DPSMana\")\n    local AngelicFeather = A.GetToggle(2, \"AngelicFeather\")\n    \n    local CanCast = true\n    if inCombat and (spellID == A.DivineHymn.ID) then \n        if secondsLeft > 0 + A.GetPing() then\n            CanCast = false\n        else\n            CanCast = true\n        end\n    end\n    \n    --#################\n    --##### PURGE #####\n    --#################\n    \n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"MagicMovement\") then\n        return A.DispelMagic:Show(icon)\n    end\n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"PurgeHigh\") then\n        return A.DispelMagic:Show(icon)\n    end\n    if inCombat and A.DispelMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, \"UsePurge\", \"PurgeLow\") then\n        return A.DispelMagic:Show(icon)\n    end\n    \n    \n    --########################    \n    --##### DMG ROTATION #####\n    --########################\n    \n    local function DamageRotation(unit)\n        \n        if TeamCacheFriendly.Size == 0 then\n            \n            --Purify\n            if CanCast and A.Purify:IsReady(player) and A.Purify:AbsentImun(player) and A.AuraIsValid(player, \"UseDispel\", \"Dispel\") and Unit(player):TimeToDie() > 5 then \n                return A.Purify:Show(icon)\n            end             \n            \n            -- OOC Renew\n            if CanCast and A.Renew:IsReady(player) and BlanketRenewOOC and (not inCombat) and Unit(player):HealthPercent() <= 99 and Unit(player):HasBuffs(A.Renew.ID, true) == 0 then\n                return A.Renew:Show(icon)\n            end    \n            \n            -- Trinket 1\n            if inCombat and A.Trinket1:IsReady(player) and ((Player:ManaPercentage() <= TrinketMana) or (Unit(player):HealthPercent() <= TrinketHP)) then\n                return A.Trinket1:Show(icon)    \n            end\n            \n            -- Trinket 2\n            if inCombat and A.Trinket2:IsReady(unit) and ((Player:ManaPercentage() <= TrinketMana) or (Unit(player):HealthPercent() <= TrinketHP)) then\n                return A.Trinket2:Show(icon)    \n            end            \n            \n            -- Apotheosis Single Target\n            if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end    \n            \n            -- Apotheosis AoE\n            if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and (HealingEngine.GetIncomingDMGAVG() > (HealingEngine.GetIncomingHPSAVG() * 2)) and A.HolyWordSanctify:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end            \n            \n            -- Guardian Spirit\n            if CanCast and inCombat and A.GuardianSpirit:IsReady(player) and Unit(player):HealthPercent() <= GuardianSpiritHP then\n                return A.GuardianSpirit:Show(icon)\n            end\n            \n            -- Sanctify @player\n            if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and Unit(player):HealthPercent() <= SanctifyHP then\n                return A.HolyWordSanctify:Show(icon)\n            end            \n            \n            -- Serenity\n            if CanCast and inCombat and A.HolyWordSerenity:IsReady(player) and Unit(player):HealthPercent() <= HolyWordSerenity then\n                return A.HolyWordSerenity:Show(icon)\n            end\n            \n            -- Halo\n            if CanCast and inCombat and A.Halo:IsReady(player) then\n                return A.Halo:Show(icon)\n            end    \n            \n            -- Circle of Healing\n            if CanCast and inCombat and A.CircleofHealing:IsReady(player) and Unit(player):HealthPercent() <= CircleofHealingHP then\n                return A.RocketJump:Show(icon)\n            end    \n            \n            --Divine Star - best I could come up with\n            if CanCast and inCombat and A.DivineStar:IsReady(player) and Unit(unit):GetRange() <= 20 then\n                return A.DivineStar:Show(icon)\n            end    \n            \n            -- Flash Heal without SoL\n            if CanCast and A.FlashHeal:IsReady(player) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(player):HealthPercent() <= FlashHealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then\n                return A.FlashHeal:Show(icon)\n            end\n            \n            -- Flash Heal with SoL\n            if CanCast and A.FlashHeal:IsReady(player) and A.HolyWordSerenity:GetCooldown() > 0 and Unit(player):HealthPercent() <= FlashHealSOLHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) > 0 then\n                return A.FlashHeal:Show(icon)\n            end        \n            \n            \n        end\n        \n        if (Unit(player):PowerPercent() >= DPSMana and TeamCacheFriendly.Size > 1) or TeamCacheFriendly.Size == 0 then\n            \n            if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() <= 20 then\n                return A.ShadowWordDeath:Show(icon)\n            end    \n            \n            if A.HolyNova:IsReady(player) and MultiUnits:GetByRange(12, 10) >= HolyNovaTargets and AoEON then\n                return A.HolyNova:Show(icon)\n            end    \n            \n            if A.Mindgames:IsReady(unit) and (not isMoving) and Unit(unit):TimeToDie() >= 5 then\n                return A.Mindgames:Show(icon)\n            end    \n            \n            if A.ShadowWordPain:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 5) then\n                return A.ShadowWordPain:Show(icon)\n            end    \n            \n            if A.HolyFire:IsReady(unit) and not isMoving then\n                return A.HolyFire:Show(icon)\n            end            \n            \n            if A.Smite:IsReady(unit) and not isMoving then\n                return A.Smite:Show(icon)\n            end\n            \n        end\n        \n    end\n    \n    \n    --############################    \n    --##### HEALING ROTATION #####\n    --############################\n    \n    local function HealingRotation(unit)\n        local useDispel, useShields, useHoTs, useUtils = HealingEngine.GetOptionsByUnitID(unit)\n        local unitGUID = UnitGUID(unit)    \n        \n        \n        if TeamCacheFriendly.Size > 1 then\n            --Divine Star notification\n            if inCombat and (A.DivineStar:IsReady(player) or A.DivineStar:GetCooldown() <= 2) and A.DivineStar:IsTalentLearned() and MultiUnits:GetByRange(28, 2) > 1 then\n                A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Divine Star!\", \"Divine Star will be ready soon! Position yourself!\", A.DivineStar.ID)\n            end\n            \n            --Healing Engine Purify Target\n            if A.Purify:IsReady() then\n                for i = 1, #getmembersAll do \n                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, \"UseDispel\", \"Dispel\") then  \n                        if UnitGUID(getmembersAll[i].Unit) ~= currGUID then\n                            HealingEngine.SetTarget(getmembersAll[i].Unit) \n                            break\n                        end                                                                         \n                    end                \n                end\n            end\n            \n            --Purify\n            if CanCast and A.Purify:IsReady(unit) and A.Purify:AbsentImun(unit) and A.AuraIsValid(unit, \"UseDispel\", \"Dispel\") and Unit(unit):TimeToDie() > 5 then \n                return A.Purify:Show(icon)\n            end \n            \n            -- OOC Renew\n            if CanCast and A.Renew:IsReady(unit) and BlanketRenewOOC and (not inCombat) and Unit(unit):HealthPercent() <= 99 and Unit(unit):HasBuffs(A.Renew.ID, true) == 0 then\n                return A.Renew:Show(icon)\n            end    \n            \n            -- OOC Renew Targeting\n            if CanCast and A.Renew:IsReady(unit) and BlanketRenewOOC and (not inCombat) and Unit(unit):HasBuffs(A.Renew.ID, true) > 0 then\n                for i = 1, #getmembersAll do\n                    if Unit(getmembersAll[i].Unit):HealthPercent() <= 99 \n                    then\n                        if UnitGUID(getmembersAll[i].Unit) ~= currGUID then\n                            HealingEngine.SetTarget(getmembersAll[i].Unit) \n                            break\n                        end                     \n                    end\n                end\n            end\n            \n            -- Trinket 1\n            if inCombat and A.Trinket1:IsReady(unit) and ((Player:Mana() <= TrinketMana) or (Unit(unit):HealthPercent() <= TrinketHP and A.IsUnitFriendly(unit))) then\n                return A.Trinket1:Show(icon)    \n            end\n            \n            -- Trinket 2\n            if inCombat and A.Trinket2:IsReady(unit) and ((Player:Mana() <= TrinketMana) or (Unit(unit):HealthPercent() <= TrinketHP and A.IsUnitFriendly(unit))) then\n                return A.Trinket2:Show(icon)    \n            end            \n            \n            --Holy Word: Salvation\n            if CanCast and inCombat and A.HolyWordSalvation:IsReady(player) and A.HolyWordSalvation:IsTalentLearned() and HealingEngine.GetBelowHealthPercentUnits(SalvationHP, 40) >= SalvationTargets then \n                return A.HolyWordSalvation:Show(icon)\n            end    \n            \n            -- Apotheosis Single Target\n            if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end    \n            \n            -- Apotheosis AoE\n            if CanCast and inCombat and A.Apotheosis:IsReady(unit) and A.Apotheosis:IsTalentLearned() and (HealingEngine.GetIncomingDMGAVG() > (HealingEngine.GetIncomingHPSAVG() * 2)) and A.HolyWordSanctify:GetCooldown() > 8 then\n                return A.Apotheosis:Show(icon)\n            end            \n            \n            -- Guardian Spirit\n            if CanCast and inCombat and A.GuardianSpirit:IsReady(unit) and Unit(unit):HealthPercent() <= GuardianSpiritHP then\n                return A.GuardianSpirit:Show(icon)\n            end\n            \n            -- Sanctify @player\n            if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and UseSanctifyOnSelf and HealingEngine.GetBelowHealthPercentUnits(SanctifyHP, 10) >= SanctifyTargets then\n                return A.HolyWordSanctify:Show(icon)\n            end    \n            \n            -- Sanctify GTAoE\n            if CanCast and inCombat and A.HolyWordSanctify:IsReady(player) and (not UseSanctifyOnSelf) and HealingEngine.GetBelowHealthPercentUnits(SanctifyHP, 40) >= SanctifyTargets then\n                return A.HolyWordSanctify:Show(icon)\n            end                \n            \n            -- Serenity\n            if CanCast and inCombat and A.HolyWordSerenity:IsReady(unit) and Unit(unit):HealthPercent() <= HolyWordSerenity then\n                return A.HolyWordSerenity:Show(icon)\n            end\n            \n            -- Halo\n            if CanCast and inCombat and A.Halo:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(HaloHP, 30) >= HaloTargets then\n                return A.Halo:Show(icon)\n            end    \n            \n            -- Circle of Healing\n            if CanCast and inCombat and A.CircleofHealing:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(CircleofHealingHP, 30) >= CircleofHealingTargets then\n                return A.RocketJump:Show(icon)\n            end    \n            \n            --Prayer of Mending\n            if CanCast and inCombat and A.PrayerofMending:IsReady(unit) and Unit(unit):IsTank() and Unit(unit):HasBuffs(A.PrayerofMendingBuff.ID, true) == 0 then\n                return A.PrayerofMending:Show(icon)\n            end    \n            \n            --Divine Star - best I could come up with\n            if CanCast and inCombat and A.DivineStar:IsReady(player) and inCombat and MultiUnits:GetByRange(28, 2) > 1 then\n                return A.DivineStar:Show(icon)\n            end    \n            \n            --Renew Tank\n            if CanCast and A.Renew:IsReady(unit) and RenewMode == \"TANK\" and RenewOnTank() == 0 then\n                for i = 1, #CurrentTanks do \n                    if Unit(CurrentTanks[i].Unit):GetRange() <= 40 then \n                        if Unit(CurrentTanks[i].Unit):IsPlayer() and Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, true) < 1 then    \n                            HealingEngine.SetTarget(CurrentTanks[i].Unit)\n                            return A.Renew:Show(icon)                        \n                        end                    \n                    end                \n                end    \n            end\n            \n            -- Divine Hymn\n            if CanCast and inCombat and A.BurstIsON(unit) and A.DivineHymn:IsReady(player) and (not isMoving) and combatTime > 0 and HealingEngine.GetBelowHealthPercentUnits(DivineHymnHP) >= DivineHymnTargets then\n                A.Toaster:SpawnByTimer(\"TripToast\", 0, \"Divine Hymn!\", \"Stop moving! Using Divine Hymn!\", A.DivineHymn.ID)            \n                return A.DivineHymn:Show(icon)\n            end\n            \n            -- Prayer of Healing\n            if CanCast and inCombat and A.PrayerofHealing:IsReady(unit) and (not isMoving) and (not DungeonEmergency) and HealingEngine.GetBelowHealthPercentUnits(PrayerofHealingHP) >= PrayerofHealingTargets and A.HolyWordSanctify:GetCooldown() > 0 then\n                return A.PrayerofHealing:Show(icon)\n            end    \n            \n            -- Flash Heal without SoL\n            if CanCast and A.FlashHeal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(unit):HealthPercent() <= FlashHealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then\n                return A.FlashHeal:Show(icon)\n            end\n            \n            -- Flash Heal with SoL\n            if CanCast and A.FlashHeal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and Unit(unit):HealthPercent() <= FlashHealSOLHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) > 0 then\n                return A.FlashHeal:Show(icon)\n            end            \n            \n            -- Binding Heal\n            if CanCast and A.BindingHeal:IsReady(unit) and A.BindingHeal:IsTalentLearned() and A.HolyWordSerenity:GetCooldown() > 0 and A.HolyWordSanctify:GetCooldown() > 0 and HealingEngine.GetBelowHealthPercentUnits(95) >= 2 and (not isMoving) and Unit(unit):HealthPercent() <= HealHP then\n                return A.BindingHeal:Show(icon)\n            end\n            \n            -- Heal\n            if CanCast and A.Heal:IsReady(unit) and A.HolyWordSerenity:GetCooldown() > 0 and (not isMoving) and Unit(unit):HealthPercent() <= HealHP and Unit(player):HasBuffs(A.SurgeofLightBuff.ID, true) == 0 then\n                return A.Heal:Show(icon)\n            end\n            \n            -- Interrupts\n            if unit == \"target\" and A.IsUnitEnemy(\"targettarget\") and CanCast then \n                local Interrupt = Interrupts(\"targettarget\")\n                if Interrupt then \n                    return Interrupt:Show(icon)\n                end \n            end   \n            \n            --Angelic Feather\n            if CanCast and Player:IsMovingTime() > 0.5 and A.AngelicFeather:IsReady(player) and (not Player:IsMounted()) and AngelicFeather then \n                return A.AngelicFeather:Show(icon)\n            end    \n            \n            --Leap of Faith\n            if CanCast and A.LeapofFaith:IsReady(unit) and Unit(unit):GetRange() <= 38 and (not Unit(unit):IsTank()) and (not UnitIsUnit(\"target\", \"player\")) and Unit(unit):TimeToDie() <= GetGCD() + GetCurrentGCD() and Unit(unit):HasBuffs(\"TotalImun\") == 0 and Unit(unit):HasDeBuffs(\"Rooted\") == 0 then\n                return A.LeapofFaith:Show(icon)\n            end    \n            \n            if CanCast and A.Renew:IsReady(unit) and RenewMode == \"EVERYONE\" and Unit(unit):HealthPercent() <= 95 then\n                return A.Renew:Show(icon)\n            end\n        end\n        \n    end\n    \n    --#############################\n    --##### MAIN ACTION CALLS #####\n    --#############################\n    \n    -- Defensive\n    local SelfDefensive = SelfDefensives()\n    if SelfDefensive then \n        return SelfDefensive:Show(icon)\n    end \n    \n    -- Friendly Mouseover\n    if A.IsUnitFriendly(mouseover) then \n        unit = mouseover  \n        \n        if HealingRotation(unit) then \n            return true \n        end             \n    end\n    \n    -- Heal Target \n    if A.IsUnitFriendly(target) then \n        unit = target \n        \n        if HealingRotation(unit) then \n            return true \n        end \n    end    \n    \n    -- Enemy Mouseover \n    if A.IsUnitEnemy(mouseover) then \n        unit = mouseover    \n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS Target     \n    if A.IsUnitEnemy(target) then \n        unit = target\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    -- DPS targettarget     \n    if A.IsUnitEnemy(targettarget) then \n        unit = targettarget\n        \n        if DamageRotation(unit) then \n            return true \n        end \n    end \n    \n    \nend \n\n-- End of Rotation",
+				}, -- [5]
+				["n"] = 5,
+			},
+			["ForceNoBlizzCC"] = true,
 			["Locked"] = true,
 		},
 	},

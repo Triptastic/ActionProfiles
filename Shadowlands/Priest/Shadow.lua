@@ -34,42 +34,9 @@ local TR                                        = Action.TasteRotation
 local pairs                                     = pairs
 local Pet                                       = LibStub("PetLibrary")
 
---Toaster stuff
-local ADDON_NAME, private														= ...
-local _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset	= _G, unpack, type, math, pairs, error, next, setmetatable, select, rawset
-local tremove																	= table.remove
-local math_floor																= math.floor
-local math_huge																	= math.huge
-local math_max																	= math.max
-local wipe																		= _G.wipe
-local hooksecurefunc															= _G.hooksecurefunc
-local CopyTable																	= _G.CopyTable
-local UIParent																	= _G.UIParent
-local Toaster																	= _G.Toaster -- The Action _G.Toaster will be initilized first, then _G.Toaster will be replaced by original if Toaster addon will be loaded, but we will keep our local
-local LibStub																	= _G.LibStub
-local GetSpellTexture 															= _G.TMW.GetSpellTexture
-local AceDB 																	= LibStub("AceDB-3.0", true)
-local AceConfigRegistry 														= LibStub("AceConfigRegistry-3.0", true)	
-local AceConfigDialog 															= LibStub("AceConfigDialog-3.0", true)	
-local AceLocale																	= LibStub("AceLocale-3.0", true)
-local LibWindow 																= LibStub("LibWindow-1.1", true)
-local LibToast 																	= LibStub("LibToast-1.0", true)
-local templates																	= LibToast and LibToast.templates
-local unique_templates															= LibToast and LibToast.unique_templates
-local active_toasts																= LibToast and LibToast.active_toasts
-local DEFAULT_FADE_HOLD_TIME													= 5
-local DEFAULT_WIDTH																= 250
-local DEFAULT_HEIGHT															= 50
-
-local TMW 																		= _G.TMW
-
-local toStr 																	= A.toStr
-local toNum 																	= A.toNum 
-local CONST 																	= A.Const
-local Listener																	= A.Listener
-local FormatGameLocale															= A.FormatGameLocale
-local FormatedGameLocale														= A.FormatedGameLocale
-local Unit 																		= A.Unit 
+--For Toaster
+local Toaster                                    = _G.Toaster
+local GetSpellTexture                             = _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
@@ -206,6 +173,7 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
     StopCast                               = Action.Create({ Type = "Spell", ID = 61721, Hidden = true }),    -- spell_magic_polymorphrabbit
     DummyTest                              = Action.Create({ Type = "Spell", ID = 159999, Hidden = true     }), -- Dummy stop dps icon
 	ConcentratedFlame					   = Action.Create({ Type = "Spell", ID = 295373, }),
+	EscapeArtist						   = Action.Create({ Type = "Spell", ID = 20589, }), -- SearingNightmare
 
 };
 
@@ -645,7 +613,7 @@ A[3] = function(icon, isMulti)
 		end
 
 		-- vampiric_touch
-		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and Temp.VampiricTouchDelay == 0 and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
 			return A.VampiricTouch:Show(icon)
 		end	
 		
@@ -659,12 +627,12 @@ A[3] = function(icon, isMulti)
 		--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pi_or_vf_sync_condition)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
 		if A.SearingNightmare:IsReady(player, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.SearingNightmare:IsTalentLearned() and Player:IsChanneling() == "Mind Sear" -- or  MissingShadowWordPain > 2 
 		then 
-			return A.SearingNightmare:Show(icon)
+			return A.EscapeArtist:Show(icon)
 		end	
 		
 		--actions+=/run_action_list,name=main
 
-		--actions.main=void_eruption,if=variable.pi_or_vf_sync_condition&insanity>=40
+		--actions.main=void_eruption,if=variabl5e.pi_or_vf_sync_condition&insanity>=40
 		if A.VoidEruption:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and A.BurstIsON(unit) and Player:Insanity() >= 40 and not VoidFormActive and (not isMoving or StMActive) and Player:AreaTTD(40) > 15 then
 			return A.VoidEruption:Show(icon)
 		end	
@@ -679,64 +647,30 @@ A[3] = function(icon, isMulti)
 			return A.Darkflight:Show(icon)
 		end]]
 
-			-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
+		--actions.cds+=/mindgames,target_if=insanity<90&(variable.all_dots_up|buff.voidform.up)&(!talent.hungering_void.enabled|debuff.hungering_void.up|!buff.voidform.up)&(!talent.searing_nightmare.enabled|spell_targets.mind_sear<5)
+		if A.Mindgames:IsReady(unit) and BurstIsON(unit) and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then
+			return A.Mindgames:Show(icon)
+		end	
+		
 			
 		--Trinkets
 			-- Non SIMC Custom Trinket1
-		if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and    
+		if A.Trinket1:IsReady(unitID) and Trinket1IsAllowed and    
 		(
 			TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 			or
-			not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     
+			not TrinketsAoE and Unit(unitID):TimeToDie() >= TrinketsMinTTD                     
 		)
 		then 
 			return A.Trinket1:Show(icon)
 		end         
 		
 		-- Non SIMC Custom Trinket2
-		if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and        
+		if A.Trinket2:IsReady(unitID) and Trinket2IsAllowed and        
 		(
 			TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 			or
-			not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD                     
+			not TrinketsAoE and Unit(unitID):TimeToDie() >= TrinketsMinTTD                     
 		)
 		then
 			return A.Trinket2:Show(icon)     

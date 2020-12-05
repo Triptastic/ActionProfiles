@@ -600,7 +600,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.aoe+=/channel_demonfire,if=dot.immolate.remains>cast_time
-			if A.ChannelDemonfire:IsReady(player) and (not isMoving) and A.ChannelDemonfire:IsTalentLearned() and Unit("target"):HasDeBuffs(A.ImmolateDebuff.ID, true) >= Player:Execute_Time(A.Immolate.ID) then
+			if A.ChannelDemonfire:IsReady(player) and (not isMoving) and A.ChannelDemonfire:IsTalentLearned() and Unit("target"):HasDeBuffs(A.ImmolateDebuff.ID, true) >= Player:Execute_Time(A.ChannelDemonfire.ID) then
 				return A.ChannelDemonfire:Show(icon)
 			end	
 			
@@ -754,6 +754,10 @@ A[3] = function(icon, isMulti)
 	
 		if inCombat then
 		
+			if Player:IsChanneling() == A.ChannelDemonfire:Info() and Player:GetDeBuffsUnitCount(A.ImmolateDebuff.ID) < 1 then
+				return A:Show(icon, CONST_STOPCAST)
+			end	
+			
 			--Fel Domination if Pet dies
 			if A.FelDomination:IsReady("player") and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and inCombat and HavocDebuffTime() < 1 then
 				return A.RocketJump:Show(icon)
@@ -863,7 +867,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions+=/call_action_list,name=essences
 			--actions+=/channel_demonfire
-			if A.ChannelDemonfire:IsReady(player) and (not isMoving) then
+			if A.ChannelDemonfire:IsReady(player) and (not isMoving) and Unit(unit):HasDeBuffs(A.ImmolateDebuff.ID, true) > Player:Execute_Time(A.ChannelDemonfire.ID) then
 				return A.ChannelDemonfire:Show(icon)
 			end	
 			

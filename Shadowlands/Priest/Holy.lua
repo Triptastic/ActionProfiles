@@ -579,6 +579,10 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 			if A.HolyNova:IsReady(player) and MultiUnits:GetByRange(12, 10) >= HolyNovaTargets and AoEON then
 				return A.HolyNova:Show(icon)
 			end	
+
+			if A.Mindgames:IsReady(unit) and (not isMoving) and Unit(unit):TimeToDie() >= 5 then
+				return A.Mindgames:Show(icon)
+			end	
 			
 			if A.ShadowWordPain:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) == 0 or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 5) then
 				return A.ShadowWordPain:Show(icon)
@@ -616,7 +620,10 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 			if A.Purify:IsReady() then
 				for i = 1, #getmembersAll do 
 					if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") then  
-						HealingEngine.SetTarget(getmembersAll[i].Unit)                  									
+                        if UnitGUID(getmembersAll[i].Unit) ~= currGUID then
+                          HealingEngine.SetTarget(getmembersAll[i].Unit) 
+                          break
+                        end 					                									
 					end				
 				end
 			end
@@ -636,7 +643,10 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 				for i = 1, #getmembersAll do
 					if Unit(getmembersAll[i].Unit):HealthPercent() <= 99 
 					then
-						HealingEngine.SetTarget(getmembersAll[i].Unit, 0.5)
+                        if UnitGUID(getmembersAll[i].Unit) ~= currGUID then
+                          HealingEngine.SetTarget(getmembersAll[i].Unit) 
+                          break
+                        end 					
 					end
 				end
 			end

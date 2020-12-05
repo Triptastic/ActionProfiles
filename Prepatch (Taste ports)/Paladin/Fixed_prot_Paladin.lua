@@ -83,6 +83,7 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     Seraphim                               = Action.Create({ Type = "Spell", ID = 152262     }),
     ShieldoftheRighteous                   = Action.Create({ Type = "Spell", ID = 53600     }),
     AvengingWrath                          = Action.Create({ Type = "Spell", ID = 31884     }),
+	HammerofWrath						   = Action.Create({ Type = "Spell", ID = 24275     }),
 --    BastionofLight                         = Action.Create({ Type = "Spell", ID = 204035     }),
     Judgment                               = Action.Create({ Type = "Spell", ID = 275779     }),
     CrusadersJudgment                      = Action.Create({ Type = "Spell", ID = 204023     }),
@@ -92,6 +93,7 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     HeartEssence                           = Action.Create({ Type = "Spell", ID = 298554     }),
     RecklessForceBuff                      = Action.Create({ Type = "Spell", ID = 302932, Hidden = true      }),
     ConcentratedFlameBurn                  = Action.Create({ Type = "Spell", ID = 295368     }),
+	DivineToll							   = Action.Create({ Type = "Spell", ID = 304971     }),
     -- PvP
     UltimateSacrifice                      = Action.Create({ Type = "Spell", ID = 199452 }),
     -- Buffs 
@@ -116,6 +118,7 @@ Action[ACTION_CONST_PALADIN_PROTECTION] = {
     DivineShield                           = Action.Create({ Type = "Spell", ID = 642     }),
     BlindingLight                          = Action.Create({ Type = "Spell", ID = 115750  }),
     CleanseToxins                          = Action.Create({ Type = "Spell", ID = 213644   }),
+    CleansingLight                          = Action.Create({ Type = "Spell", ID = 236186   }),	
     BlessingofSacrifice                    = Action.Create({ Type = "Spell", ID = 6940 }),
     -- Defensives
 --    LightoftheProtector                    = Action.Create({ Type = "Spell", ID = 184092     }),
@@ -740,12 +743,12 @@ local function Dispel(unit)
                 (
                     not Unit(player):HasSpec(65) and -- Holy            
                     A.CleansingLight:IsSpellLearned() and -- AoE Dispel 
-                    A.Cleanse:IsReady(unit) and 
+                    A.CleanseToxins:IsReady(unit) and 
                     A.LastPlayerCastID ~= DispelSpell["CleansingLight"]
                 ) or 
                 (
                     not A.CleansingLight:IsSpellLearned() and -- AoE Dispel 
-                    A.Cleanse:IsReady(unit) and 
+                    A.CleanseToxins:IsReady(unit) and 
                     A.LastPlayerCastID ~= 4987
                 )
             ) and 
@@ -780,16 +783,16 @@ local function Dispel(unit)
                 (
                     not Unit(player):HasSpec(65) and -- Holy            
                     A.CleansingLight:IsSpellLearned() and -- AoE Dispel 
-                    A.Cleanse:IsReady(unit) and 
+                    A.CleanseToxins:IsReady(unit) and 
                     A.LastPlayerCastID ~= DispelSpell["CleansingLight"] and
                     Unit(unit):GetRange() <= 15 
                 ) or 
                 (
                     not A.CleansingLight:IsSpellLearned() and -- AoE Dispel 
-                    A.Cleanse:IsReady(unit) and 
+                    A.CleanseToxins:IsReady(unit) and 
                     A.LastPlayerCastID ~= 4987 and
                     --not Unit(unit):InLOS() and 
-                    A.Cleanse:IsInRange(unit)
+                    A.CleanseToxins:IsInRange(unit)
                 )
             ) and 
             -- Dispel types 
@@ -1307,273 +1310,317 @@ A[3] = function(icon, isMulti)
     ------------------------------------------------------
     local function EnemyRotation(unit)
         
-        -- Cavalier if out of range 
-        if A.Cavalier:IsReady(player) and Unit(player):HasBuffs(A.Cavalier.ID, true) == 0 and isMovingFor > CavalierTime and UseCavalier then
-            return A.Cavalier:Show(icon)
-        end    
-        
-        --[[ LightoftheProtector @mouseover friendly        
-        if A.HandoftheProtector:IsSpellLearned() and Unit("mouseover"):IsPlayer() 
-        and IsUnitFriendly("mouseover") 
-        --and A.LightOfProtector:PredictHeal("LightOfProtector", "mouseover") 
-        and A.HandoftheProtector:IsReady("mouseover") 
-        and Unit("mouseover"):HealthPercent() <= HandoftheProtectorHP 
-        then 
-            return A.HandoftheProtector:Show(icon)
-        end ]]
-        
-        --Precombat
-        if combatTime == 0 and unit ~= "mouseover" then
-            -- flask
-            -- food
-            -- augmentation
-            -- snapshot_stats
-            
-            -- potion
-            if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") then
-                return A.SuperiorSteelskinPotion:Show(icon)
-            end
-            
-            -- consecration
-            if A.Consecration:IsReady("player") and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
-                return A.Consecration:Show(icon)
-            end
-            
-            -- lights_judgment
-            if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) then
-                return A.LightsJudgment:Show(icon)
-            end
-            
+		if not A.IsInPvP and not (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then
+			-- Cavalier if out of range 
+			if A.Cavalier:IsReady(player) and Unit(player):HasBuffs(A.Cavalier.ID, true) == 0 and isMovingFor > CavalierTime and UseCavalier then
+				return A.Cavalier:Show(icon)
+			end    
+			
+			--[[ LightoftheProtector @mouseover friendly        
+			if A.HandoftheProtector:IsSpellLearned() and Unit("mouseover"):IsPlayer() 
+			and IsUnitFriendly("mouseover") 
+			--and A.LightOfProtector:PredictHeal("LightOfProtector", "mouseover") 
+			and A.HandoftheProtector:IsReady("mouseover") 
+			and Unit("mouseover"):HealthPercent() <= HandoftheProtectorHP 
+			then 
+				return A.HandoftheProtector:Show(icon)
+			end ]]
+			
+			--Precombat
+			if combatTime == 0 and unit ~= "mouseover" then
+				-- flask
+				-- food
+				-- augmentation
+				-- snapshot_stats
+				
+				-- potion
+				if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") then
+					return A.SuperiorSteelskinPotion:Show(icon)
+				end
+				
+				-- consecration
+				if A.Consecration:IsReady("player") and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
+					return A.Consecration:Show(icon)
+				end
+				
+				-- lights_judgment
+				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) then
+					return A.LightsJudgment:Show(icon)
+				end
+
+				if A.DivineToll:IsReady(unit) and Unit(unit):TimeToDie() > 5 then
+					return A.DivineToll:Show(icon)
+				end	
+
+				if A.AvengersShield:IsReady(unit) then
+					return A.AvengersShield:Show(icon)
+				end
+
+				if A.Judgment:IsReady(unit) then
+					return A.Judgment:Show(icon)
+				end	
+				
+				
+			end
+			
+			-- BURST
+			if A.BurstIsON(unit) and inCombat and unit ~= "mouseover" then
+				
+				-- fireblood,if=buff.avenging_wrath.up
+				if A.Fireblood:AutoRacial(unit) and Action.GetToggle(1, "Racial") and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 then
+					return A.Fireblood:Show(icon)
+				end
+				
+				-- use_item,name=azsharas_font_of_power,if=cooldown.seraphim.remains<=10|!talent.seraphim.enabled
+				if A.AzsharasFontofPower:IsReady("player") and (A.Seraphim:GetCooldown() <= 10 or not A.Seraphim:IsSpellLearned()) then
+					return A.AzsharasFontofPower:Show(icon)
+				end
+				
+				-- use_item,name=ashvanes_razor_coral,if=(debuff.razor_coral_debuff.stack>7&buff.avenging_wrath.up)|debuff.razor_coral_debuff.stack=0
+				if A.AshvanesRazorCoral:IsReady(unit) and ((Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) > 7 and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0) or Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) == 0) then
+					return A.AshvanesRazorCoral:Show(icon)
+				end
+				
+				-- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
+				if A.Seraphim:IsReady(unit) then
+					return A.Seraphim:Show(icon)
+				end
+				
+				-- avenging_wrath,if=buff.seraphim.up|cooldown.seraphim.remains<2|!talent.seraphim.enabled
+				if A.AvengingWrath:IsReady(unit) and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or A.Seraphim:GetCooldown() < 2 or not A.Seraphim:IsSpellLearned()) then
+					return A.AvengingWrath:Show(icon)
+				end
+				
+				-- memory_of_lucid_dreams,if=!talent.seraphim.enabled|cooldown.seraphim.remains<=gcd|buff.seraphim.up
+				if A.MemoryofLucidDreams:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (not A.Seraphim:IsSpellLearned() or A.Seraphim:GetCooldown() <= A.GetGCD() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) then
+					return A.MemoryofLucidDreams:Show(icon)
+				end
+				
+				--[[ bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
+				if A.BastionofLight:IsReady(unit) then
+					return A.BastionofLight:Show(icon)
+				end]]
+				
+				-- potion,if=buff.avenging_wrath.up
+				if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") and (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0) then
+					return A.SuperiorSteelskinPotion:Show(icon)
+				end
+				
+				-- use_items,if=buff.seraphim.up|!talent.seraphim.enabled
+				-- use_item,name=grongs_primal_rage,if=cooldown.judgment.full_recharge_time>4&cooldown.avengers_shield.remains>4&(buff.seraphim.up|cooldown.seraphim.remains+4+gcd>expected_combat_length-time)&consecration.up
+				if A.GrongsPrimalRage:IsReady(unit) and (A.Judgment:GetSpellChargesFullRechargeTime() > 4 and A.AvengersShield:GetCooldown() > 4 and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or A.Seraphim:GetCooldown() + 4 + A.GetGCD() > expected_combat_length - combatTime) and Unit("player"):HasBuffs(A.ConsecrationBuff.ID, true) > 0) then
+					return A.GrongsPrimalRage:Show(icon)
+				end
+				
+				-- use_item,name=pocketsized_computation_device,if=cooldown.judgment.full_recharge_time>4*spell_haste&cooldown.avengers_shield.remains>4*spell_haste&(!equipped.grongs_primal_rage|!trinket.grongs_primal_rage.cooldown.up)&consecration.up
+				if A.PocketsizedComputationDevice:IsReady(unit) and (A.Judgment:GetSpellChargesFullRechargeTime() > 4 * Player:SpellHaste() and A.AvengersShield:GetCooldown() > 4 * Player:SpellHaste() and Unit("player"):HasBuffs(A.ConsecrationBuff.ID, true) > 0) then
+					return A.PocketsizedComputationDevice:Show(icon)
+				end
+				
+				-- use_item,name=merekthas_fang,if=!buff.avenging_wrath.up&(buff.seraphim.up|!talent.seraphim.enabled)
+				if A.MerekthasFang:IsReady(unit) and (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) == 0 and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or not A.Seraphim:IsSpellLearned())) then
+					return A.MerekthasFang:Show(icon)
+				end
+				
+				-- use_item,name=razdunks_big_red_button
+				if A.RazdunksBigRedButton:IsReady(unit) then
+					return A.RazdunksBigRedButton:Show(icon)
+				end
+				
+			end
+			
+			if inCombat and unit ~= "mouseover" then
+				
+				
+				-- Auto taunt logic
+				if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then
+					if not Unit(unit):IsBoss() and
+					A.HandofReckoning:IsReady(unit) --or
+					--A.DivineShield:IsReady(unit) and A.FinalStand:IsSpellLearned()
+					then
+						local agroLevels = TargetWithAgroExsist()
+						if agroLevels[0] and Unit(player):ThreatSituation(unit) ~= 0 then
+							return A:Show(icon, ACTION_CONST_AUTOTARGET)
+						end
+						if agroLevels[1] and Unit(player):ThreatSituation(unit) > 1 then
+							return A:Show(icon, ACTION_CONST_AUTOTARGET)
+						end
+						if agroLevels[2] and Unit(player):ThreatSituation(unit) > 2 then
+							return A:Show(icon, ACTION_CONST_AUTOTARGET)
+						end
+					end
+				end
+				
+				-- Custom logic
+				if Unit(unit):GetRange() <= 30
+				and Unit(player):ThreatSituation(unit) ~= 3
+				and not Unit(unit):IsExplosives()
+				and not Unit(unit):IsDummy()
+				and not Unit(unit):IsPlayer()
+				and not Unit(unit):NPCID() == 160966 -- Thing From Beyong
+				and not Unit(unit):NPCID() == 161895 -- Thing From Beyong
+				and not Unit(unit):IsTotem() then
+					--  Try taunt enemy if no agro
+					if A.HandofReckoning:IsReady(unit) then
+						if Unit(player):HasBuffs(A.BlessingofProtection.ID, true) > 0 or (Unit(player):HasBuffs(A.DivineShield.ID, true) > 0 and not A.FinalStand:IsSpellLearned()) then
+							AutoCancelBoP()
+						else
+							return A.HandofReckoning:Show(icon)
+						end
+					end
+					-- Try CC Enemy if no agro
+					if A.HammerofJustice:IsReady(unit) then
+						return A.HammerofJustice:Show(icon)
+					end
+					-- Try Aoe CC Enemy if no agro
+					if A.BlindingLight:IsSpellLearned() and A.BlindingLight:IsReady(player) and Unit(unit):GetRange() <= 10 then
+						return A.BlindingLight:Show(icon)
+					end
+					
+				end
+				
+				-- avengers_shield,if=cooldown_react
+				if A.AvengersShield:GetCooldown() < 1 then
+					return A.AvengersShield:Show(icon)
+				end
+				
+				-- worldvein_resonance,if=buff.lifeblood.stack<3
+				if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffsStacks(A.LifebloodBuff.ID, true) < 3) then
+					return A.WorldveinResonance:Show(icon)
+				end
+				
+				-- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
+				if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and ((Unit("player"):HasBuffs(A.AvengersValorBuff.ID, true) > 0) and (A.Seraphim:GetCooldown() > A.GetGCD() or not A.Seraphim:IsSpellLearned())) then
+					return A.ShieldoftheRighteous:Show(icon)
+				end
+				
+				-- shield_of_the_righteous,if=(buff.avenging_wrath.up&!talent.seraphim.enabled)|buff.seraphim.up&buff.avengers_valor.up
+				if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and  ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 and not A.Seraphim:IsSpellLearned()) or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.AvengersValorBuff.ID, true) > 0) then
+					return A.ShieldoftheRighteous:Show(icon)
+				end
+				
+				-- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
+				if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and  ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) < 4 and not A.Seraphim:IsSpellLearned()) or (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) < 4 and Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0)) then
+					return A.ShieldoftheRighteous:Show(icon)
+				end
+				
+				-- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
+				if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 then
+					return A.ShieldoftheRighteous:Show(icon)
+				end
+				
+				-- lights_judgment,if=buff.seraphim.up&buff.seraphim.remains<3
+				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) < 3) then
+					return A.LightsJudgment:Show(icon)
+				end
+				
+				-- consecration,if=!consecration.up
+				if A.Consecration:IsReady(player)  and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
+					return A.Consecration:Show(icon)
+				end
+				
+				-- judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1&cooldown_react)|!talent.crusaders_judgment.enabled
+				if A.Judgment:IsReady(unit) and ((A.Judgment:GetCooldown() < A.GetGCD() and A.Judgment:GetSpellChargesFrac() > 1 and A.Judgment:GetCooldown() == 0) or not A.CrusadersJudgment:IsSpellLearned()) then
+					return A.Judgment:Show(icon)
+				end
+			
+				if A.DivineToll:IsReady(unit) and Unit(unit):TimeToDie() > 5 then
+					return A.DivineToll:Show(icon)
+				end	           
+				-- avengers_shield,if=cooldown_react
+				--    if A.AvengersShield:IsReady(unit) then
+				--      return A.AvengersShield:Show(icon)
+				--end
+				
+				-- judgment,if=cooldown_react|!talent.crusaders_judgment.enabled
+				if A.Judgment:IsReady(unit) and (A.Judgment:GetCooldown() == 0 or not A.CrusadersJudgment:IsSpellLearned()) then
+					return A.Judgment:Show(icon)
+				end
+				
+				-- concentrated_flame,if=(!talent.seraphim.enabled|buff.seraphim.up)&!dot.concentrated_flame_burn.remains>0|essence.the_crucible_of_flame.rank<3
+				if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and ((not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) and Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 or A.ConcentratedFlame:GetAzeriteRank() < 3) then
+					return A.ConcentratedFlame:Show(icon)
+				end
+				
+				-- lights_judgment,if=!talent.seraphim.enabled|buff.seraphim.up
+				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) then
+					return A.LightsJudgment:Show(icon)
+				end
+				
+				-- VigilantProtector
+				if A.VigilantProtector:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.VigilantProtector:Show(icon)
+				end
+				
+				-- EmpoweredNullBarrier
+				if A.EmpoweredNullBarrier:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.EmpoweredNullBarrier:Show(icon)
+				end
+				
+				-- AnimaofDeath
+				if A.AnimaofDeath:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.AnimaofDeath:Show(icon)
+				end
+				
+				-- AzerothsUndyingGift
+				if A.AzerothsUndyingGift:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.AzerothsUndyingGift:Show(icon)
+				end
+				
+				-- RippleinSpace
+				if A.RippleinSpace:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.RippleinSpace:Show(icon)
+				end
+				
+				-- AegisoftheDeep
+				if A.AegisoftheDeep:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
+					return A.AegisoftheDeep:Show(icon)
+				end
+				
+				-- blessed_hammer,strikes=3
+				if A.BlessedHammer:IsReady(unit) then
+					return A.BlessedHammer:Show(icon)
+				end
+				
+				-- hammer_of_the_righteous
+				if A.HammeroftheRighteous:IsReady(unit) and A.AvengersShield:GetCooldown() > 0 then
+					return A.HammeroftheRighteous:Show(icon)
+				end
+				
+				-- consecration
+				if A.Consecration:IsReady(player)  and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
+					return A.Consecration:Show(icon)
+				end
+				
+			end
         end
-        
-        -- BURST
-        if A.BurstIsON(unit) and inCombat and unit ~= "mouseover" then
-            
-            -- fireblood,if=buff.avenging_wrath.up
-            if A.Fireblood:AutoRacial(unit) and Action.GetToggle(1, "Racial") and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 then
-                return A.Fireblood:Show(icon)
-            end
-            
-            -- use_item,name=azsharas_font_of_power,if=cooldown.seraphim.remains<=10|!talent.seraphim.enabled
-            if A.AzsharasFontofPower:IsReady("player") and (A.Seraphim:GetCooldown() <= 10 or not A.Seraphim:IsSpellLearned()) then
-                return A.AzsharasFontofPower:Show(icon)
-            end
-            
-            -- use_item,name=ashvanes_razor_coral,if=(debuff.razor_coral_debuff.stack>7&buff.avenging_wrath.up)|debuff.razor_coral_debuff.stack=0
-            if A.AshvanesRazorCoral:IsReady(unit) and ((Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) > 7 and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0) or Unit(unit):HasDeBuffsStacks(A.RazorCoralDebuff.ID, true) == 0) then
-                return A.AshvanesRazorCoral:Show(icon)
-            end
-            
-            -- seraphim,if=cooldown.shield_of_the_righteous.charges_fractional>=2
-            if A.Seraphim:IsReady(unit) then
-                return A.Seraphim:Show(icon)
-            end
-            
-            -- avenging_wrath,if=buff.seraphim.up|cooldown.seraphim.remains<2|!talent.seraphim.enabled
-            if A.AvengingWrath:IsReady(unit) and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or A.Seraphim:GetCooldown() < 2 or not A.Seraphim:IsSpellLearned()) then
-                return A.AvengingWrath:Show(icon)
-            end
-            
-            -- memory_of_lucid_dreams,if=!talent.seraphim.enabled|cooldown.seraphim.remains<=gcd|buff.seraphim.up
-            if A.MemoryofLucidDreams:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (not A.Seraphim:IsSpellLearned() or A.Seraphim:GetCooldown() <= A.GetGCD() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) then
-                return A.MemoryofLucidDreams:Show(icon)
-            end
-            
-            --[[ bastion_of_light,if=cooldown.shield_of_the_righteous.charges_fractional<=0.5
-            if A.BastionofLight:IsReady(unit) then
-                return A.BastionofLight:Show(icon)
-            end]]
-            
-            -- potion,if=buff.avenging_wrath.up
-            if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") and (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0) then
-                return A.SuperiorSteelskinPotion:Show(icon)
-            end
-            
-            -- use_items,if=buff.seraphim.up|!talent.seraphim.enabled
-            -- use_item,name=grongs_primal_rage,if=cooldown.judgment.full_recharge_time>4&cooldown.avengers_shield.remains>4&(buff.seraphim.up|cooldown.seraphim.remains+4+gcd>expected_combat_length-time)&consecration.up
-            if A.GrongsPrimalRage:IsReady(unit) and (A.Judgment:GetSpellChargesFullRechargeTime() > 4 and A.AvengersShield:GetCooldown() > 4 and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or A.Seraphim:GetCooldown() + 4 + A.GetGCD() > expected_combat_length - combatTime) and Unit("player"):HasBuffs(A.ConsecrationBuff.ID, true) > 0) then
-                return A.GrongsPrimalRage:Show(icon)
-            end
-            
-            -- use_item,name=pocketsized_computation_device,if=cooldown.judgment.full_recharge_time>4*spell_haste&cooldown.avengers_shield.remains>4*spell_haste&(!equipped.grongs_primal_rage|!trinket.grongs_primal_rage.cooldown.up)&consecration.up
-            if A.PocketsizedComputationDevice:IsReady(unit) and (A.Judgment:GetSpellChargesFullRechargeTime() > 4 * Player:SpellHaste() and A.AvengersShield:GetCooldown() > 4 * Player:SpellHaste() and Unit("player"):HasBuffs(A.ConsecrationBuff.ID, true) > 0) then
-                return A.PocketsizedComputationDevice:Show(icon)
-            end
-            
-            -- use_item,name=merekthas_fang,if=!buff.avenging_wrath.up&(buff.seraphim.up|!talent.seraphim.enabled)
-            if A.MerekthasFang:IsReady(unit) and (Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) == 0 and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 or not A.Seraphim:IsSpellLearned())) then
-                return A.MerekthasFang:Show(icon)
-            end
-            
-            -- use_item,name=razdunks_big_red_button
-            if A.RazdunksBigRedButton:IsReady(unit) then
-                return A.RazdunksBigRedButton:Show(icon)
-            end
-            
-        end
-        
-        if inCombat and unit ~= "mouseover" then
-            
-            
-            -- Auto taunt logic
-            if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then
-                if not Unit(unit):IsBoss() and
-                A.HandofReckoning:IsReady(unit) --or
-                --A.DivineShield:IsReady(unit) and A.FinalStand:IsSpellLearned()
-                then
-                    local agroLevels = TargetWithAgroExsist()
-                    if agroLevels[0] and Unit(player):ThreatSituation(unit) ~= 0 then
-                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
-                    end
-                    if agroLevels[1] and Unit(player):ThreatSituation(unit) > 1 then
-                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
-                    end
-                    if agroLevels[2] and Unit(player):ThreatSituation(unit) > 2 then
-                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
-                    end
-                end
-            end
-            
-            -- Custom logic
-            if Unit(unit):GetRange() <= 30
-            and Unit(player):ThreatSituation(unit) ~= 3
-            and not Unit(unit):IsExplosives()
-            and not Unit(unit):IsDummy()
-            and not Unit(unit):IsPlayer()
-            and not Unit(unit):NPCID() == 160966 -- Thing From Beyong
-            and not Unit(unit):NPCID() == 161895 -- Thing From Beyong
-            and not Unit(unit):IsTotem() then
-                --  Try taunt enemy if no agro
-                if A.HandofReckoning:IsReady(unit) then
-                    if Unit(player):HasBuffs(A.BlessingofProtection.ID, true) > 0 or (Unit(player):HasBuffs(A.DivineShield.ID, true) > 0 and not A.FinalStand:IsSpellLearned()) then
-                        AutoCancelBoP()
-                    else
-                        return A.HandofReckoning:Show(icon)
-                    end
-                end
-                -- Try CC Enemy if no agro
-                if A.HammerofJustice:IsReady(unit) then
-                    return A.HammerofJustice:Show(icon)
-                end
-                -- Try Aoe CC Enemy if no agro
-                if A.BlindingLight:IsSpellLearned() and A.BlindingLight:IsReady(player) and Unit(unit):GetRange() <= 10 then
-                    return A.BlindingLight:Show(icon)
-                end
-                
-            end
-            
-            -- avengers_shield,if=cooldown_react
-            if A.AvengersShield:GetCooldown() < 1 then
-                return A.AvengersShield:Show(icon)
-            end
-            
-            -- worldvein_resonance,if=buff.lifeblood.stack<3
-            if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and (Unit("player"):HasBuffsStacks(A.LifebloodBuff.ID, true) < 3) then
-                return A.WorldveinResonance:Show(icon)
-            end
-            
-            -- shield_of_the_righteous,if=(buff.avengers_valor.up&cooldown.shield_of_the_righteous.charges_fractional>=2.5)&(cooldown.seraphim.remains>gcd|!talent.seraphim.enabled)
-            if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and ((Unit("player"):HasBuffs(A.AvengersValorBuff.ID, true) > 0) and (A.Seraphim:GetCooldown() > A.GetGCD() or not A.Seraphim:IsSpellLearned())) then
-                return A.ShieldoftheRighteous:Show(icon)
-            end
-            
-            -- shield_of_the_righteous,if=(buff.avenging_wrath.up&!talent.seraphim.enabled)|buff.seraphim.up&buff.avengers_valor.up
-            if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and  ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 and not A.Seraphim:IsSpellLearned()) or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.AvengersValorBuff.ID, true) > 0) then
-                return A.ShieldoftheRighteous:Show(icon)
-            end
-            
-            -- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
-            if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 and  ((Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.AvengingWrathBuff.ID, true) < 4 and not A.Seraphim:IsSpellLearned()) or (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) < 4 and Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0)) then
-                return A.ShieldoftheRighteous:Show(icon)
-            end
-            
-            -- shield_of_the_righteous,if=(buff.avenging_wrath.up&buff.avenging_wrath.remains<4&!talent.seraphim.enabled)|(buff.seraphim.remains<4&buff.seraphim.up)
-            if A.ShieldoftheRighteous:IsReady(player) and Unit(player):HasBuffs(A.ShieldoftheRighteousBuff.ID, true) < A.GetGCD() + 0.1 then
-                return A.ShieldoftheRighteous:Show(icon)
-            end
-            
-            -- lights_judgment,if=buff.seraphim.up&buff.seraphim.remains<3
-            if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) < 3) then
-                return A.LightsJudgment:Show(icon)
-            end
-            
-            -- consecration,if=!consecration.up
-            if A.Consecration:IsReady(player)  and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
-                return A.Consecration:Show(icon)
-            end
-            
-            -- judgment,if=(cooldown.judgment.remains<gcd&cooldown.judgment.charges_fractional>1&cooldown_react)|!talent.crusaders_judgment.enabled
-            if A.Judgment:IsReady(unit) and ((A.Judgment:GetCooldown() < A.GetGCD() and A.Judgment:GetSpellChargesFrac() > 1 and A.Judgment:GetCooldown() == 0) or not A.CrusadersJudgment:IsSpellLearned()) then
-                return A.Judgment:Show(icon)
-            end
-            
-            -- avengers_shield,if=cooldown_react
-            --    if A.AvengersShield:IsReady(unit) then
-            --      return A.AvengersShield:Show(icon)
-            --end
-            
-            -- judgment,if=cooldown_react|!talent.crusaders_judgment.enabled
-            if A.Judgment:IsReady(unit) and (A.Judgment:GetCooldown() == 0 or not A.CrusadersJudgment:IsSpellLearned()) then
-                return A.Judgment:Show(icon)
-            end
-            
-            -- concentrated_flame,if=(!talent.seraphim.enabled|buff.seraphim.up)&!dot.concentrated_flame_burn.remains>0|essence.the_crucible_of_flame.rank<3
-            if A.ConcentratedFlame:AutoHeartOfAzerothP(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") and ((not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) and Unit(unit):HasDeBuffs(A.ConcentratedFlameBurn.ID, true) == 0 or A.ConcentratedFlame:GetAzeriteRank() < 3) then
-                return A.ConcentratedFlame:Show(icon)
-            end
-            
-            -- lights_judgment,if=!talent.seraphim.enabled|buff.seraphim.up
-            if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (not A.Seraphim:IsSpellLearned() or Unit("player"):HasBuffs(A.SeraphimBuff.ID, true) > 0) then
-                return A.LightsJudgment:Show(icon)
-            end
-            
-            -- VigilantProtector
-            if A.VigilantProtector:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.VigilantProtector:Show(icon)
-            end
-            
-            -- EmpoweredNullBarrier
-            if A.EmpoweredNullBarrier:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.EmpoweredNullBarrier:Show(icon)
-            end
-            
-            -- AnimaofDeath
-            if A.AnimaofDeath:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AnimaofDeath:Show(icon)
-            end
-            
-            -- AzerothsUndyingGift
-            if A.AzerothsUndyingGift:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AzerothsUndyingGift:Show(icon)
-            end
-            
-            -- RippleinSpace
-            if A.RippleinSpace:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.RippleinSpace:Show(icon)
-            end
-            
-            -- AegisoftheDeep
-            if A.AegisoftheDeep:AutoHeartOfAzeroth(unit, true) and Action.GetToggle(1, "HeartOfAzeroth") then
-                return A.AegisoftheDeep:Show(icon)
-            end
-            
-            -- blessed_hammer,strikes=3
-            if A.BlessedHammer:IsReady(unit) then
-                return A.BlessedHammer:Show(icon)
-            end
-            
-            -- hammer_of_the_righteous
-            if A.HammeroftheRighteous:IsReady(unit) and A.AvengersShield:GetCooldown() > 0 then
-                return A.HammeroftheRighteous:Show(icon)
-            end
-            
-            -- consecration
-            if A.Consecration:IsReady(player)  and Unit(unit):GetRange() <= 5 and Consecration() <= 3 then
-                return A.Consecration:Show(icon)
-            end
-            
-        end
-        
+
+		--PVP ROTATION--
+
+		if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then	
+
+			if A.HammerofWrath:IsReady(unitID) and A.IsUnitEnemy(unitID) then
+				return A.HammerofWrath:Show(icon)
+			end	
+
+			if A.BlessedHammer:IsReady(unitID) and A.BlessedHammer:IsTalentLearned() and A.BlessedHammer:GetSpellChargesFrac() > 2.5 then
+				return A.BlessedHammer:Show(icon)
+			end
+
+			if A.AvengersShield:IsReady(unitID) and A.IsUnitEnemy(unitID) then
+				return A.AvengersShield:Show(icon)
+			end
+
+			if A.Judgment:IsReady(unitID) and A.IsUnitEnemy(unitID) then
+				return A.Judgment:Show(icon)
+			end
+
+			if A.ShieldoftheRighteous:IsReady(unitID) and MultiUnits:GetByRange(5, 2) >= 1 then
+				return A.ShieldoftheRighteous:Show(icon)
+			end
+
+	
+		
     end
     -- End on EnemyRotation()
     
