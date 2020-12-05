@@ -279,11 +279,11 @@ local function Interrupts(unit)
         if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofSilence              
         end 
-        
-        -- Imprison    
-        if useCC and A.Imprison:IsReady(unit) and not A.Disrupt:IsReady(unit) then        
-            return A.Imprison              
-        end 
+           
+        -- Imprison
+        if useCC and A.Imprison:IsReady(unit, nil, nil, true) and A.Imprison:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):IsControlAble("incapacitate", 0) then
+            return A.Imprison:Show(icon)                  
+        end   
         
         -- Disrupt
         if useKick and A.Disrupt:IsReady(unit) and not notInterruptable and A.Disrupt:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
