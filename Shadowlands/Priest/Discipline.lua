@@ -411,8 +411,12 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		--Healing Engine Purify Target
 		if A.Purify:IsReady() and UsePurify then
 			for i = 1, #getmembersAll do 
-				if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") then  
-					HealingEngine.SetTarget(getmembersAll[i].Unit)                  									
+				if Unit(getmembersAll[i].Unit):GetRange() <= 40 and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") then
+					if UnitGUID(getmembersAll[i].Unit) ~= currGUID then
+					HealingEngine.SetTarget(getmembersAll[i].Unit) 
+					break
+                    else HealingEngine.SetTarget(getmembersAll[i].Unit)
+					end
 				end				
 			end
 		end
@@ -423,12 +427,12 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		end 
 
 		--Power Word: Radiance
-		if A.PowerWordRadiance:IsReady(unit) and not isMoving and HealingEngine.GetBelowHealthPercentUnits(RadianceHP, 40) > RadianceMembers and HealingEngine.GetBuffsCount(81749, 1) <= 4 then
+		if A.PowerWordRadiance:IsReady(unit) and not isMoving and HealingEngine.GetBelowHealthPercentUnits(RadianceHP, 40) > RadianceMembers and HealingEngine.GetBuffsCount(194384, 1) <= 4 then
 			return A.PowerWordRadiance:Show(icon)
 		end	
 		
-		--Shadow Covenants
-		if A.ShadowCovenant:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(ShadowCovHP, 30) > ShadowCovMembers and HealingEngine.GetBuffsCount(81749, 5) >= ShadowCovAtone then
+		--Shadow Covenant
+		if A.ShadowCovenant:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(ShadowCovHP, 30) > ShadowCovMembers and HealingEngine.GetBuffsCount(194384, 5) >= ShadowCovAtone then
 			return A.ShadowCovenant:Show(icon)
 		end	
 
