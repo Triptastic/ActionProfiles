@@ -67,7 +67,7 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     ArcaneExplosion	     		= Action.Create({ Type = "Spell", ID = 1449		}),
     ArcaneIntellect	     		= Action.Create({ Type = "Spell", ID = 1459		}),
     Blink			     		= Action.Create({ Type = "Spell", ID = 1953		}),	
-    ConjureRefreshment     		= Action.Create({ Type = "Spell", ID = 1449		}),
+    ConjureRefreshment     		= Action.Create({ Type = "Spell", ID = 190336	}),
     CounterSpell	     		= Action.Create({ Type = "Spell", ID = 2139		}),	
     FrostNova		     		= Action.Create({ Type = "Spell", ID = 122		}),
     FrostBolt		     		= Action.Create({ Type = "Spell", ID = 116		}),	
@@ -273,14 +273,9 @@ A[3] = function(icon, isMulti)
 	
 		local function NoCombust(unitID)
 	
-			if A.RuneofPower:IsReady(player) and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and A.Combustion:GetCooldown() > 5 then
+			if A.RuneofPower:IsReady(player) and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and A.Combustion:GetCooldown() > 10 then
 				return A.RuneofPower:Show(icon)
 			end	
-	
-			-- Hardcast Pyroblast opener
-			if not inCombat and DBM and Pull <= 4 and not isMoving then
-				return A.Pyroblast:Show(icon)
-			end
 
 			if A.Combustion:IsReady(player) and A.PhoenixFlames:GetSpellChargesFrac() >= 2.9 and ((A.FireBlast:GetSpellChargesFrac() >= 1.9 and not A.FlameOn:IsTalentLearned()) or (A.FireBlast:GetSpellChargesFrac() >= 2.9 and A.FlameOn:IsTalentLearned())) and A.BurstIsON then
 				return A.Combustion:Show(icon)
@@ -307,9 +302,13 @@ A[3] = function(icon, isMulti)
 				return A.Pyroblast:Show(icon)
 			end	
 
-			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 then
+			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.FireBlast:GetSpellChargesFrac() > A.PhoenixFlames:GetSpellChargesFrac() and A.LastPlayerCastID ~= A.PhoenixFlames:Info() and ((A.Combustion:GetCooldown() > 10 and A.BurstIsON) or not A.BurstIsON) then
 				return A.FireBlast:Show(icon)
 			end	
+			
+			if A.PhoenixFlames:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.PhoenixFlames:GetSpellChargesFrac() > A.FireBlast:GetSpellChargesFrac() and A.LastPlayerCastID ~= A.FireBlast:Info() and ((A.Combustion:GetCooldown() > 10 and A.BurstIsON) or not A.BurstIsON) then
+				return A.PhoenixFlames:Show(icon)
+			end				
 
 			if A.Flamestrike:IsReady(player) and A.FlamePatch:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 2 and UseAoE then
 				return A.Flamestrike:Show(icon)
@@ -340,7 +339,7 @@ A[3] = function(icon, isMulti)
 				end
 			end
 
-			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 then
+			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.LastPlayerCastID ~= A.PhoenixFlames:Info() then
 				return A.FireBlast:Show(icon)
 			end
 	
@@ -359,12 +358,21 @@ A[3] = function(icon, isMulti)
 		if A.BlazingBarrier:IsReady(player) and not inCombat then
 			return A.BlazingBarrier:Show(icon)
 		end
-	
-		if Unit(player):HasBuffs(A.Combustion.ID, true) > 0 and YesCombust() then
+
+		-- Hardcast Pyroblast opener
+		if not inCombat and DBM and Pull <= 4 and not isMoving then
+			return A.Pyroblast:Show(icon)
+		end
+		
+		if not inCombat and not DBM and not isMoving then
+			return A.Fireball:Show(icon)
+		end	
+		
+		if Unit(player):HasBuffs(A.Combustion.ID, true) > 0 and YesCombust() and inCombat then
 			return true
 		end
 		
-		if Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and NoCombust() then
+		if Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and NoCombust() and inCombat then
 			return true
 		end
 	
