@@ -225,6 +225,7 @@ local function bool(val)
     return val ~= 0
 end
 local player = "player"
+local target = "target"
 ------------------------------------------
 -------------- COMMON PREAPL -------------
 ------------------------------------------
@@ -1165,5 +1166,4 @@ A[3] = function(icon, isMulti)
     end
 end
 -- Finished
-
 

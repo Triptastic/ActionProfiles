@@ -399,7 +399,7 @@ local function SelfDefensives()
 					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HS.ID)				
 					return A.HS							 
 				end
-			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
 				if Healthstone >= 100 then -- AUTO 
 					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
 						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
@@ -413,7 +413,7 @@ local function SelfDefensives()
 		end
 		
 		-- PhialofSerenity
-		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
 			-- Healing 
 			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
 			if PhialofSerenityOperator == "AND" then 
@@ -462,6 +462,8 @@ A[3] = function(icon, isMulti)
 	local MetaHP = Action.GetToggle(2, "MetamorphosisHP")
 	local FelDevDMG = Action.GetToggle(2, "FelDevastationDMG")
 	local FelDevHP = Action.GetToggle(2, "FelDevHP")
+	local Raz = Action.GetToggle(2, "Raz")
+	local DemonSpikesHP = Action.GetToggle(2, "DemonSpikesHP")
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
 
@@ -514,7 +516,12 @@ A[3] = function(icon, isMulti)
 			--actions.cooldown+=/elysian_decree
 			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
 				return A.ElysianDecree:Show(icon)
-			end					
+			end		
+
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Raz then
+				return A.ElysianDecree:Show(icon)
+			end				
 		
 		end
 
@@ -566,7 +573,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() then
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz then
 				return A.SigilofFlame:Show(icon)
 			end
 
@@ -583,8 +590,12 @@ A[3] = function(icon, isMulti)
 		end 
 	
 		local function DefenseRotation()
+
+			if A.Metamorphosis:IsReady(unit) and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and Unit(player):HealthPercent() <= MetaHP then
+				return A.Metamorphosis:Show(icon)
+			end	
 		
-			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) then
+			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikesHP then
 				return A.DemonSpikes:Show(icon)
 			end
 			
@@ -596,10 +607,6 @@ A[3] = function(icon, isMulti)
 			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and Unit(player):HealthPercent() <= FelDevHP then
 				return A.SpectralSight:Show(icon)
 			end			
-			
-			if A.Metamorphosis:IsReady(unit) and A.BurstIsON(unit) and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and Unit(player):HealthPercent() <= MetaHP then
-				return A.Metamorphosis:Show(icon)
-			end	
 
             if A.PotionofHardenedShadows:IsReady(unit) and AutoPotionSelect == "HardenedShadowsPot" and PotionTrue and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and
 			(
@@ -681,7 +688,7 @@ A[3] = function(icon, isMulti)
 			return true
 		end	
 		
-		if DamageRotation(unit) and inCombat then
+		if DamageRotation(unit) then
 			return true
 		end		
 			
