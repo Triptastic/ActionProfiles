@@ -790,18 +790,18 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-                { -- HEALING POTION 
+                { -- DEMON SPIKES
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "SpiritualHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
+                    DB = "DemonSpikesHP",
+                    DBV = 90, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = "Spiritual Healing Potion HP (%)",
+                        ANY = "Demon Spikes HP (%)",
                     }, 
                     M = {},
-                },
+                },				
             },    
             { -- LAYOUT SPACE
                 

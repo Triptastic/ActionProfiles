@@ -615,78 +615,6 @@ local function GetByRange(count, range, isCheckEqual, isCheckCombat)
     end
 end  
 
--- [1] CC AntiFake Rotation
-local function AntiFakeStun(unit) 
-    return 
-    IsUnitEnemy(unit) and  
-    Unit(unit):GetRange() <= 10 and 
-    A.HammerofJusticeGreen:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true)          
-end 
-A[1] = function(icon)    
-    local useKick, useCC, useRacial = A.InterruptIsValid(targettarget, "TargetMouseover")    
-    
-     
- 
-    -- Auto targettarget ?
-    if useCC and A.HammerofJustice:IsReady(targettarget) and A.HammerofJustice:AbsentImun(targettarget, Temp.TotalAndPhysAndCCAndStun, true) then 
-        -- Notification                    
-        Action.SendNotification("HammerofJustice interrupting...", A.HammerofJustice.ID)
-        return A.HammerofJusticeGreen              
-    end 
-	
-	-- Manual Key
-    if     A.HammerofJusticeGreen:IsReady(nil, nil, nil, true) and 
-    (
-        AntiFakeStun(mouseover) or 
-        AntiFakeStun(target) or 
-        (
-            not IsUnitEnemy(mouseover) and 
-            not IsUnitEnemy(target) and                     
-            (
-                (A.IsInPvP and EnemyTeam():PlayersInRange(1, 10)) or 
-                (not A.IsInPvP and GetByRange(1, 10))
-            )
-        )
-    )
-    then 
-        return A.HammerofJusticeGreen:Show(icon)         
-    end
-    
-	
-end
-
--- [2] Kick AntiFake Rotation
-A[2] = function(icon)        
-    local unit
-    if IsUnitEnemy(mouseover) then 
-        unit = mouseover
-    elseif IsUnitEnemy(target) then 
-        unit = target
-    end 
-    
-    if unit then         
-        local castLeft, _, _, _, notKickAble = Unit(unit):IsCastingRemains()
-        if castLeft > 0 then             
-            
-            -- Racials 
-            if A.QuakingPalm:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.QuakingPalm:Show(icon)
-            end 
-            
-            if A.Haymaker:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.Haymaker:Show(icon)
-            end 
-            
-            if A.WarStomp:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.WarStomp:Show(icon)
-            end 
-            
-            if A.BullRush:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.BullRush:Show(icon)
-            end                         
-        end 
-    end                                                                                 
-end
 
 local function SelfDefensives()
     if Unit(player):CombatTime() == 0 then 
@@ -700,35 +628,110 @@ local function SelfDefensives()
         unit = "target"
     end  
 
+    -- DivineShield
+    local DivineShield = A.GetToggle(2, "DivineShield")
+    if     DivineShield >= 0 and A.DivineShield:IsReady(player) and 
+    (
+        (     -- Auto 
+            DivineShield >= 100 and 
+            (
+                (
+                    not A.IsInPvP and 
+                    Unit(player):HealthPercent() < 25 and 
+                    Unit(player):TimeToDieX(5) < 6 
+                ) or 
+                (
+                    A.IsInPvP and Unit(player):HealthPercent() < 20 and 
+                    (
+                        Unit(player):UseDeff() or 
+                        (
+                            Unit(player, 5):HasFlags() and 
+                            Unit(player):GetRealTimeDMG() > 0 and 
+                            Unit(player):IsFocused(nil, true)                                 
+                        )
+                    )
+                )
+            ) and 
+            Unit(player):HasDeBuffs(A.Forbearance.ID, true) == 0
+        ) or 
+        (    -- Custom
+            DivineShield < 100 and 
+            Unit(player):HealthPercent() <= DivineShield
+        )
+    ) 
+    then 
+        return A.DivineShield
+    end
+    
+    -- BlessingofProtection
+    local BlessingofProtection = A.GetToggle(2, "BlessingofProtection")
+    if BlessingofProtection >= 0 and A.BlessingofProtection:IsReady(player) and
+    (
+        (    -- Auto
+            BlessingofProtection >=  100 and
+            (
+                (
+                    not A.IsInPvP and
+                    Unit(player):HealthPercent() < 30 and
+                    Unit(player):TimeToDieX(20) < 3 and 
+                    Unit(player):GetRealTimeDMG(3) > 0 and
+                    Unit(player):HasDeBuffs(A.Forbearance.ID, true) == 0
+                ) or
+                (
+                    A.IsInPvP and                        
+                    (
+                        (    -- Defensive
+                            Unit(player):HealthPercent() < 35 and
+                            Unit(player):GetRealTimeDMG(3) > 0 and
+                            Unit(player):IsFocused("MELEE", true) and
+                            Unit(player):HasBuffs("DeffBuffs") == 0
+                        ) or
+                        (    -- Disarmed
+                            Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 10 and
+                            LoC:Get("DISARM") > 4.5
+                        ) or
+                        (    -- PvP Debuffs (Touch of Death, Karma, Vendetta
+                            Unit(player):HasDeBuffs(Temp.BoPDebuffsPvP) > 4 or
+                            Unit(player):HasDeBuffs(A.VendettaDebuff.ID) > 15
+                        )
+                    )
+                )
+            )
+        ) or 
+        (    -- Custom
+            BlessingofProtection < 100 and 
+            Unit(player):HealthPercent() <= BlessingofProtection
+        )
+    ) 
+    then 
+        return A.BlessingofProtection
+    end
+
 	if not Player:IsStealthed() then 	
 		-- Healthstone | AbyssalHealingPotion
 		local Healthstone = GetToggle(1, "HealthStone") 
 		if Healthstone >= 0 then 
 			if A.HS:IsReady(player) then 					
 				if Healthstone >= 100 then -- AUTO 
-					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 then
-						A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HS.ID)						
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 then					
 						return A.HS
 					end 
-				elseif Unit(player):HealthPercent() <= Healthstone then 
-					A.Toaster:SpawnByTimer("TripToast", 0, "Healthstone!", "Using Healthstone!", A.HS.ID)				
+				elseif Unit(player):HealthPercent() <= Healthstone then 				
 					return A.HS							 
 				end
-			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
+			elseif A.Zone ~= "arena" and (A.Zone ~= "pvp" or not Action.InstanceInfo.isRated) and A.SpiritualHealingPotion:IsReady(player) then 
 				if Healthstone >= 100 then -- AUTO 
-					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then
-						A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)					
+					if Unit(player):TimeToDie() <= 9 and Unit(player):HealthPercent() <= 40 and Unit(player):HealthDeficit() >= A.SpiritualHealingPotion:GetItemDescription()[1] then					
 						return A.AbyssalHealingPotion
 					end 
-				elseif Unit(player):HealthPercent() <= Healthstone then
-					A.Toaster:SpawnByTimer("TripToast", 0, "Health Potion!", "Using Health Potion!", A.SpiritualHealingPotion.ID)				
+				elseif Unit(player):HealthPercent() <= Healthstone then				
 					return A.AbyssalHealingPotion						 
 				end				
 			end 
 		end
 		
 		-- PhialofSerenity
-		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not Action.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
 			-- Healing 
 			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
 			if PhialofSerenityOperator == "AND" then 
@@ -747,41 +750,6 @@ local function SelfDefensives()
 			end 
 		end 
 	end
-
-    -- HealingPotion
-    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
-    if     SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
-    (
-        (     -- Auto 
-            SpiritualHealingPotion >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 20 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.20 or 
-                -- TTD 
-                Unit(player):TimeToDieX(25) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit("player", 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            SpiritualHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= SpiritualHealingPotion
-        )
-    ) 
-    then 
-        return A.SpiritualHealingPotion
-    end 
     
     -- Stoneform on self dispel (only PvE)
     if A.Stoneform:IsRacialReady("player", true) and not A.IsInPvP and A.AuraIsValid("player", "UseDispel", "Dispel") then 
@@ -1186,136 +1154,6 @@ local function HoS(unit, hp, IsRealDMG, IsDeffensed)
     )
 end 
 
-local function BoP(unit, Icon)
-    local id = 1022
-
-    return
-    A.BlessingofProtection:IsReady(unit) and 
-    Unit(unit):IsExists() and 
-    Unit(unit):IsPlayer() and
-    not Unit(unit):IsTank() and
-    (
-        not UnitIsUnit(unit, player) or
-        -- Divine Shield
-        A.DivineShield:GetCooldown() > 5
-    ) and
-    --not Unit(unit):InLOS() and    
-    (UnitInRaid(unit) or UnitInParty(unit)) and
-    A.BlessingofProtection:IsInRange(unit) and     
-    Unit(unit):HasDeBuffs({33786, 25771}, true) == 0 and -- Cyclone and Forbearance   
-    ( 
-        not A.IsInPvP or
-        not Unit(unit):HasFlags()       
-    ) and
-    (
-       -- ( 
-       --     Icon and 
-       --     MacroSpells(Icon, "BoP")
-       -- ) or 
-        (
-            --BoP_toggle and 
-            id == 1022 and 
-            (
-                -- Deffensive
-                (            
-                    Unit(unit):GetDMG(3) > 0 and 
-                    (
-                        (
-                            Unit(player):HasSpec(65) and -- Holy
-                            Unit(unit):HealthPercent() <= 38 and 
-                            -- Physical real damage still appear
-                            select(3, Unit(unit):GetRealTimeDMG()) > 0
-                        ) or
-                        (
-                            not Unit(player):HasSpec(65) and -- Holy                            
-                            Unit(unit):HealthPercent() <= 31 and 
-                            (
-                                FriendlyTeam("HEALER"):GetCC() or
-                                Unit(unit):TimeToDieX(20) < 2
-                            ) and
-                            Unit(unit):HasBuffs("DeffBuffs") == 0 
-                        )
-                    ) and                     
-                    (
-                        -- PvP 
-                        (
-                            A.IsInPvP and
-                            (
-                                Unit(unit):IsFocused("MELEE") or
-                                (
-                                    Unit(unit):UseDeff() and 
-                                    -- Physical real damage still appear
-                                    select(3, Unit(unit):GetRealTimeDMG()) > 0
-                                )
-                            )
-                        ) or
-                        -- PvE 
-                        not A.IsInPvP 
-                    )
-                ) or 
-                -- Damage DeBuffs
-                Unit(unit):HasDeBuffs({115080, 122470}, true) > 4 or -- Touch of Death and KARMA
-                Unit(unit):HasDeBuffs(79140, true) > 15 or -- Vendetta
-                -- CC Physical DeBuffs
-                (
-                    (
-                        -- Disarmed
-                        (
-                            not Unit(player):HasSpec(70) and -- Retribution
-                            Unit(unit):IsMelee() and 
-                            Unit(unit):HasDeBuffs("Disarmed") > 4.5 and                             
-                            Unit(unit):HasBuffs("DamageBuffs") > 4                      
-                        ) or 
-                        -- Another BreakAble CC 
-                        (
-                            (
-                                Unit(unit):HasDeBuffs(2094, true) > 3.2 or -- Blind
-                                (
-                                    Unit(unit):HasDeBuffs(5246, true) > 3.2 and -- Intimidating Shout
-                                    (
-                                        not Unit(player):HasSpec(70)
-                                    )
-                                )
-                            ) and 
-                            (
-                                not A.IsInPvP or 
-                                not Unit(unit):IsFocused()
-                            )
-                        ) or 
-                        -- HEALER HELP 
-                        (
-                            Unit(unit):Role("HEALER") and 
-                            (
-                                Unit(unit):HasDeBuffs("Stuned") >= 4 or 
-                                -- Garrote
-                                Unit(unit):HasDeBuffs(1330, true) >= 2.5
-                            ) and 
-                            (
-                                not Unit(player):HasSpec(70)
-                            ) and 
-                            Unit(unit):HasBuffs("DeffBuffs") <= GetCurrentGCD() and
-                            (
-                                not A.IsInPvP or 
-                                -- if enemy melee bursting 
-                                Unit(unit):IsFocused("MELEE") 
-                            )
-                        ) 
-                    ) and 
-                    -- Check for non physical CC 
-                    (
-                        Unit(unit):HasDeBuffs("Silenced") <= GetCurrentGCD() or 
-                        -- Garrote
-                        Unit(unit):HasDeBuffs(1330, true) >= 2.5
-                    ) and 
-                    Unit(unit):HasDeBuffs("Magic") <= GetCurrentGCD() and 
-                    -- Hex
-                    Unit(unit):HasDeBuffs(51514, true) <= GetCurrentGCD()
-                )
-            )
-        )
-    )
-end
-
 local function UrgentMythicPlusTargetting()
     
     local getmembersAll = HealingEngine.GetMembersAll()
@@ -1416,9 +1254,6 @@ A[3] = function(icon, isMulti)
     --------------------
     local CurrentTanks = HealingEngine.GetMembersByMode("TANK")
 	local getmembersAll = HealingEngine.GetMembersAll()
-    local InfLight = Unit(player):HasBuffs(A.InfusionofLight.ID, true)
-    local HLcast_t = Unit(player):CastTime(A.HolyLight.ID)
-    local FLcast_t = Unit(player):CastTime(A.FlashofLight.ID)
 	local inCombat = Unit(player):CombatTime() > 0
     local isMoving = Player:IsMoving()
     local isMovingFor = A.Player:IsMovingTime()
@@ -1426,11 +1261,6 @@ A[3] = function(icon, isMulti)
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods:GetPullTimer()
 	local AoEON = GetToggle(2, "AoE")
-    local Emergency = NeedEmergencyHPS()
-    local SuperEmergency = NeedUltraEmergencyHPS()   
-    local GlimmerofLightCount = GlimmerofLightCount()
-    local ActiveBeacon = ActiveBeacon()
-	local ActiveBeaconOnTank = ActiveBeaconOnTank()
     -- Healing Engine vars
     local ReceivedLast5sec = FriendlyTeam("ALL"):GetLastTimeDMGX(5) --Unit(player):GetLastTimeDMGX(5) -- LastIncDMG(player, 5)
     local AVG_DMG = HealingEngine.GetIncomingDMGAVG()
