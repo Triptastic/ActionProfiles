@@ -665,6 +665,8 @@ A.Data.ProfileUI = {
                         Print = '@string' or nil,
                     },
                 },
+			},
+			{
 				{
 					E = "Checkbox", 
 					DB = "AutoTaunt",
@@ -678,7 +680,21 @@ A.Data.ProfileUI = {
 						ANY = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
 					}, 
 					M = {},               
-				},                
+				},
+				{
+					E = "Checkbox", 
+					DB = "Raz",
+					DBV = false,
+					L = { 
+						enUS = "Razelikh's Defilement Rotation", 
+						ruRU = "Автоматическая Насмешка", 
+						frFR = "Raillerie automatique",
+					}, 
+					TT = { 
+						ANY = "Use this option if you're using Razelikh's Defilement legendary. This will block Sigil of Flame and use Elysian Decree off cooldown.", 
+					}, 
+					M = {},               
+				},                 
             },
             { -- LAYOUT SPACE
                 

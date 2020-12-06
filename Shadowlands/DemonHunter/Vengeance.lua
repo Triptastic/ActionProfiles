@@ -462,6 +462,7 @@ A[3] = function(icon, isMulti)
 	local MetaHP = Action.GetToggle(2, "MetamorphosisHP")
 	local FelDevDMG = Action.GetToggle(2, "FelDevastationDMG")
 	local FelDevHP = Action.GetToggle(2, "FelDevHP")
+	local Raz = Action.GetToggle(2, "Raz")
 	local DemonSpikesHP = Action.GetToggle(2, "DemonSpikesHP")
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
@@ -515,7 +516,12 @@ A[3] = function(icon, isMulti)
 			--actions.cooldown+=/elysian_decree
 			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
 				return A.ElysianDecree:Show(icon)
-			end					
+			end		
+
+			--actions.cooldown+=/elysian_decree
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Raz then
+				return A.ElysianDecree:Show(icon)
+			end				
 		
 		end
 
@@ -567,7 +573,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() then
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz then
 				return A.SigilofFlame:Show(icon)
 			end
 
