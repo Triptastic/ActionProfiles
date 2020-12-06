@@ -1400,7 +1400,7 @@ A[3] = function(icon, isMulti)
 		end	
 
 		--Divine Toll
-		if A.DivineToll:IsReady(unitID) and UseCovenant and Player:HolyPower() == 0 and HealingEngine.GetBelowHealthPercentUnits(95, 30) >= 3 then
+		if A.DivineToll:IsReady(unitID) and UseCovenant and Player:HolyPower() == 0 and HealingEngine.GetBelowHealthPercentUnits(90, 30) >= 3 and Unit(player):HasBuffs(A.AvengingWrath.ID, true) == 0 then
 			return A.DivineToll:Show(icon)
 		end
 
@@ -1414,7 +1414,7 @@ A[3] = function(icon, isMulti)
 			return A.HolyShock:Show(icon)
 		end
 
-		--Holy Shock spread
+		--[[Holy Shock spread
         if A.HolyShock:GetCooldown() == 0 and A.GlimmerofLight:IsTalentLearned() then
             for i = 1, #getmembersAll do 
                 if Unit(getmembersAll[i].Unit):IsPlayer() and not IsUnitEnemy(getmembersAll[i].Unit) and A.HolyShock:IsReady(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):HealthPercent() <= 98 and Unit(getmembersAll[i].Unit):GetRange() <= 40 then 
@@ -1427,7 +1427,7 @@ A[3] = function(icon, isMulti)
 					end 
 				end
             end    
-        end  
+        end  ]]
 
 		--Rule of Law
         if A.RuleofLaw:IsReady(player) and A.IsUnitFriendly(unit) and combatTime > 0 and A.RuleofLaw:IsSpellLearned() and Unit(player):HasBuffs(A.RuleofLaw.ID, true) == 0 and combatTime > 0 and 
@@ -1475,13 +1475,14 @@ A[3] = function(icon, isMulti)
 		--Caster Heals
 		--Party
 		if DungeonGroup then 
-			--Flash of Light Infusion proc
-			if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 85 and not isMoving then
-				return A.FlashofLight:Show(icon)
-			end
+
+			-- Light of the Martyr Emergency
+			if A.LightofMartyr:IsReady(unitID) and A.LightofMartyr:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 50  and not UnitIsUnit(unitID, player) then
+				return A.LightofMartyr:Show(icon)
+			end	
 
 			--Holy Light Infusion proc
-			if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 95 and not isMoving then
+			if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 80 and not isMoving then
 				return A.HolyLight:Show(icon)
 			end	
 			
@@ -1516,7 +1517,7 @@ A[3] = function(icon, isMulti)
 		end
 			
 		-- Light of the Martyr when moving
-		if A.LightofMartyr:IsReady(unitID) and A.LightofMartyr:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 95 and not UnitIsUnit(unitID, player) then
+		if A.LightofMartyr:IsReady(unitID) and A.LightofMartyr:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and isMoving and not UnitIsUnit(unitID, player) then
 			return A.LightofMartyr:Show(icon)
 		end	
 
