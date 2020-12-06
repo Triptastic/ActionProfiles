@@ -765,11 +765,11 @@ local function EnemyRotation(unitID)
 		
 		--actions.cooldown+=/use_items,if=buff.tigers_fury.up|target.time_to_die<20
 				-- Non SIMC Custom Trinket1
-				if A.Trinket1:IsReady(unit) and Trinket1IsAllowed and CanCast and    
+				if A.Trinket1:IsReady(unitID) and Trinket1IsAllowed and CanCast and    
 				(
 					TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 					or
-					not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+					not TrinketsAoE and Unit(unitID):TimeToDie() >= TrinketsMinTTD 					
 				)
 				then 
 					return A.Trinket1:Show(icon)
@@ -777,11 +777,11 @@ local function EnemyRotation(unitID)
 				
 			
 				-- Non SIMC Custom Trinket2
-				if A.Trinket2:IsReady(unit) and Trinket2IsAllowed and CanCast and	    
+				if A.Trinket2:IsReady(unitID) and Trinket2IsAllowed and CanCast and	    
 				(
 					TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
 					or
-					not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
+					not TrinketsAoE and Unit(unitID):TimeToDie() >= TrinketsMinTTD 					
 				)
 				then
 					return A.Trinket2:Show(icon) 	
@@ -828,32 +828,33 @@ local function EnemyRotation(unitID)
 		
 	local function Finisher(unit)
 
-		--actions.finisher=savage_roar,if=buff.savage_roar.down|buff.savage_roar.remains<(combo_points*5+1)*0.3
-		if A.SavageRoar:IsReady(unit) and (Unit(player):HasBuffs(A.SavageRoarBuff.ID, true) == 0 or Unit(player):HasBuffs(A.SavageRoarBuff.ID, true) < (((Player:ComboPoints() * 5) + 1) * 0.3)) then
+
+		--actions.finisher=savage_roar,if=buff.savage_roar.down|buff.savage_roar.remains<(combo_points*6+1)*0.3
+		if A.SavageRoar:IsReady(unitID) and (Unit(player):HasBuffs(A.SavageRoarBuff.ID, true) == 0 or Unit(player):HasBuffs(A.SavageRoarBuff.ID, true) < (((Player:ComboPoints() * 6) + 1) * 0.3)) then
 		return
 			A.SavageRoar:Show(icon)
 		end
 
 		--actions.finisher+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>(variable.rip_ticks>?variable.best_rip)|spell_targets.primal_wrath>(3+1*talent.sabertooth.enabled)
-		if A.PrimalWrath:IsReady(unit) and (MultiUnits:GetByRange(8) > 3) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
+		if A.PrimalWrath:IsReady(unitID) and (MultiUnits:GetByRange(8) > 3) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
 		return
 			A.PrimalWrath:Show(icon)
 		end
 		
 		--actions.finisher+=/rip,target_if=(!ticking|(remains+combo_points*talent.sabertooth.enabled)<duration*0.3|dot.rip.pmultiplier<persistent_multiplier)&druid.rip.ticks_gained_on_refresh>variable.rip_ticks
-		if A.Rip:IsReady(unit) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
+		if A.Rip:IsReady(unitID) and (Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) == 0 or Unit("target"):HasDeBuffs(A.RipDebuff.ID, true) < 3) then
 		return
 			A.Rip:Show(icon)
 		end
 		
 		--actions.finisher+=/maim,if=buff.iron_jaws.up
-		if A.Maim:IsReady(unit) and Unit(player):HasBuffs(A.IronJawsBuff.ID, true) > 0 then 
+		if A.Maim:IsReady(unitID) and Unit(player):HasBuffs(A.IronJawsBuff.ID, true) > 0 then 
 		return
 			A.Maim:Show(icon)
 		end
 		
 		--actions.finisher+=/ferocious_bite,max_energy=1,target_if=max:time_to_die
-		if A.FerociousBite:IsReady(unit) then
+		if A.FerociousBite:IsReady(unitID) then
 		return
 			A.FerociousBite:Show(icon)
 		end
