@@ -107,11 +107,11 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     DeathCaress                            = Action.Create({ Type = "Spell", ID = 195292 }),
 	BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
     -- Potions
-	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }),
     PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
     SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
+    SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
+    AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
     PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
     SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
     PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
@@ -400,18 +400,19 @@ local function SelfDefensives(unit)
         return A.DeathPact
     end          
     
-	-- PhialOfSerenity
-    local PhialOfSerenity = A.GetToggle(2, "PhialOfSerenityHP")
-    if PhialOfSerenity >= 0 and A.PhialOfSerenity:IsReady(player) and 
+    -- SuperiorSteelskinPotion
+    local SuperiorSteelskinPotion = A.GetToggle(2, "SuperiorSteelskinPotionHP")
+    if     SuperiorSteelskinPotion >= 0 and A.SuperiorSteelskinPotion:IsReady(player) and 
     (
         (     -- Auto 
-            PhialOfSerenity >= 100 and 
+            SuperiorSteelskinPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
                 Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
                 -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
+                Unit(player):TimeToDieX(20) < 3 or 
+                GetByRange(5, 15) and Unit(player):HealthPercent() <= 25 and Player:AreaTTD(15) > 20 or
                 (
                     A.IsInPvP and 
                     (
@@ -427,26 +428,26 @@ local function SelfDefensives(unit)
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            PhialOfSerenity < 100 and 
-            Unit(player):HealthPercent() <= PhialOfSerenity
+            SuperiorSteelskinPotion < 100 and 
+            Unit(player):HealthPercent() <= SuperiorSteelskinPotion
         )
     ) 
     then 
-        return A.PhialOfSerenity
-    end 		
-
-	-- SpiritualHealingPotionHP
-    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
-    if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
+        return A.SuperiorSteelskinPotion
+    end
+    
+    -- HealingPotion
+    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
+    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
-            SpiritualHealingPotion >= 100 and 
+            AbyssalHealingPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
                 Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
                 -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
+                Unit(player):TimeToDieX(15) < 3 or 
                 (
                     A.IsInPvP and 
                     (
@@ -462,16 +463,14 @@ local function SelfDefensives(unit)
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            SpiritualHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= SpiritualHealingPotion
+            AbyssalHealingPotion < 100 and 
+            Unit(player):HealthPercent() <= AbyssalHealingPotion
         )
     ) 
     then 
-        return A.SpiritualHealingPotion
-    end 		
-	
+        return A.AbyssalHealingPotion
+    end 
 end 
-
 SelfDefensives = A.MakeFunctionCachedDynamic(SelfDefensives)
 
 -- Non GCD spell check
@@ -878,15 +877,10 @@ A[3] = function(icon, isMulti)
                 end
             end
             
-            -- SwarmingMistVenthyr
+            -- SwarmingMist
             if A.SwarmingMist:IsReady(Unit) then
                 return A.SwarmingMist:Show(icon)
             end
-			
-			-- ShackletheUnworthyKyrian
-			if A.ShackletheUnworthy:IsReady(unit) and Unit(unit):GetRange() > 8 Unit(unit):GetRange() <= 30 and Unit(unit):HasDeBuffs(A.ShackletheUnworthy.ID, true) == 0 then
-				return A.ShackletheUnworthy:Show(icon)
-			end
             
             -- Taunt (Updated by KhalDrogo1988)
             if A.GetToggle(2, "AutoTaunt") and combatTime > 0
