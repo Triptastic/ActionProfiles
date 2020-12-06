@@ -116,36 +116,35 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     ThrashBearDebuff                      = Action.Create({ Type = "Spell", ID = 192090, Hidden = true     }),
     MoonfireDebuff                        = Action.Create({ Type = "Spell", ID = 164812, Hidden = true     }), 
     -- Potions
-	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }),
     PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }),  
     SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
 	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
-	SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
+	AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
 	PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
 	SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
 	PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
     -- Trinkets
 	-- Generic Covenants
-	Fleshcraft                             = Action.Create({ Type = "Spell", ID = 324631 }),
-	SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739 }),
-	DoorOfShadows                          = Action.Create({ Type = "Spell", ID = 300728 }),
-	SoulShape                              = Action.Create({ Type = "Spell", ID = 310143 }),
+	Fleshcraft                             = Action.Create({ Type = "Potion", ID = 324631 }),
+	SummonSteward                          = Action.Create({ Type = "Potion", ID = 324739 }),
+	DoorOfShadows                          = Action.Create({ Type = "Potion", ID = 300728 }),
+	SoulShape                              = Action.Create({ Type = "Potion", ID = 310143 }),
 	-- Covenants
-	AdaptiveSwarm                          = Action.Create({ Type = "Spell", ID = 325727 }),
-	KindredSpirits                         = Action.Create({ Type = "Spell", ID = 326434 }),
-	RavenousFrenzy                         = Action.Create({ Type = "Spell", ID = 323546 }),
-	ConvokeTheSpirit                       = Action.Create({ Type = "Spell", ID = 323764 }),
+	AdaptiveSwarm                          = Action.Create({ Type = "Potion", ID = 325727 }),
+	KindredSpirits                         = Action.Create({ Type = "Potion", ID = 326434 }),
+	RavenousFrenzy                         = Action.Create({ Type = "Potion", ID = 323546 }),
+	ConvokeTheSpirit                       = Action.Create({ Type = "Potion", ID = 323764 }),
 	-- Generic Legendaries
-	DraughtOfDeepFocus                     = Action.Create({ Type = "Spell", ID = 338658 }),
-	CircleOfLifeAndDeath                   = Action.Create({ Type = "Spell", ID = 338657 }),
-	LycarasFleetingGlimpse                 = Action.Create({ Type = "Spell", ID = 340059 }),
-	OathOfTheElderDruid                    = Action.Create({ Type = "Spell", ID = 338608 }),
+	DraughtOfDeepFocus                     = Action.Create({ Type = "Potion", ID = 338658 }),
+	CircleOfLifeAndDeath                   = Action.Create({ Type = "Potion", ID = 338657 }),
+	LycarasFleetingGlimpse                 = Action.Create({ Type = "Potion", ID = 340059 }),
+	OathOfTheElderDruid                    = Action.Create({ Type = "Potion", ID = 338608 }),
 	-- Guardian Legendaries
-	TheNaturalOrdersWill                   = Action.Create({ Type = "Spell", ID = 339063 }),
-	UrsocsFuryRemembered                   = Action.Create({ Type = "Spell", ID = 339056 }),
-	LuffaInfusedEmbrace                    = Action.Create({ Type = "Spell", ID = 339060 }),
-	LegacyOfTheSleeper                     = Action.Create({ Type = "Spell", ID = 339062 }),
+	TheNaturalOrdersWill                   = Action.Create({ Type = "Potion", ID = 339063 }),
+	UrsocsFuryRemembered                   = Action.Create({ Type = "Potion", ID = 339056 }),
+	LuffaInfusedEmbrace                    = Action.Create({ Type = "Potion", ID = 339060 }),
+	LegacyOfTheSleeper                     = Action.Create({ Type = "Potion", ID = 339062 }),
 	-- Conduits
     -- Misc
     Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
@@ -327,48 +326,49 @@ local function SelfDefensives()
             return A.Barkskin
         end 
     end 
-	
-	-- PhialOfSerenity
-    local PhialOfSerenity = A.GetToggle(2, "PhialOfSerenityHP")
-    if PhialOfSerenity >= 0 and A.PhialOfSerenity:IsReady(player) and 
-    (
-        (     -- Auto 
-            PhialOfSerenity >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            PhialOfSerenity < 100 and 
-            Unit(player):HealthPercent() <= PhialOfSerenity
-        )
-    ) 
-    then 
-        return A.PhialOfSerenity
-    end 		
 
-	-- SpiritualHealingPotionHP
-    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
-    if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
+	-- SuperiorSteelskinPotion
+    local SuperiorSteelskinPotion = A.GetToggle(2, "SuperiorSteelskinPotionHP")
+    if     SuperiorSteelskinPotion >= 0 and A.SuperiorSteelskinPotion:IsReady(player) and 
     (
         (     -- Auto 
-            SpiritualHealingPotion >= 100 and 
+            SuperiorSteelskinPotion >= 100 and 
+            (
+                -- HP lose per sec >= 20
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
+                -- TTD 
+                Unit(player):TimeToDieX(20) < 3 or 
+				GetByRange(5, 15) and Unit(player):HealthPercent() <= 25 and Player:AreaTTD(15) > 20 or
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit(player):UseDeff() or 
+                        (
+                            Unit(player, 5):HasFlags() and 
+                            Unit(player):GetRealTimeDMG() > 0 and 
+                            Unit(player):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit(player):HasBuffs("DeffBuffs", true) == 0
+        ) or 
+        (    -- Custom
+            SuperiorSteelskinPotion < 100 and 
+            Unit(player):HealthPercent() <= SuperiorSteelskinPotion
+        )
+    ) 
+    then 
+        return A.SuperiorSteelskinPotion
+    end
+	
+	-- HealingPotion
+    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
+    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady(player) and 
+    (
+        (     -- Auto 
+            AbyssalHealingPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
@@ -390,13 +390,13 @@ local function SelfDefensives()
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            SpiritualHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= SpiritualHealingPotion
+            AbyssalHealingPotion < 100 and 
+            Unit(player):HealthPercent() <= AbyssalHealingPotion
         )
     ) 
     then 
-        return A.SpiritualHealingPotion
-    end 	
+        return A.AbyssalHealingPotion
+    end 			
 
 end 
 SelfDefensives = A.MakeFunctionCachedDynamic(SelfDefensives)
@@ -608,14 +608,6 @@ A[3] = function(icon, isMulti)
 			-- berserk,if=buff.bear_form.up,burstON
 			if A.Berserk:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
 				return A.Berserk:Show(icon)
-			end
-			
-			if A.RavenousFrenzy:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
-				return A.RavenousFrenzy:Show(icon)
-			end
-			
-			if A.AdaptiveSwarm:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.AdaptiveSwarm.ID, true)) == 0 then
-				return A.AdaptiveSwarm:Show(icon)
 			end
 			
             -- use_items
