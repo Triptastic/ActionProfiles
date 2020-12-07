@@ -1269,6 +1269,7 @@ A[3] = function(icon, isMulti)
 	local DungeonGroup = TeamCache.Friendly.Size >= 2 and TeamCache.Friendly.Size <= 5
 	local RaidGroup = TeamCache.Friendly.Size >= 5
     RotationsVariables()    
+	local WingsIsUp = Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0 or Unit(player):HasBuffs(A.AvengingCrusader.ID, true) > 0 or A.AvengingWrath:GetCooldown() < A.GetGCD() or A.AvengingCrusader:GetCooldown() < A.GetGCD()
 	
 	--------------------------------
 	local UseCovenant = A.GetToggle(1, "Covenant")
@@ -1278,13 +1279,21 @@ A[3] = function(icon, isMulti)
     --- DPS ROTATION ---
     --------------------
     local function DamageRotation(unitID)
-    
+ 
+ 		if A.VanquishersHammer:IsReady(unitID) and UseCovenant then
+			return A.VanquishersHammer:Show(icon)
+		end	
+ 
+		if A.Consecration:IsReady(unitID) and MultiUnits:GetByRange(5, 2) >= 1 then
+			return A.Consecration:Show(icon)
+		end	
+		
+ 		if A.ShieldoftheRighteous:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 then
+			return A.ShieldoftheRighteous:Show(icon)
+		end	
+		
 		if A.HammerofWrath:IsReady(unitID) then
 			return A.HammerofWrath:Show(icon)
-		end	
-	
-		if A.VanquishersHammer:IsReady(unitID) and UseCovenant then
-			return A.VanquishersHammer:Show(icon)
 		end	
 	
 		if A.Judgment:IsReady(unitID) then
@@ -1295,21 +1304,9 @@ A[3] = function(icon, isMulti)
 			return A.HolyPrism:Show(icon)
 		end	
 
-		if A.ShieldoftheRighteous:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(95, 40) < 1 then
-			return A.ShieldoftheRighteous:Show(icon)
-		end	
-
 		if A.HolyShock:IsReady(unitID) and A.IsUnitEnemy(target) then
 			return A.HolyShock:Show(icon)
 		end
-		
-		if A.CrusaderStrike:IsReady(unitID) and A.CrusaderStrike:GetSpellChargesFrac() > 1.8 then
-			return A.CrusaderStrike:Show(icon)
-		end
-
-		if A.Consecration:IsReady(unitID) and MultiUnits:GetByRange(5, 2) >= 1 then
-			return A.Consecration:Show(icon)
-		end	
 		
 		if A.CrusaderStrike:IsReady(unitID) then
 			return A.CrusaderStrike:Show(icon)
@@ -1332,12 +1329,12 @@ A[3] = function(icon, isMulti)
 		end	
 	
 		--Holy Avenger
-		if A.HolyAvenger:IsReady(unitID) and Unit(player):HasBuffs(A.AvengingWrath.ID, true) == 0 and Unit(player):HasBuffs(A.AvengingCrusader.ID, true) == 0 and (HealingEngine.GetBelowHealthPercentUnits(50, 30) >= 3 or Unit(unitID):HealthPercent() <= 25) then
+		if A.HolyAvenger:IsReady(unitID) and not WingsIsUp and (HealingEngine.GetBelowHealthPercentUnits(50, 30) >= 3 or Unit(unitID):HealthPercent() <= 25) then
 			return A.HolyAvenger:Show(icon)
 		end	
 	
 		--Light of Dawn at 5 HP
-		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(95, 15) >= 3 and Player:HolyPower() >= 5 then
+		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(95, 15) >= 4 and Player:HolyPower() >= 5 then
 			return A.LightofDawn:Show(icon)
 		end
 
@@ -1346,8 +1343,18 @@ A[3] = function(icon, isMulti)
 			return A.WordofGlory:Show(icon)
 		end
 
+		--Blessing of Sacrifice
+		if BlessingofSacrifice:IsReady(unitID) and Unit(unitID):HealthPercent() <= 50 and Unit(unitID):IsTanking() and not WingsIsUp and not Unit(player):HasBuffs(A.AuraMastery.ID, true) > 0 then
+			return A.BlessingofSacrifice:Show(icon)
+		end	
+		
+		--Divine Shield while BoS active to prevent fall off
+		if A.DivineShield:IsReady(unitID) and HealingEngine.GetBuffsCount(A.BlessingofSacrifice.ID, 3) >= 1 and Unit(player):HealthPercent() <= 30 then
+			return A.DivineShield:Show(icon)
+		end	
+
 		--Lay on hands
-        if combatTime > 0 and Action.Zone ~= "arena" and not Action.InstanceInfo.isRated 
+        if A.LayOnHands:IsReady(unitID) and inCombat and Action.Zone ~= "arena" and not Action.InstanceInfo.isRated 
         then
             for i = 1, #getmembersAll do 
                 if Unit(getmembersAll[i].Unit):GetRange() <= 40 then 
@@ -1395,14 +1402,27 @@ A[3] = function(icon, isMulti)
         end
 
 		--Beacon of Virtue
-		if A.BeaconofVirtue:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(85, 40) >= 3 then
+		if A.BeaconofVirtue:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(85, 40) >= 4 then
 			return A.BeaconofVirtue:Show(icon)
 		end	
 
 		--Divine Toll
-		if A.DivineToll:IsReady(unitID) and UseCovenant and Player:HolyPower() == 0 and HealingEngine.GetBelowHealthPercentUnits(90, 30) >= 3 and Unit(player):HasBuffs(A.AvengingWrath.ID, true) == 0 then
+		if A.DivineToll:IsReady(unitID) and UseCovenant and Player:HolyPower() == 0 and HealingEngine.GetBelowHealthPercentUnits(90, 30) >= 3 and not WingsIsUp then
 			return A.DivineToll:Show(icon)
 		end
+		
+		--Aura Mastery
+		if DungeonGroup then
+			if A.AuraMastery:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(60, 30) >= 3 and A.DivineToll:GetCooldown() > 2 and not WingsIsUp then
+				return A.AuraMastery:Show(icon)
+			end	
+		end
+		
+		if RaidGroup then
+			if A.AuraMastery:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(60, 30) >= 10 and A.DivineToll:GetCooldown() > 2 and not WingsIsUp then
+				return A.AuraMastery:Show(icon)
+			end	
+		end	
 
 		--Ashen Hallow
 		if A.AshenHallow:IsReady(unitID) and UseCovenant and HealingEngine.GetBelowHealthPercentUnits(95, 30) >= 3 then
@@ -1430,7 +1450,7 @@ A[3] = function(icon, isMulti)
         end  ]]
 
 		--Rule of Law
-        if A.RuleofLaw:IsReady(player) and A.IsUnitFriendly(unit) and combatTime > 0 and A.RuleofLaw:IsSpellLearned() and Unit(player):HasBuffs(A.RuleofLaw.ID, true) == 0 and combatTime > 0 and 
+        if A.RuleofLaw:IsReady(player) and A.IsUnitFriendly(unit) and combatTime > 0 and A.RuleofLaw:IsSpellLearned() and Unit(player):HasBuffs(A.RuleofLaw.ID, true) == 0 and inCombat and 
 		((Unit(unit):CanInterract(40) and (A.RuleofLaw:GetSpellChargesFrac() >= 2 and Unit(unit):Health() <= Unit(unit):HealthMax()*0.6) or (Unit(unit):TimeToDie() <= 6 or Unit(unit):Health() <= Unit(unit):HealthMax()*0.35) or (not Unit(unit):CanInterract(40)))) then
             return A.RuleofLaw:Show(icon)
         end
@@ -1440,14 +1460,24 @@ A[3] = function(icon, isMulti)
 			return A.BestowFaith:Show(icon)
 		end	
 
-		--Light of Dawn 3 HP
-		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(95, 15) >= 3 then
+		--Light of Dawn 4 HP
+		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(95, 15) >= 4 then
 			return A.LightofDawn:Show(icon)
 		end
 
 		--Word of Glory 3 HP
-		if A.WordofGlory:IsReady(unitID) and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 95 then
+		if A.WordofGlory:IsReady(unitID) and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 then
 			return A.WordofGlory:Show(icon)
+		end
+		
+		--CrusaderStrike to prevent charge cap
+		if A.CrusaderStrike:IsReady(unitID) and A.CrusaderStrike:GetSpellChargesFrac() > 1.7 then
+			return A.CrusaderStrike:Show(icon)
+		end
+
+		--Judgment with Judgment of Light talent
+		if A.Judgment:IsReady(unitID) and A.JudgmentofLight:IsTalentLearned() then
+			return A.Judgment:Show(icon)
 		end
 
 		--Light's Hammer
@@ -1487,7 +1517,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--Flash of Light no infusion
-			if A.FlashofLight:IsReady(unitID) and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 75 and not isMoving then
+			if A.FlashofLight:IsReady(unitID) and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 30 and not isMoving then
 				return A.FlashofLight:Show(icon)
 			end
 		end 
@@ -1495,12 +1525,12 @@ A[3] = function(icon, isMulti)
 		if RaidGroup then
 		
 			--Flash of Light Infusion proc
-			if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 85 and not isMoving then
+			if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 50 and not isMoving then
 				return A.FlashofLight:Show(icon)
 			end
 
 			--Holy Light Infusion proc
-			if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 95 and not isMoving then
+			if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and not isMoving then
 				return A.HolyLight:Show(icon)
 			end	
 
