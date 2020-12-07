@@ -1941,11 +1941,11 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "LunarBeamHP",
+                    DB = "RenewalHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(204066) .. " (%)",
+                        ANY = "Renewal HP (%)",
                     }, 
                     M = {},
                 },

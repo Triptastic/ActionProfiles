@@ -105,6 +105,7 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     -- Defensive
 	SurvivalInstincts                     = Action.Create({ Type = "Spell", ID = 61336   }),
 	FrenziedRegeneration                  = Action.Create({ Type = "Spell", ID = 22842, predictName = "FrenziedRegeneration"   }),
+	Renewal                               = Action.Create({ Type = "Spell", ID = 108238   }),
     -- Buffs
     IronfurBuff                            = Action.Create({ Type = "Spell", ID = 192081, Hidden = true }),
     PulverizeBuff                         = Action.Create({ Type = "Spell", ID = 158792, Hidden = true     }),
@@ -271,6 +272,43 @@ local function SelfDefensives()
     ) 
     then 
         return A.FrenziedRegeneration
+    end 
+	
+	    -- Emergency Renewal
+    local Renewal = Action.GetToggle(2, "RenewalHP")
+    if     Renewal >= 0 and A.Renewal:IsReady("player") and Unit("player"):HasBuffs(A.Renewal.ID, true) == 0 and
+    (
+        (   -- Auto 
+            Renewal >= 100 and 
+            (
+                -- HP lose per sec >= 5
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 15 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.15 or 
+                -- TTD 
+                Unit("player"):TimeToDieX(25) < 5 or 
+				-- Custom logic with current HPS and DMG
+				Unit("player"):HealthPercent() <= 85 or
+	    		Unit("player"):GetHEAL() * 2 < Unit("player"):GetDMG() or
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit("player"):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
+                        )
+                    )
+                )
+            ) 
+        ) or 
+        (    -- Custom
+            Renewal < 100 and 
+            Unit("player"):HealthPercent() <= Renewal
+        )
+    ) 
+    then 
+        return A.Renewal
     end 
 			
     -- SurvivalInstincts
@@ -614,7 +652,7 @@ A[3] = function(icon, isMulti)
 				return A.RavenousFrenzy:Show(icon)
 			end
 			
-			if A.AdaptiveSwarm:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.AdaptiveSwarm.ID, true)) == 0 then
+			if A.AdaptiveSwarm:IsReady(unit) and A.BurstIsON(unit) and not (Unit(unit):HasDeBuffs(A.AdaptiveSwarm.ID, true)) then
 				return A.AdaptiveSwarm:Show(icon)
 			end
 			
