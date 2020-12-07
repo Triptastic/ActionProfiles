@@ -276,13 +276,13 @@ local function Interrupts(unit)
         end 
         
         -- Sigil of Silence (Silence)
-        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
+        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) and castRemainsTime >= (2.5 + A.GetLatency()) then 
             return A.SigilofSilence              
         end 
            
         -- Imprison
         if useCC and A.Imprison:IsReady(unit, nil, nil, true) and A.Imprison:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):IsControlAble("incapacitate", 0) then
-            return A.Imprison:Show(icon)                  
+            return A.Imprison                 
         end   
         
         -- Disrupt
@@ -484,6 +484,14 @@ A[3] = function(icon, isMulti)
         local IsInDanger = IsInDanger(unit)
         local HPLosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
         
+		local function PullSomething()
+		
+			if A.ThrowGlaive:IsReady(unit) then
+				return A.ThrowGlaive:Show(icon)
+			end	
+		
+		end
+		
 		local function CovenantCall()
 			
 			--actions.cooldown+=/sinful_brand,if=!dot.sinful_brand.ticking
@@ -568,12 +576,16 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Soul Cleave to dump fury
-			if A.SoulCleave:IsReady(unit) and Player:Fury() >= 80 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
+			if A.SoulCleave:IsReady(unit) and not Raz and Player:Fury() >= 80 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
 				return A.SoulCleave:Show(icon)
 			end
+			
+			if A.SoulCleave:IsReady(unit) and Raz and Player:Fury() >= 80 then
+				return A.SoulCleave:Show(icon)
+			end	
 
 			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz then
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz and Unit("target"):GetRange() <= 10 then
 				return A.SigilofFlame:Show(icon)
 			end
 
@@ -583,7 +595,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Throw Glaive
-			if A.ThrowGlaive:IsReady(unit) and inCombat then
+			if A.ThrowGlaive:IsReady(unit) then
 				return A.ThrowGlaive:Show(icon)
 			end	
 		
@@ -649,14 +661,15 @@ A[3] = function(icon, isMulti)
 			and combatTime > 0     
 			then 
 				-- if not fully aggroed or we are not current target then use taunt
-				if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() ) then 
+				if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() and Unit("targettarget"):InfoGUID() ~= nil ) then 
 					return A.Torment:Show(icon)
 					-- else if all good on current target, switch to another one we know we dont currently tank
 				else
 					local Torment_Nameplates = MultiUnits:GetActiveUnitPlates()
 					if Torment_Nameplates then  
-						for Torment_UnitID in pairs(Torment_Nameplates) do             
-							if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and Unit("player"):ThreatSituation(Torment_UnitID) ~= 3 then 
+						for Torment_UnitID in pairs(Torment_Nameplates) do 
+						local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", Torment_UnitID)						
+							if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and not isTanking then 
 								return A:Show(icon, ACTION_CONST_AUTOTARGET)
 							end         
 						end 
@@ -665,12 +678,12 @@ A[3] = function(icon, isMulti)
 			end 
 			
 			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and Trinket1IsAllowed then        
+			if A.Trinket1:IsReady(unitID) and Trinket1IsAllowed then        
 				return A.Trinket1:Show(icon)        
 			end
 			
 			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and Trinket2IsAllowed then        
+			if A.Trinket2:IsReady(unitID) and Trinket2IsAllowed then        
 				return A.Trinket2:Show(icon)    
 			end 
 		
@@ -688,9 +701,13 @@ A[3] = function(icon, isMulti)
 			return true
 		end	
 		
-		if DamageRotation(unit) then
+		if DamageRotation(unit) and inCombat then
 			return true
 		end		
+		
+		if PullSomething(unit) then
+			return true
+		end
 			
 	end 
     
