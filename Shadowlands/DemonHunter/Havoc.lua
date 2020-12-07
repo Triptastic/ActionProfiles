@@ -686,13 +686,10 @@ local function Interrupts(unit)
 		if useKick and not notInterruptable and A.Disrupt:IsReady(unitID) and A.Disrupt:AbsentImun(unitID, Temp.TotalAndPhysKick, true) then 
 			return A.Disrupt
 		end 
-		
-        -- Imprison    
-        if useCC and not A.Disrupt:IsReady(unit) and A.Imprison:IsReady(unit) and A.GetToggle(2, "ImprisonAsInterrupt") then 
-            -- Notification                    
-            --Action.SendNotification("CC : Imprison", A.Imprison.ID)        
-            return A.Imprison              
-        end 
+
+        if useCC and A.Imprison:IsReady(unit, nil, nil, true) and A.Imprison:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):IsControlAble("incapacitate", 0) and A.GetToggle(2, "ImprisonAsInterrupt") then
+            return A.Imprison                 
+        end   
 		
         -- Fel Eruption
         if useCC and A.FelEruption:IsTalentLearned() and A.FelEruption:IsReady(unit) and not A.Disrupt:IsReady(unit) and A.FelEruption:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true) then 
