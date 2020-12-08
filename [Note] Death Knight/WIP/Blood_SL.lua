@@ -1,5 +1,6 @@
 -------------------------------
 -- Note TMW Action Rotation --
+--      Version 1.0.0       --
 -------------------------------
 
 --Full credit to Taste
@@ -17,6 +18,7 @@ local GetPing                                    = Action.GetPing
 local ShouldStop                                = Action.ShouldStop
 local BurstIsON                                    = Action.BurstIsON
 local AuraIsValid                                = Action.AuraIsValid
+local AuraIsValidByPhialofSerenity              = A.AuraIsValidByPhialofSerenity
 local InterruptIsValid                            = Action.InterruptIsValid
 local FrameHasSpell                                = Action.FrameHasSpell
 local Utils                                        = Action.Utils
