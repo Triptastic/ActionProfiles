@@ -119,7 +119,8 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     MoonfireDebuff                        = Action.Create({ Type = "Spell", ID = 164812, Hidden = true     }), 
     -- Potions
 	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }), -- Kyrian, dispel, HP pot
-	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),
+	SuperiorSteelskinPotion                = Action.Create ({ Type = "Potion", ID = 168501, QueueForbidden = true }),
+	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),	
 	PotonofDeathlyFixation                 = Action.Create ({ Type = "Potion", ID = 307384, QueueForbidden = true }),
 	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
 	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
@@ -274,7 +275,7 @@ local function SelfDefensives()
         return A.FrenziedRegeneration
     end 
 	
-	    -- Emergency Renewal
+	    --[[ Emergency Renewal
     local Renewal = Action.GetToggle(2, "RenewalHP")
     if     Renewal >= 0 and A.Renewal:IsReady("player") and Unit("player"):HasBuffs(A.Renewal.ID, true) == 0 and
     (
@@ -309,7 +310,7 @@ local function SelfDefensives()
     ) 
     then 
         return A.Renewal
-    end 
+    end ]]
 			
     -- SurvivalInstincts
     if A.SurvivalInstincts:IsReadyByPassCastGCD(player) then 
@@ -678,7 +679,7 @@ A[3] = function(icon, isMulti)
                 return Interrupt:Show(icon)
             end	
 								
-		    -- Taunt logic by KhalDrogo1988
+		    --[[ Taunt logic by KhalDrogo1988
             if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then 
 				if not Unit(unit):IsBoss() and
                 A.Growl:IsReady(unit) then
@@ -693,7 +694,7 @@ A[3] = function(icon, isMulti)
                         return A:Show(icon, ACTION_CONST_AUTOTARGET)
                     end
                 end
-            end
+            end]]
 			
 			-- Moonfire
             if A.Moonfire:IsReady(unit) and (Unit("player"):HasBuffs(A.GalacticGuardianBuff.ID, true) > 0 or (MultiUnits:GetByRange(30) >= 2 and Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) == 0)) then
