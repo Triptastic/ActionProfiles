@@ -231,6 +231,7 @@ A[3] = function(icon, isMulti)
 
 	--ProfileUI toggles
 	local UseAoE = A.GetToggle(2, "AoE")
+	local UseCovenant = A.GetToggle(1, "Covenant")
 	local ShieldType = A.GetToggle(2, "ShieldType")
 	local SpiritwalkersGraceTime = A.GetToggle(2, "SpiritwalkersGraceTime")
 	local AutoPurify = A.GetToggle(2, "AutoPurify")
@@ -250,6 +251,8 @@ A[3] = function(icon, isMulti)
 	local EarthShieldRefresh = Unit(player):HasBuffs(A.EarthShield.ID, true) == 0 or (Unit(player):HasBuffsStacks(A.EarthShield.ID, true) < 2 and not inCombat)
 	local LightningShieldRefresh = Unit(player):HasBuffs(A.LightningShield.ID, true) == 0 or (Unit(player):HasBuffs(A.LightningShield.ID, true) < 300 and not inCombat)	
 	local CloudburstTotemActive = A.CloudburstTotem:GetSpellTimeSinceLastCast() <= 15
+	local VesperTotemActive = A.VesperTotem:GetSpellTimeSinceLastCast() <= 30
+	local FaeTransfusionActive = A.FaeTransfusion:GetSpellTimeSinceLastCast() <= 20
 	
 
 	local function DamageRotation(unitID)
@@ -286,6 +289,11 @@ A[3] = function(icon, isMulti)
 		if A.LightningShield:IsReady(unitID) and LightningShieldRefresh and ShieldType == "LIGHTNING SHIELD" then
 			return A.LightningShield:Show(icon)
 		end	
+		
+		if A.FaeTransfusion:IsReady(player) and MultiUnits:GetActiveEnemies() >= 3 then
+			A.Toaster:SpawnByTimer("TripToast", 0, "Fae Transfusion!", "Put your cursor on your enemies!", A.FaeTransfusion.ID)	
+			return A.FaeTransfusion:Show(icon)
+		end
 		
 		-- LavaBurst
         if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.LavaBurst:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and (Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0 or A.EchooftheElements:IsTalentLearned() and A.LavaBurst:GetSpellCharges() > 1) then 
@@ -362,6 +370,24 @@ A[3] = function(icon, isMulti)
 			return A.LightningShield:Show(icon)
 		end		
 	
+		--Covenants
+		if A.PrimordialWave:IsReady(unitID) and UseCovenant and Unit(unitID):HealthPercent() <= 70 then
+			return A.PrimordialWave:Show(icon)
+		end
+		
+		if A.ChainHarvest:IsReady(unitID) and UseCovenant and HealingEngine.GetBelowHealthPercentUnits(60, 40) >= 3 then
+			return A.ChainHarvest:Show(icon)
+		end
+		
+		if A.VesperTotem:IsReady(player) and UseCovenant and not VesperTotemActive and HealingEngine.GetBelowHealthPercentUnits(90, 40) >= 3 then
+			A.Toaster:SpawnByTimer("TripToast", 0, "Vesper Totem!", "Get your cursor ready!", A.VesperTotem.ID)
+			return A.VesperTotem:Show(icon)
+		end	
+		
+		if A.FaeTransfusion:IsReady(unitID) and UseCovenant and FaeTransfusionActive and HealingEngine.GetBelowHealthPercentUnits(85, 40) >= 3 then
+			return A.FaeTransfusion:Show(icon)
+		end
+		
 		--Spirit Link Totem when heavy damage incoming - use manual for now, need DBM timers
 		
 		--Healing Tide Totem
@@ -387,7 +413,7 @@ A[3] = function(icon, isMulti)
 		end	
 		
 		--Cloudburst Totem
-		if A.CloudburstTotem:IsReady(unitID) and A.CloudburstTotem:IsTalentLearned() and Player:IsStayingTime() > 0.5 and HealingEngine.GetBelowHealthPercentUnits(90, 40) >= 1 and A.CloudburstTotem:GetSpellTimeSinceLastCast() > 15 then
+		if A.CloudburstTotem:IsReady(unitID) and A.CloudburstTotem:IsTalentLearned() and not CloudburstTotemActive and Player:IsStayingTime() > 0.5 and HealingEngine.GetBelowHealthPercentUnits(90, 40) >= 1 and A.CloudburstTotem:GetSpellTimeSinceLastCast() > 15 then
 			return A.CloudburstTotem:Show(icon)
 		end	
 		
