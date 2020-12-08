@@ -518,7 +518,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 				end			
 				
 				-- Apotheosis Single Target
-				if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then
+				if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(3) >= 1 and HealingEngine.GetTimeToDieUnits(3) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then
 					return A.Apotheosis:Show(icon)
 				end	
 				
