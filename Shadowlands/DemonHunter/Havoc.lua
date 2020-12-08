@@ -792,7 +792,7 @@ A[3] = function(icon, isMulti)
     local FuryDeficit = Player:FuryDeficit()
     local ImmolationAuraPrePull = Action.GetToggle(2, "ImmolationAuraPrePull")
 	local UseMovement = Action.GetToggle(2, "UseMoves")
-	local PotionReady = A.GetToggle(1, "Potion") and ((A.PotionofSpectralAgility:IsReady(player) and A.PotionofSpectralAgility:GetCount() > 0) or (A.PotionofUnbridledFury:IsReady(player) and A.PotionofUnbridledFury:GetCount() > 0) or (A.PotionofEmpoweredExorcisms:IsReady(player) and A.PotionofEmpoweredExorcisms:GetCount() > 0) or (A.PotionofPhantomFire:IsReady(player) and A.PotionofPhantomFire:GetCount() > 0)  or (A.PotionofDeathlyFixation:IsReady(player) and A.PotionofDeathlyFixation:GetCount() > 0))
+	local PotionReady = A.GetToggle(1, "Potion") and ((A.PotionofSpectralAgility:IsReady(player) and A.PotionofSpectralAgility:IsExists()) or (A.PotionofUnbridledFury:IsReady(player) and A.PotionofUnbridledFury:IsExists()) or (A.PotionofEmpoweredExorcisms:IsReady(player) and A.PotionofEmpoweredExorcisms:IsExists()) or (A.PotionofPhantomFire:IsReady(player) and A.PotionofPhantomFire:IsExists())  or (A.PotionofDeathlyFixation:IsReady(player) and A.PotionofDeathlyFixation:IsExists()))
 	
 	--Potions
 	local AutoPotionSelect = Action.GetToggle(2, "AutoPotionSelect")
@@ -1064,7 +1064,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.cooldown+=/the_hunt,if=!talent.demonic.enabled&!variable.waiting_for_momentum|buff.furious_gaze.up
-			if A.TheHunt:IsReady(unit) and (not A.Demonic:IsTalentLearned()) and (not VarWaitingForMomentum or Unit(player):HasBuffs(A.FuriousGazeBuff.ID, true) > 0) then
+			if A.TheHunt:IsReady(unit) and (not A.Demonic:IsTalentLearned() and not VarWaitingForMomentum) or Unit(player):HasBuffs(A.FuriousGazeBuff.ID, true) > 0 then
 				return A.TheHunt:Show(icon)
 			end	
 
