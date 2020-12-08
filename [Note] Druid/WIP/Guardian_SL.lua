@@ -1,5 +1,6 @@
 -------------------------------
 -- Note TMW Action Rotation --
+--      Version 1.0.0       --
 -------------------------------
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
@@ -13,6 +14,7 @@ local GetPing									= Action.GetPing
 local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity              = A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell								= Action.FrameHasSpell
 local Utils										= Action.Utils
@@ -72,7 +74,6 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     HeartEssence                           = Action.Create({ Type = "Spell", ID = 298554 }),
     LightsJudgment                         = Action.Create({ Type = "Spell", ID = 255647 }),
     Barkskin                               = Action.Create({ Type = "Spell", ID = 22812 }),
-    LunarBeam                              = Action.Create({ Type = "Spell", ID = 204066, predictName = "LunarBeam" }),
     BristlingFur                           = Action.Create({ Type = "Spell", ID = 155835 }),
     Incarnation                            = Action.Create({ Type = "Spell", ID = 102558 }),
     MoonfireDebuff                         = Action.Create({ Type = "Spell", ID = 164812 }),
@@ -117,15 +118,14 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     ThrashBearDebuff                      = Action.Create({ Type = "Spell", ID = 192090, Hidden = true     }),
     MoonfireDebuff                        = Action.Create({ Type = "Spell", ID = 164812, Hidden = true     }), 
     -- Potions
-	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }),
-    PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }),  
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
+	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }), -- Kyrian, dispel, HP pot
+	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),
+	PotonofDeathlyFixation                 = Action.Create ({ Type = "Potion", ID = 307384, QueueForbidden = true }),
+	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
+	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
+	PotionofSacrificialAnima               = Action.Create ({ Type = "Potion", ID = 322301, QueueForbidden = true }),
+	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),
 	SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
-	PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
-	SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
-	PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
     -- Trinkets
 	-- Generic Covenants
 	Fleshcraft                             = Action.Create({ Type = "Spell", ID = 324631 }),
@@ -628,11 +628,6 @@ A[3] = function(icon, isMulti)
                 return A.AncestralCall:Show(icon)
             end
 			
-            -- lunar_beam,if=buff.bear_form.up
-            if A.LunarBeam:IsReady(unit) and (Unit("player"):HasBuffs(A.BearFormBuff.ID, true)) then
-                return A.LunarBeam:Show(icon)
-            end
-			
             -- bristling_fur,if=buff.bear_form.up
             if A.BristlingFur:IsReady(unit) and Unit("player"):HasBuffs(A.BearFormBuff.ID, true) and Player:Rage() < Action.GetToggle(2, "BristlingFurRage") then
                 return A.BristlingFur:Show(icon)
@@ -648,10 +643,12 @@ A[3] = function(icon, isMulti)
 				return A.Berserk:Show(icon)
 			end
 			
+			-- venthyr,if=buff.bear_form.up,burstON
 			if A.RavenousFrenzy:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
 				return A.RavenousFrenzy:Show(icon)
 			end
 			
+			-- necrolord, if=buff.bear_form.up,burstON,(dot.adaptiveswarm.ticking|active_enemies>1)
 			if A.AdaptiveSwarm:IsReady(unit) and A.BurstIsON(unit) and not (Unit(unit):HasDeBuffs(A.AdaptiveSwarm.ID, true)) then
 				return A.AdaptiveSwarm:Show(icon)
 			end
@@ -681,25 +678,22 @@ A[3] = function(icon, isMulti)
                 return Interrupt:Show(icon)
             end	
 								
-		    -- Taunt 
-            if A.GetToggle(2, "AutoTaunt") 
-			and combatTime > 0     
-			then 
-			     -- if not fully aggroed or we are not current target then use taunt
-			    if A.Growl:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsDummy() and not Unit(unit):IsBoss() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() ) then 
-                    return A.Growl:Show(icon)
-				-- else if all good on current target, switch to another one we know we dont currently tank
-                else
-                    local Growl_Nameplates = MultiUnits:GetActiveUnitPlates()
-                    if Growl_Nameplates then  
-                        for Growl_UnitID in pairs(Growl_Nameplates) do             
-                            if not Unit(Growl_UnitID):IsPlayer() and not UnitIsUnit("target", Growl_UnitID) and A.Growl:IsReady(Growl_UnitID, true, nil, nil, nil) and not Unit(Growl_UnitID):IsDummy() and not Unit(Growl_UnitID):IsBoss() and Unit(Growl_UnitID):GetRange() <= 30 and not Unit(Growl_UnitID):InLOS() and Unit("player"):ThreatSituation(Growl_UnitID) ~= 3 then 
-                                return A:Show(icon, ACTION_CONST_AUTOTARGET)
-                            end         
-                        end 
+		    -- Taunt logic by KhalDrogo1988
+            if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then 
+				if not Unit(unit):IsBoss() and
+                A.Growl:IsReady(unit) then
+					local agroLevels = TargetWithAgroExsist()
+                    if agroLevels[0] and Unit(player):ThreatSituation(unit) ~= 0 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
                     end
-				end
-            end 
+                    if agroLevels[1] and Unit(player):ThreatSituation(unit) > 1 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
+                    end
+                    if agroLevels[2] and Unit(player):ThreatSituation(unit) > 2 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
+                    end
+                end
+            end
 			
 			-- Moonfire
             if A.Moonfire:IsReady(unit) and (Unit("player"):HasBuffs(A.GalacticGuardianBuff.ID, true) > 0 or (MultiUnits:GetByRange(30) >= 2 and Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) == 0)) then
