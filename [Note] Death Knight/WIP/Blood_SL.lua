@@ -886,7 +886,7 @@ A[3] = function(icon, isMulti)
             end
 			
 			-- ShackletheUnworthyKyrian
-			if A.ShackletheUnworthy:IsReady(unit) and Unit(unit):GetRange() > 8 Unit(unit):GetRange() <= 30 and Unit(unit):HasDeBuffs(A.ShackletheUnworthy.ID, true) == 0 then
+			if A.ShackletheUnworthy:IsReady(unit) and Unit(unit):GetRange() > 8 and Unit(unit):GetRange() <= 30 and Unit(unit):HasDeBuffs(A.ShackletheUnworthy.ID, true) == 0 then
 				return A.ShackletheUnworthy:Show(icon)
 			end
             

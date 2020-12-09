@@ -28,7 +28,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.0.0 (08.12.2020)",
+    DateTime = "(08 Nov 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
