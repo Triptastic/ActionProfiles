@@ -1064,7 +1064,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.cooldown+=/the_hunt,if=!talent.demonic.enabled&!variable.waiting_for_momentum|buff.furious_gaze.up
-			if A.TheHunt:IsReady(unit) and (not A.Demonic:IsTalentLearned() and not VarWaitingForMomentum) or Unit(player):HasBuffs(A.FuriousGazeBuff.ID, true) > 0 then
+			if A.TheHunt:IsReady(unit) and ((not A.Demonic:IsTalentLearned() and not VarWaitingForMomentum) or Unit(player):HasBuffs(A.FuriousGazeBuff.ID, true) > 0) then
 				return A.TheHunt:Show(icon)
 			end	
 
