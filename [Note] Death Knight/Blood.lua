@@ -117,6 +117,7 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
     SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
     PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
+	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 	
     -- Trinkets
     -- Covenant Abilities
     SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739    }),
