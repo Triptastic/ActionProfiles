@@ -806,15 +806,29 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
+			},
+			{
                 { -- DEMON SPIKES
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "DemonSpikesHP",
+                    DB = "DemonSpikes1HP",
                     DBV = 90, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = "Demon Spikes HP (%)",
+                        ANY = "Demon Spikes First Charge HP (%)",
+                    }, 
+                    M = {},
+                },
+                { -- DEMON SPIKES
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DemonSpikes2HP",
+                    DBV = 50, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Demon Spikes Second Charge HP (%)",
                     }, 
                     M = {},
                 },				

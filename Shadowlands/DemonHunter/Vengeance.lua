@@ -463,7 +463,8 @@ A[3] = function(icon, isMulti)
 	local FelDevDMG = Action.GetToggle(2, "FelDevastationDMG")
 	local FelDevHP = Action.GetToggle(2, "FelDevHP")
 	local Raz = Action.GetToggle(2, "Raz")
-	local DemonSpikesHP = Action.GetToggle(2, "DemonSpikesHP")
+	local DemonSpikes1HP = Action.GetToggle(2, "DemonSpikes1HP")
+	local DemonSpikes2HP = Action.GetToggle(2, "DemonSpikes2HP")	
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
 
@@ -607,9 +608,13 @@ A[3] = function(icon, isMulti)
 				return A.Metamorphosis:Show(icon)
 			end	
 		
-			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikesHP then
+			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellChargesFrac() > 1.9 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes1HP then
 				return A.DemonSpikes:Show(icon)
 			end
+			
+			if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellCharges() >= 1 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes2HP then
+				return A.DemonSpikes:Show(icon)
+			end			
 			
 			if A.SoulBarrier:IsReady(unit) and ((A.SpiritBomb:IsSpellLearned() and SoulFragments < 3) or (not A.SpiritBomb:IsSpellLearned() and SoulFragments >= 5)) then
 				return A.SoulBarrier:Show(icon)
