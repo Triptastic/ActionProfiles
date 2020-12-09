@@ -404,39 +404,24 @@ local function SelfDefensives(unit)
     end          
     
     -- PhialOfSerenity
-    local PhialOfSerenity = A.GetToggle(2, "PhialOfSerenityHP")
-    if PhialOfSerenity >= 0 and A.PhialOfSerenity:IsReady(player) and 
-    (
-        (     -- Auto 
-            PhialOfSerenity >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            PhialOfSerenity < 100 and 
-            Unit(player):HealthPercent() <= PhialOfSerenity
-        )
-    ) 
-    then 
-        return A.PhialOfSerenity
-    end         
+	if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+		-- Healing 
+		local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+		if PhialofSerenityOperator == "AND" then 
+			if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+				return A.PhialofSerenity
+			end 
+		else
+			if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+				return A.PhialofSerenity
+			end 
+		end 
+		
+		-- Dispel 
+		if AuraIsValidByPhialofSerenity() then 
+			return A.PhialofSerenity	
+		end 
+	end        
     
     -- SpiritualHealingPotionHP
     local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")

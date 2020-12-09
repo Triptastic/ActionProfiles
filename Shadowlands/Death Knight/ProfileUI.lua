@@ -1248,11 +1248,11 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "SuperiorSteelskinPotionHP",
+                    DB = "SpiritualHealingPotionHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(298155) .. " (%)",
+                        ANY = "Spiritual Healing Potion HP (%)",
                     }, 
                     M = {},
                 },
@@ -1260,11 +1260,11 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "AbyssalHealingPotionHP",
+                    DB = "PhialOfSerenityHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(301308) .. " (%)",
+                        ANY = "Phial of Serenity HP (%)",
                     }, 
                     M = {},
                 },
