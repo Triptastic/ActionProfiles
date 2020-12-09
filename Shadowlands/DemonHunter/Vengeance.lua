@@ -266,7 +266,7 @@ local function Interrupts(unit)
     if castRemainsTime >= A.GetLatency() then    
         
         -- Sigil of Chains (Snare)
-        if useCC and A.SigilofChains:IsReady("player") and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 then 
+        if useCC and A.SigilofChains:IsReady("player") and A.SigilofChains:IsTalentLearned() and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 then 
             return A.SigilofChains              
         end 
         
@@ -276,7 +276,7 @@ local function Interrupts(unit)
         end 
         
         -- Sigil of Silence (Silence)
-        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) and castRemainsTime >= (2.5 + A.GetLatency()) then 
+        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofSilence              
         end 
            
