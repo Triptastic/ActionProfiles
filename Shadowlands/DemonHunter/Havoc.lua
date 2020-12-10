@@ -1148,7 +1148,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions.demonic+=/glaive_tempest,if=active_enemies>desired_targets|raid_event.adds.in>10
 			if A.GlaiveTempest:IsReady(unit) and Player:IsStayingTime() > 0.5 and (A.MultiUnits:GetByRange(5) >= 2 or (Unit(unit):IsBoss() and Unit(unit):GetRange() <= 5)) then
-				return A.SpectralSight:Show(icon)
+				return A.GlaiveTempest:Show(icon)
 			end	
 			
 			--actions.demonic+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up
@@ -1267,7 +1267,7 @@ A[3] = function(icon, isMulti)
 			end	
 			--actions.normal+=/glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
 			if A.GlaiveTempest:IsReady(unit) and Player:IsStayingTime() > 0.5 and (not VarWaitingForMomentum) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
-				return A.SpectralSight:Show(icon)
+				return A.GlaiveTempest:Show(icon)
 			end	
 			
 			--actions.normal+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up

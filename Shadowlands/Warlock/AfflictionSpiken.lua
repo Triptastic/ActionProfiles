@@ -230,22 +230,10 @@ Action[ACTION_CONST_WARLOCK_AFFLICTION] = {
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
 
-
-	-- Extra icons until GG update
-	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Malefic Rapture
-	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for FelDomination
 }
 
--- To create essences use next code:
-Action:CreateEssencesFor(ACTION_CONST_WARLOCK_AFFLICTION)        -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
 local A = setmetatable(Action[ACTION_CONST_WARLOCK_AFFLICTION], { __index = Action })
 
--- Used for VisionofPerfectionMinor check
-local function DetermineEssenceRanks()
-    A.VisionofPerfectionMinor = A.VisionofPerfectionMinor2:IsSpellLearned() and A.VisionofPerfectionMinor2 or A.VisionofPerfectionMinor
-    A.VisionofPerfectionMinor = A.VisionofPerfectionMinor3:IsSpellLearned() and A.VisionofPerfectionMinor3 or A.VisionofPerfectionMinor
-end
-DetermineEssenceRanks = A.MakeFunctionCachedStatic(DetermineEssenceRanks)
 
 
 
@@ -526,7 +514,7 @@ DotRotationDot = Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true)
 
             			--Fel Domination if Pet dies
 			if A.FelDomination:IsReady("player") and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and inCombat then
-				return A.RocketJump:Show(icon)
+				return A.FelDomination:Show(icon)
             end
             
 			if SummonPet:IsReady(unit) and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 then
@@ -574,14 +562,14 @@ DotRotationDot = Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true)
 
 		  -- If full on SoulShard cast one MaleficRapture to not waste any soulshards - DONE
 		  if A.MaleficRapture:IsReady(unit) and Player:SoulShards() == 5  and not isMoving and (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID,true) > 5 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID,true) > 5 or Unit("target"):HasDeBuffs(A.VileTaint.ID,true) > 5) then
-			return A.SpatialRift:Show(icon)
+			return A.MaleficRapture:Show(icon)
           end
             -- malefic_rapture,if=dot.vile_taint.ticking -- DONE
             if A.MaleficRapture:IsReady(unit) and not isMoving and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 6 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 6 and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 6 and Player:SoulShards() >= 2 then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end
             if A.MaleficRapture:IsReady(unit) and not isMoving and MultiUnits:GetActiveEnemies() >= 3 and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 6 and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 6 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 6 or Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 6 and Player:SoulShards() >= 2 then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end
           
         end -- PRecombat close
@@ -635,7 +623,7 @@ DotRotationDot = Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true)
                 end
                 -- malefic_rapture,if=soul_shard>4 -- DONE
                 if A.MaleficRapture:IsReady(unit) and not isMoving and Player:SoulShards() == 5 and (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID,true) > 7 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID,true) > 7 or Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 7) and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) then
-                    return A.SpatialRift:Show(icon)
+                    return A.MaleficRapture:Show(icon)
                 end
                 -- haunt
                 if A.Haunt:IsReady(unit) and A.Haunt:IsSpellInRange("target") and not isMoving and A.Haunt:IsTalentLearned() then
@@ -835,27 +823,27 @@ DotRotationDot = Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true)
         end
         -- malefic_rapture,if=soul_shard>4 -- DONE
         if A.MaleficRapture:IsReady(unit) and not isMoving and Player:SoulShards() == 5 and (Unit("target"):HasDeBuffs(A.AgonyDebuff.ID,true) > 7 or Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID,true) > 7 or Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 7) and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
         -- malefic_rapture,if=dot.vile_taint.ticking -- DONE
         if A.MaleficRapture:IsReady(unit) and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) and not isMoving and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 5 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) > 5 and not A.AbsoluteCorruption:IsTalentLearned() and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 5 and Player:SoulShards() >= 2 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
         -- malefic_rapture,if=dot.vile_taint.ticking -- DONE
         if A.MaleficRapture:IsReady(unit) and not isMoving and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 5 and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) and A.AbsoluteCorruption:IsTalentLearned() and Unit("target"):HasDeBuffs(A.UnstableAfflictionDebuff.ID, true) > 5 and Player:SoulShards() >= 2 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
         -- malefic_rapture,if=!talent.vile_taint.enabled - DONE
         if A.MaleficRapture:IsReady(unit) and A.VileTaint:IsTalentLearned() and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) and not A.AbsoluteCorruption:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 3 and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID) > 5 and Player:SoulShards() >= 2 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
         -- malefic_rapture,if=!talent.vile_taint.enabled - DONE
         if A.MaleficRapture:IsReady(unit) and not A.VileTaint:IsTalentLearned() and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) and A.AbsoluteCorruption:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 3 and (not isMoving) and Unit("target"):HasDeBuffs(A.CorruptionDebuff.ID, true) and Player:SoulShards() >= 2 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
         -- malefic_rapture,if=!talent.vile_taint.enabled - DONE
         if A.MaleficRapture:IsReady(unit) and not A.VileTaint:IsTalentLearned() and (Unit("target"):HealthPercent() > 15 or Unit("target"):IsBoss()) and not A.AbsoluteCorruption:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 3 and (not isMoving) and Unit("target"):HasDeBuffs(A.AgonyDebuff.ID, true) > 5 and Player:SoulShards() >= 2 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end
       -- vile_taint,if=(soul_shard>1|active_enemies>2)&cooldown.summon_darkglare.remains>12 -- DONE
       if A.VileTaint:IsReady(unit) and A.VileTaint:IsSpellInRange(unitID) and not isMoving then

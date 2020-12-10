@@ -495,7 +495,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		
 	local function DamageRotation(unit)
 
-			if TeamCacheFriendly.Size == 0 then
+			if TeamCacheFriendly.Size == 0 or TeamCacheFriendly.Size == 1 then
 			
 				--Purify
 				if CanCast and A.Purify:IsReady(player) and A.Purify:AbsentImun(player) and A.AuraIsValid(player, "UseDispel", "Dispel") and Unit(player):TimeToDie() > 5 then 
@@ -549,7 +549,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		
 				-- Circle of Healing
 				if CanCast and inCombat and A.CircleofHealing:IsReady(player) and Unit(player):HealthPercent() <= CircleofHealingHP then
-					return A.RocketJump:Show(icon)
+					return A.CircleofHealing:Show(icon)
 				end	
 
 				--Divine Star - best I could come up with
@@ -703,7 +703,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 	
 			-- Circle of Healing
 			if CanCast and inCombat and A.CircleofHealing:IsReady(unit) and HealingEngine.GetBelowHealthPercentUnits(CircleofHealingHP, 30) >= CircleofHealingTargets then
-				return A.RocketJump:Show(icon)
+				return A.CircleofHealing:Show(icon)
 			end	
 
 			--Prayer of Mending

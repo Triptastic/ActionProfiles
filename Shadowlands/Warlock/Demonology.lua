@@ -214,22 +214,10 @@ Action[ACTION_CONST_WARLOCK_DEMONOLOGY] = {
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
 
 	HealthStoneItem					= Action.Create({ Type = "Item", ID = 5512, Hidden = true }), -- Just for notification icon really
-	
-	-- Borrowed Bindings
-	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
-	RocketJump						= Action.Create({ Type = "Spell", ID = 69070 }), -- used for Heart of Azeroth
 }
 
--- To create essences use next code:
-Action:CreateEssencesFor(ACTION_CONST_WARLOCK_DEMONOLOGY)        -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
 local A = setmetatable(Action[ACTION_CONST_WARLOCK_DEMONOLOGY], { __index = Action })
 
--- Used for VisionofPerfectionMinor check
-local function DetermineEssenceRanks()
-    A.VisionofPerfectionMinor = A.VisionofPerfectionMinor2:IsSpellLearned() and A.VisionofPerfectionMinor2 or A.VisionofPerfectionMinor
-    A.VisionofPerfectionMinor = A.VisionofPerfectionMinor3:IsSpellLearned() and A.VisionofPerfectionMinor3 or A.VisionofPerfectionMinor
-end
-DetermineEssenceRanks = A.MakeFunctionCachedStatic(DetermineEssenceRanks)
 
 local player = "player"
 
@@ -1070,7 +1058,7 @@ A[3] = function(icon, isMulti)
 
 			--Fel Domination if Pet dies
 			if A.FelDomination:IsReady("player") and not Pet:IsActive() then
-				return A.RocketJump:Show(icon)
+				return A.FelDomination:Show(icon)
 			end			
 			
 			-- Summon Pet 

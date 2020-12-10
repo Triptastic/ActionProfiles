@@ -140,9 +140,7 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-	
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
-	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for SweepingStrikes	
+
 };
 
 -- To create covenant use next code:
@@ -728,7 +726,7 @@ A[3] = function(icon, isMulti)
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
 				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and ((A.Bladestorm:GetCooldown() > 10 and not A.Ravager:IsTalentLearned()) or A.ColossusSmash:GetCooldown() > 8) and Player:AreaTTD(10) > 9 then
-					return A.Regeneratin:Show(icon)
+					return A.SweepingStrikes:Show(icon)
 				end
 				
 				-- guardian_of_azeroth
