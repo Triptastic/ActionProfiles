@@ -500,7 +500,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.single_target+=/siegebreaker,if=spell_targets.whirlwind>1|raid_event.adds.in>15
-			if A.Siegebreaker:IsReady(unitID) and MultiUnits:GetByRange(5, 2) > 1 then
+			if A.Siegebreaker:IsReady(unitID) and Unit(unitID):GetRange() <= 5 and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 then
 				return A.Siegebreaker:Show(icon)
 			end
 			
@@ -520,7 +520,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.single_target+=/bladestorm,if=buff.enrage.up&(spell_targets.whirlwind>1|raid_event.adds.in>45)
-			if A.Bladestorm:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and MultiUnits:GetByRange(5, 2) > 1 then
+			if A.Bladestorm:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(target):GetRange() <= 5 then
 				return A.Bladestorm:Show(icon)
 			end
 			
