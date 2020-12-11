@@ -106,6 +106,7 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
     InfernalArmor					= Action.Create({ Type = "Spell", ID = 320331, Hidden = true	}),	
     CharredFlesh					= Action.Create({ Type = "Spell", ID = 336639, Hidden = true	}),	
     SpiritBomb						= Action.Create({ Type = "Spell", ID = 247454	}),
+    SpiritBombDebuff				= Action.Create({ Type = "Spell", ID = 247456, Hidden = true	}),	
     SoulRending						= Action.Create({ Type = "Spell", ID = 217996, Hidden = true	}),	
     FeedtheDemon					= Action.Create({ Type = "Spell", ID = 218612, Hidden = true	}),
     Fracture						= Action.Create({ Type = "Spell", ID = 263642	}),
@@ -174,7 +175,10 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
 	
 	
 	-- Trinkets
-	
+    DarkmoonDeckVoracity			= Action.Create({ Type = "Trinket", ID = 173087	}),
+		DMVoracity6					= Action.Create({ Type = "Spell", ID = 311489	}),
+		DMVoracity7					= Action.Create({ Type = "Spell", ID = 311488	}),
+		DMVoracity8					= Action.Create({ Type = "Spell", ID = 311490	}),
 
 	-- Potions
     PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299	}), 	
@@ -209,6 +213,8 @@ local function bool(val)
     return val ~= 0
 end
 local player = "player"
+local target = "target"
+local mouseover = "mouseover"
 ------------------------------------------
 -------------- COMMON PREAPL -------------
 ------------------------------------------
@@ -266,17 +272,17 @@ local function Interrupts(unit)
     if castRemainsTime >= A.GetLatency() then    
         
         -- Sigil of Chains (Snare)
-        if useCC and A.SigilofChains:IsReady("player") and A.SigilofChains:IsTalentLearned() and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 then 
+        if useCC and A.SigilofChains:IsReady(player) and A.SigilofChains:IsTalentLearned() and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 then 
             return A.SigilofChains              
         end 
         
         -- Sigil of Misery (Disorient)
-        if useCC and A.SigilofMisery:IsReady("player") and EnemiesCasting > 1 and A.SigilofMisery:AbsentImun(unit, Temp.TotalAndCC, true) then 
+        if useCC and A.SigilofMisery:IsReady(player) and EnemiesCasting > 1 and A.SigilofMisery:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofMisery              
         end 
         
         -- Sigil of Silence (Silence)
-        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady("player") and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
+        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady(player) and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofSilence              
         end 
            
@@ -306,71 +312,6 @@ local function Interrupts(unit)
             return A.BullRush
         end 
     end
-end
-
--- Soul Fragments function taking into consideration aura lag
-local function UpdateSoulFragments()
-    SoulFragments = Unit("player"):HasBuffsStacks(A.SoulFragments.ID, true)
-    
-    -- Casting Spirit Bomb or Soul Cleave immediately updates the buff
-    if Unit("player"):GetSpellLastCast(A.SpiritBomb.ID, true) < A.GetGCD()
-    or Unit("player"):GetSpellLastCast(A.SoulCleave.ID, true) < A.GetGCD() then
-        SoulFragmentsAdjusted = 0
-        return;
-    end
-    
-    -- Check if we have cast Fracture or Shear within the last GCD and haven't "snapshot" yet
-    if SoulFragmentsAdjusted == 0 then
-        if A.Fracture:IsSpellLearned() then
-            if Unit("player"):GetSpellLastCast(A.Fracture.ID, true) < A.GetGCD() and A.Fracture:GetSpellTimeSinceLastCast() ~= LastSoulFragmentAdjustment then
-                SoulFragmentsAdjusted = math.min(SoulFragments + 2, 5)
-                LastSoulFragmentAdjustment = A.Fracture:GetSpellTimeSinceLastCast()
-            end
-        else
-            if A.Shear:GetSpellTimeSinceLastCast() < A.GetGCD() and A.Fracture.Shear ~= LastSoulFragmentAdjustment then
-                SoulFragmentsAdjusted = math.min(SoulFragments + 1, 5)
-                LastSoulFragmentAdjustment = A.Shear:GetSpellTimeSinceLastCast()
-            end
-        end
-    else
-        -- If we have a soul fragement "snapshot", see if we should invalidate it based on time
-        if A.Fracture:IsSpellLearned() then
-            if A.Fracture:GetSpellTimeSinceLastCast() >= A.GetGCD() then
-                SoulFragmentsAdjusted = 0
-            end
-        else
-            if A.Shear:GetSpellTimeSinceLastCast() >= A.GetGCD() then
-                SoulFragmentsAdjusted = 0
-            end
-        end
-    end
-    
-    -- If we have a higher Soul Fragment "snapshot", use it instead
-    if SoulFragmentsAdjusted > SoulFragments then
-        SoulFragments = SoulFragmentsAdjusted
-    elseif SoulFragmentsAdjusted > 0 then
-        -- Otherwise, the "snapshot" is invalid, so reset it if it has a value
-        -- Relevant in cases where we use a generator two GCDs in a row
-        SoulFragmentsAdjusted = 0
-    end
-end
-
--- Melee Is In Range w/ Movement Handlers
-local function UpdateIsInMeleeRange()
-    if A.Felblade:GetSpellTimeSinceLastCast() < A.GetGCD()
-    or A.InfernalStrike:GetSpellTimeSinceLastCast() < A.GetGCD() then
-        IsInMeleeRange = true;
-        IsInAoERange = true;
-        return;
-    end
-    
-    local IsInMeleeRange = Unit("target"):GetRange() <= 5
-    local IsInAoERange = IsInMeleeRange or MultiUnits:GetByRange(8, 5, 10) > 0;
-end
-
--- Current HPS > Incoming damage
-local function IsInDanger(unit)
-    return Unit("player"):GetHPS() < Unit("player"):GetDMG()
 end
 
 local function SelfDefensives()
@@ -451,12 +392,6 @@ A[3] = function(icon, isMulti)
     local isMoving = A.Player:IsMoving()
     local inCombat = Unit("player"):CombatTime() > 0
     local combatTime = Unit("player"):CombatTime()
-    local ShouldStop = Action.ShouldStop()
-    local Pull = Action.BossMods:GetPullTimer()
-    local ActiveMitigationNeeded = Player:ActiveMitigationNeeded()
-    local IsTanking = Unit("player"):IsTanking("target", 8) or Unit("player"):IsTankingAoE(8)
-    UpdateSoulFragments()
-    UpdateIsInMeleeRange()
     local SoulFragments = Unit("player"):HasBuffsStacks(A.SoulFragments.ID, true)
 	local PotionTrue = Action.GetToggle(1, "Potion")
 	local MetaHP = Action.GetToggle(2, "MetamorphosisHP")
@@ -466,7 +401,9 @@ A[3] = function(icon, isMulti)
 	local DemonSpikes1HP = Action.GetToggle(2, "DemonSpikes1HP")
 	local DemonSpikes2HP = Action.GetToggle(2, "DemonSpikes2HP")	
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
-	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
+	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]
+	local MissingSpiritBomb = MultiUnits:GetByRangeMissedDoTs(10, 5, A.SpiritBombDebuff.ID)
+	local GoodVoracity = Unit("player"):HasBuffs(A.DMVoracity8.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity7.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity6.ID, true) > 0
 
 	if Temp.InfernalStrikeDelay == 0 and Unit(player):IsCasting() == A.InfernalStrike:Info()  then
 			Temp.InfernalStrikeDelay = 90
@@ -476,14 +413,8 @@ A[3] = function(icon, isMulti)
 			Temp.InfernalStrikeDelay = Temp.InfernalStrikeDelay - 1
 	end
     
-    ------------------------------------------------------
-    ---------------- ENEMY UNIT ROTATION -----------------
-    ------------------------------------------------------
-    local function EnemyRotation(unit)
-        -- vars
-        -- Return boolean        
-        local IsInDanger = IsInDanger(unit)
-        local HPLosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
+
+    local function EnemyRotation(unit)    
         
 		local function PullSomething()
 		
@@ -523,12 +454,12 @@ A[3] = function(icon, isMulti)
 			end	
 
 			--actions.cooldown+=/elysian_decree
-			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.2 and Unit(unit):GetRange() <= 5 and Unit(unit):IsBoss() then
 				return A.ElysianDecree:Show(icon)
 			end		
 
 			--actions.cooldown+=/elysian_decree
-			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit(unit):GetRange() <= 5 and Raz then
+			if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.2 and Unit(unit):GetRange() <= 5 and Raz then
 				return A.ElysianDecree:Show(icon)
 			end				
 		
@@ -538,9 +469,14 @@ A[3] = function(icon, isMulti)
 			--Damage Rotation
 		local function DamageRotation()
 
-			if A.Felblade:IsReady(unit) and Player:FuryDeficit() >= 40 then
+			if A.Felblade:IsReady(unit) and A.Felblade:IsTalentLearned() and Player:FuryDeficit() >= 40 then
 				return A.Felblade:Show(icon)
 			end	
+
+			--Immolation Aura if souls not capped
+			if A.ImmolationAura:IsReady(unit) and ((SoulFragments <= 4 and A.Fallout:IsTalentLearned()) or not A.Fallout:IsTalentLearned()) and Player:Fury() <= 80 then
+				return A.ImmolationAura:Show(icon)
+			end
 		
 			--Infernal Strike if about to cap charges, range check for casting @player
 			if A.InfernalStrike:IsReady("player") and Temp.InfernalStrikeDelay == 0 and A.InfernalStrike:GetSpellCharges() > 1 and Unit("target"):GetRange() <= 6 and not Unit(player):InVehicle() then 
@@ -551,15 +487,19 @@ A[3] = function(icon, isMulti)
 			if A.FieryBrand:IsReady(unit) and Unit(unit):TimeToDie() >= 8 then 
 				return A.FieryBrand:Show(icon)
 			end	
-		
-			--Spirit Bomb if four or more souls
-			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 4 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 then
-				return A.SpiritBomb:Show(icon)
-			end
 			
-			if A.SpiritBomb:IsReady(unit) and SoulFragments >= 3 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0 then
-				return A.SpiritBomb:Show(icon)
-			end			
+			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
+			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz and Unit("target"):GetRange() <= 10 then
+				return A.SigilofFlame:Show(icon)
+			end		
+			
+			--Spirit Bomb if four or more souls
+			if A.SpiritBomb:IsReady(unit) and A.SpiritBomb:IsTalentLearned() and MissingSpiritBomb >= 1 then
+				if SoulFragments >= 4 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 then
+					return A.SpiritBomb:Show(icon)
+				end
+			end
+		
 			
 			--Fel Devastation on cooldown
 			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
@@ -571,27 +511,17 @@ A[3] = function(icon, isMulti)
 				return A.Fracture:Show(icon)
 			end	
 
-			--Immolation Aura if souls not capped
-			if A.ImmolationAura:IsReady(unit) and SoulFragments <= 4 and Player:Fury() <= 80 then
-				return A.ImmolationAura:Show(icon)
-			end
-
 			--Soul Cleave to dump fury
-			if A.SoulCleave:IsReady(unit) and not Raz and Player:Fury() >= 80 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
+			if A.SoulCleave:IsReady(unit) and not Raz and Player:Fury() >= 30 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
 				return A.SoulCleave:Show(icon)
 			end
 			
-			if A.SoulCleave:IsReady(unit) and Raz and Player:Fury() >= 80 then
+			if A.SoulCleave:IsReady(unit) and Raz and MissingSpiritBomb == 0 and Player:Fury() >= 30 then
 				return A.SoulCleave:Show(icon)
 			end	
 
-			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
-			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz and Unit("target"):GetRange() <= 10 then
-				return A.SigilofFlame:Show(icon)
-			end
-
 			--Shear
-			if A.Shear:IsReady(unit) and not A.Fracture:IsSpellLearned() then
+			if A.Shear:IsReady(unit) and not A.Fracture:IsTalentLearned() then
 				return A.Shear:Show(icon)
 			end
 
@@ -616,7 +546,7 @@ A[3] = function(icon, isMulti)
 				return A.DemonSpikes:Show(icon)
 			end			
 			
-			if A.SoulBarrier:IsReady(unit) and ((A.SpiritBomb:IsSpellLearned() and SoulFragments < 3) or (not A.SpiritBomb:IsSpellLearned() and SoulFragments >= 5)) then
+			if A.SoulBarrier:IsReady(unit) and ((A.SpiritBomb:IsTalentLearned() and SoulFragments < 3) or (not A.SpiritBomb:IsTalentLearned() and SoulFragments >= 5)) then
 				return A.SoulBarrier:Show(icon)
 			end
 
@@ -661,26 +591,15 @@ A[3] = function(icon, isMulti)
 				return A.ConsumeMagic:Show(icon)
 			end    
 			
-			-- Taunt 
-			if A.GetToggle(2, "AutoTaunt") 
-			and combatTime > 0     
-			then 
-				-- if not fully aggroed or we are not current target then use taunt
-				if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() and Unit("targettarget"):InfoGUID() ~= nil ) then 
-					return A.Torment:Show(icon)
-					-- else if all good on current target, switch to another one we know we dont currently tank
-				else
-					local Torment_Nameplates = MultiUnits:GetActiveUnitPlates()
-					if Torment_Nameplates then  
-						for Torment_UnitID in pairs(Torment_Nameplates) do 
-						local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", Torment_UnitID)						
-							if not UnitIsUnit("target", Torment_UnitID) and A.Torment:IsReady(Torment_UnitID, true, nil, nil, nil) and not Unit(Torment_UnitID):IsDummy() and not Unit(Torment_UnitID):IsBoss() and Unit(Torment_UnitID):GetRange() <= 30 and not Unit(Torment_UnitID):InLOS() and not isTanking then 
-								return A:Show(icon, ACTION_CONST_AUTOTARGET)
-							end         
-						end 
-					end
-				end
+			-- Auto Taunt (without target switching)
+			if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() and Unit("targettarget"):InfoGUID() ~= nil ) then 
+				return A.Torment:Show(icon)
 			end 
+			
+			-- Custom Trinket
+			if A.DarkmoonDeckVoracity:IsReady(player) and GoodVoracity then
+				return A.DarkmoonDeckVoracity:Show(icon)
+			end
 			
 			-- Non SIMC Custom Trinket1
 			if A.Trinket1:IsReady(unitID) and Trinket1IsAllowed then        

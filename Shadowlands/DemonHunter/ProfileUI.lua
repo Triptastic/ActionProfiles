@@ -114,7 +114,19 @@ A.Data.ProfileUI = {
                         frFR = "Utilisez votre Emprisonnement comme interruption si vous n'avez pas votre Disruption prêt.", 
                     }, 
                     M = {},
-                },     
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "UsePurge",
+                    DBV = true,
+                    L = { 
+                        ANY = "Consume Magic"
+                    }, 
+                    TT = { 
+                        ANY = "Use Consume Magic to Purge."
+                    }, 
+                    M = {},
+                }, 				
             },
             { -- LAYOUT SPACE
                 
@@ -667,20 +679,18 @@ A.Data.ProfileUI = {
                 },
 			},
 			{
-				{
-					E = "Checkbox", 
-					DB = "AutoTaunt",
-					DBV = true,
-					L = { 
-						enUS = "Automatic Taunt", 
-						ruRU = "Автоматическая Насмешка", 
-						frFR = "Raillerie automatique",
-					}, 
-					TT = { 
-						ANY = "If activated, will use automatically use Torment if you do not have aggro on your target.", 
-					}, 
-					M = {},               
-				},
+                {
+                    E = "Checkbox", 
+                    DB = "UsePurge",
+                    DBV = true,
+                    L = { 
+                        ANY = "Consume Magic"
+                    }, 
+                    TT = { 
+                        ANY = "Use Consume Magic to Purge."
+                    }, 
+                    M = {},
+                },
 				{
 					E = "Checkbox", 
 					DB = "Raz",
