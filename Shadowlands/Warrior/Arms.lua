@@ -547,7 +547,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,,if=cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2)
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and Unit("target"):GetRange() <= 5 and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
@@ -557,7 +557,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- warbreaker,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 10)) then
+				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and Unit(unitID):GetRange() <= 5 then
 					return A.Warbreaker:Show(icon)
 				end
 				
@@ -617,7 +617,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- ravager,if=(cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2))
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
+				if A.Ravager:IsReady("player") and BurstIsON(unit) and Unit("target"):GetRange() <= 5 and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
 					return A.Ravager:Show(icon)
 				end
 				
@@ -637,7 +637,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- warbreaker,if=!essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>50)|essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>80)|talent.massacre.enabled&(target.time_to_pct_35>10|target.time_to_die>50)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
+				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and Unit(unitID):GetRange() <= 5 and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
 					return A.Warbreaker:Show(icon)
 				end
 				
@@ -662,7 +662,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- whirlwind,if=(((buff.memory_of_lucid_dreams.up)|(debuff.colossus_smash.up)|(buff.deadly_calm.up))&talent.fervor_of_battle.enabled)|((buff.memory_of_lucid_dreams.up|rage>89)&debuff.colossus_smash.up&buff.test_of_might.down&!talent.fervor_of_battle.enabled)
-				if A.Whirlwind:IsReady(player) and ((((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or (Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned()) then
+				if A.Whirlwind:IsReady(player) and Unit("target"):GetRange() <= 5 and ((((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or (Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned()) then
 					return A.Whirlwind:Show(icon)
 				end
 				
@@ -677,7 +677,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- whirlwind,if=talent.fervor_of_battle.enabled&(buff.test_of_might.up|debuff.colossus_smash.down&buff.test_of_might.down&rage>60)
-				if A.Whirlwind:IsReady("player") and (A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and Player:Rage() > 60)) then
+				if A.Whirlwind:IsReady("player") and Unit("target"):GetRange() <= 5 and (A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and Player:Rage() > 60)) then
 					return A.Whirlwind:Show(icon)
 				end
 				
