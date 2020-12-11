@@ -961,10 +961,8 @@ A[3] = function(icon, isMulti)
             end    
             
             -- Arcane Torrent dispell or if FuryDeficit >= 30
-            if A.ArcaneTorrent:IsRacialReady(unit) and BurstIsON(unit) and Action.GetToggle(1, "Racial") and (Pull > 0.1 and Pull <= ArcaneTorrentPrePull or not Action.GetToggle(1, "BossMods")) 
+            if A.ArcaneTorrent:IsRacialReady(unit) and BurstIsON(unit) and Action.GetToggle(1, "Racial") and (Pull > 0.1 and Pull <= 2 or not Action.GetToggle(1, "BossMods")) 
             then
-                -- Notification                    
-                --Action.SendNotification("Prepull: Arcane Torrent", A.ArcaneTorrent.ID) 
                 return A.ArcaneTorrent:Show(icon)
             end           
             
