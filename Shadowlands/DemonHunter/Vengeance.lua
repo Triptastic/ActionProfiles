@@ -402,7 +402,7 @@ A[3] = function(icon, isMulti)
 	local DemonSpikes2HP = Action.GetToggle(2, "DemonSpikes2HP")	
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]
-	local MissingSpiritBomb = MultiUnits:GetByRangeMissedDoTs(10, 5, A.SpiritBombDebuff.ID)
+	local MissingSpiritBomb = Unit("target"):HasDeBuffs(A.SpiritBombDebuff.ID, true) < 3
 	local GoodVoracity = Unit("player"):HasBuffs(A.DMVoracity8.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity7.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity6.ID, true) > 0
 
 	if Temp.InfernalStrikeDelay == 0 and Unit(player):IsCasting() == A.InfernalStrike:Info()  then
@@ -494,13 +494,12 @@ A[3] = function(icon, isMulti)
 			end		
 			
 			--Spirit Bomb if four or more souls
-			if A.SpiritBomb:IsReady(unit) and A.SpiritBomb:IsTalentLearned() and MissingSpiritBomb >= 1 then
-				if SoulFragments >= 4 and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 then
+			if A.SpiritBomb:IsReady(unit) and A.SpiritBomb:IsTalentLearned() and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and SoulFragments >= 4 then
+				if (Raz and MissingSpiritBomb) or not Raz then
 					return A.SpiritBomb:Show(icon)
 				end
 			end
-		
-			
+
 			--Fel Devastation on cooldown
 			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
 				return A.FelDevastation:Show(icon)
@@ -516,7 +515,7 @@ A[3] = function(icon, isMulti)
 				return A.SoulCleave:Show(icon)
 			end
 			
-			if A.SoulCleave:IsReady(unit) and Raz and MissingSpiritBomb == 0 and Player:Fury() >= 30 then
+			if A.SoulCleave:IsReady(unit) and Raz and not MissingSpiritBomb and Player:Fury() >= 30 then
 				return A.SoulCleave:Show(icon)
 			end	
 
