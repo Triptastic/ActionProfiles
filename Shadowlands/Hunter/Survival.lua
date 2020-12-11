@@ -69,7 +69,7 @@ Action[ACTION_CONST_HUNTER_SURVIVAL] = {
     ArcaneShot			    	= Action.Create({ Type = "Spell", ID = 185358	}),
     AspectoftheCheetah	    	= Action.Create({ Type = "Spell", ID = 186257	}),	
     AspectoftheTurtle	    	= Action.Create({ Type = "Spell", ID = 186265	}),
-    CallPet				    	= Action.Create({ Type = "Spell", ID = 883		}),	
+    CallPet				    	= Action.Create({ Type = "Spell", ID = 883, Texture = 136		}),	
     Disengage			    	= Action.Create({ Type = "Spell", ID = 781		}),	
     EagleEye			    	= Action.Create({ Type = "Spell", ID = 6197		}),	
     Exhilaration		    	= Action.Create({ Type = "Spell", ID = 109304	}),	
@@ -936,12 +936,12 @@ A[3] = function(icon, isMulti)
 			
 			--actions.cds+=/mongoose_bite,if=active_enemies=1&target.time_to_die<focus%(action.mongoose_bite.cost-cast_regen)*gcd
 			if A.MongooseBite:IsReady(unitID) and A.MongooseBite:IsTalentLearned() and MultiUnits:GetByRange(5, 2) == 1 and Unit(unitID):TimeToDie() < (Focus / (A.MongooseBite:GetSpellPowerCost() * A.GetGCD())) then
-				return A.KillShot:Show(icon)
+				return A.MongooseBite:Show(icon)
 			end
 			
 			--actions.cds+=/raptor_strike,if=active_enemies=1&target.time_to_die<focus%(action.mongoose_bite.cost-cast_regen)*gcd
 			if A.RaptorStrike:IsReady(unitID) and not A.MongooseBite:IsTalentLearned() and MultiUnits:GetByRange(5, 2) == 1 and Unit(unitID):TimeToDie() < (Focus / (A.MongooseBite:GetSpellPowerCost() * A.GetGCD())) then
-				return A.KillShot:Show(icon)
+				return A.RaptorStrike:Show(icon)
 			end			
 
 		
