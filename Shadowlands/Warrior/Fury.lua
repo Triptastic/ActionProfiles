@@ -474,6 +474,8 @@ A[3] = function(icon, isMulti)
 	local UseRacial = A.GetToggle(1, "Racial")
 	local ViciousContemptR5 = A.GetToggle(2, "ViciousContemptR5")
 	local inMelee = InRange()
+	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
+	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
 
 	--Function Remaps
 	local Rage = Player:Rage() 
@@ -589,9 +591,19 @@ A[3] = function(icon, isMulti)
 			return A.Rampage:Show(icon)
 		end
 		--actions+=/recklessness,if=gcd.remains=0&((buff.bloodlust.up|talent.anger_management.enabled|raid_event.adds.in>10)|target.time_to_die>100|(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20|target.time_to_die<15&raid_event.adds.in>10)&(spell_targets.whirlwind=1|buff.meat_cleaver.up)
-		if A.Recklessness:IsReady(player) and A.BurstIsON(unitID) and A.GetGCD() == 0 and ((LustEffect or A.AngerManagement:IsTalentLearned()) or Unit(unitID):TimeToDie() > 100 or (A.Massacre:IsTalentLearned() and Unit(unitID):HealthPercent() < 35) or Unit(unitID):HealthPercent() < 20 or (Unit(unitID):TimeToDie() < 15 and Unit(unitID):IsBoss()) and (MultiUnits:GetByRange(5, 2) == 1 or Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) > 0)) then
+		if A.Recklessness:IsReady(player) and A.BurstIsON(unitID) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) then
 			return A.Recklessness:Show(icon)
 		end
+		
+		-- Non SIMC Custom Trinket1
+		if A.Trinket1:IsReady(unitID) and A.BurstIsON(unitID) and Trinket1IsAllowed then        
+			return A.Trinket1:Show(icon)        
+		end
+		
+		-- Non SIMC Custom Trinket2
+		if A.Trinket2:IsReady(unitID) and A.BurstIsON(unitID) and Trinket2IsAllowed then        
+			return A.Trinket2:Show(icon)    
+		end 
 		
 		--actions+=/whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up|raid_event.adds.in<gcd&!buff.meat_cleaver.up
 		if A.Whirlwind:IsReady(player) and MultiUnits:GetByRange(5, 2) > 1 and Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) == 0 then
