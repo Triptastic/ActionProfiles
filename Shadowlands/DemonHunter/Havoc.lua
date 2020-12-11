@@ -194,7 +194,9 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),
+	AbyssalHealingPotion			= Action.Create({ Type = "Item", ID = 169451, QueueForbidden = true }),
 	PhialofSerenity				    = Action.Create({ Type = "Item", ID = 177278 }),
+	
 	
     -- Misc
     Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
@@ -658,7 +660,7 @@ local function SelfDefensives()
         )
     ) 
     then 
-        return A.SpiritualHealingPotion
+        return A.AbyssalHealingPotion
     end 
     
     -- Stoneform on self dispel (only PvE)
