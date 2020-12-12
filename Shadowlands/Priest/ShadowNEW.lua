@@ -830,7 +830,7 @@ A[3] = function(icon, isMulti)
 		
 		
 		--actions+=/call_action_list,name=cwc
-		if Player:IsChanneling() == A.MindSear:Info() then
+		if Player:IsChanneling() == A.MindSear:Info() or Player:IsChanneling() == A.MindFlay:Info() then
 			if CWC() then
 				return true
 			end
