@@ -552,7 +552,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- colossus_smash,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.ColossusSmash:IsReady(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 10)) then
+				if A.ColossusSmash:IsReady(unit) then
 					return A.ColossusSmash:Show(icon)
 				end
 				
