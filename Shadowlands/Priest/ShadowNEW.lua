@@ -450,6 +450,7 @@ A[3] = function(icon, isMulti)
 	local UseCovenant = A.GetToggle(1, "Covenant")
 	local ShadowflamePrism = A.GetToggle(2, "ShadowflamePrism")	
 	local Painbreaker = A.GetToggle(2, "Painbreaker")
+	local PWSAlways = A.GetToggle(2, "PWSAlways")
 	
 	--Spell Fixes
     if Temp.VampiricTouchDelay == 0 and Player:IsCasting() == A.VampiricTouch:Info() then
@@ -623,6 +624,11 @@ A[3] = function(icon, isMulti)
 				end
 			end	
 			
+			-- PWS Always if selected
+			if A.PowerWordShield:IsReady(player) and PWSAlways and Unit(player):HasBuffs(A.PowerWordShield.ID, true) == 0 and Unit(player):HasDeBuffs(A.WeakenedSoul.ID, true) == 0 then
+				return A.PowerWordShield:Show(icon)
+			end
+			
 			--# Use Void Eruption on cooldown pooling at least 40 insanity but not if you will overcap insanity in VF. Make sure shadowfiend/mindbender is on cooldown before VE.
 			--actions.main+=/void_eruption,if=variable.pool_for_cds&insanity>=40&(insanity<=85|talent.searing_nightmare.enabled&variable.searing_nightmare_cutoff)&!cooldown.fiend.up
 			if A.VoidEruption:IsReady(unit) and CanCast and (not isMoving or StMActive) and VarPoolForCDs and Insanity >= 40 and (Insanity <= 85 or A.SearingNightmare:IsTalentLearned() and VarSearingNightmareCutoff) and ((A.Shadowfiend:GetCooldown() > 0 and not A.Mindbender:IsTalentLearned()) or (A.Mindbender:GetCooldown() > 0 and A.Mindbender:IsTalentLearned())) then
@@ -763,7 +769,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--PWS Moving
-			if isMovingFor > Action.GetToggle(2, "PWSMove") and CanCast and Unit("player"):HasDeBuffs(A.WeakenedSoulDebuff.ID) == 0 and Action.GetToggle(2, "UsePWS") and A.BodyAndSoul:IsSpellLearned() then                   
+			if isMovingFor > Action.GetToggle(2, "PWSMove") and CanCast and Unit(player):HasDeBuffs(A.WeakenedSoul.ID) == 0 and Action.GetToggle(2, "UsePWS") and A.BodyandSoul:IsTalentLearned() then                   
 				A.Toaster:SpawnByTimer("TripToast", 0, "Speed Boost!", "Using Power Word: Shield!", A.PowerWordShield.ID)
 				return A.PowerWordShield:Show(icon)
 			end			
@@ -828,6 +834,10 @@ A[3] = function(icon, isMulti)
 			return A.FaeGuardians:Show(icon)
 		end
 		
+		--Void Bolt out of Voidform procs
+		if A.VoidBolt:IsReady(unit, nil, nil, true) and not VoidFormActive and A.VoidEruption:GetCooldown() > 0 then
+			return A.VoidBolt:Show(icon)
+		end
 		
 		--actions+=/call_action_list,name=cwc
 		if Player:IsChanneling() == A.MindSear:Info() or Player:IsChanneling() == A.MindFlay:Info() then
@@ -854,6 +864,10 @@ A[3] = function(icon, isMulti)
 	end
     
     -- End on EnemyRotation()
+
+	if A.PowerWordFortitude:IsReady(player) and Unit(player):HasBuffs(A.PowerWordFortitude.ID, true) < 300 and not inCombat then
+		return A.PowerWordFortitude:Show(icon)
+	end
     
     -- Defensive
     local SelfDefensive = SelfDefensives()
