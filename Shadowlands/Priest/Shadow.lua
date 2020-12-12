@@ -621,6 +621,7 @@ A[3] = function(icon, isMulti)
 		end	
 
 		--actions.main+=/shadow_word_pain,if=buff.fae_guardians.up&!debuff.wrathful_faerie.up
+		if A.ShadowWordPain:IsReady(unitID) and 
 		
 		
 		--actions.main+=/call_action_list,name=cds

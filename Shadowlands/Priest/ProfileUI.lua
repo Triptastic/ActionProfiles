@@ -30,10 +30,18 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v1.1 (5 Nov 2020)",
+    DateTime = "v1.5.0 (12 Dec 2020)",
     [2] = {        
         [ACTION_CONST_PRIEST_SHADOW] = {             
-            { -- [1]                            
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< GENERAL ><><><l ",
+                    },
+                },
+            }, 
+			{
                 {
                     E = "Checkbox", 
                     DB = "mouseover",
@@ -61,7 +69,7 @@ A.Data.ProfileUI                                     = {
 				{ -- Auto Multi Dot
                     E = "Checkbox", 
                     DB = "AutoMultiDot",
-                    DBV = true,
+                    DBV = false,
                     L = { 
                         ANY = "Auto Multi DoT (BETA)"
                     }, 
@@ -70,26 +78,20 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 },	                    
-            }, 
-            { -- [2]
+            },
+            { -- LAYOUT SPACE
+                
                 {
-                    E = "Checkbox", 
-                    DB = "ByPassSpells",
-                    DBV = true,
-                    L = { 
-                        enUS = "ByPassSpells", 
-                    }, 
-                    TT = { 
-                        enUS = "Spells\nWill stop channeling",
-                    }, 
-                    M = {},
-                },         
+                    E = "LayoutSpace",                                                                         
+                },
+            }, 				
+            { -- [2]  
                 {
                     E = "Checkbox", 
                     DB = "UsePWS",
                     DBV = false,
                     L = { 
-                        enUS = "Use Power Word: Shield.",
+                        enUS = "Use Power Word: Shield for movement.",
                     }, 
                     TT = { 
                         enUS = "Use Power Word: Shield for movement.",
@@ -114,109 +116,86 @@ A.Data.ProfileUI                                     = {
                     M = {},
                 },				
             },
-            { -- Line Divider
+            { -- LAYOUT SPACE
+                
                 {
-                    E = "Header",
-                    L = {
-                        ANY = "___________________________________",
-                    },
+                    E = "LayoutSpace",                                                                         
                 },
-            }, 				   			
-            { -- [7] 
+            }, 			
+            { -- ROTATION CHANGES
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Trinkets -- ",
+                        ANY = " l><><>< ROTATION CHANGES ><><><l ",
                     },
                 },
             },
-            {
+			{
                 {
                     E = "Checkbox", 
-                    DB = "TrinketsAoE",
+                    DB = "PWSAlways",
                     DBV = false,
                     L = { 
-                        enUS = "Trinkets\nAoE only", 
-                        ruRU = "Trinkets\nAoE only",  
-                        frFR = "Trinkets\nAoE only",  
+                        ANY = "PW:S Always",
                     }, 
                     TT = { 
-                        enUS = "Enable this to option to trinkets for AoE usage ONLY.", 
-                        ruRU = "Enable this to option to trinkets for AoE usage ONLY.", 
-                        frFR = "Enable this to option to trinkets for AoE usage ONLY.", 
+                        ANY = "Use Power Word: Shield whenever it's available.",
                     }, 
                     M = {},
                 },
                 {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 30,                            
-                    DB = "TrinketsMinTTD",
-                    DBV = 10, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
+                    E = "Checkbox", 
+                    DB = "CombatMeditation",
+                    DBV = false,
                     L = { 
-                        ANY = "Min TTD",
-                    },
+                        ANY = "Combat Meditation Conduit",
+                    }, 
                     TT = { 
-                        enUS = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                        ruRU = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                        frFR = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                    },                    
+                        ANY = "Tick this box if you have the Combat Meditation conduit active.",
+                    }, 
                     M = {},
                 },
-            },
-            {
+			},
+			{
                 {
-                    E = "Slider",                                                     
-                    MIN = 2, 
-                    MAX = 10,                            
-                    DB = "TrinketsMinUnits",
-                    DBV = 20, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
+                    E = "Checkbox", 
+                    DB = "ShadowflamePrism",
+                    DBV = false,
                     L = { 
-                        ANY = "Min Units",
-                    },
+                        ANY = "Shadowflame Prism",
+                    }, 
                     TT = { 
-                        enUS = "Minimum number of units in range to activate Trinkets.", 
-                        ruRU = "Minimum number of units in range to activate Trinkets.", 
-                        frFR = "Minimum number of units in range to activate Trinkets.",  
-                    },                    
+                        ANY = "Check this box if you have the Shadowflame Prism legendary.",
+                    }, 
                     M = {},
-                },
+                },	
                 {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 40,                            
-                    DB = "TrinketsUnitsRange",
-                    DBV = 20, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
+                    E = "Checkbox", 
+                    DB = "Painbreaker",
+                    DBV = false,
                     L = { 
-                        ANY = "Max AoE range",
-                    },
+                        ANY = "Painbreaker",
+                    }, 
                     TT = { 
-                        enUS = "Maximum range for units detection to automatically activate trinkets.", 
-                        ruRU = "Maximum range for units detection to automatically activate trinkets.", 
-                        frFR = "Maximum range for units detection to automatically activate trinkets.",  
-                    },                    
+                        ANY = "Check this box if you have the Painbreaker legendary.",
+                    }, 
                     M = {},
+                },				
+			},
+            { -- LAYOUT SPACE
+                
+                {
+                    E = "LayoutSpace",                                                                         
                 },
-            },
-            { -- Line Divider
+            }, 			
+            { -- ROTATION CHANGES
                 {
                     E = "Header",
                     L = {
-                        ANY = "___________________________________",
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
                     },
                 },
-            },    
-            { -- [3]
-                {
-                    E = "Header",
-                    L = {
-                        enUS = " -- Defensives -- ",
-                    },
-                },
-            }, 
+            },			
 			{ -- [4]     
                 {
                     E = "Slider",                                                     
@@ -230,59 +209,71 @@ A.Data.ProfileUI                                     = {
                     }, 
                     M = {},
                 },
-            },            
-            { -- Line Divider
-                {
-                    E = "Header",
-                    L = {
-                        ANY = "___________________________________",
-                    },
-                },
-            }, 
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Dummy DPS Test -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row                     
                 {
                     E = "Slider",                                                     
                     MIN = -1, 
-                    MAX = 10,                            
-                    DB = "DummyTime",
-                    DBV = 5, -- Set healthpercentage @30% life. 
+                    MAX = 100,                            
+                    DB = "FadeHP",
+                    DBV = 80, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = "DPS Testing Time",
-                    },
-                    TT = { 
-                        enUS = "Set the desired time for test in minutes.\nWill show a notification icon when time is expired.\nMin: 1 / Max: 10.", 
-                        ruRU = "Установите желаемое время для теста в минутах.\nПо истечении времени будет отображаться значок уведомления.\nMin: 1 / Max: 10.",  
-                        frFR = "Définissez la durée souhaitée pour le test en minutes.\nAffiche une icône de notification lorsque le temps est écoulé.\nMin: 1 / Max: 10.", 
-                    },                     
+                        ANY = "Fade HP (%)",
+                    }, 
                     M = {},
-                },
+                },	
+			},
+			{
                 {
                     E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 15,                            
-                    DB = "DummyStopDelay",
-                    DBV = 10, -- 2sec
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "PWSHP",
+                    DBV = 90, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = "Stop Delay",
-                    },
-                    TT = { 
-                        enUS = "After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\nDefault value : 10 seconds.", 
-                        ruRU = "После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\nЗначение по умолчанию: 10 секунд.", 
-                        frFR = "Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\nValeur par défaut: 10 secondes.", 
-                    },                     
+                        ANY = "Power Word: Shield HP (%)",
+                    }, 
+                    M = {},
+                },	
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "ShadowMendHP",
+                    DBV = 40, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Shadow Mend HP (%)",
+                    }, 
+                    M = {},
+                },	
+			},
+			{
+			    {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DispersionHP",
+                    DBV = 20, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Dispersion HP (%)",
+                    }, 
+                    M = {},
+                },			
+			    {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "SpiritualHealingPotionHP",
+                    DBV = 30, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Healing Potion HP (%)",
+                    }, 
                     M = {},
                 },
-            },           
+            },                    
         },
         
         [ACTION_CONST_PRIEST_DISCIPLINE] = {          
