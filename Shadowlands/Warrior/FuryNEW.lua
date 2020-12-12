@@ -478,145 +478,82 @@ A[3] = function(icon, isMulti)
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
 
 	--Function Remaps
+	local inCombat = Unit(player):CombatTime() > 0	
 	local Rage = Player:Rage() 
 	local LustEffect = Unit(player):HasBuffs(A.Bloodlust.ID, true) > 0 or Unit(player):HasBuffs(A.Heroism.ID, true) > 0 or Unit(player):HasBuffs(A.TimeWarp.ID, true) > 0 or Unit(player):HasBuffs(A.PrimalRage.ID, true) > 0 or Unit(player):HasBuffs(A.DrumsofDeathlyFerocity.ID, true) > 0
 
 	local function EnemyRotation(unit)
 
-	--#########################
-	--##### SINGLE TARGET #####
-	--#########################
+		local function BurstAoE()
 
-		local function SingleTarget(unitID)
-		
-			--actions.single_target=raging_blow,if=runeforge.will_of_the_berserker.equipped&buff.will_of_the_berserker.remains<gcd
-			if A.RagingBlow:IsReady(unitID) and Unit(player):HasBuffs(A.WilloftheBerserker.ID, true) > 0 and Unit(player):HasBuffs(A.WilloftheBerserker.ID, true) < A.GetGCD() then
-				return A.RagingBlow:Show(icon)
+			if (A.Bloodthirst:IsReady(unitID) or A.Bloodbath:IsReady(unitID)) and A.FreshMeat:IsTalentLearned() and Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 then
+				return A.Bloodthirst:Show(icon)
 			end
 			
-			--actions.single_target+=/crushing_blow,if=runeforge.will_of_the_berserker.equipped&buff.will_of_the_berserker.remains<gcd
-			if A.CrushingBlow:IsReady(unitID) and Unit(player):HasBuffs(A.WilloftheBerserker.ID, true) > 0 and Unit(player):HasBuffs(A.WilloftheBerserker.ID, true) < A.GetGCD() then
-				return A.CrushingBlow:Show(icon)
-			end
-			
-			--actions.single_target+=/siegebreaker,if=spell_targets.whirlwind>1|raid_event.adds.in>15
-			if A.Siegebreaker:IsReady(unitID) and (Unit(unitID):GetRange() <= 5 or A.LastPlayerCastName == A.Charge:Info()) and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 then
-				return A.Siegebreaker:Show(icon)
-			end
-			
-			--actions.single_target+=/rampage,if=buff.recklessness.up|(buff.enrage.remains<gcd|rage>90)|buff.frenzy.remains<1.5
-			if A.Rampage:IsReady(unitID) and (Unit(player):HasBuffs(A.Recklessness.ID, true) > 0 or (Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) < A.GetGCD() or Rage > 90) or (Unit(player):HasBuffs(A.FrenzyBuff.ID, true) > 0 and Unit(player):HasBuffs(A.FrenzyBuff.ID, true) < 1.5)) then
+			if A.Rampage:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 then
 				return A.Rampage:Show(icon)
 			end
 			
-			--actions.single_target+=/condemn
+			if A.Whirlwind:IsReady(player) and Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) == 0 and inCombat then
+				return A.Whirlwind:Show(icon)
+			end
+			
+			if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) then
+				return A.Recklessness:Show(icon)
+			end
+			
+			if A.Siegebreaker:IsReady(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 and inCombat then
+				return A.Siegebreaker:Show(icon)
+			end	
+
 			if A.Condemn:IsReady(unitID) and UseCovenant and Player:GetCovenant() == 2 then
 				return A.Condemn:Show(icon)
 			end
 			
-			--actions.single_target+=/execute
 			if A.Execute:IsReady(unitID) and Player:GetCovenant() ~= 2 then
 				return A.Execute:Show(icon)
 			end
 			
-			--actions.single_target+=/bladestorm,if=buff.enrage.up&(spell_targets.whirlwind>1|raid_event.adds.in>45)
-			if A.Bladestorm:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(target):GetRange() <= 5 then
+			if A.SpearofBastion:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 25 and inCombat then
+				return A.SpearofBastion:Show(icon)
+			end
+
+			if A.AncientAftershock:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
+				return A.AncientAftershock:Show(icon)
+			end		
+			
+			if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
+				return A.DragonRoar:Show(icon)
+			end	
+			
+			if A.Bladestorm:IsReady(player) and inMelee and inCombat then
 				return A.Bladestorm:Show(icon)
 			end
-			
-			--actions.single_target+=/bloodthirst,if=buff.enrage.down|conduit.vicious_contempt.rank>5&target.health.pct<35&!talent.cruelty.enabled
-			if A.Bloodthirst:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 or (ViciousContemptR5 and Unit(unitID):HealthPercent() < 35 and not A.Cruelty:IsTalentLearned())) then
-				return A.Bloodthirst:Show(icon)
-			end
-			
-			--actions.single_target+=/bloodbath,if=buff.enrage.down|conduit.vicious_contempt.rank>5&target.health.pct<35&!talent.cruelty.enabled
-			if A.Bloodbath:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 or (ViciousContemptR5 and Unit(unitID):HealthPercent() < 35 and not A.Cruelty:IsTalentLearned())) then
-				return A.Bloodbath:Show(icon)
-			end			
-			
-			--actions.single_target+=/dragon_roar,if=buff.enrage.up&(spell_targets.whirlwind>1|raid_event.adds.in>15)
-			if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(target):GetRange() <= 5 then
-				return A.DragonRoar:Show(icon)
-			end
-			
-			--actions.single_target+=/onslaught
-			if A.Onslaught:IsReady(unitID) then
-				return A.Onslaught:Show(icon)
-			end
-			
-			--actions.single_target+=/raging_blow,if=charges=2
-			if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellCharges() > 1 then
-				return A.RagingBlow:Show(icon)
-			end
-			
-			--actions.single_target+=/crushing_blow,if=charges=2
-			if A.CrushingBlow:IsReady(unitID) and A.RagingBlow:GetSpellCharges() > 1 then
-				return A.CrushingBlow:Show(icon)
-			end			
-			
-			--actions.single_target+=/bloodthirst
-			if A.Bloodthirst:IsReady(unitID) then
-				return A.Bloodthirst:Show(icon)
-			end
-			
-			--actions.single_target+=/bloodbath
-			if A.Bloodbath:IsReady(unitID) then
-				return A.Bloodbath:Show(icon)
-			end			
-			
-			--actions.single_target+=/raging_blow
-			if A.RagingBlow:IsReady(unitID) then
-				return A.RagingBlow:Show(icon)
-			end			
-			
-			--actions.single_target+=/crushing_blow
-			if A.CrushingBlow:IsReady(unitID) then
-				return A.CrushingBlow:Show(icon)
-			end			
-			
-			--actions.single_target+=/whirlwind		
-			if A.Whirlwind:IsReady(unitID) and inMelee then
-				return A.Whirlwind:Show(icon)
-			end
-			
-		end
-		
+
+		end		
+	
 		--actions+=/charge
 		if A.Charge:IsReady(unitID) and Unit(unitID):GetRange() > 10 then
 			return A.Charge:Show(icon)
-		end
-		
-		--actions+=/rampage,if=cooldown.recklessness.remains<3&talent.reckless_abandon.enabled
-		if A.Rampage:IsReady(unitID) and A.Recklessness:GetCooldown() < 3 and A.Recklessness:GetCooldown() > 0 and A.RecklessAbandon:IsTalentLearned() then
-			return A.Rampage:Show(icon)
-		end
-		--actions+=/recklessness,if=gcd.remains=0&((buff.bloodlust.up|talent.anger_management.enabled|raid_event.adds.in>10)|target.time_to_die>100|(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20|target.time_to_die<15&raid_event.adds.in>10)&(spell_targets.whirlwind=1|buff.meat_cleaver.up)
-		if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (Unit(unitID):GetRange() <= 5 or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) then
-			return A.Recklessness:Show(icon)
-		end
-		
+		end			
+
 		-- Non SIMC Custom Trinket1
-		if A.Trinket1:IsReady(unitID) and A.BurstIsON(unitID) and Trinket1IsAllowed then        
+		if A.Trinket1:IsReady(unitID) and A.BurstIsON(unitID) and Trinket1IsAllowed and inMelee and inCombat then        
 			return A.Trinket1:Show(icon)        
 		end
 		
 		-- Non SIMC Custom Trinket2
-		if A.Trinket2:IsReady(unitID) and A.BurstIsON(unitID) and Trinket2IsAllowed then        
+		if A.Trinket2:IsReady(unitID) and A.BurstIsON(unitID) and Trinket2IsAllowed and inMelee and inCombat then        
 			return A.Trinket2:Show(icon)    
 		end 
 		
-		--actions+=/whirlwind,if=spell_targets.whirlwind>1&!buff.meat_cleaver.up|raid_event.adds.in<gcd&!buff.meat_cleaver.up
-		if A.Whirlwind:IsReady(player) and MultiUnits:GetByRange(5, 2) > 1 and Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) == 0 then
-			return A.Whirlwind:Show(icon)
-		end
-		
 		--actions+=/blood_fury
-		if A.BloodFury:IsReady(player) and UseRacial and A.BurstIsON(unitID) then
+		if A.BloodFury:IsReady(player) and UseRacial and A.BurstIsON(unitID) and inMelee and inCombat then
 			return A.BloodFury:Show(icon)
 		end
 		
 		--actions+=/berserking,if=buff.recklessness.up
-		if A.Berserking:IsReady(player) and UseRacial and A.BurstIsON(unitID) and Unit(player):HasBuffs(A.Recklessness.ID, true) > 0 then
+		if A.Berserking:IsReady(player) and UseRacial and A.BurstIsON(unitID) and inMelee and Unit(player):HasBuffs(A.Recklessness.ID, true) > 0 and inCombat then
 			return A.Berserking:Show(icon)
 		end		
 		
@@ -626,12 +563,12 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--actions+=/fireblood
-		if A.Fireblood:IsReady(player) and UseRacial and A.BurstIsON(unitID) then
+		if A.Fireblood:IsReady(player) and UseRacial and A.BurstIsON(unitID) and inMelee and inCombat then
 			return A.Fireblood:Show(icon)
 		end		
 		
 		--actions+=/ancestral_call
-		if A.AncestralCall:IsReady(player) and UseRacial and A.BurstIsON(unitID) then
+		if A.AncestralCall:IsReady(player) and UseRacial and A.BurstIsON(unitID) and inMelee and inCombat then
 			return A.AncestralCall:Show(icon)
 		end		
 		
@@ -639,10 +576,79 @@ A[3] = function(icon, isMulti)
 		if A.BagofTricks:IsReady(player) and UseRacial and A.BurstIsON(unitID) and Unit(player):HasBuffs(A.Recklessness.ID, true) == 0 and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
 			return A.BagofTricks:Show(icon)
 		end		
-		
-		--actions+=/run_action_list,name=single_target
-		if SingleTarget(unitID) then
+
+		if BurstAoE() and MultiUnits:GetByRange(8, 2) > 1 and inCombat then
 			return true
+		end
+	
+		if A.Rampage:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 or Rage >= 90) then
+			return A.Rampage:Show(icon)
+		end
+
+		--if A.ConquerorsBanner:IsReady(player) and UseCovenant and 
+		
+		if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) and inCombat then
+			return A.Recklessness:Show(icon)
+		end
+		
+		if A.Siegebreaker:IsReady(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 then
+			return A.Siegebreaker:Show(icon)
+		end		
+
+		if A.Condemn:IsReady(unitID) and UseCovenant and Player:GetCovenant() == 2 then
+			return A.Condemn:Show(icon)
+		end
+		
+		if A.Execute:IsReady(unitID) and Player:GetCovenant() ~= 2 then
+			return A.Execute:Show(icon)
+		end
+		
+		if A.Onslaught:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
+			return A.Onslaught:Show(icon)
+		end
+		
+		if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellCharges() > 1 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
+			return A.RagingBlow:Show(icon)
+		end
+		
+		if A.CrushingBlow:IsReady(unitID) and A.CrushingBlow:GetSpellCharges() > 1 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
+			return A.CrushingBlow:Show(icon)
+		end		
+
+		if A.Bloodthirst:IsReady(unitID) then
+			return A.Bloodthirst:Show(icon)
+		end
+		
+		if A.Bloodbath:IsReady(unitID) then
+			return A.Bloodbath:Show(icon)
+		end
+		
+		if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
+			return A.DragonRoar:Show(icon)
+		end
+		
+		if A.SpearofBastion:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 25 and inCombat then
+			return A.SpearofBastion:Show(icon)
+		end
+
+		if A.AncientAftershock:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 12 and inCombat then
+			return A.AncientAftershock:Show(icon)
+		end
+		
+		if A.Bladestorm:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and inMelee and inCombat then
+			return A.Bladestorm:Show(icon)
+		end
+	
+		if A.RagingBlow:IsReady(unitID) then
+			return A.RagingBlow:Show(icon)
+		end
+		
+		if A.CrushingBlow:IsReady(unitID) then
+			return A.CrushingBlow:Show(icon)
+		end
+		
+		if A.Whirlwind:IsReady(unitID) and inMelee and inCombat then
+			return A.Whirlwind:Show(icon)
 		end
 	
 	end
