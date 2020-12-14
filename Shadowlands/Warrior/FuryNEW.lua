@@ -475,7 +475,8 @@ A[3] = function(icon, isMulti)
 	local ViciousContemptR5 = A.GetToggle(2, "ViciousContemptR5")
 	local inMelee = InRange()
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
-	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]	
+	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]
+	local UseAoE = Action.GetToggle(2, "AoE")
 
 	--Function Remaps
 	local inCombat = Unit(player):CombatTime() > 0	
@@ -484,22 +485,26 @@ A[3] = function(icon, isMulti)
 
 	local function EnemyRotation(unit)
 
-		local function BurstAoE()
+		--[[local function BurstAoE()
 
 			if (A.Bloodthirst:IsReady(unitID) or A.Bloodbath:IsReady(unitID)) and A.FreshMeat:IsTalentLearned() and Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 then
 				return A.Bloodthirst:Show(icon)
+			end
+
+			if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) then
+				return A.Recklessness:Show(icon)
 			end
 			
 			if A.Rampage:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 then
 				return A.Rampage:Show(icon)
 			end
+
+			if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
+				return A.DragonRoar:Show(icon)
+			end	
 			
 			if A.Whirlwind:IsReady(player) and Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) == 0 and inCombat then
 				return A.Whirlwind:Show(icon)
-			end
-			
-			if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) then
-				return A.Recklessness:Show(icon)
 			end
 			
 			if A.Siegebreaker:IsReady(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 and inCombat then
@@ -521,16 +526,13 @@ A[3] = function(icon, isMulti)
 			if A.AncientAftershock:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
 				return A.AncientAftershock:Show(icon)
 			end		
-			
-			if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
-				return A.DragonRoar:Show(icon)
-			end	
+		
 			
 			if A.Bladestorm:IsReady(player) and inMelee and inCombat then
 				return A.Bladestorm:Show(icon)
 			end
 
-		end		
+		end	]]	
 	
 		--actions+=/charge
 		if A.Charge:IsReady(unitID) and Unit(unitID):GetRange() > 10 then
@@ -577,15 +579,20 @@ A[3] = function(icon, isMulti)
 			return A.BagofTricks:Show(icon)
 		end		
 
-		if BurstAoE() and MultiUnits:GetByRange(8, 2) > 1 and inCombat then
+
+		if A.Whirlwind:IsReady(player) and MultiUnits:GetByRange(8, 2) > 1 and inCombat and UseAoE and Unit(player):HasBuffs(A.WhirlwindBuff.ID, true) == 0 and inCombat then
+			return A.Whirlwind:Show(icon)
+		end
+		
+		--[[if BurstAoE() and MultiUnits:GetByRange(8, 2) > 1 and inCombat then
 			return true
-		end
-	
-		if A.Rampage:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 or Rage >= 90) then
-			return A.Rampage:Show(icon)
-		end
+		end]]
 
 		--if A.ConquerorsBanner:IsReady(player) and UseCovenant and 
+
+		if A.Rampage:IsReady(unitID) and (Unit(player):HasBuffs(A.EnrageBuff.ID, true) == 0 or Rage >= 90) then
+			return A.Rampage:Show(icon)
+		end	
 		
 		if A.Recklessness:IsReadyByPassCastGCD(player) and A.BurstIsON(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and (Unit(unitID):TimeToDie() > 10 or Unit(unitID):IsBoss()) and inCombat then
 			return A.Recklessness:Show(icon)
@@ -593,39 +600,40 @@ A[3] = function(icon, isMulti)
 		
 		if A.Siegebreaker:IsReady(unitID) and (inMelee or A.LastPlayerCastName == A.Charge:Info()) and Unit(unitID):HasDeBuffs(A.SiegebreakerDebuff.ID, true) == 0 then
 			return A.Siegebreaker:Show(icon)
-		end		
+		end			
 
-		if A.Condemn:IsReady(unitID) and UseCovenant and Player:GetCovenant() == 2 then
+		--[[if A.Condemn:IsReady(unitID) and UseCovenant and Player:GetCovenant() == 2 then
 			return A.Condemn:Show(icon)
-		end
+		end]]
 		
-		if A.Execute:IsReady(unitID) and Player:GetCovenant() ~= 2 then
+		if A.Execute:IsReady(unitID) then
 			return A.Execute:Show(icon)
 		end
+
+		if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellCharges() > 1 then
+			return A.RagingBlow:Show(icon)
+		end
+
+		if A.CrushingBlow:IsReady(unitID) and A.CrushingBlow:GetSpellCharges() > 1 then
+			return A.CrushingBlow:Show(icon)
+		end		
 		
 		if A.Onslaught:IsReady(unitID) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
 			return A.Onslaught:Show(icon)
 		end
-		
-		if A.RagingBlow:IsReady(unitID) and A.RagingBlow:GetSpellCharges() > 1 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
-			return A.RagingBlow:Show(icon)
-		end
-		
-		if A.CrushingBlow:IsReady(unitID) and A.CrushingBlow:GetSpellCharges() > 1 and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 then
-			return A.CrushingBlow:Show(icon)
-		end		
 
 		if A.Bloodthirst:IsReady(unitID) then
 			return A.Bloodthirst:Show(icon)
 		end
-		
+
 		if A.Bloodbath:IsReady(unitID) then
 			return A.Bloodbath:Show(icon)
 		end
-		
+
 		if A.DragonRoar:IsReady(player) and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 10 and inCombat then
 			return A.DragonRoar:Show(icon)
 		end
+
 		
 		if A.SpearofBastion:IsReady(player) and UseCovenant and Unit(player):HasBuffs(A.EnrageBuff.ID, true) > 0 and Unit(unitID):GetRange() <= 25 and inCombat then
 			return A.SpearofBastion:Show(icon)
@@ -647,7 +655,7 @@ A[3] = function(icon, isMulti)
 			return A.CrushingBlow:Show(icon)
 		end
 		
-		if A.Whirlwind:IsReady(unitID) and inMelee and inCombat then
+		if A.Whirlwind:IsReady(player) and inMelee and inCombat then
 			return A.Whirlwind:Show(icon)
 		end
 	
