@@ -109,11 +109,9 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     DeathCaress                            = Action.Create({ Type = "Spell", ID = 195292 }),
     BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
     -- Potions
-    PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }),
     PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
+    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),    
     PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
     SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
     PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
