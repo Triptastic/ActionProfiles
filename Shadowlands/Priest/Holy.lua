@@ -667,12 +667,12 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 			end	
 			
 			-- Apotheosis Single Target
-			if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetTimeToDieUnits(2) >= 1 and HealingEngine.GetTimeToDieUnits(2) < 3 and A.HolyWordSerenity:GetCooldown() > 8 then
+			if CanCast and inCombat and A.Apotheosis:IsReady(player) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetBelowHealthPercentUnits(25, 40) >= 1 and A.HolyWordSerenity:GetCooldown() > 8 then
 				return A.Apotheosis:Show(icon)
 			end	
 			
 			-- Apotheosis AoE
-			if CanCast and inCombat and A.Apotheosis:IsReady(unit) and A.Apotheosis:IsTalentLearned() and (HealingEngine.GetIncomingDMGAVG() > (HealingEngine.GetIncomingHPSAVG() * 2)) and A.HolyWordSanctify:GetCooldown() > 8 then
+			if CanCast and inCombat and A.Apotheosis:IsReady(unit) and A.Apotheosis:IsTalentLearned() and HealingEngine.GetBelowHealthPercentUnits(40, 40) >= 3 and A.HolyWordSanctify:GetCooldown() > 8 then
 				return A.Apotheosis:Show(icon)
 			end			
 			
@@ -720,7 +720,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 			if CanCast and A.Renew:IsReady(unit) and RenewMode == "TANK" and RenewOnTank() == 0 then
 			    for i = 1, #CurrentTanks do 
 					if Unit(CurrentTanks[i].Unit):GetRange() <= 40 then 
-						if Unit(CurrentTanks[i].Unit):IsPlayer() and Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, true) < 1 then    
+						if Unit(CurrentTanks[i].Unit):IsPlayer() and Unit(CurrentTanks[i].Unit):HasBuffs(A.Renew.ID, true) < 1 and UnitGUID(CurrentTanks[i].Unit) ~= currGUID then    
 							HealingEngine.SetTarget(CurrentTanks[i].Unit)
 							return A.Renew:Show(icon)                        
 						end                    
