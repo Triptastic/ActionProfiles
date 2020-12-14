@@ -118,15 +118,13 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     ThrashBearDebuff                      = Action.Create({ Type = "Spell", ID = 192090, Hidden = true     }),
     MoonfireDebuff                        = Action.Create({ Type = "Spell", ID = 164812, Hidden = true     }), 
     -- Potions
-	PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }), -- Kyrian, dispel, HP pot
 	SuperiorSteelskinPotion                = Action.Create ({ Type = "Potion", ID = 168501, QueueForbidden = true }),
 	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),	
 	PotonofDeathlyFixation                 = Action.Create ({ Type = "Potion", ID = 307384, QueueForbidden = true }),
 	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
 	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
 	PotionofSacrificialAnima               = Action.Create ({ Type = "Potion", ID = 322301, QueueForbidden = true }),
-	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),
-	SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
+	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),  
     -- Trinkets
 	-- Generic Covenants
 	Fleshcraft                             = Action.Create({ Type = "Spell", ID = 324631 }),
@@ -275,7 +273,7 @@ local function SelfDefensives()
         return A.FrenziedRegeneration
     end 
 	
-	    --[[ Emergency Renewal
+	    --Emergency Renewal
     local Renewal = Action.GetToggle(2, "RenewalHP")
     if     Renewal >= 0 and A.Renewal:IsReady("player") and Unit("player"):HasBuffs(A.Renewal.ID, true) == 0 and
     (
@@ -310,7 +308,7 @@ local function SelfDefensives()
     ) 
     then 
         return A.Renewal
-    end ]]
+    end
 			
     -- SurvivalInstincts
     if A.SurvivalInstincts:IsReadyByPassCastGCD(player) then 
@@ -367,43 +365,28 @@ local function SelfDefensives()
         end 
     end 
 	
-	-- PhialOfSerenity
-    local PhialOfSerenity = A.GetToggle(2, "PhialOfSerenityHP")
-    if PhialOfSerenity >= 0 and A.PhialOfSerenity:IsReady(player) and 
-    (
-        (     -- Auto 
-            PhialOfSerenity >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            PhialOfSerenity < 100 and 
-            Unit(player):HealthPercent() <= PhialOfSerenity
-        )
-    ) 
-    then 
-        return A.PhialOfSerenity
-    end 		
+        -- PhialofSerenity
+        if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+            -- Healing 
+            local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+            if PhialofSerenityOperator == "AND" then 
+                if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            else
+                if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            end 
+            
+            -- Dispel 
+            if AuraIsValidByPhialofSerenity() then 
+                return A.PhialofSerenity    
+            end 
+        end		
 
 	-- SpiritualHealingPotionHP
-    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
+    local SpiritualHealingPotion = A.GetToggle(1, "HealthStone")
     if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
@@ -438,6 +421,7 @@ local function SelfDefensives()
     end 	
 
 end 
+
 SelfDefensives = A.MakeFunctionCachedDynamic(SelfDefensives)
 
 -- Non GCD spell check

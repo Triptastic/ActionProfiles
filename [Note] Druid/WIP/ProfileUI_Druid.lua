@@ -1,38 +1,37 @@
---------------------------------
--- Note TMW Action ProfileUI --
---------------------------------
-local TMW											= TMW 
-local CNDT											= TMW.CNDT
-local Env											= CNDT.Env
-local A												= Action
-local GetToggle										= A.GetToggle
-local InterruptIsValid								= A.InterruptIsValid
-local UnitCooldown									= A.UnitCooldown
-local Unit											= A.Unit 
-local Player										= A.Player 
-local Pet											= A.Pet
-local LoC											= A.LossOfControl
-local MultiUnits									= A.MultiUnits
-local EnemyTeam										= A.EnemyTeam
-local FriendlyTeam									= A.FriendlyTeam
-local TeamCache										= A.TeamCache
-local InstanceInfo									= A.InstanceInfo
+--#####################################
+--###### TRIP'S DRUID PROFILEUI  ######
+--#####################################
+
+
+local TMW                                            = TMW 
+local CNDT                                            = TMW.CNDT
+local Env                                            = CNDT.Env
+
+local A                                                = Action
+local GetToggle                                        = A.GetToggle
+local InterruptIsValid                                = A.InterruptIsValid
+
+local UnitCooldown                                    = A.UnitCooldown
+local Unit                                            = A.Unit 
+local Player                                        = A.Player 
+local Pet                                            = A.Pet
+local LoC                                            = A.LossOfControl
+local MultiUnits                                    = A.MultiUnits
+local EnemyTeam                                        = A.EnemyTeam
+local FriendlyTeam                                    = A.FriendlyTeam
+local TeamCache                                        = A.TeamCache
+local InstanceInfo                                    = A.InstanceInfo
 local TR                                            = A.TasteRotation
-local select, setmetatable							= select, setmetatable
-	
--- Shadowlands Spell Info fix for empty spells
-local GetSpellInfo_original                                = _G.GetSpellInfo
-local function GetSpellInfo(...)
-    return GetSpellInfo_original(...) or ""
-end
+local select, setmetatable                            = select, setmetatable
+
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {    
-    DateTime = "v1.0.0 (08.12.2020)",
+    DateTime = "v1.1.0 (26 November 2020)",
     -- Class settings
     [2] = {
         [ACTION_CONST_DRUID_FERAL] = {             
-        LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },			
+            LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },            
             { -- [7]
                 {
                     E = "Header",
@@ -40,9 +39,9 @@ A.Data.ProfileUI = {
                         ANY = " -- General -- ",
                     },
                 },
-            },			
+            },            
             { -- [1] 1st Row
-		
+                
                 {
                     E = "Checkbox", 
                     DB = "mouseover",
@@ -74,16 +73,16 @@ A.Data.ProfileUI = {
                         frFR = "Activer les actions multi-unités",
                     }, 
                     M = {
-					    Custom = "/run Action.AoEToggleMode()",
-						-- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
-						Value = value or nil, 
-						-- Very Very Optional, no idea why it will be need however.. 
-						TabN = '@number' or nil,								
-						Print = '@string' or nil,
-					},
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
                 }, 
-			},
-			{
+            },
+            {
                 {
                     E = "Checkbox", 
                     DB = "TasteInterruptList",
@@ -105,7 +104,7 @@ A.Data.ProfileUI = {
                     OT = {
                         { text = "In Raid", value = 1 },
                         { text = "In Dungeon", value = 2 },
-						{ text = "In PvP", value = 3 },
+                        { text = "In PvP", value = 3 },
                         { text = "Everywhere", value = 4 },
                     },
                     MULT = true,
@@ -124,11 +123,11 @@ A.Data.ProfileUI = {
                     TT = { 
                         enUS = "Choose where you want to automatically AutoStealth.", 
                         ruRU = "Choose where you want to automatically AutoStealth.", 
-						frFR = "Choose where you want to automatically AutoStealth.", 
+                        frFR = "Choose where you want to automatically AutoStealth.", 
                     }, 
                     M = {},
-                },			
-			},
+                },            
+            },
             { -- [7] Spell Status Frame
                 {
                     E = "Header",
@@ -136,14 +135,14 @@ A.Data.ProfileUI = {
                         ANY = " -- Spell Status Frame -- ",
                     },
                 },
-            },	
-			{
+            },    
+            {
                 {
                     E         = "Button",
                     H         = 35,
                     OnClick = function(self, button, down)     
                         if button == "LeftButton" then 
-							TR.ToggleStatusFrame() 
+                            TR.ToggleStatusFrame() 
                         else                
                             Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
                         end 
@@ -157,353 +156,25 @@ A.Data.ProfileUI = {
                         frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
                     },                           
                 },
-                {
-                    E = "Checkbox", 
-                    DB = "ChangelogOnStartup",
-                    DBV = true,
-                    L = { 
-                        enUS = "Changelog On Startup", 
-                        ruRU = "Журнал изменений при запуске", 
-                        frFR = "Journal des modifications au démarrage",
-                    }, 
-                    TT = { 
-                        enUS = "Will show latest changelog of the current rotation when you enter in game.\nDisable this option to block the popup when you enter the game.", 
-                        ruRU = "При входе в игру будет отображаться последний список изменений текущего вращения.\nОтключить эту опцию, чтобы заблокировать всплывающее окно при входе в игру.", 
-                        frFR = "Affiche le dernier journal des modifications de la rotation actuelle lorsque vous entrez dans le jeu.\nDésactivez cette option pour bloquer la fenêtre contextuelle lorsque vous entrez dans le jeu..", 
-                    }, 
-                    M = {},
-                }, 
-			},
-            {			
-                {
-                    E = "Checkbox", 
-                    DB = "RootThingFromBeyond",
-                    DBV = true,
-                    L = { 
-                        enUS = GetSpellInfo(339) .. "\nThing from Beyond", 
-                        ruRU = GetSpellInfo(339) .. "\nThing from Beyond", 
-                        frFR = GetSpellInfo(339) .. "\nThing from Beyond", 
-                    }, 
-                    TT = { 
-                        enUS = "Will auto use " .. GetSpellInfo(339) .. " as soon as you mouseover the Thing from Beyond.", 
-                        ruRU = "Will auto use " .. GetSpellInfo(339) .. " as soon as you mouseover the Thing from Beyond.",
-                        frFR = "Will auto use " .. GetSpellInfo(339) .. " as soon as you mouseover the Thing from Beyond.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "MassEntanglementThingFromBeyond",
-                    DBV = true,
-                    L = { 
-                        enUS = GetSpellInfo(102359) .. "\nThing from Beyond", 
-                        ruRU = GetSpellInfo(102359) .. "\nThing from Beyond", 
-                        frFR = GetSpellInfo(102359) .. "\nThing from Beyond", 
-                    }, 
-                    TT = { 
-                        enUS = "Will auto use " .. GetSpellInfo(102359) .. " as soon as you mouseover the Thing from Beyond.\nOnly works if " .. GetSpellInfo(102359) .. " is talented.", 
-                        ruRU = "Will auto use " .. GetSpellInfo(102359) .. " as soon as you mouseover the Thing from Beyond.\nOnly works if " .. GetSpellInfo(102359) .. " is talented.",
-                        frFR = "Will auto use " .. GetSpellInfo(102359) .. " as soon as you mouseover the Thing from Beyond.\nOnly works if " .. GetSpellInfo(102359) .. " is talented.",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 30,                            
-                    DB = "OpenerRange",
-                    DBV = 5, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        enUS = "Opener Range", 
-                        ruRU = "Opener Range", 
-                        frFR = "Opener Range", 
-                    }, 
-                    TT = { 
-                        enUS = "Will only start the rotation if your current target is <= at this setting.", 
-                        ruRU = "Will only start the rotation if your current target is <= at this setting.", 
-                        frFR = "Will only start the rotation if your current target is <= at this setting.", 
-                    }, 
-                    M = {},
-                },	
+            },
+            {
                 {
                     E = "Checkbox", 
                     DB = "AutoCatForm",
                     DBV = true,
                     L = { 
-                        enUS = "Auto " .. GetSpellInfo(768), 
-                        ruRU = "Авто " .. GetSpellInfo(768), 
-                        frFR = "Auto " .. GetSpellInfo(768), 
+                        enUS = "Auto " .. A.GetSpellInfo(768), 
+                        ruRU = "Авто " .. A.GetSpellInfo(768), 
+                        frFR = "Auto " .. A.GetSpellInfo(768), 
                     }, 
                     TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(768), 
-                        ruRU = "Автоматически использовать " .. GetSpellInfo(768), 
-                        frFR = "Utiliser automatiquement " .. GetSpellInfo(768), 
+                        enUS = "Automatically use " .. A.GetSpellInfo(768), 
+                        ruRU = "Автоматически использовать " .. A.GetSpellInfo(768), 
+                        frFR = "Utiliser automatiquement " .. A.GetSpellInfo(768), 
                     }, 
                     M = {},
-                },				
-            }, 	
-			
-            -- Range Rotation
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Range Rotation -- ",
-                    },
-                },
-            },			
-            {			
-                {
-                    E = "Checkbox", 
-                    DB = "MoonfireOnlyOutOfRange",
-                    DBV = true,
-                    L = { 
-                        enUS = GetSpellInfo(8921) .. "\nOut of range only", 
-                        ruRU = GetSpellInfo(8921) .. "\nOut of range only", 
-                        frFR = GetSpellInfo(8921) .. "\nOut of range only",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use " .. GetSpellInfo(8921) .. " if target is out of range.\nWill bypass using it when unit is in range.", 
-                        ruRU = "Will only use " .. GetSpellInfo(8921) .. " if target is out of range.\nWill bypass using it when unit is in range.", 
-                        frFR = "Will only use " .. GetSpellInfo(8921) .. " if target is out of range.\nWill bypass using it when unit is in range.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "UseBalanceRotation",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use " .. GetSpellInfo(197488), 
-                        ruRU = "Use " .. GetSpellInfo(197488), 
-                        frFR = "Use " .. GetSpellInfo(197488), 
-                    }, 
-                    TT = { 
-                        enUS = "If you morph into Moonkin form, will auto use balance rotation if " .. GetSpellInfo(197488) .. " is learned.", 
-                        ruRU = "If you morph into Moonkin form, will auto use balance rotation if " .. GetSpellInfo(197488) .. " is learned.", 
-                        frFR = "If you morph into Moonkin form, will auto use balance rotation if " .. GetSpellInfo(197488) .. " is learned.", 
-                    }, 
-                    M = {},
-                },
-			},
-			
-            -- Utilities
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Utilities -- ",
-                    },
-                },
-            },			
-            {			
-                {
-                    E = "Checkbox", 
-                    DB = "UseStampedingRoar",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto" .. GetSpellInfo(106898), 
-                        ruRU = "Авто" .. GetSpellInfo(106898), 
-                        frFR = "Auto" .. GetSpellInfo(106898), 
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(106898), 
-                        ruRU = "Автоматически использовать " .. GetSpellInfo(106898), 
-                        frFR = "Utiliser automatiquement " .. GetSpellInfo(106898), 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 7,                            
-                    DB = "StampedingRoarTime",
-                    DBV = 3, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(106898) .. " if moving for",
-                    }, 
-                    TT = { 
-                        enUS = "If " .. GetSpellInfo(106898) .. " is talented and ready, will use it if moving for set value.", 
-                        ruRU = "Если " .. GetSpellInfo(106898) .. " изучен и готов, будет использовать его при переходе на заданное значение.", 
-                        frFR = "Si " .. GetSpellInfo(106898) .. " est prêt, l'utilisera s'il se déplace pour la valeur définie.", 
-                    }, 
-                    M = {},
-                },
-			},
-            {			
-                {
-                    E = "Checkbox", 
-                    DB = "UseDash",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto" .. GetSpellInfo(1850), 
-                        ruRU = "Авто" .. GetSpellInfo(1850), 
-                        frFR = "Auto" .. GetSpellInfo(1850), 
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(1850), 
-                        ruRU = "Автоматически использовать " .. GetSpellInfo(1850), 
-                        frFR = "Utiliser automatiquement " .. GetSpellInfo(1850), 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 7,                            
-                    DB = "DashTime",
-                    DBV = 3, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(1850) .. " if moving for",
-                    }, 
-                    TT = { 
-                        enUS = "If " .. GetSpellInfo(1850) .. " is talented and ready, will use it if moving for set value.", 
-                        ruRU = "Если " .. GetSpellInfo(1850) .. " изучен и готов, будет использовать его при переходе на заданное значение.", 
-                        frFR = "Si " .. GetSpellInfo(1850) .. " est prêt, l'utilisera s'il se déplace pour la valeur définie.", 
-                    }, 
-                    M = {},
-                },
-			},
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UseWildChargeCat",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto " .. GetSpellInfo(49376) .. " Cat", 
-                        ruRU = "Авто " .. GetSpellInfo(49376) .. " Cat", 
-                        frFR = "Auto " .. GetSpellInfo(49376) .. " Cat", 
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(49376), 
-                        ruRU = "Автоматически использовать " .. GetSpellInfo(49376), 
-                        frFR = "Utiliser automatiquement " .. GetSpellInfo(49376), 
-                    }, 
-                    M = {},
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UseWildChargeBear",
-                    DBV = true,
-                    L = { 
-                        enUS = "Auto " .. GetSpellInfo(16979) .. " Bear",  
-                        ruRU = "Авто " .. GetSpellInfo(16979) .. " Bear", 
-                        frFR = "Auto " .. GetSpellInfo(16979) .. " Bear",
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use " .. GetSpellInfo(16979), 
-                        ruRU = "Автоматически использовать " .. GetSpellInfo(16979), 
-                        frFR = "Utiliser automatiquement " .. GetSpellInfo(16979), 
-                    }, 
-                    M = {},
-                },
-            },
-            -- Blood of the enemy
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(298277) .. " -- ",
-                    },
-                },
-            },
-			{
-                {
-                    E = "Checkbox", 
-                    DB = "BloodoftheEnemySyncAoE",
-                    DBV = true,
-                    L = { 
-                        enUS = GetSpellInfo(298277) .. " AoE sync", 
-                        ruRU = GetSpellInfo(298277) .. " AoE sync",  
-                        frFR = GetSpellInfo(298277) .. " AoE sync", 
-                    }, 
-                    TT = { 
-                        enUS = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
-                        ruRU = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
-                        frFR = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 20,                            
-                    DB = "BloodoftheEnemyAoETTD",
-                    DBV = 10, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(298277) .. " AoE TTD",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 2, 
-                    MAX = 8,                            
-                    DB = "BloodoftheEnemyUnits",
-                    DBV = 3, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(298277) .. " AoE units",
-                    }, 
-                    TT = { 
-                        enUS = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
-                        ruRU = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
-                        frFR = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
-                    },
-                    M = {},
-                },
-			},		
-            { -- [7]  Azerite Beam settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(295258) .. " -- ",
-                    },
-                },
-            },
-            { -- [3] 3rd Row 				
-		
-                {
-                    E = "Slider",                                                     
-                    MIN = 3, 
-                    MAX = 50,                            
-                    DB = "FocusedAzeriteBeamTTD",
-                    DBV = 10, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
-                    }, 					
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FocusedAzeriteBeamUnits",
-                    DBV = 3, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(295258) .. " units",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                        frFR = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                    }, 					
-                    M = {},
-                }, 				
-            },			
+                },                
+            },     
             { -- [7] 
                 {
                     E = "Header",
@@ -512,7 +183,7 @@ A.Data.ProfileUI = {
                     },
                 },
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "TrinketsAoE",
@@ -543,11 +214,11 @@ A.Data.ProfileUI = {
                         enUS = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
                         ruRU = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
                         frFR = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                    },					
+                    },                    
                     M = {},
                 },
-			},
-			{
+            },
+            {
                 {
                     E = "Slider",                                                     
                     MIN = 2, 
@@ -562,7 +233,7 @@ A.Data.ProfileUI = {
                         enUS = "Minimum number of units in range to activate Trinkets.", 
                         ruRU = "Minimum number of units in range to activate Trinkets.", 
                         frFR = "Minimum number of units in range to activate Trinkets.",  
-                    },					
+                    },                    
                     M = {},
                 },
                 {
@@ -579,105 +250,11 @@ A.Data.ProfileUI = {
                         enUS = "Maximum range for units detection to automatically activate trinkets.", 
                         ruRU = "Maximum range for units detection to automatically activate trinkets.", 
                         frFR = "Maximum range for units detection to automatically activate trinkets.",  
-                    },					
+                    },                    
                     M = {},
                 },
-			},			
-            { -- [7] UnbridledFury 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. GetSpellInfo(300714) .. " -- ",
-                    },
-                },
-            },
-			{
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryAuto",
-                    DBV = false,
-                    L = { 
-                        enUS = "Burst Potion", 
-                        ruRU = "Burst Potion",
-                        frFR = "Burst Potion",
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots depending of the settings of this section", 
-                        ruRU = "If activated, will auto re pots depending of the settings of this section", 
-                        frFR = "If activated, will auto re pots depending of the settings of this section", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithExecute",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync execute phase", 
-                        ruRU = "Sync execute phase",
-                        frFR = "Sync execute phase",   
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                        frFR = "If activated, will auto re pots as soon as Execute phase is detected.", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 40,      					
-                    DB = "UnbridledFuryTTD",
-                    DBV = 40, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " TTD",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
-                    }, 					
-                    M = {},
-                },				
-            },
-			{
-                {
-                    E = "Checkbox", 
-                    DB = "UnbridledFuryWithBloodlust",
-                    DBV = false,
-                    L = { 
-                        enUS = "Sync Bloodlust", 
-                        ruRU = "Sync Bloodlust", 
-                        frFR = "Sync Bloodlust",  
-                    }, 
-                    TT = { 
-                        enUS = "If activated, will auto re pots as soon as Bloodlust is detected.", 
-                        ruRU = "If activated, will auto re pots as soon as Bloodlust is detected.",
-                        frFR = "If activated, will auto re pots as soon as Bloodlust is detected.",
-                    }, 
-                    M = {},
-                },				
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 100,      					
-                    DB = "UnbridledFuryHP",
-                    DBV = 30, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(300714) .. " HP",
-                    },
-                    TT = { 
-                        enUS = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                        ruRU = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".",  
-                        frFR = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                    }, 					
-                    M = {},
-                },
-			},
-
+            },            
+            
             { -- [7] 
                 {
                     E = "Header",
@@ -686,7 +263,7 @@ A.Data.ProfileUI = {
                     },
                 },
             },
-            { -- [3] 3rd Row 					
+            { -- [3] 3rd Row                     
                 {
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -701,7 +278,7 @@ A.Data.ProfileUI = {
                         enUS = "Set the desired time for test in minutes.\nWill show a notification icon when time is expired.\nMin: 1 / Max: 10.", 
                         ruRU = "Установите желаемое время для теста в минутах.\nПо истечении времени будет отображаться значок уведомления.\nMin: 1 / Max: 10.",  
                         frFR = "Définissez la durée souhaitée pour le test en minutes.\nAffiche une icône de notification lorsque le temps est écoulé.\nMin: 1 / Max: 10.", 
-                    }, 					
+                    },                     
                     M = {},
                 },
                 {
@@ -718,76 +295,16 @@ A.Data.ProfileUI = {
                         enUS = "After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\nDefault value : 10 seconds.", 
                         ruRU = "После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\nЗначение по умолчанию: 10 секунд.", 
                         frFR = "Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\nValeur par défaut: 10 secondes.", 
-                    }, 					
+                    },                     
                     M = {},
                 },
-			},
+            },
             { -- [4] 4th Row
-
+                
                 {
                     E = "LayoutSpace",                                                                         
                 },
-            },
-			
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    }, 					
-                    M = {},
-                },				
-            },				
+            },                
             { -- [7] 
                 {
                     E = "Header",
@@ -805,62 +322,50 @@ A.Data.ProfileUI = {
                     DBV = 100, -- Set healthpercentage @99% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(61336) .. " (%)",
+                        ANY = A.GetSpellInfo(61336) .. " (%)",
                     }, 
                     M = {},
                 },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "BearForm",
-                    DBV = 100, -- Set healthpercentage @99% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(5487) .. " (%)",
-                    }, 
-                    M = {},
-                },
-            },				
-		}, -- End Feral
-		[ACTION_CONST_DRUID_BALANCE] = {             
+            },                
+        }, -- End Feral
+        [ACTION_CONST_DRUID_BALANCE] = {             
             { -- [1]                            
-				{
-					E 		= "Checkbox", 
-					DB 		= "mouseover",
-					DBV 	= true,
-					L 		= { 
-                        ANY	= "Use\n@mouseover", 
+                {
+                    E         = "Checkbox", 
+                    DB         = "mouseover",
+                    DBV     = true,
+                    L         = { 
+                        ANY    = "Use\n@mouseover", 
                     }, 
-                    TT 		= { 
+                    TT         = { 
                         ANY = "Will unlock use actions for @mouseover units\nExample: Pummel, Charge,  Intercept, Disarm",
-					}, 
-					M 		= {},
+                    }, 
+                    M         = {},
                 },
                 {
-					E 		= "Checkbox", 
-					DB 		= "AoE",
-					DBV 	= true,
-					L 		= { 
-                        ANY	= "Use AoE",
+                    E         = "Checkbox", 
+                    DB         = "AoE",
+                    DBV     = true,
+                    L         = { 
+                        ANY    = "Use AoE",
                     }, 
-                    TT 		= { 
+                    TT         = { 
                         ANY = "Enable multiunits actions",
-					}, 
-					M 		= {},
-                },		
-                {
-					E 		= "Checkbox", 
-					DB 		= "AutoMoonkinForm",
-					DBV 	= true,
-					L 		= { 
-                        ANY	= "Auto " .. GetSpellInfo(24858),
                     }, 
-                    TT 		= { 
-                        ANY = "Auto use " .. GetSpellInfo(24858),
-					}, 
-					M 		= {},
-                },					
+                    M         = {},
+                },        
+                {
+                    E         = "Checkbox", 
+                    DB         = "AutoMoonkinForm",
+                    DBV     = true,
+                    L         = { 
+                        ANY    = "Auto " .. A.GetSpellInfo(24858),
+                    }, 
+                    TT         = { 
+                        ANY = "Auto use " .. A.GetSpellInfo(24858),
+                    }, 
+                    M         = {},
+                },                    
             },
             { -- [7] Spell Status Frame
                 {
@@ -869,14 +374,14 @@ A.Data.ProfileUI = {
                         ANY = " -- Spell Status Frame -- ",
                     },
                 },
-            },	
-			{
+            },    
+            {
                 {
                     E         = "Button",
                     H         = 35,
                     OnClick = function(self, button, down)     
                         if button == "LeftButton" then 
-							TR.ToggleStatusFrame() 
+                            TR.ToggleStatusFrame() 
                         else                
                             Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
                         end 
@@ -906,79 +411,79 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 }, 
-			},
-
-			{ -- [4]
+            },
+            
+            { -- [4]
                 {
-                    E		= "Header",
-					L		= { 
+                    E        = "Header",
+                    L        = { 
                         ANY = " -- Dot Refresh -- ",
                     },
                 },
             },
             {
-				{
-                    E 		= "Slider", 													
-					MIN 	= 1, 
-					MAX 	= 10,							
-					DB 		= "SunfireRefresh",
-					DBV 	= 5.4,
-					Precision = 1,
-					ONLYOFF = true,
-					L 		= { 
-                        enUS = GetSpellInfo(93402) .. "\nRefresh", 
-                        ruRU = GetSpellInfo(93402) .. "\nRefresh",  
-                        frFR = GetSpellInfo(93402) .. "\nRefresh", 
+                {
+                    E         = "Slider",                                                     
+                    MIN     = 1, 
+                    MAX     = 10,                            
+                    DB         = "SunfireRefresh",
+                    DBV     = 5.4,
+                    Precision = 1,
+                    ONLYOFF = true,
+                    L         = { 
+                        enUS = A.GetSpellInfo(93402) .. "\nRefresh", 
+                        ruRU = A.GetSpellInfo(93402) .. "\nRefresh",  
+                        frFR = A.GetSpellInfo(93402) .. "\nRefresh", 
                     }, 
-					TT		= { 
-                        enUS = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(93402), 
-                        ruRU = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(93402), 
-						frFR = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(93402), 
+                    TT        = { 
+                        enUS = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(93402), 
+                        ruRU = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(93402), 
+                        frFR = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(93402), 
                     },
-					M 		= {},
+                    M         = {},
                 },
-				{
-                    E 		= "Slider", 													
-					MIN 	= 1, 
-					MAX 	= 10,							
-					DB 		= "MoonfireRefresh",
-					DBV 	= 5.4,
-					Precision = 1,
-					ONLYOFF = true,
-					L 		= { 
-                        enUS = GetSpellInfo(8921) .. "\nRefresh", 
-                        ruRU = GetSpellInfo(8921) .. "\nRefresh",  
-                        frFR = GetSpellInfo(8921) .. "\nRefresh", 
+                {
+                    E         = "Slider",                                                     
+                    MIN     = 1, 
+                    MAX     = 10,                            
+                    DB         = "MoonfireRefresh",
+                    DBV     = 5.4,
+                    Precision = 1,
+                    ONLYOFF = true,
+                    L         = { 
+                        enUS = A.GetSpellInfo(8921) .. "\nRefresh", 
+                        ruRU = A.GetSpellInfo(8921) .. "\nRefresh",  
+                        frFR = A.GetSpellInfo(8921) .. "\nRefresh", 
                     }, 
-					TT		= { 
-                        enUS = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(8921), 
-                        ruRU = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(8921), 
-						frFR = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(8921), 
+                    TT        = { 
+                        enUS = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(8921), 
+                        ruRU = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(8921), 
+                        frFR = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(8921), 
                     },
-					M 		= {},
+                    M         = {},
                 },
-				{
-                    E 		= "Slider", 													
-					MIN 	= 1, 
-					MAX 	= 10,							
-					DB 		= "StellarFlareRefresh",
-					DBV 	= 5.4,
-					Precision = 1,
-					ONLYOFF = true,
-					L 		= { 
-                        enUS = GetSpellInfo(202347) .. "\nRefresh", 
-                        ruRU = GetSpellInfo(202347) .. "\nRefresh",  
-                        frFR = GetSpellInfo(202347) .. "\nRefresh", 
+                {
+                    E         = "Slider",                                                     
+                    MIN     = 1, 
+                    MAX     = 10,                            
+                    DB         = "StellarFlareRefresh",
+                    DBV     = 5.4,
+                    Precision = 1,
+                    ONLYOFF = true,
+                    L         = { 
+                        enUS = A.GetSpellInfo(202347) .. "\nRefresh", 
+                        ruRU = A.GetSpellInfo(202347) .. "\nRefresh",  
+                        frFR = A.GetSpellInfo(202347) .. "\nRefresh", 
                     }, 
-					TT		= { 
-                        enUS = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(202347), 
-                        ruRU = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(202347), 
-						frFR = "Choose the remaining time in seconds before refreshing " .. GetSpellInfo(202347), 
+                    TT        = { 
+                        enUS = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(202347), 
+                        ruRU = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(202347), 
+                        frFR = "Choose the remaining time in seconds before refreshing " .. A.GetSpellInfo(202347), 
                     },
-					M 		= {},
+                    M         = {},
                 },
-			},
-			
+            },
+            
             { -- [7] Multidots settings
                 {
                     E = "Header",
@@ -987,7 +492,7 @@ A.Data.ProfileUI = {
                     },
                 },
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "AutoDot",
@@ -1004,31 +509,31 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-				{
-                    E 		= "Slider", 													
-					MIN 	= 1, 
-					MAX 	= 30,							
-					DB 		= "MultiDotDistance",
-					DBV 	= 40,
-					ONLYOFF = false,
-					L 		= { 
+                {
+                    E         = "Slider",                                                     
+                    MIN     = 1, 
+                    MAX     = 30,                            
+                    DB         = "MultiDotDistance",
+                    DBV     = 40,
+                    ONLYOFF = false,
+                    L         = { 
                         enUS = "Multidots Range", 
                         ruRU = "Сфера Multidots", 
                         frFR = "Portée du Multidots", 
                     }, 
-					TT		= { 
+                    TT        = { 
                         enUS = "Choose the range where you want to automatically multidots units.", 
                         ruRU = "Выберите диапазон, в котором вы хотите автоматически многоточечные единицы.", 
-						frFR = "Choisissez la portée dans laquelle vous souhaitez multidoter automatiquement les unités.", 
+                        frFR = "Choisissez la portée dans laquelle vous souhaitez multidoter automatiquement les unités.", 
                     }, 
-					M 		= {},
+                    M         = {},
                 },
                 {
                     E = "Dropdown",                                                         
                     OT = {
                         { text = "In Raid", value = "In Raid" },
                         { text = "In Dungeon", value = "In Dungeon" },
-						{ text = "In PvP", value = "In PvP" },
+                        { text = "In PvP", value = "In PvP" },
                         { text = "Everywhere", value = "Everywhere" },
                     },
                     MULT = false,
@@ -1042,53 +547,53 @@ A.Data.ProfileUI = {
                     TT = { 
                         enUS = "Choose where you want to automatically multidots units.", 
                         ruRU = "Выберите, где вы хотите автоматически многоточечные единицы.", 
-						frFR = "Choisissez l'endroit où vous souhaitez multidoter automatiquement les unités.",
+                        frFR = "Choisissez l'endroit où vous souhaitez multidoter automatiquement les unités.",
                     }, 
                     M = {},
                 },
-				{
-                    E 		= "Slider", 													
-					MIN 	= 5, 
-					MAX 	= 15,							
-					DB 		= "MultiDotMaxUnits",
-					DBV 	= 8,
-					ONLYOFF = false,
-					L 		= { 
+                {
+                    E         = "Slider",                                                     
+                    MIN     = 5, 
+                    MAX     = 15,                            
+                    DB         = "MultiDotMaxUnits",
+                    DBV     = 8,
+                    ONLYOFF = false,
+                    L         = { 
                         enUS = "Multidots\nMax Units", 
                         ruRU = "Multidots\nMax Units", 
                         frFR = "Multidots\nMax Units",  
                     }, 
-					TT		= { 
+                    TT        = { 
                         enUS = "Choose the maximum units in range to automatically multidots.", 
                         ruRU = "Choose the maximum units in range to automatically multidots.",
-						frFR = "Choose the maximum units in range to automatically multidots.",
+                        frFR = "Choose the maximum units in range to automatically multidots.",
                     }, 
-					M 		= {},
-                },				
-			},
+                    M         = {},
+                },                
+            },
             -- Blood of the enemy
             { -- [7] 
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(298277) .. " -- ",
+                        ANY = " -- " .. A.GetSpellInfo(298277) .. " -- ",
                     },
                 },
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "BloodoftheEnemySyncAoE",
                     DBV = true,
                     L = { 
-                        enUS = GetSpellInfo(298277) .. " AoE sync", 
-                        ruRU = GetSpellInfo(298277) .. " AoE sync",  
-                        frFR = GetSpellInfo(298277) .. " AoE sync", 
+                        enUS = A.GetSpellInfo(298277) .. " AoE sync", 
+                        ruRU = A.GetSpellInfo(298277) .. " AoE sync",  
+                        frFR = A.GetSpellInfo(298277) .. " AoE sync", 
                     }, 
                     TT = { 
-                        enUS = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
-                        ruRU = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
-                        frFR = "Enable this to option to keep " .. GetSpellInfo(298277) .. " for maximum AoE damage.", 
+                        enUS = "Enable this to option to keep " .. A.GetSpellInfo(298277) .. " for maximum AoE damage.", 
+                        ruRU = "Enable this to option to keep " .. A.GetSpellInfo(298277) .. " for maximum AoE damage.", 
+                        frFR = "Enable this to option to keep " .. A.GetSpellInfo(298277) .. " for maximum AoE damage.", 
                     }, 
                     M = {},
                 },
@@ -1100,7 +605,7 @@ A.Data.ProfileUI = {
                     DBV = 8, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(298277) .. " AoE TTD",
+                        ANY = A.GetSpellInfo(298277) .. " AoE TTD",
                     }, 
                     M = {},
                 },
@@ -1112,26 +617,26 @@ A.Data.ProfileUI = {
                     DBV = 3, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(298277) .. " AoE units",
+                        ANY = A.GetSpellInfo(298277) .. " AoE units",
                     }, 
                     TT = { 
-                        enUS = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
-                        ruRU = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
-                        frFR = "Minimum active units around before using " .. GetSpellInfo(298277) .. ".", 
+                        enUS = "Minimum active units around before using " .. A.GetSpellInfo(298277) .. ".", 
+                        ruRU = "Minimum active units around before using " .. A.GetSpellInfo(298277) .. ".", 
+                        frFR = "Minimum active units around before using " .. A.GetSpellInfo(298277) .. ".", 
                     },
                     M = {},
                 },
-			},		
+            },        
             { -- [7]  Azerite Beam settings
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(295258) .. " -- ",
+                        ANY = " -- " .. A.GetSpellInfo(295258) .. " -- ",
                     },
                 },
             },
-            { -- [3] 3rd Row 				
-		
+            { -- [3] 3rd Row                 
+                
                 {
                     E = "Slider",                                                     
                     MIN = 3, 
@@ -1140,13 +645,13 @@ A.Data.ProfileUI = {
                     DBV = 5, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(295258) .. " TTD",
+                        ANY = A.GetSpellInfo(295258) .. " TTD",
                     },
                     TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
-                    }, 					
+                        enUS = "Set the minimum Time To Die for a unit before using " .. A.GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
+                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. A.GetSpellInfo(295258) .. " \nНе применимо к боссу.", 
+                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. A.GetSpellInfo(295258) .. " \nNe s'applique pas aux boss.", 
+                    },                     
                     M = {},
                 },
                 {
@@ -1157,16 +662,16 @@ A.Data.ProfileUI = {
                     DBV = 3, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(295258) .. " units",
+                        ANY = A.GetSpellInfo(295258) .. " units",
                     },
                     TT = { 
-                        enUS = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                        frFR = "Set the minimum number of units around before using " .. GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
-                    }, 					
+                        enUS = "Set the minimum number of units around before using " .. A.GetSpellInfo(295258) .. " \nDoes not apply to Boss.", 
+                        ruRU = "Set the minimum number of units around before using " .. A.GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
+                        frFR = "Set the minimum number of units around before using " .. A.GetSpellInfo(295258) .. " \nDoes not apply to Boss.",
+                    },                     
                     M = {},
-                }, 				
-            },			
+                },                 
+            },            
             { -- [7] 
                 {
                     E = "Header",
@@ -1175,7 +680,7 @@ A.Data.ProfileUI = {
                     },
                 },
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "TrinketsAoE",
@@ -1206,11 +711,11 @@ A.Data.ProfileUI = {
                         enUS = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
                         ruRU = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
                         frFR = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                    },					
+                    },                    
                     M = {},
                 },
-			},
-			{
+            },
+            {
                 {
                     E = "Slider",                                                     
                     MIN = 2, 
@@ -1225,7 +730,7 @@ A.Data.ProfileUI = {
                         enUS = "Minimum number of units in range to activate Trinkets.", 
                         ruRU = "Minimum number of units in range to activate Trinkets.", 
                         frFR = "Minimum number of units in range to activate Trinkets.",  
-                    },					
+                    },                    
                     M = {},
                 },
                 {
@@ -1242,19 +747,19 @@ A.Data.ProfileUI = {
                         enUS = "Maximum range for units detection to automatically activate trinkets.", 
                         ruRU = "Maximum range for units detection to automatically activate trinkets.", 
                         frFR = "Maximum range for units detection to automatically activate trinkets.",  
-                    },					
+                    },                    
                     M = {},
                 },
-			},			
+            },            
             { -- [7] UnbridledFury 
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(300714) .. " -- ",
+                        ANY = " -- " .. A.GetSpellInfo(300714) .. " -- ",
                     },
                 },
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "UnbridledFuryAuto",
@@ -1290,22 +795,22 @@ A.Data.ProfileUI = {
                 {
                     E = "Slider",                                                     
                     MIN = 5, 
-                    MAX = 40,      					
+                    MAX = 40,                          
                     DB = "UnbridledFuryTTD",
                     DBV = 40, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(300714) .. " TTD",
+                        ANY = A.GetSpellInfo(300714) .. " TTD",
                     },
                     TT = { 
-                        enUS = "Set the minimum Time To Die for a unit before using " .. GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
-                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
-                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
-                    }, 					
+                        enUS = "Set the minimum Time To Die for a unit before using " .. A.GetSpellInfo(300714) .. " \nDoes not apply to Boss.", 
+                        ruRU = "Установите минимальное время смерти для отряда перед использованием " .. A.GetSpellInfo(300714) .. " \nНе применимо к боссу.", 
+                        frFR = "Définissez le temps minimum pour mourir pour une unité avant d'utiliser " .. A.GetSpellInfo(300714) .. " \nNe s'applique pas aux boss.", 
+                    },                     
                     M = {},
-                },				
+                },                
             },
-			{
+            {
                 {
                     E = "Checkbox", 
                     DB = "UnbridledFuryWithBloodlust",
@@ -1321,27 +826,27 @@ A.Data.ProfileUI = {
                         frFR = "If activated, will auto re pots as soon as Bloodlust is detected.",
                     }, 
                     M = {},
-                },				
+                },                
                 {
                     E = "Slider",                                                     
                     MIN = 5, 
-                    MAX = 100,      					
+                    MAX = 100,                          
                     DB = "UnbridledFuryHP",
                     DBV = 30, -- Set healthpercentage @30% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(300714) .. " HP",
+                        ANY = A.GetSpellInfo(300714) .. " HP",
                     },
                     TT = { 
-                        enUS = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                        ruRU = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".",  
-                        frFR = "Set the minimum health percent for a unit before using " .. GetSpellInfo(300714) .. ".", 
-                    }, 					
+                        enUS = "Set the minimum health percent for a unit before using " .. A.GetSpellInfo(300714) .. ".", 
+                        ruRU = "Set the minimum health percent for a unit before using " .. A.GetSpellInfo(300714) .. ".",  
+                        frFR = "Set the minimum health percent for a unit before using " .. A.GetSpellInfo(300714) .. ".", 
+                    },                     
                     M = {},
                 },
-			},
+            },
             
-			
+            
             { -- [7] 
                 {
                     E = "Header",
@@ -1350,7 +855,7 @@ A.Data.ProfileUI = {
                     },
                 },
             },
-            { -- [3] 3rd Row 					
+            { -- [3] 3rd Row                     
                 {
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -1365,7 +870,7 @@ A.Data.ProfileUI = {
                         enUS = "Set the desired time for test in minutes.\nWill show a notification icon when time is expired.\nMin: 1 / Max: 10.", 
                         ruRU = "Установите желаемое время для теста в минутах.\nПо истечении времени будет отображаться значок уведомления.\nMin: 1 / Max: 10.",  
                         frFR = "Définissez la durée souhaitée pour le test en minutes.\nAffiche une icône de notification lorsque le temps est écoulé.\nMin: 1 / Max: 10.", 
-                    }, 					
+                    },                     
                     M = {},
                 },
                 {
@@ -1382,17 +887,17 @@ A.Data.ProfileUI = {
                         enUS = "After the dummy test is concluded, how much time should we stop the rotation. (In seconds)\nThis value is mainly used as a protection when you are out of combat to avoid auto attack.\nDefault value : 10 seconds.", 
                         ruRU = "После того, как фиктивный тест закончен, сколько времени мы должны остановить вращение. (В секундах)\nЭто значение в основном используется в качестве защиты, когда вы находитесь вне боя, чтобы избежать автоматической атаки.\nЗначение по умолчанию: 10 секунд.", 
                         frFR = "Une fois le test fictif terminé, combien de temps devons-nous arrêter la rotation. (En secondes)\nCette valeur est principalement utilisée comme protection lorsque vous êtes hors de combat pour éviter l'attaque automatique.\nValeur par défaut: 10 secondes.", 
-                    }, 					
+                    },                     
                     M = {},
                 },
-			},
+            },
             { -- [4] 4th Row
-
+                
                 {
                     E = "LayoutSpace",                                                                         
                 },
             },
-			
+            
             { -- [7]
                 {
                     E = "Header",
@@ -1448,71 +953,59 @@ A.Data.ProfileUI = {
                         enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
                         ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
                         frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    }, 					
+                    },                     
                     M = {},
-                },				
-            },			
-			{ -- [6]
+                },                
+            },            
+            { -- [6]
                 {
-                    E 		= "Header",
-					L		= { 
+                    E         = "Header",
+                    L        = { 
                         ANY = " -- Defensives -- ",
                     },
                 },
             },
-			{
-				{
-                    E 		= "Slider", 													
-					MIN 	= -1,
-                    MAX 	= 100,  						
-					DB 		= "BarkskinHP",
-					DBV 	= 35,
-					ONOFF 	= true,
-					L 		= { 
-                        ANY	= GetSpellInfo(22812) .. " (%)"
+            {
+                {
+                    E         = "Slider",                                                     
+                    MIN     = -1,
+                    MAX     = 100,                          
+                    DB         = "BarkskinHP",
+                    DBV     = 35,
+                    ONOFF     = true,
+                    L         = { 
+                        ANY    = A.GetSpellInfo(22812) .. " (%)"
                     },
-					M 		= {},
+                    M         = {},
                 },
-				{
-                    E 		= "Slider", 													
-					MIN 	= -1, 
-                    MAX 	= 100,  						
-					DB 		= "SwiftmendHP",
-					DBV 	= 50,
-					ONOFF 	= true,
-					L 		= { 
-                        ANY	= GetSpellInfo(18562) .. " (%)"
+            },
+            {
+                {
+                    E         = "Slider",                                                     
+                    MIN     = -1, 
+                    MAX     = 100,                          
+                    DB         = "RenewalHP",
+                    DBV     = 40,
+                    ONOFF     = true,
+                    L         = { 
+                        ANY    = A.GetSpellInfo(108238) .. " (%)"
                     },
-					M 		= {},
+                    M         = {},
                 },
-			},
-			{
-				{
-                    E 		= "Slider", 													
-					MIN 	= -1, 
-                    MAX 	= 100,  						
-					DB 		= "RenewalHP",
-					DBV 	= 40,
-					ONOFF 	= true,
-					L 		= { 
-                        ANY	= GetSpellInfo(108238) .. " (%)"
+                {
+                    E         = "Slider",                                                     
+                    MIN     = -1, 
+                    MAX     = 100,                          
+                    DB         = "AbyssalPot",
+                    DBV     = 20,
+                    ONOFF     = true,
+                    L         = { 
+                        ANY    = "Abyssal Healing Potion (%)"
                     },
-					M 		= {},
-                },
-				{
-                    E 		= "Slider", 													
-					MIN 	= -1, 
-                    MAX 	= 100,  						
-					DB 		= "PhialOfSerenityHP",
-					DBV 	= 20,
-					ONOFF 	= true,
-					L 		= { 
-                        ANY	= "Phial Of Serenity (%)"
-                    },
-					M 		= {},
-                },	
-			},
-		},	
+                    M         = {},
+                },    
+            },
+        },    
         [ACTION_CONST_DRUID_GUARDIAN] = {
             { -- [7]
                 {
@@ -2004,40 +1497,6 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            { -- [4] Potions 
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "SpiritualHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Spiritual Healing Potion HP (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "PhialOfSerenityHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Phial of Serenity HP (%)",
-                    }, 
-                    M = {},
-                },
-            },
-            { -- [7] Multidots settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Multidots settings -- ",
-                    },
-                },
-            },
 			{
                 {
                     E = "Checkbox", 
@@ -2210,7 +1669,7 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            {			
+            {            
                 {
                     E = "Checkbox", 
                     DB = "TasteInterruptList",
@@ -2226,15 +1685,15 @@ A.Data.ProfileUI = {
                         frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
                     }, 
                     M = {},
-                },				
+                },                
                 {
                     E = "Checkbox", 
                     DB = "UseRotationPassive",
                     DBV = true,
                     L = { 
-					    enUS = "Use\nPassive\nRotation",
+                        enUS = "Use\nPassive\nRotation",
                         ruRU = "Включить\nПассивную\nРотацию" 
-	                },
+                    },
                     M = {},
                 },  
             }, 
@@ -2245,8 +1704,8 @@ A.Data.ProfileUI = {
                         ANY = " -- Healing Engine -- ",
                     },
                 },
-            },	
-   	        { -- [7] 
+            },    
+            { -- [7] 
                 {
                     E = "Checkbox", 
                     DB = "ManaManagement",
@@ -2260,46 +1719,46 @@ A.Data.ProfileUI = {
                         ruRU = "Включает сохранение малого количества маны с помощью некоторых манипуляций в течении боя против Босса\nМана будет переходить в фазу сохранения если ХП Босса >= нашей Маны", 
                     }, 
                     M = {},
-                }, 			
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "ManaPotion",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Use\nMana Potion",
+                },             
+                {
+                    E = "Checkbox", 
+                    DB = "ManaPotion",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use\nMana Potion",
                         ruRU = "Использовать\nЗелье Маны",
-					},
-        	        M = {},
-       	        },
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "StopCastOverHeal",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Stop Cast\noverhealing",
+                    },
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "StopCastOverHeal",
+                    DBV = true,
+                    L = { 
+                        enUS = "Stop Cast\noverhealing",
                         ruRU = "Stop Cast\noverhealing",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to automatically stop the current cast to avoid overhealing.",
+                    },
+                    TT = { 
+                        enUS = "Enable this option to automatically stop the current cast to avoid overhealing.",
                         ruRU = "Enable this option to automatically stop the current cast to avoid overhealing.",
-					},
-        	        M = {},
-       	        },	 				
-        	    {	    
-           	        E = "Checkbox", 
-           	        DB = "StartByPreCast",
-           	        DBV = true,
-           	        L = { 
-					    enUS = "Begin Combat\nBy PreHot",
+                    },
+                    M = {},
+                },                     
+                {        
+                    E = "Checkbox", 
+                    DB = "StartByPreCast",
+                    DBV = true,
+                    L = { 
+                        enUS = "Begin Combat\nBy PreHot",
                         ruRU = "Начинать Бой\nЗаранее произнося", 
-	                },
-           	        TT = { 
-					    enUS = "Will start rotation on enemy by available longer\ncasting spell depended on your spec",
+                    },
+                    TT = { 
+                        enUS = "Will start rotation on enemy by available longer\ncasting spell depended on your spec",
                         ruRU = "Будет начинать ротация на противнике с доступной\nдлинной произносящейся способности в зависимости от спека",
-					},
-           	        M = {},
-        	    },
-   	        },
+                    },
+                    M = {},
+                },
+            },
             { -- [6]
                 {
                     E = "Header",
@@ -2327,21 +1786,21 @@ A.Data.ProfileUI = {
                     TT = { 
                         enUS = "Enable/Disable relative party passive rotation\nExample : Pet Dispell over party members.", 
                         ruRU = "Включить/Выключить относительно группы пассивную ротацию\nExample : Pet Dispell over party members.", 
-						frFR = "Active/Désactive la rotation spécifique aux alliés pour les personnes dans le groupe.\nExemple : Dispell automatique sur les membres du groupe.",
+                        frFR = "Active/Désactive la rotation spécifique aux alliés pour les personnes dans le groupe.\nExemple : Dispell automatique sur les membres du groupe.",
                     }, 
                     M = {},
-                }, 			
+                },             
                 {
                     E = "Checkbox", 
                     DB = "AutoDispel",
                     DBV = true,
                     L = { 
-					    enUS = "Activate auto dispel of friendly team",
+                        enUS = "Activate auto dispel of friendly team",
                         ruRU = "Activate auto dispel of friendly team",
-	                },
+                    },
                     M = {},
-                },  							
-            }, 		
+                },                              
+            },         
             { -- [7]
                 {
                     E = "Header",
@@ -2349,50 +1808,50 @@ A.Data.ProfileUI = {
                         ANY = " -- Mythic + -- ",
                     },
                 },
-            },	
-			{
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "MythicPlusLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Smart Mythic+",
+            },    
+            {
+                {
+                    E = "Checkbox", 
+                    DB = "MythicPlusLogic",
+                    DBV = true,
+                    L = { 
+                        enUS = "Smart Mythic+",
                         ruRU = "Smart Mythic+",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
+                    },
+                    TT = { 
+                        enUS = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
                         ruRU = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-					},
-        	        M = {},
-       	        },
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "SnipeFriendly",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Snipe Friendly",
+                    },
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "SnipeFriendly",
+                    DBV = true,
+                    L = { 
+                        enUS = "Snipe Friendly",
                         ruRU = "Snipe Friendly",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to predict critical healing and instant target unit depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
+                    },
+                    TT = { 
+                        enUS = "Enable this option to predict critical healing and instant target unit depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
                         ruRU = "Enable this option to predict critical healing and instant target unit depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-					},
-        	        M = {},
-       	        },					
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "GrievousWoundsLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Grievous Wounds\nlogic",
+                    },
+                    M = {},
+                },                    
+                {
+                    E = "Checkbox", 
+                    DB = "GrievousWoundsLogic",
+                    DBV = true,
+                    L = { 
+                        enUS = "Grievous Wounds\nlogic",
                         ruRU = "Grievous Wounds\nlogic",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
+                    },
+                    TT = { 
+                        enUS = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
                         ruRU = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-					},
-        	        M = {},
-       	        },
+                    },
+                    M = {},
+                },
                 {
                     E = "Slider",                                                     
                     MIN = 1, 
@@ -2403,44 +1862,44 @@ A.Data.ProfileUI = {
                     L = { 
                         ANY = "Grievous Wounds\nmin stacks",                        
                     },   
-          	        TT = { 
-					    enUS = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
+                    TT = { 
+                        enUS = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
                         ruRU = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-					},					
+                    },                    
                     M = {},
-                },				
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "StopCastQuake",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Stop Cast\nquaking",
+                },                
+                {
+                    E = "Checkbox", 
+                    DB = "StopCastQuake",
+                    DBV = true,
+                    L = { 
+                        enUS = "Stop Cast\nquaking",
                         ruRU = "Stop Cast\nquaking",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to automatically stop your current cast before Quake.",
+                    },
+                    TT = { 
+                        enUS = "Enable this option to automatically stop your current cast before Quake.",
                         ruRU = "Enable this option to automatically stop your current cast before Quake.",
-					},
-        	        M = {},
-       	        },	
+                    },
+                    M = {},
+                },    
                 {
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 3,                            
                     DB = "StopCastQuakeSec",                    
                     DBV = 1,
-					Precision = 1,
+                    Precision = 1,
                     ONOFF = false,
                     L = { 
                         ANY = "Stop Cast\nquaking seconds",                      
                     },
-          	        TT = { 
-					    enUS = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
+                    TT = { 
+                        enUS = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
                         ruRU = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-					},					
+                    },                    
                     M = {},
                 },
-			},			
+            },            
             { -- [7]
                 {
                     E = "Header",
@@ -2448,8 +1907,8 @@ A.Data.ProfileUI = {
                         ANY = " -- Racials -- ",
                     },
                 },
-            },	
-			{
+            },    
+            {
                 {
                     E = "Slider",                                                     
                     MIN = 0, 
@@ -2474,7 +1933,7 @@ A.Data.ProfileUI = {
                     },                     
                     M = {},
                 },
-			},
+            },
             { -- Trinkets
                 {
                     E = "Header",
@@ -2482,8 +1941,8 @@ A.Data.ProfileUI = {
                         ANY = " -- Trinkets -- ",
                     },
                 },
-            },	
-            {     			
+            },    
+            {                 
                 {
                     E = "Dropdown",                                                         
                     OT = {
@@ -2493,13 +1952,13 @@ A.Data.ProfileUI = {
                     DB = "TrinketBurstSyncUP",
                     DBV = "Always",
                     L = { 
-					    enUS = "Damager: How to use trinkets",
+                        enUS = "Damager: How to use trinkets",
                         ruRU = "Урон: Как использовать аксессуары", 
-					},
+                    },
                     TT = { 
-					    enUS = "Always: On cooldown\nBurst Synchronized: By Burst Mode in 'General' tab",
+                        enUS = "Always: On cooldown\nBurst Synchronized: By Burst Mode in 'General' tab",
                         ruRU = "Always: По доступности\nBurst Synchronized: От Режима Бурстов во вкладке 'Общее'", 
-					}, 
+                    }, 
                     M = {},
                 },
                 {
@@ -2510,9 +1969,9 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONLYOFF = false,
                     L = { 
-					    enUS = "Trinket: Mana(%)",
+                        enUS = "Trinket: Mana(%)",
                         ruRU = "Trinket: Mana(%)",
-	                },
+                    },
                     M = {},
                 },
                 {
@@ -2523,12 +1982,12 @@ A.Data.ProfileUI = {
                     DBV = 75,
                     ONLYOFF = false,
                     L = { 
-					    enUS = "Healer: Target Health (%)",
+                        enUS = "Healer: Target Health (%)",
                         ruRU = "Лекарь: Здоровье Цели (%)", 
-	                },
+                    },
                     M = {},
-                },		
-		    },
+                },        
+            },
             { -- [2]
                 {
                     E = "Header",
@@ -2547,7 +2006,7 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(22812) .. " (%)",
+                        ANY = A.GetSpellInfo(22812) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -2559,7 +2018,7 @@ A.Data.ProfileUI = {
                     DBV = 100,
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(20594) .. " (%)",                        
+                        ANY = A.GetSpellInfo(20594) .. " (%)",                        
                     }, 
                     M = {},
                 },
@@ -2573,7 +2032,7 @@ A.Data.ProfileUI = {
                     DBV = 100,
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(102342) .. " (%)",                        
+                        ANY = A.GetSpellInfo(102342) .. " (%)",                        
                     }, 
                     M = {},
                 },
@@ -2585,7 +2044,7 @@ A.Data.ProfileUI = {
                     DBV = 100,
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(5487) .. " (%)",
+                        ANY = A.GetSpellInfo(5487) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -2599,7 +2058,7 @@ A.Data.ProfileUI = {
                     DBV = 100,
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(122783) .. " (%)",                        
+                        ANY = A.GetSpellInfo(122783) .. " (%)",                        
                     }, 
                     M = {},
                 },
@@ -2623,9 +2082,9 @@ A.Data.ProfileUI = {
                         ANY = " -- Essences -- ",
                     },
                 },
-            },	
-			{
-			RowOptions = { margin = { top = 10 } },
+            },    
+            {
+                RowOptions = { margin = { top = 10 } },
                 {
                     E = "Slider",                                                     
                     MIN = 1, 
@@ -2634,7 +2093,7 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(299374) .. "\nMana %",                        
+                        ANY = A.GetSpellInfo(299374) .. "\nMana %",                        
                     },                     
                     M = {},
                 },
@@ -2646,7 +2105,7 @@ A.Data.ProfileUI = {
                     DBV = 5,
                     ONOFF = false,
                     L = { 
-                        ANY = GetSpellInfo(299944) .. "\nunits number",                        
+                        ANY = A.GetSpellInfo(299944) .. "\nunits number",                        
                     },                     
                     M = {},
                 },
@@ -2658,11 +2117,11 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONOFF = false,
                     L = { 
-                        ANY = GetSpellInfo(299944) .. "\n(%)",                        
+                        ANY = A.GetSpellInfo(299944) .. "\n(%)",                        
                     },                     
                     M = {},
                 },
-			},
+            },
             { -- [7]
                 {
                     E = "Header",
@@ -2670,14 +2129,14 @@ A.Data.ProfileUI = {
                         ANY = " -- Force Spread Macro -- ",
                     },
                 },
-            },	
-            {			
+            },    
+            {            
                 {
                     E         = "Button",
                     H         = 35,
                     OnClick = function(self, button, down)     
                         if button == "LeftButton" then 
-							TR.ToggleForceRejuvenation()
+                            TR.ToggleForceRejuvenation()
                         else                
                             Action.CraftMacro("QB:BurstHeal", [[#showtip ]] .. Action[ACTION_CONST_DRUID_RESTORATION].Rejuvenation:Info() .. "\n" .. [[/run Action.TasteRotation.ToggleForceRejuvenation(state)]], 1, true, true) 
                         end 
@@ -2686,17 +2145,17 @@ A.Data.ProfileUI = {
                         ANY = "Burst\nMacro Creator",
                     }, 
                     TT = { 
-                        enUS = "Click this button to create the special " .. GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
-                        ruRU = "Click this button to create the special " .. GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
-                        frFR = "Click this button to create the special " .. GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
+                        enUS = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
+                        ruRU = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
+                        frFR = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
                     },                           
                 },
-            },				
+            },                
             { -- LIFEBLOOM
                 {
                     E = "Header",
                     L = {
-                        ANY = GetSpellInfo(33763),
+                        ANY = A.GetSpellInfo(33763),
                     },
                 },
             }, 
@@ -2709,14 +2168,14 @@ A.Data.ProfileUI = {
                     DBV = 100,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(33763) .. " (%)",                        
+                        ANY = A.GetSpellInfo(33763) .. " (%)",                        
                     }, 
                     TT = { 
                         enUS = "Offset Health Percent on which start casting 'Lifebloom'", 
                         ruRU = "Значение Процента Здоровья на котором начинать произносить 'Lifebloom'", 
                     },
                     M = {},
-                }, 			
+                },             
                 {
                     E = "Dropdown",                                                         
                     OT = {
@@ -2727,7 +2186,7 @@ A.Data.ProfileUI = {
                     DB = "LifebloomWorkMode",
                     DBV = "Auto",
                     L = { 
-                        ANY = GetSpellInfo(33763) .. " Work Mode",
+                        ANY = A.GetSpellInfo(33763) .. " Work Mode",
                     }, 
                     TT = { 
                         enUS = "These conditions will activate differents logic behind.\nAuto: Fully automated settings, priorise Photosynthesis on you if talent is learned.\nTanking Units: Will make sure Lifebloom is always present on tanks.\nMostly Inc. Damage: Friendly unit taking the more damage in the current situation.", 
@@ -2736,18 +2195,18 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             }, 
-			
-			
+            
+            
             { -- TRANQUILITY
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- " .. GetSpellInfo(740) .. " -- ",
+                        ANY = " -- " .. A.GetSpellInfo(740) .. " -- ",
                     },
                 }, 
             },
-			{
-			    RowOptions = { margin = { top = -10 } },
+            {
+                RowOptions = { margin = { top = -10 } },
                 {
                     E = "Header",
                     L = {
@@ -2760,10 +2219,10 @@ A.Data.ProfileUI = {
                         ANY = " -- Dungeon -- ",
                     },
                 },
-			},
+            },
             -- Tranquility
             { -- [3] 
-              	RowOptions = { margin = { top = 10 } },		
+                RowOptions = { margin = { top = 10 } },        
                 {
                     E = "Slider",                                                     
                     MIN = 1, 
@@ -2772,7 +2231,7 @@ A.Data.ProfileUI = {
                     DBV = 5,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(740) .. "\n(Total Units)",    
+                        ANY = A.GetSpellInfo(740) .. "\n(Total Units)",    
                     },                     
                     M = {},
                 },
@@ -2784,13 +2243,13 @@ A.Data.ProfileUI = {
                     DBV = 3,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(740) .. "\n(Total Units)",    
+                        ANY = A.GetSpellInfo(740) .. "\n(Total Units)",    
                     },                     
                     M = {},
                 },
-			},
-			{
-			    RowOptions = { margin = { top = 10 } },
+            },
+            {
+                RowOptions = { margin = { top = 10 } },
                 {
                     E = "Slider",                                                     
                     MIN = 0, 
@@ -2799,7 +2258,7 @@ A.Data.ProfileUI = {
                     DBV = 65,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
+                        ANY = A.GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
                     },                     
                     M = {},
                 },
@@ -2811,16 +2270,16 @@ A.Data.ProfileUI = {
                     DBV = 60,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
+                        ANY = A.GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
                     },                     
                     M = {},
-                },			    
-            },	
+                },                
+            },    
             { -- FLOURISH
                 {
                     E = "Header",
                     L = {
-                        ANY = GetSpellInfo(197721),
+                        ANY = A.GetSpellInfo(197721),
                     },
                 },
             }, 
@@ -2834,7 +2293,7 @@ A.Data.ProfileUI = {
                     DBV = 70,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(197721) .. "\n(Per UnitHealth %)",                        
+                        ANY = A.GetSpellInfo(197721) .. "\n(Per UnitHealth %)",                        
                     },                     
                     M = {},
                 },
@@ -2846,7 +2305,7 @@ A.Data.ProfileUI = {
                     DBV = 4,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(197721) .. "\n(Total Units)",    
+                        ANY = A.GetSpellInfo(197721) .. "\n(Total Units)",    
                     },                     
                     M = {},
                 },
@@ -2855,10 +2314,10 @@ A.Data.ProfileUI = {
                 {
                     E = "Header",
                     L = {
-                        ANY = GetSpellInfo(145205),
+                        ANY = A.GetSpellInfo(145205),
                     },
                 },
-            }, 		
+            },         
             { -- [10]
                 {
                     E = "Slider",                                                     
@@ -2868,15 +2327,15 @@ A.Data.ProfileUI = {
                     DBV = 2,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(145205) .. "\nrefresh(sec)",                        
+                        ANY = A.GetSpellInfo(145205) .. "\nrefresh(sec)",                        
                     }, 
                     TT = { 
-                        enUS = "Time remaining in seconds before refreshing " .. GetSpellInfo(145205), 
-                        ruRU = "Time remaining in seconds before refreshing " .. GetSpellInfo(145205), 
+                        enUS = "Time remaining in seconds before refreshing " .. A.GetSpellInfo(145205), 
+                        ruRU = "Time remaining in seconds before refreshing " .. A.GetSpellInfo(145205), 
                     },
                     M = {},
                 },            
-            },			
+            },            
             { -- [10]
                 {
                     E = "Slider",                                                     
@@ -2886,7 +2345,7 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(18562) .. " (%)",                        
+                        ANY = A.GetSpellInfo(18562) .. " (%)",                        
                     }, 
                     TT = { 
                         enUS = "Offset Health Percent on which start casting 'Swiftmend'", 
@@ -2905,7 +2364,7 @@ A.Data.ProfileUI = {
                     DBV = 93,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(48438) .. "\n(Per UnitHealth %)",                        
+                        ANY = A.GetSpellInfo(48438) .. "\n(Per UnitHealth %)",                        
                     },                     
                     M = {},
                 },
@@ -2917,7 +2376,7 @@ A.Data.ProfileUI = {
                     DBV = 3,
                     ONLYON = true,
                     L = { 
-                        ANY = GetSpellInfo(48438) .. "\n(Total Units)",    
+                        ANY = A.GetSpellInfo(48438) .. "\n(Total Units)",    
                     },                     
                     M = {},
                 },
@@ -2977,10 +2436,10 @@ A.Data.ProfileUI = {
                         enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
                         ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
                         frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    }, 					
+                    },                     
                     M = {},
-                },				
-            },						
+                },                
+            },                        
             { -- [17]
                 {
                     E = "Header",
@@ -2995,8 +2454,8 @@ A.Data.ProfileUI = {
                     DB = "MouseButtonsCheck",
                     DBV = true,
                     L = { 
-                        enUS = GetSpellInfo(145205) .. "\nCheck Mouse Buttons", 
-                        ruRU = GetSpellInfo(145205) .. "\nПроверять Кнопки Мышки", 
+                        enUS = A.GetSpellInfo(145205) .. "\nCheck Mouse Buttons", 
+                        ruRU = A.GetSpellInfo(145205) .. "\nПроверять Кнопки Мышки", 
                     }, 
                     TT = { 
                         enUS = "Prevents use if the camera is currently spinning with the mouse button held down", 
@@ -3016,7 +2475,7 @@ A.Data.ProfileUI = {
                     DB = "CyclonePvP",
                     DBV = "ON MELEE BURST",
                     L = { 
-                        ANY = "PvP " .. GetSpellInfo(33786),
+                        ANY = "PvP " .. A.GetSpellInfo(33786),
                     }, 
                     TT = { 
                         enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
@@ -3042,7 +2501,7 @@ A.Data.ProfileUI = {
                         [4] = true,
                     }, 
                     L = { 
-                        ANY = "PvP " .. GetSpellInfo(33786) .. " units",
+                        ANY = "PvP " .. A.GetSpellInfo(33786) .. " units",
                     }, 
                     TT = { 
                         enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
@@ -3062,7 +2521,7 @@ A.Data.ProfileUI = {
                     DB = "MightyBashPvP",
                     DBV = "ON MELEE BURST",
                     L = { 
-                        ANY = "PvP " .. GetSpellInfo(5211),
+                        ANY = "PvP " .. A.GetSpellInfo(5211),
                     }, 
                     TT = { 
                         enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
@@ -3088,7 +2547,7 @@ A.Data.ProfileUI = {
                         [4] = true,
                     }, 
                     L = { 
-                        ANY = "PvP " .. GetSpellInfo(5211) .. " units",
+                        ANY = "PvP " .. A.GetSpellInfo(5211) .. " units",
                     }, 
                     TT = { 
                         enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
@@ -3268,7 +2727,7 @@ function A.MightyBashIsReady(unit, isMsg, skipShouldStop)
         Unit(unit):HasDeBuffs("Stunned") == 0
     end 
 end
- 
+
 
 function A.Main_CastBars(unit, list)
     if not A.IsInitialized or A.IamHealer or (A.Zone ~= "arena" and A.Zone ~= "pvp") then 
@@ -3301,7 +2760,6 @@ function A.Second_CastBars(unit)
             return select(2, A.InterruptIsValid(unit, Toggle2, true))         
         end 
     end 
-	
+    
 end 
-
 
