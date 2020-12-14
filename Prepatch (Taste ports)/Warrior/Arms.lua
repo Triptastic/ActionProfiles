@@ -107,31 +107,18 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     ReapingFlames                          = Create({ Type = "Spell", ID = 311195 }),
     CondensedLifeforce                     = Create({ Type = "Spell", ID = 299357 }),
 	IgnorePain							   = Create({ Type = "Spell", ID = 190456 }),
-	RallyingCry							   = Create({ Type = "Spell", ID = 97462 }),	
+	RallyingCry							   = Create({ Type = "Spell", ID = 97462 }),
+	VictoryRush							   = Create({ Type = "Spell", ID = 34428 }),
+	ImpendingVictory					   = Create({ Type = "Spell", ID = 202168 }),	
     -- Trinkets	
-    TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }), 
-    TrinketTest2                           = Create({ Type = "Trinket", ID = 159611, QueueForbidden = true }), 
-    AzsharasFontofPower                    = Create({ Type = "Trinket", ID = 169314, QueueForbidden = true }), 
-    PocketsizedComputationDevice           = Create({ Type = "Trinket", ID = 167555, QueueForbidden = true }), 
-    RotcrustedVoodooDoll                   = Create({ Type = "Trinket", ID = 159624, QueueForbidden = true }), 
-    ShiverVenomRelic                       = Create({ Type = "Trinket", ID = 168905, QueueForbidden = true }), 
-    AquipotentNautilus                     = Create({ Type = "Trinket", ID = 169305, QueueForbidden = true }), 
-    TidestormCodex                         = Create({ Type = "Trinket", ID = 165576, QueueForbidden = true }), 
-    VialofStorms                           = Create({ Type = "Trinket", ID = 158224, QueueForbidden = true }), 
+
     -- Potions
     PotionofUnbridledFury                  = Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
     SuperiorBattlePotionOfAgility          = Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
     PotionTest                             = Create({ Type = "Potion", ID = 142117, QueueForbidden = true }), 
 	PotionofSpectralStrength			   = Create({ Type = "Potion", ID = 171275, QueueForbidden = true }),
-    -- Trinkets
-    GenericTrinket1                        = Create({ Type = "Trinket", ID = 114616, QueueForbidden = true }),
-    GenericTrinket2                        = Create({ Type = "Trinket", ID = 114081, QueueForbidden = true }),
-    GalecallersBoon                        = Create({ Type = "Trinket", ID = 159614, QueueForbidden = true }),
-    InvocationOfYulon                      = Create({ Type = "Trinket", ID = 165568, QueueForbidden = true }),
-    LustrousGoldenPlumage                  = Create({ Type = "Trinket", ID = 159617, QueueForbidden = true }),
-    VigorTrinket                           = Create({ Type = "Trinket", ID = 165572, QueueForbidden = true }),
-    AshvanesRazorCoral                     = Create({ Type = "Trinket", ID = 169311, QueueForbidden = true }),
+
     -- Misc
     Channeling                             = Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
     TargetEnemy                            = Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
@@ -140,14 +127,11 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
     ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
     RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
     ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-	
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth
-	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for SweepingStrikes	
+
 };
 
 -- To create covenant use next code:
---Action:CreateCovenantsFor(ACTION_CONST_WARRIOR_ARMS)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
-Action:CreateEssencesFor(ACTION_CONST_WARRIOR_ARMS)
+
 local A = setmetatable(Action[ACTION_CONST_WARRIOR_ARMS], { __index = Action })
 
 
@@ -344,6 +328,77 @@ local function SelfDefensives()
     if Unit("player"):CombatTime() == 0 then 
         return 
     end 
+
+    -- VictoryRush
+    local VictoryRush = A.GetToggle(2, "VictoryRush")
+    if     VictoryRush >= 0 and A.VictoryRush:IsReady("unit") and not A.ImpendingVictory:IsTalentLearned() and 
+    (
+        (     -- Auto 
+            VictoryRush >= 100 and 
+            (
+                -- HP lose per sec >= 20
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
+                -- TTD 
+                Unit("player"):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit("player"):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit("player"):HasBuffs("DeffBuffs", true) == 0
+        ) 
+        or 
+        (    -- Custom
+            VictoryRush < 100 and 
+            Unit("player"):HealthPercent() <= VictoryRush
+        )
+    ) 
+    then 
+        return A.VictoryRush
+    end  
+	
+    local VictoryRush = A.GetToggle(2, "VictoryRush")
+    if     VictoryRush >= 0 and A.ImpendingVictory:IsReady("unit") and A.ImpendingVictory:IsTalentLearned() and 
+    (
+        (     -- Auto 
+            VictoryRush >= 100 and 
+            (
+                -- HP lose per sec >= 20
+                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 20 or 
+                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.20 or 
+                -- TTD 
+                Unit("player"):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit("player"):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit("player"):GetRealTimeDMG() > 0 and 
+                            Unit("player"):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit("player"):HasBuffs("DeffBuffs", true) == 0
+        ) 
+        or 
+        (    -- Custom
+            VictoryRush < 100 and 
+            Unit("player"):HealthPercent() <= VictoryRush
+        )
+    ) 
+    then 
+        return A.ImpendingVictory
+    end 	
     
     -- Rallying Cry
     local RallyingCry = A.GetToggle(2, "RallyingCry")
@@ -428,11 +483,8 @@ end
 
 -- Interrupts spells
 local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-	    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-	else
+
         useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
     
 	if castRemainsTime >= A.GetLatency() then
         -- Pummel
@@ -449,22 +501,7 @@ local function Interrupts(unit)
         if useCC and A.IntimidatingShout:IsReady(unit) and A.IntimidatingShout:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):CanInterrupt(true, nil, 25, 70) and Unit(unit):IsControlAble("fear", 0) then 
             return A.IntimidatingShout              
         end  
-		    
-   	    if useRacial and A.QuakingPalm:AutoRacial(unit) then 
-   	        return A.QuakingPalm
-   	    end 
-    
-   	    if useRacial and A.Haymaker:AutoRacial(unit) then 
-            return A.Haymaker
-   	    end 
-    
-   	    if useRacial and A.WarStomp:AutoRacial(unit) then 
-            return A.WarStomp
-   	    end 
-    
-   	    if useRacial and A.BullRush:AutoRacial(unit) then 
-            return A.BullRush
-   	    end 
+
     end
 end
 
@@ -486,29 +523,8 @@ A[3] = function(icon, isMulti)
 				-- augmentation
 				-- snapshot_stats
 				-- use_item,name=azsharas_font_of_power
-				if A.AzsharasFontofPower:IsReady(unit) then
-					return A.AzsharasFontofPower:Show(icon)
-				end
-				
-				-- worldvein_resonance
-				if A.WorldveinResonance:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-					return A.WorldveinResonance:Show(icon)
-				end
-				
-				-- memory_of_lucid_dreams
-				if A.MemoryofLucidDreams:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-					return A.MemoryofLucidDreams:Show(icon)
-				end
-				
-				-- guardian_of_azeroth
-				if A.GuardianofAzeroth:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-					return A.GuardianofAzeroth:Show(icon)
-				end
 				
 				-- potion
-				if A.PotionofSpectralStrength:IsReady(unit) and Potion then
-					return A.PotionofSpectralStrength:Show(icon)
-				end
 				
 			end
 			
@@ -596,7 +612,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- skullsplitter,if=rage<60&buff.deadly_calm.down&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 60 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 or Player:Rage() < 20) then
+				if A.Skullsplitter:IsReady(unit) and ((Player:Rage() < 60 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) or Player:Rage() < 20) then
 					return A.Skullsplitter:Show(icon)
 				end
 				
@@ -631,7 +647,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- bladestorm,if=cooldown.mortal_strike.remains&debuff.colossus_smash.down&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)&buff.memory_of_lucid_dreams.down&rage<40
-				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsTalentLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and not A.TestofMight:GetAzeriteRank() > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Player:Rage() < 40) then
+				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsTalentLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Player:Rage() < 40) then
 					return A.Bladestorm:Show(icon)
 				end
 				
@@ -646,12 +662,12 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- whirlwind,if=(((buff.memory_of_lucid_dreams.up)|(debuff.colossus_smash.up)|(buff.deadly_calm.up))&talent.fervor_of_battle.enabled)|((buff.memory_of_lucid_dreams.up|rage>89)&debuff.colossus_smash.up&buff.test_of_might.down&!talent.fervor_of_battle.enabled)
-				if A.Whirlwind:IsReady(player) and ((((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0) or (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or ((Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned())) then
+				if A.Whirlwind:IsReady(player) and ((((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or (Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned()) then
 					return A.Whirlwind:Show(icon)
 				end
 				
 				-- slam,if=!talent.fervor_of_battle.enabled&(buff.memory_of_lucid_dreams.up|debuff.colossus_smash.up)
-				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.Slam:IsReady(unit) and not A.FervorofBattle:IsTalentLearned() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
 					return A.Slam:Show(icon)
 				end
 				
@@ -673,10 +689,10 @@ A[3] = function(icon, isMulti)
 			end
 			
 			
-			-- call precombat
+			--[[ call precombat
 			if Precombat(unit) and not inCombat and Unit(unit):IsExists() and unit ~= "mouseover" then 
 				return true
-			end
+			end]]
 			
 			if Unit(unit):IsExists() then
 				-- charge
@@ -687,88 +703,48 @@ A[3] = function(icon, isMulti)
 				
 				-- auto_attack
 				-- blood_fury,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.BloodFury:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.BloodFury:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
 					return A.BloodFury:Show(icon)
 				end
 				
 				-- berserking,if=buff.memory_of_lucid_dreams.up|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Berserking:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.Berserking:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
 					return A.Berserking:Show(icon)
 				end
 				
 				-- arcane_torrent,if=cooldown.mortal_strike.remains>1.5&buff.memory_of_lucid_dreams.down&rage<50
-				if A.ArcaneTorrent:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (A.MortalStrike:GetCooldown() > 1.5 and Unit("player"):HasBuffsDown(A.MemoryofLucidDreams.ID, true) and Player:Rage() < 50) then
+				if A.ArcaneTorrent:AutoRacial(player) and Racial and A.BurstIsON(unit) and (A.MortalStrike:GetCooldown() > 1.5 and Player:Rage() < 50) then
 					return A.ArcaneTorrent:Show(icon)
 				end
 				
 				-- lights_judgment,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and not A.MortalStrike:IsReady()) then
+				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and not A.MortalStrike:IsReady()) then
 					return A.LightsJudgment:Show(icon)
 				end
 				
 				-- fireblood,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Fireblood:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.Fireblood:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
 					return A.Fireblood:Show(icon)
 				end
 				
 				-- ancestral_call,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.AncestralCall:AutoRacial(unit) and Racial and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) < 5 or (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0)) then
+				if A.AncestralCall:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
 					return A.AncestralCall:Show(icon)
 				end
 				
 				-- bag_of_tricks,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.BagofTricks:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffsD(A.MemoryofLucidDreams.ID, true) == 0 and not A.MortalStrike:IsReady()) then
+				if A.BagofTricks:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and not A.MortalStrike:IsReady()) then
 					return A.BagofTricks:Show(icon)
 				end
 				
 				-- avatar,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>45)
-				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and (not Azerite:EssenceHasMajor(A.MemoryofLucidDreams.ID) or (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or A.MemoryofLucidDreams:GetCooldown() > 45)) and Player:AreaTTD(10) > 9 then
+				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and Player:AreaTTD(10) > 9 then
 					return A.Avatar:Show(icon)
 				end
 				
 				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
 				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and ((A.Bladestorm:GetCooldown() > 10 and not A.Ravager:IsTalentLearned()) or A.ColossusSmash:GetCooldown() > 8) and Player:AreaTTD(10) > 9 then
-					return A.Regeneratin:Show(icon)
-				end
-				
-				-- guardian_of_azeroth
-				if A.GuardianofAzeroth:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- focused_azerite_beam
-				if A.FocusedAzeriteBeam:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- memory_of_lucid_dreams
-				if A.MemoryofLucidDreams:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- blood_of_the_enemy
-				if A.BloodoftheEnemy:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- purifying_blast
-				if A.PurifyingBlast:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				--[[ ripple_in_space
-				if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-					return A.Darkflight:Show(icon)
-				end]]
-				
-				-- concentrated_flame,line_cd=6
-				if A.ConcentratedFlame:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
-				end
-				
-				-- reaping_flames
-				if A.ReapingFlames:IsReady(unit) and A.BurstIsON(unit) then
-					return A.Darkflight:Show(icon)
+					return A.SweepingStrikes:Show(icon)
 				end
 				
 				-- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20

@@ -27,7 +27,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.20 (3 Nov 2020)",
+    DateTime = "v1.30 (13 Dec 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_PALADIN_RETRIBUTION] = {          
@@ -1015,7 +1015,6 @@ A.Data.ProfileUI = {
             },
         },	
         [ACTION_CONST_PALADIN_HOLY] = {          
-            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },	
             { -- [7]
                 {
                     E = "Header",
@@ -1055,31 +1054,25 @@ A.Data.ProfileUI = {
                 },
                 {
                     E = "Checkbox", 
-                    DB = "AoE",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use\nAoE", 
-                        ruRU = "Использовать\nAoE", 
-                    }, 
-                    TT = { 
-                        enUS = "Enable multiunits actions", 
-                        ruRU = "Включает действия для нескольких целей", 
-                    }, 
-                    M = {},
-                }, 
-                {
-                    E = "Checkbox", 
                     DB = "DispelSniper",
                     DBV = true,
                     L = { 
-                        ANY = "Use Dispel Sniper",  
-                    }, 
-                    TT = { 
-                        ANY = "Automatically swap targets to dispel"
-                    }, 
+                        enUS = "Use\nDispel\nSniper",
+                        ruRU = "Включить\nПассивную\nРотацию" 
+                    },
                     M = {},
-                }, 				
-            }, 	
+                },                                  
+            },     
+            { -- [7]
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " -- Healing Engine -- ",
+                    },
+                },
+            },    
+            -- Beacon of Virtue(talent)
+            -- + Classic Beacon 
             { -- [7] 
                 {
                     E = "Header",
@@ -1087,13 +1080,13 @@ A.Data.ProfileUI = {
                         ANY = " -- Beacons -- ",
                     },
                 },
-            },	
+            },    
             { -- [3]  
-                RowOptions = { margin = { top = 10 } },		
+                RowOptions = { margin = { top = 10 } },        
                 {
                     E = "Dropdown",                                                         
                     OT = {   
-                        { text = "TANK", value = "TANK" },                    
+                        { text = "Tanking Units", value = "Tanking Units" },                    
                         { text = "Mostly Inc. Damage", value = "Mostly Inc. Damage" },
                         { text = "HPS < Inc. Damage", value = "HPS < Inc. Damage" },
                     },
@@ -1107,8 +1100,42 @@ A.Data.ProfileUI = {
                         ruRU = "Эти условия будут пропущены если юнит будет умирать в чрезвычайной (критической) ситуациии", 
                     },                    
                     M = {},
-                },			
-            },			
+                },            
+            },            
+            { -- [7]
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " -- Racials -- ",
+                    },
+                },
+            },    
+            {
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "RacialBurstHealing",                    
+                    DBV = 100,
+                    ONLYON = true,
+                    L = { 
+                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Healing HP %)",                        
+                    },                     
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "RacialBurstDamaging",                    
+                    DBV = 100,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Damaging HP %)",                        
+                    },                     
+                    M = {},
+                },
+            },
             { -- Trinkets
                 {
                     E = "Header",
@@ -1116,8 +1143,8 @@ A.Data.ProfileUI = {
                         ANY = " -- Trinkets -- ",
                     },
                 },
-            },	
-            {     			
+            },    
+            {                 
                 {
                     E = "Dropdown",                                                         
                     OT = {
@@ -1127,13 +1154,13 @@ A.Data.ProfileUI = {
                     DB = "TrinketBurstSyncUP",
                     DBV = "Always",
                     L = { 
-					    enUS = "Damager: How to use trinkets",
+                        enUS = "Damager: How to use trinkets",
                         ruRU = "Урон: Как использовать аксессуары", 
-					},
+                    },
                     TT = { 
-					    enUS = "Always: On cooldown\nBurst Synchronized: By Burst Mode in 'General' tab",
+                        enUS = "Always: On cooldown\nBurst Synchronized: By Burst Mode in 'General' tab",
                         ruRU = "Always: По доступности\nBurst Synchronized: От Режима Бурстов во вкладке 'Общее'", 
-					}, 
+                    }, 
                     M = {},
                 },
                 {
@@ -1144,9 +1171,9 @@ A.Data.ProfileUI = {
                     DBV = 85,
                     ONLYOFF = false,
                     L = { 
-					    enUS = "Trinket: Mana(%)",
+                        enUS = "Trinket: Mana(%)",
                         ruRU = "Trinket: Mana(%)",
-	                },
+                    },
                     M = {},
                 },
                 {
@@ -1157,133 +1184,12 @@ A.Data.ProfileUI = {
                     DBV = 75,
                     ONLYOFF = false,
                     L = { 
-					    enUS = "Healer: Target Health (%)",
+                        enUS = "Healer: Target Health (%)",
                         ruRU = "Лекарь: Здоровье Цели (%)", 
-	                },
-                    M = {},
-                },		
-		    },
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Mythic + -- ",
                     },
-                },
-            },	
-			{
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "MythicPlusLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Smart Mythic+",
-                        ruRU = "Smart Mythic+",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-                        ruRU = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-					},
-        	        M = {},
-       	        },	
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "GrievousWoundsLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Grievous Wounds\nlogic",
-                        ruRU = "Grievous Wounds\nlogic",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-                        ruRU = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-					},
-        	        M = {},
-       	        },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 5,                            
-                    DB = "GrievousWoundsMinStacks",                    
-                    DBV = 2,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Grievous Wounds\nmin stacks",                        
-                    },   
-          	        TT = { 
-					    enUS = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-                        ruRU = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-					},					
                     M = {},
-                },				
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "StopCastQuake",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Stop Cast\nquaking",
-                        ruRU = "Stop Cast\nquaking",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to automatically stop your current cast before Quake.",
-                        ruRU = "Enable this option to automatically stop your current cast before Quake.",
-					},
-        	        M = {},
-       	        },	
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 3,                            
-                    DB = "StopCastQuakeSec",                    
-                    DBV = 1,
-					Precision = 1,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Stop Cast\nquaking seconds",                      
-                    },
-          	        TT = { 
-					    enUS = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-                        ruRU = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-					},					
-                    M = {},
-                },
-			},
-		    -- Divine Shield 
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Defensives -- ",
-                    },
-                },
-            },
-            { -- [3]     
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "DivineShield",
-                    DBV = 15,
-                    ONOFF = false,
-                    L = { 
-                        ANY = A.GetSpellInfo(642) .. " (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "BlessingofProtection",
-                    DBV = 25,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Blessing of Protection (%)",
-                    }, 
-                    M = {},
-                },				
-            },	
-
+                },        
+            },         
         },
     },
 	

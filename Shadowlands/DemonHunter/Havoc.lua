@@ -194,7 +194,9 @@ Action[ACTION_CONST_DEMONHUNTER_HAVOC] = {
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),
+	AbyssalHealingPotion			= Action.Create({ Type = "Item", ID = 169451, QueueForbidden = true }),
 	PhialofSerenity				    = Action.Create({ Type = "Item", ID = 177278 }),
+	
 	
     -- Misc
     Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
@@ -658,7 +660,7 @@ local function SelfDefensives()
         )
     ) 
     then 
-        return A.SpiritualHealingPotion
+        return A.AbyssalHealingPotion
     end 
     
     -- Stoneform on self dispel (only PvE)
@@ -961,10 +963,8 @@ A[3] = function(icon, isMulti)
             end    
             
             -- Arcane Torrent dispell or if FuryDeficit >= 30
-            if A.ArcaneTorrent:IsRacialReady(unit) and BurstIsON(unit) and Action.GetToggle(1, "Racial") and (Pull > 0.1 and Pull <= ArcaneTorrentPrePull or not Action.GetToggle(1, "BossMods")) 
+            if A.ArcaneTorrent:IsRacialReady(unit) and BurstIsON(unit) and Action.GetToggle(1, "Racial") and (Pull > 0.1 and Pull <= 2 or not Action.GetToggle(1, "BossMods")) 
             then
-                -- Notification                    
-                --Action.SendNotification("Prepull: Arcane Torrent", A.ArcaneTorrent.ID) 
                 return A.ArcaneTorrent:Show(icon)
             end           
             
@@ -1148,7 +1148,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions.demonic+=/glaive_tempest,if=active_enemies>desired_targets|raid_event.adds.in>10
 			if A.GlaiveTempest:IsReady(unit) and Player:IsStayingTime() > 0.5 and (A.MultiUnits:GetByRange(5) >= 2 or (Unit(unit):IsBoss() and Unit(unit):GetRange() <= 5)) then
-				return A.SpectralSight:Show(icon)
+				return A.GlaiveTempest:Show(icon)
 			end	
 			
 			--actions.demonic+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up
@@ -1267,7 +1267,7 @@ A[3] = function(icon, isMulti)
 			end	
 			--actions.normal+=/glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
 			if A.GlaiveTempest:IsReady(unit) and Player:IsStayingTime() > 0.5 and (not VarWaitingForMomentum) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
-				return A.SpectralSight:Show(icon)
+				return A.GlaiveTempest:Show(icon)
 			end	
 			
 			--actions.normal+=/throw_glaive,if=conduit.serrated_glaive.enabled&cooldown.eye_beam.remains<6&!buff.metamorphosis.up&!debuff.exposed_wound.up
