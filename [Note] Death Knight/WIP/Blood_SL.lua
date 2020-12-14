@@ -109,14 +109,13 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     DeathCaress                            = Action.Create({ Type = "Spell", ID = 195292 }),
     BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
     -- Potions
-    PhialOfSerenity                        = Action.Create({ Type = "Potion", ID = 177278, QueueForbidden = true }),
     PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
     BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    SpiritualHealingPotion                 = Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),     
+    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),    
     PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
     SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
     PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
+	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 	
     -- Trinkets
     -- Covenant Abilities
     SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739    }),
@@ -403,42 +402,27 @@ local function SelfDefensives(unit)
     end          
     
     -- PhialOfSerenity
-    local PhialOfSerenity = A.GetToggle(2, "PhialOfSerenityHP")
-    if PhialOfSerenity >= 0 and A.PhialOfSerenity:IsReady(player) and 
-    (
-        (     -- Auto 
-            PhialOfSerenity >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 5 or 
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            PhialOfSerenity < 100 and 
-            Unit(player):HealthPercent() <= PhialOfSerenity
-        )
-    ) 
-    then 
-        return A.PhialOfSerenity
-    end         
+	if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+		-- Healing 
+		local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+		if PhialofSerenityOperator == "AND" then 
+			if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+				return A.PhialofSerenity
+			end 
+		else
+			if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+				return A.PhialofSerenity
+			end 
+		end 
+		
+		-- Dispel 
+		if AuraIsValidByPhialofSerenity() then 
+			return A.PhialofSerenity	
+		end 
+	end        
     
-    -- SpiritualHealingPotionHP
-    local SpiritualHealingPotion = A.GetToggle(2, "SpiritualHealingPotionHP")
+	-- SpiritualHealingPotionHP
+    local SpiritualHealingPotion = A.GetToggle(1, "HealthStone")
     if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
@@ -470,7 +454,7 @@ local function SelfDefensives(unit)
     ) 
     then 
         return A.SpiritualHealingPotion
-    end         
+    end 	        
     
 end 
 
