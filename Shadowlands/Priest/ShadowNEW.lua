@@ -149,7 +149,8 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
 
 	-- Conduits
 	-- Shadow Conduits
-
+    DissonantEchoes					= Action.Create({ Type = "Spell", ID = 343144	}),
+	
 	-- Covenant Conduits
 	CourageousAscension				= Action.Create({ Type = "Spell", ID = 337966	}),
 	ShatteredPerceptions			= Action.Create({ Type = "Spell", ID = 338315	}),
@@ -835,7 +836,7 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--Void Bolt out of Voidform procs
-		if A.VoidBolt:IsReady(unit, nil, nil, true) and not VoidFormActive and A.VoidEruption:GetCooldown() > 0 then
+		if A.VoidBolt:IsReady(unit, nil, nil, true) and Unit(player):HasBuffs(A.DissonantEchoes.ID, true) > 0 then
 			return A.VoidBolt:Show(icon)
 		end
 		
