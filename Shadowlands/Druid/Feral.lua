@@ -109,7 +109,9 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     SkullBash								= Action.Create({ Type = "Spell", ID = 106839	}),
     SurvivalInstincts						= Action.Create({ Type = "Spell", ID = 61336	}),
     Swipe									= Action.Create({ Type = "Spell", ID = 213764	}),
+    SwipeBear								= Action.Create({ Type = "Spell", ID = 213771	}),	
     Thrash									= Action.Create({ Type = "Spell", ID = 106832	}),
+    ThrashBear								= Action.Create({ Type = "Spell", ID = 77758	}),	
     ThrashDebuff                         	= Action.Create({ Type = "Spell", ID = 106830, Hidden = true   }),	
     TigersFury								= Action.Create({ Type = "Spell", ID = 5217		}),
     Clearcasting	                        = Action.Create({ Type = "Spell", ID = 135700, Hidden = true     }),
@@ -124,7 +126,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
 	
 	-- Guardian Affinity
     FrenziedRegeneration					= Action.Create({ Type = "Spell", ID = 22842	}),
-    IncapacitatingRoar						= Action.Create({ Type = "Spell", ID = 99		}),	
+    IncapacitatingRoar						= Action.Create({ Type = "Spell", ID = 99		}),		
 	
 	-- Restoration Affinity
     Rejuvenation							= Action.Create({ Type = "Spell", ID = 774		}),
@@ -167,7 +169,9 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     Soulshape								= Action.Create({ Type = "Spell", ID = 310143	}),
     Flicker									= Action.Create({ Type = "Spell", ID = 324701	}),
 	RavenousFrenzy							= Action.Create({ Type = "Spell", ID = 323546 	}),
-	KindredSpirits							= Action.Create({ Type = "Spell", ID = 326434 	}),
+	KindredSpirits							= Action.Create({ Type = "Spell", ID = 326434, Texture = 338041	}),
+	LoneEmpowerment							= Action.Create({ Type = "Spell", ID = 338142, Texture = 338041	}),
+	KindredEmpowerment						= Action.Create({ Type = "Spell", ID = 327022, Texture = 338041	}),	
 	AdaptiveSwarm							= Action.Create({ Type = "Spell", ID = 325727 	}),
 	ConvoketheSpirits						= Action.Create({ Type = "Spell", ID = 323764 	}),	
 
@@ -276,7 +280,7 @@ local function Interrupts(unit)
             return A.SkullBash
         end         
 
-        if useCC and A.MightyBash:IsReady(unit) and A.MightyBash:IsSpellLearned() and A.MightyBash:AbsentImun(unit, Temp.TotalAndPhysKick, true) then 
+        if useCC and A.MightyBash:IsReady(unit) and A.MightyBash:IsTalentLearned() and A.MightyBash:AbsentImun(unit, Temp.TotalAndPhysKick, true) then 
             return A.MightyBash
         end  
 		    
@@ -308,7 +312,7 @@ local function SelfDefensives()
     
     -- FrenziedRegeneration
     local FrenziedRegeneration = A.GetToggle(2, "FrenziedRegeneration")
-    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady(player) and 
+    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady(player) and Unit(player):HasBuffs(A.BearForm) > 0 and 
     (
         (     -- Auto 
             FrenziedRegeneration >= 100 and 
@@ -339,7 +343,7 @@ local function SelfDefensives()
     ) 
     then 
         -- Notification                    
-        A.Toaster:SpawnByTimer("TripToast", 0, "FrenziedRegeneration!", "Using Defensive FrenziedRegeneration!", A.FrenziedRegeneration.ID)
+        A.Toaster:SpawnByTimer("TripToast", 0, "Frenzied Regeneration!", "Using Frenzied Regeneration!", A.FrenziedRegeneration.ID)
         return A.FrenziedRegeneration
     end
     
@@ -376,9 +380,46 @@ local function SelfDefensives()
     ) 
     then 
         -- Notification                    
-        A.Toaster:SpawnByTimer("TripToast", 0, "SurvivalInstincts!", "Using Defensive SurvivalInstincts!", A.SurvivalInstincts.ID)
+        A.Toaster:SpawnByTimer("TripToast", 0, "Survival Instincts!", "Using Survival Instincts!", A.SurvivalInstincts.ID)
         return A.SurvivalInstincts
     end
+	
+    -- Barkskin
+    local Barkskin = A.GetToggle(2, "Barkskin")
+    if     Barkskin >= 0 and A.Barkskin:IsReady(player) and 
+    (
+        (     -- Auto 
+            Barkskin >= 100 and 
+            (
+                -- HP lose per sec >= 10
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
+                -- TTD 
+                Unit(player):TimeToDieX(25) < 5 or 
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit(player):UseDeff() or 
+                        (
+                            Unit("player", 5):HasFlags() and 
+                            Unit(player):GetRealTimeDMG() > 0 and 
+                            Unit(player):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit(player):HasBuffs("DeffBuffs", true) == 0
+        ) or 
+        (    -- Custom
+            Barkskin < 100 and 
+            Unit(player):HealthPercent() <= Barkskin
+        )
+    ) 
+    then 
+        -- Notification                    
+        A.Toaster:SpawnByTimer("TripToast", 0, "Barkskin!", "Using Barkskin!", A.Barkskin.ID)
+        return A.Barkskin
+    end	
 
 	if not Player:IsStealthed() then 	
 		-- Healthstone | AbyssalHealingPotion
@@ -577,7 +618,7 @@ A[3] = function(icon)
 					
 
 			--actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
-			if A.Berserking:IsReady(player) and (Unit(player):HasBuffs(A.TigersFuryBuff.ID, true) > 0 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0)) then
+			if A.Berserking:IsReady(player) and (Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0)) then
 				return A.Berserking:Show(icon)
 			end
 			
@@ -592,7 +633,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.cooldown+=/kindred_spirits,if=buff.tigers_fury.up|(conduit.deep_allegiance.enabled)
-			if A.KindredSpirits:IsReady(unitID) and UseCovenant and Unit(player):HasBuffs(A.TigersFuryBuff.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
+			if (A.LoneEmpowerment:IsReady(unitID) or A.KindredEmpowerment:IsReady(unitID)) and UseCovenant and Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
 				return A.KindredSpirits:Show(icon)
 			end
 			
@@ -628,7 +669,7 @@ A[3] = function(icon)
 			
 			
 			--actions.filler+=/lunar_inspiration,if=variable.filler=3
-			if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsSpellLearned() and MoonfireRefreshable then
+			if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable then
 				return A.Moonfire:Show(icon)
 			end
 			
@@ -656,15 +697,12 @@ A[3] = function(icon)
 			end
 
 			--actions.finisher+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>(variable.rip_ticks>?variable.best_rip)|spell_targets.primal_wrath>(3+1*talent.sabertooth.enabled)
-			if A.PrimalWrath:IsReady(unitID) and A.PrimalWrath:IsTalentLearned() and RipRefreshable then
-				if MultiUnits:GetByRange(8, 5) >= PrimalWrathTargets then
-					return A.PrimalWrath:Show(icon)
-					else return A.Rip:Show(icon)
-				end
+			if A.PrimalWrath:IsReady(unitID) and A.PrimalWrath:IsTalentLearned() and RipRefreshable and MultiUnits:GetByRange(8, 5) >= PrimalWrathTargets then
+				return A.PrimalWrath:Show(icon)
 			end
 			
 			--actions.finisher+=/rip,target_if=(!ticking|(remains+combo_points*talent.sabertooth.enabled)<duration*0.3|dot.rip.pmultiplier<persistent_multiplier)&druid.rip.ticks_gained_on_refresh>variable.rip_ticks
-			if A.Rip:IsReady(unitID) and not A.PrimalWrath:IsTalentLearned() and RipRefreshable then
+			if A.Rip:IsReady(unitID) and (not A.PrimalWrath:IsTalentLearned() or MultiUnits:GetByRange(8, 5) < PrimalWrathTargets) and RipRefreshable and Unit(unitID):TimeToDie() > 5 then
 				return A.Rip:Show(icon)
 			end
 			
@@ -701,8 +739,25 @@ A[3] = function(icon)
 			return A.BearForm:Show(icon)
 		end
 
+		--Botched Bear Form rotation so we don't just do nothing during regen
+		if Unit(player):HasBuffs(A.BearForm.ID, true) > 0 then
+		
+			if A.ThrashBear:IsReady(player) and Unit(unitID):GetRange() <= 5 then
+				return A.ThrashBear:Show(icon)
+			end
+			
+			if A.SwipeBear:IsReady(player) and MultiUnits:GetByRange(5, 2) >= 2 then
+				return A.SwipeBear:Show(icon)
+			end
+		
+			if A.Mangle:IsReady(unitID) then
+				return A.Mangle:Show(icon)
+			end
+		
+		end
+
 		--actions.precombat+=/variable,name=filler,value=1
-		if A.Rake:IsReady(unit) and not inCombat then
+		if A.Rake:IsReady(unitID) and not inCombat then
 			return A.Rake:Show(icon)
 		end
 
@@ -721,12 +776,12 @@ A[3] = function(icon)
 		--actions+=/run_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
 
 		--actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))>=(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
-		if A.Bloodtalons:IsSpellLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and EnergyDeficit >= 20 and VarNoBT then	
+		if A.Bloodtalons:IsTalentLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and EnergyDeficit >= 20 and VarNoBT then	
 			return A.PoolResource:Show(icon)
 		end
 
 		--actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&(buff.bloodtalons.down|active_bt_triggers=2)
-		if A.Bloodtalons:IsSpellLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) then
+		if A.Bloodtalons:IsTalentLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) then
 			if BloodtalonsRotation() then
 				return true
 			end
@@ -743,7 +798,7 @@ A[3] = function(icon)
 		end
 
 		--actions+=/moonfire_cat,target_if=refreshable
-		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsSpellLearned() and MoonfireRefreshable then
+		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable then
 			return A.Moonfire:Show(icon)
 		end
 

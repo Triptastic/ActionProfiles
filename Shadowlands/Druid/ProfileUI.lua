@@ -140,14 +140,14 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "FrenziedRegeneration",
-                    DBV = 40, -- Set healthpercentage @60% life. 
+                    DB = "Barkskin",
+                    DBV = 70, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = "Frenzied Regeneration HP (%)"
+                        ANY = "Barkskin HP (%)"
 					}, 
                     TT = { 
-                        ANY = "Only works with Guardian Affinity. Will try to keep you locked into Bear Form for optimal duration."
+                        ANY = "HP % to use Barkskin."
 					},    
                     M = {},
                 }, 
@@ -168,6 +168,21 @@ A.Data.ProfileUI = {
                 }, 				
 			},
 			{
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "FrenziedRegeneration",
+                    DBV = 40, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Frenzied Regeneration HP (%)"
+					}, 
+                    TT = { 
+                        ANY = "Only works with Guardian Affinity. Will try to keep you locked into Bear Form for optimal duration."
+					},    
+                    M = {},
+                }, 			
 			    {
                     E = "Slider",                                                     
                     MIN = -1, 
