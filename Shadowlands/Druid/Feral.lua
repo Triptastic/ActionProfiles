@@ -312,7 +312,7 @@ local function SelfDefensives()
     
     -- FrenziedRegeneration
     local FrenziedRegeneration = A.GetToggle(2, "FrenziedRegeneration")
-    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady(player) and Unit(player):HasBuffs(A.BearForm) > 0 and 
+    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady(player) and Unit(player):HasBuffs(A.BearForm) > 0 and A.GuardianAffinity:IsTalentLearned() and 
     (
         (     -- Auto 
             FrenziedRegeneration >= 100 and 
@@ -697,7 +697,7 @@ A[3] = function(icon)
 			end
 
 			--actions.finisher+=/primal_wrath,if=druid.primal_wrath.ticks_gained_on_refresh>(variable.rip_ticks>?variable.best_rip)|spell_targets.primal_wrath>(3+1*talent.sabertooth.enabled)
-			if A.PrimalWrath:IsReady(unitID) and A.PrimalWrath:IsTalentLearned() and RipRefreshable and MultiUnits:GetByRange(8, 5) >= PrimalWrathTargets then
+			if A.PrimalWrath:IsReady(player) and A.PrimalWrath:IsTalentLearned() and RipRefreshable and MultiUnits:GetByRange(8, 5) >= PrimalWrathTargets then
 				return A.PrimalWrath:Show(icon)
 			end
 			
@@ -720,7 +720,7 @@ A[3] = function(icon)
 		###############################]]
 
 		--actions=cat_form,if=buff.cat_form.down
-		if A.CatForm:IsReady(player) and Unit(player):HasBuffs(A.CatForm.ID, true) == 0 and AutoCatForm and (Unit(player):HasBuffs(A.FrenziedRegeneration.ID) == 0 or Unit(player):HealthPercent() >= 90) then 
+		if A.CatForm:IsReady(player) and Unit(player):HasBuffs(A.CatForm.ID, true) == 0 and AutoCatForm and ((Unit(player):HasBuffs(A.FrenziedRegeneration.ID) == 0 and A.FrenziedRegeneration:GetCooldown() > 0) or Unit(player):HealthPercent() >= 80) then 
 			return A.CatForm:Show(icon)
 		end
 		
@@ -735,12 +735,16 @@ A[3] = function(icon)
 		end
 		
 		--Bear Form for Frenzied Regeneration
-		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration then
+		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and A.GuardianAffinity:IsTalentLearned() then
 			return A.BearForm:Show(icon)
 		end
 
 		--Botched Bear Form rotation so we don't just do nothing during regen
 		if Unit(player):HasBuffs(A.BearForm.ID, true) > 0 then
+		
+			if A.FrenziedRegeneration:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration + 5 then
+				return A.FrenziedRegeneration:Show(icon)
+			end
 		
 			if A.ThrashBear:IsReady(player) and Unit(unitID):GetRange() <= 5 then
 				return A.ThrashBear:Show(icon)
