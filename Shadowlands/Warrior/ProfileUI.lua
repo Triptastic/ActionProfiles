@@ -26,7 +26,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v1.1.0 (23 November 2020)",
+    DateTime = "v1.5.0 (17 December 2020)",
 	-- Class Settings
     [2] = {        
         [ACTION_CONST_WARRIOR_FURY] = {
@@ -87,6 +87,18 @@ A.Data.ProfileUI                                     = {
                     }, 
                     TT = { 
                         ANY = "Check this box if you currently have Vicious Contempt Rank 5 Conduit", 
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "BerserkerRage",
+                    DBV = true,
+                    L = { 
+                        ANY = "Berserker Rage when feared.", 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically use Berserker Rage when feared.", 
                     }, 
                     M = {},
                 },				
