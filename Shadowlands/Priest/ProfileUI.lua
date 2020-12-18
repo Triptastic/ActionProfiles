@@ -30,7 +30,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v1.5.0 (12 Dec 2020)",
+    DateTime = "v1.6.0 (17 Dec 2020)",
     [2] = {        
         [ACTION_CONST_PRIEST_SHADOW] = {             
             { -- GENERAL HEADER
