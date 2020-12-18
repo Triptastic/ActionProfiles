@@ -2,8 +2,6 @@
 --##### TRIP'S PALADINUI #####
 --############################
 
--- Full credit to Taste
-
 local TMW											= TMW 
 local CNDT											= TMW.CNDT
 local Env											= CNDT.Env
@@ -1063,7 +1061,51 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },                                  
+                {
+                    E = "Checkbox", 
+                    DB = "ForceGlimmerOnMaxUnits",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use\nGlimmer\nSpread",
+                        ruRU = "Включить\nПассивную\nРотацию" 
+                    },
+                    M = {},
+                },           
             },     
+            { -- [7] 
+                {
+                    E = "Header",
+                    L = {
+                        " -- Holy Light and Flash of Light HP Thresholds (or Off) -- ",
+                    },
+                },
+            },            
+            { -- [3]     
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "FlashofLightHP",
+                    DBV = 70,
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(19750) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "HolyLightHP",
+                    DBV = 90,
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(82326) .. " (%)",
+                    }, 
+                    M = {},
+                },
+            },    
             { -- [7]
                 {
                     E = "Header",
@@ -1190,92 +1232,7 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },        
-            },
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Mythic + -- ",
-                    },
-                },
-            },    
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "MythicPlusLogic",
-                    DBV = true,
-                    L = { 
-                        enUS = "Smart Mythic+",
-                        ruRU = "Smart Mythic+",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-                        ruRU = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-                    },
-                    M = {},
-                },    
-                {
-                    E = "Checkbox", 
-                    DB = "GrievousWoundsLogic",
-                    DBV = true,
-                    L = { 
-                        enUS = "Grievous Wounds\nlogic",
-                        ruRU = "Grievous Wounds\nlogic",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-                        ruRU = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-                    },
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 5,                            
-                    DB = "GrievousWoundsMinStacks",                    
-                    DBV = 2,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Grievous Wounds\nmin stacks",                        
-                    },   
-                    TT = { 
-                        enUS = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-                        ruRU = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-                    },                    
-                    M = {},
-                },                
-                {
-                    E = "Checkbox", 
-                    DB = "StopCastQuake",
-                    DBV = true,
-                    L = { 
-                        enUS = "Stop Cast\nquaking",
-                        ruRU = "Stop Cast\nquaking",
-                    },
-                    TT = { 
-                        enUS = "Enable this option to automatically stop your current cast before Quake.",
-                        ruRU = "Enable this option to automatically stop your current cast before Quake.",
-                    },
-                    M = {},
-                },    
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 3,                            
-                    DB = "StopCastQuakeSec",                    
-                    DBV = 1,
-                    Precision = 1,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Stop Cast\nquaking seconds",                      
-                    },
-                    TT = { 
-                        enUS = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-                        ruRU = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-                    },                    
-                    M = {},
-                },
-            },            
+            },         
         },
     },
 	

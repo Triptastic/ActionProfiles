@@ -267,22 +267,22 @@ end
 -- Interrupts spells
 local function Interrupts(unit)
     useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    local EnemiesCasting = MultiUnits:GetByRangeCasting(30, 5, true, "TargetMouseover")
+    local EnemiesCasting = MultiUnits:GetByRangeCasting(8, 5, true)
     
     if castRemainsTime >= A.GetLatency() then    
         
         -- Sigil of Chains (Snare)
-        if useCC and A.SigilofChains:IsReady(player) and A.SigilofChains:IsTalentLearned() and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 then 
+        if useCC and A.SigilofChains:IsReady(player) and Player:IsStayingTime() > 0.2 and A.SigilofChains:IsTalentLearned() and A.SigilofChains:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):GetRange() > 5 and Unit(unit):GetRange() < 8 then 
             return A.SigilofChains              
         end 
         
         -- Sigil of Misery (Disorient)
-        if useCC and A.SigilofMisery:IsReady(player) and EnemiesCasting > 1 and A.SigilofMisery:AbsentImun(unit, Temp.TotalAndCC, true) then 
+        if useCC and A.SigilofMisery:IsReady(player) and Player:IsStayingTime() > 0.2 and EnemiesCasting > 1 and A.SigilofMisery:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofMisery              
         end 
         
         -- Sigil of Silence (Silence)
-        if useKick and (not A.Disrupt:IsReady(unit) or EnemiesCasting > 1) and A.SigilofSilence:IsReady(player) and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
+        if useKick and (not A.Disrupt:IsReady(unit) and Player:IsStayingTime() > 0.2 or EnemiesCasting > 1) and A.SigilofSilence:IsReady(player) and A.SigilofSilence:AbsentImun(unit, Temp.TotalAndCC, true) then 
             return A.SigilofSilence              
         end 
            
@@ -353,7 +353,7 @@ local function SelfDefensives()
 			end 
 		end
 		
-		-- PhialofSerenity
+		--PhialofSerenity
 		if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
 			-- Healing 
 			local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
@@ -403,7 +403,7 @@ A[3] = function(icon, isMulti)
 	local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
 	local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]
 	local MissingSpiritBomb = Unit("target"):HasDeBuffs(A.SpiritBombDebuff.ID, true) < 3
-	local GoodVoracity = Unit("player"):HasBuffs(A.DMVoracity8.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity7.ID, true) > 0 or Unit("player"):HasBuffs(A.DMVoracity6.ID, true) > 0
+	
 
 	if Temp.InfernalStrikeDelay == 0 and Unit(player):IsCasting() == A.InfernalStrike:Info()  then
 			Temp.InfernalStrikeDelay = 90
@@ -439,7 +439,7 @@ A[3] = function(icon, isMulti)
 			--Fleshcraft
 			if A.Fleshcraft:IsReady(player) and Player:IsStayingTime() > 0.5 and Unit("player"):CombatTime() > 0 and (Unit("player"):IsExecuted() or (Unit("player"):HealthPercent() <= 40 and Unit("player"):TimeToDie() < 8)) then 
 			A.Toaster:SpawnByTimer("TripToast", 0, "Fleshcraft!", "Using Fleshcraft defensively! Don't move!", A.Fleshcraft.ID)			
-				return self.Fleshcraft:Show(icon)
+				return A.Fleshcraft:Show(icon)
 			end 
 			
 			--actions.cooldown+=/fodder_to_the_flame
@@ -487,6 +487,11 @@ A[3] = function(icon, isMulti)
 			if A.FieryBrand:IsReady(unit) and Unit(unit):TimeToDie() >= 8 then 
 				return A.FieryBrand:Show(icon)
 			end	
+
+            --Fracture if need fury/souls
+            if A.Fracture:IsReady(unit) and SoulFragments <= 4 then
+                return A.Fracture:Show(icon)
+            end  
 			
 			--Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
 			if A.SigilofFlame:IsReady("player") and not (A.AbyssalStrike:IsSpellLearned() and A.InfernalStrike:GetSpellTimeSinceLastCast() < 4) and not Unit(player):InVehicle() and not Raz and Unit("target"):GetRange() <= 10 then
@@ -501,7 +506,7 @@ A[3] = function(icon, isMulti)
 			end
 
 			--Fel Devastation on cooldown
-			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
+			if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG and Unit("target"):TimeToDie() > 5 then
 				return A.FelDevastation:Show(icon)
 			end
 
@@ -511,7 +516,7 @@ A[3] = function(icon, isMulti)
 			end	
 
 			--Soul Cleave to dump fury
-			if A.SoulCleave:IsReady(unit) and not Raz and Player:Fury() >= 30 and ((SoulFragments < 1 and A.SpiritBomb:IsTalentLearned()) or not A.SpiritBomb:IsTalentLearned()) then
+			if A.SoulCleave:IsReady(unit) and not Raz and Player:Fury() >= 70 then
 				return A.SoulCleave:Show(icon)
 			end
 			
