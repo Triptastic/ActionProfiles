@@ -624,7 +624,7 @@ A[3] = function(icon, isMulti)
                     or 
                     Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) < 5
                 ) 
-                --and Player:RunicPowerDeficit() >= 20
+                and Player:RunicPowerDeficit() >= 20
             ) 
             then
                 return A.Marrowrend:Show(icon)
@@ -718,15 +718,6 @@ A[3] = function(icon, isMulti)
             ) 
             then
                 return A.BloodBoil:Show(icon)
-            end
-            
-            -- marrowrend,if=buff.bone_shield.stack<5&talent.ossuary.enabled&runic_power.deficit>=15
-            if A.Marrowrend:IsReady(unit) and 
-            (
-                Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) < 5 and A.Ossuary:IsSpellLearned() and Player:RunicPowerDeficit() >= 15
-            ) 
-            then
-                return A.Marrowrend:Show(icon)
             end
             
             -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.heartbreaker.enabled*2)|Unit(unit):TimeToDie()<10
