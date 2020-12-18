@@ -160,7 +160,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     FeralFrenzy								= Action.Create({ Type = "Spell", ID = 274837	}),	
 
 	-- PvP Talents
-
+    Thorns									= Action.Create({ Type = "Spell", ID = 305497	}),							
 
 	-- AntiFake icons
 	WildChargeRed							= Action.Create({ Type = "SpellSingleColor", ID = 102401, Color = "RED", Desc = "[1] CC Focus"}), 
@@ -925,7 +925,7 @@ A[3] = function(icon)
     end
 end
 
-local function ArenaRotation(icon, unitID)
+--[[ local function ArenaRotation(icon, unitID)
     if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then     
 		--Dispell Enrage
 		if unitID ~= "targettarget" and A.Soothe:IsReady(unitID, nil, nil, true) and A.Soothe:AbsentImun(unitID, Temp.AuraForOnlyCCAndStun) and A.AuraIsValid(unitID, "UseExpelEnrage", "Enrage") then 
@@ -994,4 +994,4 @@ A[8] = function(icon)
     end     
     
     return ArenaRotation(icon, "arena3")
-end
+end]]
