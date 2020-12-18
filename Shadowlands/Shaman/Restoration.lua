@@ -296,7 +296,7 @@ A[3] = function(icon, isMulti)
 		end
 		
 		-- LavaBurst
-        if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.LavaBurst:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and (Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0 or A.EchooftheElements:IsTalentLearned() and A.LavaBurst:GetSpellCharges() > 1) then 
+        if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.LavaBurst:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then 
             return A.LavaBurst:Show(icon)
         end 
         
