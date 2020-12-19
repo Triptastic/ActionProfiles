@@ -304,10 +304,6 @@ A[3] = function(icon, isMulti)
 
 			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.FireBlast:GetSpellChargesFrac() > A.PhoenixFlames:GetSpellChargesFrac() and A.LastPlayerCastID ~= A.PhoenixFlames:Info() and ((A.Combustion:GetCooldown() > 10 and A.BurstIsON) or not A.BurstIsON) then
 				return A.FireBlast:Show(icon)
-			end	
-			
-			if A.PhoenixFlames:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.PhoenixFlames:GetSpellChargesFrac() > A.FireBlast:GetSpellChargesFrac() and A.LastPlayerCastID ~= A.FireBlast:Info() and ((A.Combustion:GetCooldown() > 10 and A.BurstIsON) or not A.BurstIsON) then
-				return A.PhoenixFlames:Show(icon)
 			end				
 
 			if A.Flamestrike:IsReady(player) and A.FlamePatch:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 2 and UseAoE then
