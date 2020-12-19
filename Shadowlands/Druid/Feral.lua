@@ -657,12 +657,6 @@ A[3] = function(icon)
 			if A.Incarnation:IsReady(player) and ComboPoints >= 3 then
 				return A.Incarnation:Show(icon)
 			end
-			
-			--actions.cooldown+=/tigers_fury,if=energy.deficit>55|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
-					--Try and not waste TF energy, but also just use it for zerk and incarns
-			if A.TigersFury:IsReady(player) and (EnergyDeficit > 55 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0) or (A.Predator:IsTalentLearned() and Unit(unitID):TimeToDie() < 3)) then
-				return A.TigersFury:Show(icon)
-			end 
 					
 
 			--actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
@@ -812,6 +806,12 @@ A[3] = function(icon)
 			end
 		
 		end
+
+		--actions.cooldown+=/tigers_fury,if=energy.deficit>55|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
+				--Try and not waste TF energy, but also just use it for zerk and incarns
+		if A.TigersFury:IsReady(player) and (EnergyDeficit > 55 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0) or (A.Predator:IsTalentLearned() and Unit(unitID):TimeToDie() < 3)) then
+			return A.TigersFury:Show(icon)
+		end 
 
 		--actions.precombat+=/variable,name=filler,value=1
 		if A.Rake:IsReady(unitID) and not inCombat then
