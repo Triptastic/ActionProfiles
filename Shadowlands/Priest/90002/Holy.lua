@@ -549,7 +549,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		
 				-- Circle of Healing
 				if CanCast and inCombat and A.CircleofHealing:IsReady(player) and Unit(player):HealthPercent() <= CircleofHealingHP then
-					return A.CircleofHealing:Show(icon)
+					return A.RocketJump:Show(icon)
 				end	
 
 				--Divine Star - best I could come up with

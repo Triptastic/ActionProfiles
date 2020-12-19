@@ -621,11 +621,6 @@ A[3] = function(icon, isMulti)
 				end
 			end
 			
-			--High Priority Mind Blast to consume 2 charges
-			if A.MindBlast:IsReady(unit, nil, nil, true) and CanCast and A.MindBlast:GetSpellCharges() > 1 then
-				return A.MindBlast:Show(icon)
-			end
-			
 			--# High Priority Mind Sear action to refresh DoTs with Searing Nightmare
 			--actions.main+=/mind_sear,target_if=talent.searing_nightmare.enabled&spell_targets.mind_sear>variable.mind_sear_cutoff&!dot.shadow_word_pain.ticking&!cooldown.fiend.up
 			if A.MindSear:IsReady(unit) and (not isMoving or StMActive) and A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > VarMindSearCutoff and Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and ((A.Shadowfiend:GetCooldown() > 0 and not A.Mindbender:IsTalentLearned()) or (A.Mindbender:GetCooldown() > 0 and A.Mindbender:IsTalentLearned())) then
@@ -796,6 +791,11 @@ A[3] = function(icon, isMulti)
 		if A.VampiricTouch:IsReady(unitID, nil, nil, A.GetToggle(2, "ByPassSpells")) and CanCast and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
 			return A.VampiricTouch:Show(icon)
 		end	
+
+		--High Priority Mind Blast to consume 2 charges
+		if A.MindBlast:IsReady(unit, nil, nil, true) and CanCast and A.MindBlast:GetSpellCharges() > 1 then
+			return A.MindBlast:Show(icon)
+		end
 		--actions.cds+=/mindgames,target_if=insanity<90&(variable.all_dots_up|buff.voidform.up)&(!talent.hungering_void.enabled|debuff.hungering_void.up|!buff.voidform.up)&(!talent.searing_nightmare.enabled|spell_targets.mind_sear<5)
 		if A.Mindgames:IsReady(unitID) and inCombat and CanCast and (not isMoving or StMActive) and UseCovenant and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then
 			return A.Mindgames:Show(icon)

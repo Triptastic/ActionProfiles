@@ -242,7 +242,7 @@ local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
 local player = "player"
 local target = "target"
 local mouseover = "mouseover"
-local focustarget = "focustarget"
+local focus = "focus"
 local targettarget = "targettarget"
 
 --Register Toaster
@@ -537,8 +537,8 @@ A[3] = function(icon, isMulti)
 	local InCatForm = Unit(player):HasBuffs(A.CatForm.ID, true) > 0	
 	local InNoForm = Unit(player):HasBuffs(A.MoonkinForm.ID, true) == 0 and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and Unit(player):HasBuffs(A.CatForm.ID, true) == 0
 	
-	local SolarEclipse = Unit(player):HasBuffs(A.SolarEclipse.ID, true) > 0
-	local LunarEclipse = Unit(player):HasBuffs(A.LunarEclipse.ID, true) > 0
+	local SolarEclipse = Unit(player):HasBuffs(A.SolarEclipse.ID, true) > 0 or A.Wrath:GetSpellCharges() >= 1
+	local LunarEclipse = Unit(player):HasBuffs(A.LunarEclipse.ID, true) > 0 or A.Starfire:GetSpellCharges() >= 1
 	local NoEclipse = Unit(player):HasBuffs(A.SolarEclipse.ID, true) == 0 and Unit(player):HasBuffs(A.LunarEclipse.ID, true) == 0
 	
 	local ComboPoints = Player:ComboPoints()
@@ -567,10 +567,16 @@ A[3] = function(icon, isMulti)
 
 	local function DamageRotation()
 
-	local MoonfireRefreshable = Unit(unitID):HasDeBuffs(A.MoonfireDebuff.ID, true) < 4.8
-	local SunfireRefreshable = Unit(unitID):HasDeBuffs(A.Sunfire.ID, true) < 4
-	local RipRefreshable = Unit(unitID):HasDeBuffs(A.Rip.ID, true) < 7
-	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4
+	local MoonfireRefreshable = Unit(unitID):HasDeBuffs(A.MoonfireDebuff.ID, true) < Unit(unitID):HasDeBuffs(A.Sunfire.ID, true) and Unit(unitID):TimeToDie() > 5
+	local SunfireRefreshable = Unit(unitID):HasDeBuffs(A.Sunfire.ID, true) < 2 and Unit(unitID):TimeToDie() > 5
+	local RipRefreshable = Unit(unitID):HasDeBuffs(A.Rip.ID, true) < 7 and Unit(unitID):TimeToDie() > 5
+	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4 and Unit(unitID):TimeToDie() > 5
+
+		if A.IsUnitEnemy(target) then
+			if HealingEngine.GetBelowHealthPercentUnits(50, 40) >= 1 or (Unit(focus):HealthPercent() < 80 and Unit(focus):IsExists() and Unit(focus):HasBuffs(A.Lifebloom.ID, true) == 0 and Unit(focus):HasBuffs(A.Rejuvenation.ID, true) == 0) then
+				return A.Darkflight:Show(icon)
+			end
+		end
 
 		if A.Moonfire:IsReady(unitID) and MoonfireRefreshable then
 			return A.Moonfire:Show(icon)
@@ -585,7 +591,7 @@ A[3] = function(icon, isMulti)
 				return A.MoonkinForm:Show(icon)
 			end
 			
-			if A.CatForm:IsReady(player) and A.FeralAffinity:IsTalentLearned() and not InCatForm and Unit(unitID):GetRange() <= 7 then
+			if A.CatForm:IsReady(player) and A.FeralAffinity:IsTalentLearned() and Unit(unitID):HasDeBuffs(A.MoonfireDebuff.ID, true) > 6 and Unit(unitID):HasDeBuffs(A.Sunfire.ID, true) > 6  and not InCatForm and Unit(unitID):GetRange() <= 7 then
 				return A.CatForm:Show(icon)
 			end
 		end
@@ -699,6 +705,12 @@ A[3] = function(icon, isMulti)
 	local function HealingRotation()
 	local HoTActive = (Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) > 0 or Unit(unitID):HasBuffs(A.WildGrowth.ID, player, true) > 0 or Unit(unitID):HasBuffs(A.Regrowth.ID, player, true) > 0)
 	local AllHoTsActive = (Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) > 0 and Unit(unitID):HasBuffs(A.WildGrowth.ID, player, true) > 0 and Unit(unitID):HasBuffs(A.Regrowth.ID, player, true) > 0)
+	local HoTExpiring = (Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) > 0 and Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) < 3) or (Unit(unitID):HasBuffs(A.WildGrowth.ID, player, true) > 0 and Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) < 3) or (Unit(unitID):HasBuffs(A.Regrowth.ID, player, true) > 0 and Unit(unitID):HasBuffs(A.Rejuvenation.ID, player, true) < 3)	
+	
+		-- Set Tank as Focus
+		if A.IsUnitFriendly(target) and not Unit(focus):IsExists() and Unit(target):IsTank() then
+			return A.Shadowmeld:Show(icon)
+		end
 	
 		-- Dispel Sniper 
 		if A.NaturesCure:IsReady() and UseDispel and CanCast then
@@ -713,6 +725,11 @@ A[3] = function(icon, isMulti)
 		if UseDispel and CanCast and A.NaturesCure:IsReady(unitID) and AuraIsValid(target, "UseDispel", "Dispel") then
 			return A.NaturesCure:Show(icon)
 		end  
+
+		-- Cenarion Ward
+		if A.CenarionWard:IsReady(unitID) and CanCast and Unit(unitID):IsTanking() then
+			return A.CenarionWard:Show(icon)
+		end
 
 		-- Convoke as healing
 		if A.ConvoketheSpirits:IsReady(player) and UseCovenant and CanCast and inCombat and InNoForm and inCombat and Unit(player):HasBuffs(A.Innervate.ID, true) == 0 and Unit(player):HasBuffs(A.IncarnationBuff.ID, true) == 0 then
@@ -785,8 +802,13 @@ A[3] = function(icon, isMulti)
 			return A.Ironbark:Show(icon)
 		end
 
-		-- Swiftmend 
-		if A.Swiftmend:IsReady(unitID) and CanCast and Unit(unitID):HealthPercent() <= 60 and HoTActive then
+		-- Swiftmend HoT snipe
+		if A.Swiftmend:IsReady(unitID) and CanCast and Unit(unitID):HealthPercent() <= 85 and HoTExpiring then
+			return A.Swiftmend:Show(icon)
+		end
+
+		-- Swiftmend Emergency
+		if A.Swiftmend:IsReady(unitID) and CanCast and Unit(unitID):HealthPercent() <= 50 and HoTActive then
 			return A.Swiftmend:Show(icon)
 		end
            
@@ -826,11 +848,6 @@ A[3] = function(icon, isMulti)
 				HealingEngine.SetTarget("TANK", 0.5)
 				return A.Lifebloom:Show(icon)
 			end	
-		end
-		
-		-- Cenarion Ward
-		if A.CenarionWard:IsReady(unitID) and CanCast and Unit(unitID):HealthPercent() <= 95 and Unit(unitID):IsTanking() then
-			return A.CenarionWard:Show(icon)
 		end
 			
 		-- Regrowth

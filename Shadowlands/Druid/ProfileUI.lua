@@ -201,6 +201,67 @@ A.Data.ProfileUI = {
 			},	
 		},	
 		[ACTION_CONST_DRUID_BALANCE] = {             
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< GENERAL ><><><l ",
+                    },
+                },
+            },            
+            { -- GENERAL OPTIONS FIRST ROW
+                { -- MOUSEOVER
+                    E = "Checkbox", 
+                    DB = "mouseover",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use @mouseover", 
+                        ruRU = "Использовать @mouseover", 
+                        frFR = "Utiliser les fonctions @mouseover",
+                    }, 
+                    TT = { 
+                        enUS = "Will unlock use actions for @mouseover units\nExample: Resuscitate, Healing", 
+                        ruRU = "Разблокирует использование действий для @mouseover юнитов\nНапример: Воскрешение, Хилинг", 
+                        frFR = "Activera les actions via @mouseover\n Exemple: Ressusciter, Soigner",
+                    }, 
+                    M = {},
+                },
+				{ -- AOE
+                    E = "Checkbox", 
+                    DB = "AoE",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use AoE", 
+                        ruRU = "Использовать AoE", 
+                        frFR = "Utiliser l'AoE",
+                    }, 
+                    TT = { 
+                        enUS = "Enable multiunits actions", 
+                        ruRU = "Включает действия для нескольких целей", 
+                        frFR = "Activer les actions multi-unités",
+                    }, 
+                    M = {
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
+                },             
+                {
+                    E = "Checkbox", 
+                    DB = "AutoShift",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Shift"
+                    }, 
+                    TT = { 
+                        ANY = "Automatically shift forms where appropriate."
+                    }, 
+                    M = {},
+                },
+			},		
 		},
         [ACTION_CONST_DRUID_GUARDIAN] = {
             { -- [7]

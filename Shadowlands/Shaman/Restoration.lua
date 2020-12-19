@@ -529,3 +529,11 @@ A[3] = function(icon, isMulti)
     end     
 
 end
+
+local function PartyRotation(unitID) 
+	-- Dispel 
+    if A.PurifySpirit:IsReady(unitID) and A.RemoveCorruption:AbsentImun(unitID) and A.AuraIsValid(unitID, "UseDispel", "Dispel") and not Unit(unitID):InLOS() then                         
+        return A.PurifySpirit
+    end    
+	
+end 
