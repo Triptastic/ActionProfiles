@@ -1479,6 +1479,10 @@ A[3] = function(icon, isMulti)
 					
 				end
 				
+				if A.HammerofWrath:IsReady(unitID) then
+					return A.HammerofWrath:Show(icon)
+				end
+				
 				-- avengers_shield,if=cooldown_react
 				if A.AvengersShield:GetCooldown() < 1 then
 					return A.AvengersShield:Show(icon)
