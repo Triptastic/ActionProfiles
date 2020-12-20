@@ -1479,7 +1479,7 @@ A[3] = function(icon, isMulti)
 					
 				end
 				
-				if A.HammerofWrath:IsReady(unitID) then
+				if A.HammerofWrath:IsReady(unit) then
 					return A.HammerofWrath:Show(icon)
 				end
 				
@@ -1623,7 +1623,7 @@ A[3] = function(icon, isMulti)
 				return A.ShieldoftheRighteous:Show(icon)
 			end
 
-	
+		end
 		
     end
     -- End on EnemyRotation()
