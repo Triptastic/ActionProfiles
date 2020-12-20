@@ -236,6 +236,11 @@ A[3] = function(icon, isMulti)
 	local SpiritwalkersGraceTime = A.GetToggle(2, "SpiritwalkersGraceTime")
 	local AutoPurify = A.GetToggle(2, "AutoPurify")
 	local EarthShieldWorkMode = A.GetToggle(2, "EarthShieldWorkMode")
+	local HealingWaveHP = A.GetToggle(2, "HealingWaveHP")
+	local HealingSurgeHP = A.GetToggle(2, "HealingSurgeHP")
+	local ChainHealHP = A.GetToggle(2, "ChainHealHP")
+	local ChainHealTargets = A.GetToggle(2, "ChainHealTargets")
+	local ChainLightningTargets = A.GetToggle(2, "ChainLightningTargets")	
 	
 	--Function shortcuts
 	local inCombat = Unit(player):CombatTime() > 0
@@ -306,7 +311,7 @@ A[3] = function(icon, isMulti)
         end 
 
 		-- ChainLightning
-        if A.ChainLightning:IsReady(unitID) and UseAoE and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.ChainLightning:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and A.MultiUnits:GetActiveEnemies() > 2 then 
+        if A.ChainLightning:IsReady(unitID) and UseAoE and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.ChainLightning:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and A.MultiUnits:GetActiveEnemies() > ChainLightningTargets then 
             return A.ChainLightning:Show(icon)
         end 
 
@@ -466,17 +471,17 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--Chain Heal
-		if A.ChainHeal:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and HealingEngine.GetBelowHealthPercentUnits(80, 40) >= 3 and Unit(player):HasBuffsStacks(A.TidalWavesBuff.ID, true) < 2 and Unit(unitID):HealthPercent() > 20 and not isMoving then
+		if A.ChainHeal:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and HealingEngine.GetBelowHealthPercentUnits(ChainHealHP, 40) >= ChainHealTargets and Unit(player):HasBuffsStacks(A.TidalWavesBuff.ID, true) < 2 and Unit(unitID):HealthPercent() > 20 and not isMoving then
 			return A.ChainHeal:Show(icon)
 		end
 		
 		--HealingSurge Emergency w/ Tidal Waves
-		if A.HealingSurge:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(unitID):HealthPercent() <= 40 then
+		if A.HealingSurge:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(unitID):HealthPercent() <= HealingSurgeHP then
 			return A.HealingSurge:Show(icon)
 		end
 		
 		--Healing Wave
-		if A.HealingWave:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(unitID):HealthPercent() <= 80 then
+		if A.HealingWave:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(unitID):HealthPercent() <= HealingWaveHP then
 			return A.HealingWave:Show(icon)
 		end
 		
