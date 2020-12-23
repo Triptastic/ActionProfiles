@@ -1011,11 +1011,8 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-        },	
-        [ACTION_CONST_PALADIN_HOLY] = {          
-            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
-        [ACTION_CONST_PALADIN_HOLY] = {          
-            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
+        },	    
+        [ACTION_CONST_PALADIN_HOLY] = {              
             { -- [7]
                 {
                     E = "Header",
@@ -1236,8 +1233,7 @@ A.Data.ProfileUI = {
                 },        
             },         
         },
-    },
-	
+	},	
     -- MSG Actions UI
     [7] = {
         [ACTION_CONST_PALADIN_RETRIBUTION] = { 
