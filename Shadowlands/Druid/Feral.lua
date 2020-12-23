@@ -14,6 +14,7 @@ local GetPing									= Action.GetPing
 local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell								= Action.FrameHasSpell
 local Azerite									= LibStub("AzeriteTraits")
@@ -294,17 +295,6 @@ local function Interrupts(unit)
     end
 end
 
-local function HandleStealth()
-    local choice = GetToggle(2, "AutoStealthOOC")
-    local unit = "target"
-    return     (
-        (IsInRaid() and choice[1]) or 
-        (IsInGroup() and choice[2]) or
-        (A.IsInPvP and choice[3]) or
-		(A.Prowl:IsReady() and choice[4])
-    )
-end
-
 local function SelfDefensives()
     if Unit(player):CombatTime() == 0 then 
         return 
@@ -569,7 +559,6 @@ A[3] = function(icon)
 	local EnergyDeficit = Player:EnergyDeficit()
 	local ComboPoints = Player:ComboPoints()
 	local ComboPointsDeficit = Player:ComboPointsDeficit()
-	local HandleStealth = HandleStealth()	
 	local InMelee = InMelee()
 	
 	--Toggle remaps
@@ -675,7 +664,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.cooldown+=/kindred_spirits,if=buff.tigers_fury.up|(conduit.deep_allegiance.enabled)
-			if (A.LoneEmpowerment:IsReady(unitID) or A.KindredEmpowerment:IsReady(unitID)) and UseCovenant and Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
+			if (A.LoneEmpowerment:IsReady(player) or A.KindredEmpowerment:IsReady(player)) and UseCovenant and Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
 				return A.KindredSpirits:Show(icon)
 			end
 			
@@ -767,7 +756,7 @@ A[3] = function(icon)
 		end
 		
 		--actions+=/prowl
-		if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 and not Player:IsMounted() and not Player:IsStealthed() and HandleStealth then
+		if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 and not Player:IsMounted() and not Player:IsStealthed() then
 			return A.Prowl:Show(icon)
 		end
 
@@ -777,7 +766,7 @@ A[3] = function(icon)
 		end 
 
 		--Regrowth
-		if A.Regrowth:IsReady(player) and RegrowthProcs and Unit(player):HealthPercent() <= 90 and Unit(player):HasBuffs(A.PredatorySwiftness.ID, true) > 0 then
+		if A.Regrowth:IsReady(player) and RegrowthProcs and Unit(player):HealthPercent() <= 90 and Unit(player):HasBuffs(A.PredatorySwiftness.ID, true) > 0 and not Player:IsStealthed() then
 			return A.Regrowth:Show(icon)
 		end
 		
@@ -864,24 +853,24 @@ A[3] = function(icon)
 		end
 
 		--actions+=/feral_frenzy,if=combo_points=0
-		if A.FeralFrenzy:IsReady(unitID) and ComboPoints < 3 then
+		if A.FeralFrenzy:IsReady(unitID) and ComboPoints < 3 and not Player:IsStealthed() then
 			return A.FeralFrenzy:Show(icon)
 		end
 
 		--actions+=/moonfire_cat,target_if=refreshable
-		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 then
+		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
 			return A.MoonfireCat:Show(icon)
 		end
 
 		--actions+=/thrash_cat,if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks
-		if A.Thrash:IsReady(unitID) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee then
+		if A.Thrash:IsReady(unitID) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Thrash:Show(icon)
 		end
 
 		--actions+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 
 		--actions+=/swipe_cat,if=spell_targets.swipe_cat>2
-		if A.Swipe:IsReady(player) and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee then
+		if A.Swipe:IsReady(player) and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Swipe:Show(icon)
 		end
 		

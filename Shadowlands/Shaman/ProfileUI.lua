@@ -1168,7 +1168,19 @@ A.Data.ProfileUI = {
                         ANY = "What shield do you want to use on yourself?"
                     },                    
                     M = {},
-                },           
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 10,                            
+                    DB = "ChainLightningTargets",
+                    DBV = 3,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Lightning Targets",
+                    }, 
+                    M = {},
+                }, 				
             },					
             { -- LAYOUT SPACE
                 
@@ -1228,7 +1240,59 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },               
-            },                  
+            }, 
+            {
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "HealingWaveHP",
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Healing Wave HP (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "HealingSurgeHP",
+                    DBV = 40,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Healing Surge HP (%)",
+                    }, 
+                    M = {},
+                }, 				
+            },
+			{
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "ChainHealHP",
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Heal HP (%)",
+                    }, 
+                    M = {},
+                }, 	
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 10,                            
+                    DB = "ChainHealTargets",
+                    DBV = 3,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Heal Targets",
+                    }, 
+                    M = {},
+                }, 				
+            },				
         },
     },
     -- MSG Actions UI
