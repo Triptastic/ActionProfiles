@@ -65,19 +65,7 @@ A.Data.ProfileUI                                     = {
                         enUS = "Enable multiunits actions", 
                     }, 
                     M = {},
-                }, 
-				{ -- Auto Multi Dot
-                    E = "Checkbox", 
-                    DB = "AutoMultiDot",
-                    DBV = false,
-                    L = { 
-                        ANY = "Auto Multi DoT (BETA)"
-                    }, 
-                    TT = { 
-                        ANY = "Switch through enemies to apply DoTs automatically! Limited to five total targets per combat."
-                    }, 
-                    M = {},
-                },	                    
+                },                   
             },
             { -- LAYOUT SPACE
                 

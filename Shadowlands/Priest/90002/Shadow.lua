@@ -128,7 +128,7 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
     VoidTorrent						= Action.Create({ Type = "Spell", ID = 263165	}),
     AncientMadness					= Action.Create({ Type = "Spell", ID = 341240, Hidden = true 	}),
 	HungeringVoid					= Action.Create({ Type = "Spell", ID = 341273, Hidden = true 	}),
-    SurrendertoMadness				= Action.Create({ Type = "Spell", ID = 319952, Hidden = true 	}),	
+    SurrendertoMadness				= Action.Create({ Type = "Spell", ID = 319952 	}),	
 
 	-- PvP Talents
 
@@ -704,7 +704,7 @@ A[3] = function(icon, isMulti)
 			
 			--# Use Mind Blast if you don't need to refresh DoTs. Stop casting at 4 or more targets with Searing Nightmare talented.
 			--actions.main+=/mind_blast,if=variable.dots_up&raid_event.movement.in>cast_time+0.5&(spell_targets.mind_sear<4&!talent.misery.enabled|spell_targets.mind_sear<6&talent.misery.enabled)
-			if A.MindBlast:IsReady(unit, nil, nil, true) and CanCast and (not isMoving or StMActive) and VarDotsUp and ((MultiUnits:GetActiveEnemies() < 4 and A.Misery:IsTalentLearned()) or (MultiUnits:GetActiveEnemies() < 6 and A.Misery:IsTalentLearned())) then
+			if A.MindBlast:IsReady(unit, nil, nil, true) and CanCast and (not isMoving or StMActive) and VarDotsUp and ((MultiUnits:GetActiveEnemies() < 4 and not A.Misery:IsTalentLearned()) or (MultiUnits:GetActiveEnemies() < 6 and A.Misery:IsTalentLearned())) then
 				return A.MindBlast:Show(icon)
 			end
 			
