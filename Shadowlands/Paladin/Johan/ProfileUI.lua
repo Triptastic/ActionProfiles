@@ -1014,6 +1014,8 @@ A.Data.ProfileUI = {
         },	
         [ACTION_CONST_PALADIN_HOLY] = {          
             LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
+        [ACTION_CONST_PALADIN_HOLY] = {          
+            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
             { -- [7]
                 {
                     E = "Header",

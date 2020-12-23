@@ -150,9 +150,14 @@ Action[ACTION_CONST_PALADIN_HOLY] = {
     
     -- PvP
 	DivineFavor							   = Action.Create({ Type = "Spell", ID = 210294 }),
-	HordeFlag							   = Action.Create({ Type = "Spell", ID = 23333 }),
-	AllianceFlag						   = Action.Create({ Type = "Spell", ID = 23335 }),
-	OrbofPower						       = Action.Create({ Type = "Spell", ID = 121177 }),
+	HordeFlag 					           = Action.Create({ Type = "Spell", ID = 156618 }),
+	AllianceFlag					       = Action.Create({ Type = "Spell", ID = 156621 }),
+	OrbofPowerPurple						       = Action.Create({ Type = "Spell", ID = 121175 }), 
+	OrbofPowerGreen						       = Action.Create({ Type = "Spell", ID = 121176 }), 
+	OrbofPowerBlue						       = Action.Create({ Type = "Spell", ID = 121164 }), 
+	OrbofPowerOrange						= Action.Create({ Type = "Spell", ID = 121177 }), 
+	FocusedAssault						   = Action.Create({ Type = "Spell", ID = 46392 }),
+	NetherstormFlag						   = Action.Create({ Type = "Spell", ID = 34976 }),
 	
     --    Later
     
@@ -722,19 +727,6 @@ local function NeedUltraEmergencyHPS()
     return ( HealingEngine.GetIncomingHPSAVG() * 3 < HealingEngine.GetIncomingDMGAVG() )
 end
 
--- Mana Management
-local function IsSaveManaPhase()
-    if not A.IsInPvP and A.GetToggle(2, "ManaManagement") then 
-        for i = 1, MAX_BOSS_FRAMES do 
-            if Unit("boss" .. i):IsExists() and not Unit("boss" .. i):IsDead() and Unit(player):PowerPercent() < Unit("boss" .. i):HealthPercent() then 
-                return true 
-            end 
-        end 
-    end 
-    return Unit(player):PowerPercent() < 20 
-end 
-IsSaveManaPhase = A.MakeFunctionCachedStatic(IsSaveManaPhase)
-
 -- Return total active Glimmer of Light buff and debuff
 local function GlimmerofLightCount()
     return HealingEngine.GetBuffsCount(A.GlimmerofLightBuff.ID, 0, player, true)
@@ -843,199 +835,6 @@ local function CanStopCastingOverHeal(unitID, unitGUID)
     end 
 end 
 
-local function HoF(unit, Icon)    
-    --local msg = MacroSpells(Icon, "Freedom")
-    return
-    --(
-    --     msg or 
-    --     HoF_toggle  
-    -- ) and
-    A.BlessingofFreedom:IsReady(unit) and 
-    Unit(unit):IsPlayer() and
-    (
-        -- SELF
-        (
-            UnitIsUnit(unit, player) and 
-            (
-                Unit(unit):HasDeBuffs("Rooted") > GetCurrentGCD() + GetGCD() or 
-                (
-                    Unit(player):GetCurrentSpeed() > 0 and 
-                    Unit(player):GetMaxSpeed() < 100
-                )
-            )
-        ) or
-        -- ANOTHER UNIT 
-        (
-            -- Useable conditions
-            Unit(unit):IsExists() and 
-            not UnitIsUnit(unit, player) and 
-            select(2, UnitClass(unit)) ~= "DRUID" and
-            --not Unit(unit):InLOS() and         
-            A.BlessingofFreedom:IsInRange(unit)    and        
-            Unit(unit):HasDeBuffs(A.Cyclone.ID, true) == 0 and -- Cyclone    
-            (
-                -- MSG System
-                -- msg or 
-                -- Rooted and Solar Beam
-                (
-                    Unit(unit):HasDeBuffs(78675, true) > 0 and  
-                    Unit(unit):HasDeBuffs("Rooted") > GetCurrentGCD()
-                ) 
-                or 
-                -- Rooted without inc dmg 
-                (
-                    Unit(unit):HasDeBuffs("Rooted") > 3 and
-                    Unit(unit):GetRealTimeDMG() <= Unit(unit):HealthMax() * 0.1 
-                ) 
-                or 
-                -- Slowed (if we no need freedom for self)
-                (
-                    (
-                        -- 8.2 changes Unbound Freedom
-                        A.IsTalentLearned(305394) or 
-                        not Unit(player):IsFocused() or 
-                        Unit(player):GetMaxSpeed() >= 100
-                    ) and
-                    Unit(unit):GetCurrentSpeed() > 0 and 
-                    Unit(unit):GetMaxSpeed() < 80 and 
-                    (
-                        (
-                            -- 8.2 changes Unbound Freedom
-                            A.IsTalentLearned(305394) and 
-                            Unit(player):GetCurrentSpeed() < 100
-                        ) or 
-                        (
-                            Unit(unit):HasBuffs("DamageBuffs") > 6 and 
-                            Unit(unit):HasDeBuffs("Slowed") > 0 and 
-                            Unit(unit):HasDeBuffs("Disarmed") <= GetCurrentGCD()
-                        )
-                    )
-                ) 
-                or 
-                (                
-                    Action.ZoneID == 1580 and                   -- Ny'alotha - Vision of Destiny
-                    Unit(unit):HasDeBuffsStacks(307056) >= 40 -- Burning Madness
-                )
-            )
-        )
-    ) and
-    -- Check another CC types 
-    -- Hex, Polly, Repentance, Blind, Wyvern Sting, Ring of Frost, Paralysis, Freezing Trap, Mind Control
-    Unit(unit):HasDeBuffs({51514, 118, 20066, 2094, 19386, 82691, 115078, 3355, 605}, true) <= GetCurrentGCD() and 
-    Unit(unit):HasDeBuffs("Incapacitated") <= GetCurrentGCD() and 
-    Unit(unit):HasDeBuffs("Disoriented") <= GetCurrentGCD() and 
-    Unit(unit):HasDeBuffs("Fear") <= GetCurrentGCD() and 
-    Unit(unit):HasDeBuffs("Stuned") <= GetCurrentGCD()  
-end    
-
-
-local function SacrificeAble(unit)
-    -- Function to check if we can use sacriface with max profit time duration on unit
-    local dmg, u_ttd, bubble, shield = Unit(unit):GetDMG() * 0.7, Unit(unit):TimeToDie() * 0.7, Unit(player):HasBuffs(642, true), 1
-    -- -20% incoming damage
-    local shield_buff = Unit(player):HasBuffs(498, true)
-    if shield_buff > 0 then 
-        shield = dmg * ( 0.2 - (0.2 - (shield_buff * 0.2 / 8)) )
-    end
-    
-    local p_ttd, p_chp = 0, Unit(player):Health()
-    if not A.UltimateSacrifice:IsTalentLearned() or not A.IsInPvP then
-        -- Real player's ttd to lower 20% under sacriface and shield buff
-        local p_mhp = Unit(player):HealthMax() * 0.2
-        if p_chp > p_mhp and dmg > 0 and u_ttd > 0 then 
-            local muliplier = 0.75
-            -- If Protection then 100% receiving damage by Sacriface
-            if Unit(player):HasSpec(66) then 
-                muliplier = 1
-            end     
-            p_ttd = math.abs(        
-                -- Current HP without 20% / incdmg by Sacriface + already exist incdmg for yourself
-                (p_chp - p_mhp) /
-                (( dmg * muliplier * (1 - (GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)/2/100)) ) + Unit(player):GetDMG() )
-            )     
-        end
-    else
-        p_ttd = math.abs(        
-            -- Current HP / incdmg by Sacriface + already exist incdmg for yourself
-            p_chp /
-            (( dmg * (1 - (GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)/2/100)) ) + Unit(player):GetDMG() )
-        )    
-    end 
-    
-    if bubble > 0 then 
-        p_ttd = p_ttd + bubble
-    end
-    
-    return p_ttd + GetCurrentGCD() >= u_ttd, p_ttd
-end
-
--- Hand of Sacrifice
-local function HoS(unit, hp, IsRealDMG, IsDeffensed)  
-    return 
-    Unit(unit):IsExists() and 
-    Unit(unit):IsPlayer() and
-    not UnitIsUnit(unit, player) and
-    --not Unit(unit):InLOS() and 
-    (UnitInRaid(unit) or UnitInParty(unit)) and 
-    A.BlessingofSacrifice:IsReady(unit) and
-    A.BlessingofSacrifice:IsInRange(unit) and 
-    Unit(unit):HasDeBuffs(A.Cyclone.ID, true) == 0 and -- Cyclone 
-    Unit(player):Health() > Unit(player):HealthMax() * 0.2 and       
-    (
-        -- MSG System TO ACTION
-        --(
-        --    Icon and 
-        --   MacroSpells(Icon, "HoS") 
-        --) or  
-        -- HoS conditions 
-        (
-            -- HoS_toggle and 
-            SacrificeAble(unit) and 
-            Unit(unit):HasBuffs(1022, true) == 0 and -- BoP
-            -- Check args
-            (
-                not IsRealDMG or
-                Unit(unit):GetRealTimeDMG() > 0
-            ) and 
-            ( 
-                not IsDeffensed or 
-                Unit(unit):HasBuffs("DeffBuffs", true) == 0
-            ) and 
-            -- Check if unit don't will be killed 
-            (
-                not Unit(player):HasSpec(65) or -- Holy
-                Unit(unit):TimeToDie() >= 4 
-            ) and 
-            -- Conditions
-            (
-                -- Check for HP arg
-                ( 
-                    hp and 
-                    Unit(unit):Health() <= Unit(unit):HealthMax() * (hp / 100)
-                ) or 
-                -- Another check 
-                (
-                    Unit(unit):TimeToDie() < 14 and 
-                    (
-                        (
-                            Unit(unit):Health() <= Unit(unit):HealthMax() * 0.35 and 
-                            (
-                                Unit(unit):GetHEAL()  * 1.4 < Unit(unit):GetDMG() or
-                                Unit(unit):Health() <= Unit(unit):GetDMG() * 3.5 
-                            ) 
-                        ) or 
-                        -- if unit has 35% dmg per sec 
-                        Unit(unit):GetRealTimeDMG() >= Unit(unit):HealthMax() * 0.35 or 
-                        -- if unit has sustain 20% dmg per sec 
-                        Unit(unit):GetDMG() >= Unit(unit):HealthMax() * 0.2
-                    )
-                )
-            )
-        )
-    )
-end 
-
-
 -- Return average DMG taken from all our current member team
 local function FriendlyTeamReceivedLast5sec()
     local total = 0
@@ -1139,47 +938,51 @@ A[3] = function(icon, isMulti)
     --- DPS ROTATION ---
     --------------------
     local function DamageRotation(unitID)
- 
-		local useCC = Action.InterruptIsValid(target)
-			if useCC and A.HammerofJustice:IsReady(target) and Unit(target):GetRange() <= 10 and A.HammerofJustice:AbsentImun(target, Temp.TotalAndPhysAndCC) and not Unit(target):IsBoss() and not Unit(target):IsDead() and Unit(target):CanInterrupt(true, nil, 20, 85)
-                then 
-                    return A.HammerofJustice:Show(icon)       
-                end          
-				
-			if useCC and A.BlindingLight:IsReady(target) and Unit(target):GetRange() <= 10 and A.BlindingLight:AbsentImun(target, Temp.TotalAndPhysAndCC) and not Unit(target):IsBoss() and not Unit(target):IsDead() and Unit(target):CanInterrupt(true, nil, 20, 85)
-                then 
-                    return A.BlindingLight:Show(icon)       
-                end            
+	 
+		if A.Zone == "pvp" or A.Zone ~= "pvp" and inCombat then
+	 
+			local useCC = Action.InterruptIsValid(target)
+				if useCC and A.HammerofJustice:IsReady(target) and Unit(target):GetRange() <= 10 and A.HammerofJustice:AbsentImun(target, Temp.TotalAndPhysAndCC) and not Unit(target):IsBoss() and IsUnitEnemy(target) and not Unit(target):IsDead() and Unit(target):CanInterrupt(true, nil, 20, 85)
+					then 
+						return A.HammerofJustice:Show(icon)       
+					end          
+					
+				if useCC and A.BlindingLight:IsReady(target) and Unit(target):GetRange() <= 10 and A.BlindingLight:AbsentImun(target, Temp.TotalAndPhysAndCC) and not Unit(target):IsBoss() and IsUnitEnemy(target) and not Unit(target):IsDead() and Unit(target):CanInterrupt(true, nil, 20, 85)
+					then 
+						return A.BlindingLight:Show(icon)       
+					end            
+			
+	 
+			if A.VanquishersHammer:IsReady(target) and UseCovenant then
+				return A.VanquishersHammer:Show(icon)
+			end    
+			
+			if A.Consecration:IsReady(player) and IsUnitEnemy(target) and Unit(target):GetRange() <= 5 then
+				return A.Consecration:Show(icon)
+			end
+			
+			if A.ShieldoftheRighteous:IsReady(player) and Unit(target):GetRange() <= 5 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 and (HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 or TeamCache.Friendly.Size <= 2) then
+				return A.ShieldoftheRighteous:Show(icon)
+			end
+			
+			if A.HammerofWrath:IsReady(target) and Unit(target):GetRange() <= 30 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
+				return A.HammerofWrath:Show(icon)
+			end
+			
+			if A.Judgment:IsReady(target) and Unit(target):GetRange() <= 30 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
+				return A.Judgment:Show(icon)
+			end
+			
+			if A.HolyShock:IsReady(target) and Unit(target):GetRange() <= 40 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
+				return A.HolyShock:Show(icon)
+			end
+			
+			if A.CrusaderStrike:IsReady(target) and Unit(target):GetRange() <= 5 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
+				return A.CrusaderStrike:Show(icon)
+			end
+        
+		end
 		
- 
-        if A.VanquishersHammer:IsReady(target) and UseCovenant then
-            return A.VanquishersHammer:Show(icon)
-        end    
-        
-        if A.Consecration:IsReady(player) and IsUnitEnemy(target) and Unit(target):GetRange() <= 5 then
-            return A.Consecration:Show(icon)
-        end
-        
-        if A.ShieldoftheRighteous:IsReady(player) and Unit(target):GetRange() <= 5 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 and (HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 or TeamCache.Friendly.Size <= 2) then
-            return A.ShieldoftheRighteous:Show(icon)
-        end
-        
-        if A.HammerofWrath:IsReady(target) and Unit(target):GetRange() <= 30 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
-            return A.HammerofWrath:Show(icon)
-        end
-        
-        if A.Judgment:IsReady(target) and Unit(target):GetRange() <= 30 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
-            return A.Judgment:Show(icon)
-        end
-        
-        if A.HolyShock:IsReady(target) and Unit(target):GetRange() <= 40 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
-            return A.HolyShock:Show(icon)
-        end
-        
-        if A.CrusaderStrike:IsReady(target) and Unit(target):GetRange() <= 5 and IsUnitEnemy(target) and Unit(target):HasDeBuffs(A.Cyclone.ID, true) == 0 then
-            return A.CrusaderStrike:Show(icon)
-        end
-        
     end
     DamageRotation = Action.MakeFunctionCachedDynamic(DamageRotation)
     
@@ -1192,7 +995,8 @@ A[3] = function(icon, isMulti)
         local unitGUID = UnitGUID(unitID)    
         
         --Devotion Aura
-        if A.DevotionAura:IsReady(player) and Unit(player):HasBuffs(A.DevotionAura.ID) == 0 and Unit(player):HasBuffs(A.CrusaderAura.ID) == 0 and Unit(player):HasBuffs(A.RetributionAura.ID) == 0 and Unit(player):HasBuffs(A.ConcentrationAura.ID) == 0 then
+        if A.DevotionAura:IsReady(player) and Unit(player):HasBuffs(A.DevotionAura.ID) == 0 and Unit(player):HasBuffs(A.CrusaderAura.ID) == 0 and Unit(player):HasBuffs(A.RetributionAura.ID) == 0 
+		and Unit(player):HasBuffs(A.ConcentrationAura.ID) == 0 then
             return A.DevotionAura:Show(icon)
         end
         
@@ -1211,7 +1015,8 @@ A[3] = function(icon, isMulti)
         then
             for i = 1, #getmembersAll do 
                 if Unit(getmembersAll[i].Unit):GetRange() <= 40 then 
-                    if not Unit(getmembersAll[i].Unit):IsPet() and not Unit(getmembersAll[i].Unit):IsDead() and A.LayOnHands:IsReady(getmembersAll[i].Unit) and (Unit(getmembersAll[i].Unit):HealthPercent() <= 20 and Unit(getmembersAll[i].Unit):TimeToDie() <= 2) and Unit(getmembersAll[i].Unit):HasDeBuffs(A.Forbearance.ID, true) == 0 then
+                    if not Unit(getmembersAll[i].Unit):IsPet() and not Unit(getmembersAll[i].Unit):IsDead() and A.LayOnHands:IsReady(getmembersAll[i].Unit) and (Unit(getmembersAll[i].Unit):HealthPercent() <= 20 
+					and Unit(getmembersAll[i].Unit):TimeToDie() <= 2) and Unit(getmembersAll[i].Unit):HasDeBuffs(A.Forbearance.ID, true) == 0 then
                         HealingEngine.SetTarget(getmembersAll[i].Unit, 1)    -- Add 1sec delay in case of emergency switch     
                         return A.LayOnHands:Show(icon)                        
                     end                    
@@ -1221,12 +1026,16 @@ A[3] = function(icon, isMulti)
         end 
 		
         --Blessing of Sacrifice
-        if A.BlessingofSacrifice:IsReady(unitID) and combatTime > 0 and not UnitIsUnit(unitID, player) and not Unit(unitID):IsDead() and Unit(unitID):HealthPercent() <= 40 and Unit(unitID):TimeToDieX(20) <= 4 then
+        if A.BlessingofSacrifice:IsReady(unitID) and combatTime > 0 and not UnitIsUnit(unitID, player) and not Unit(unitID):IsPet() and not Unit(unitID):IsDead() and Unit(unitID):HealthPercent() <= 40 
+		and Unit(unitID):TimeToDieX(20) <= 4 then
             return A.BlessingofSacrifice:Show(icon)
         end    
         
         --Blessing of Protection
-        if A.BlessingofProtection:IsReady(unitID) and combatTime > 0 and not Unit(unitID):IsTank() and Unit(unitID):HasBuffs(A.HordeFlag.ID) == 0 and Unit(unitID):HasBuffs(A.OrbofPower.ID) == 0 and Unit(unitID):HasBuffs(A.AllianceFlag.ID) == 0 and not UnitIsUnit(unitID, player) and not Unit(unitID):IsDead() and Unit(unitID):HealthPercent() <= 30 and Unit(unitID):TimeToDieX(20) <= 3 then
+        if A.BlessingofProtection:IsReady(unitID) and combatTime > 0 and not Unit(unitID):IsPet() and not Unit(unitID):IsTank() and not UnitIsUnit(unitID, player) and not Unit(unitID):IsDead() 
+		and Unit(unitID):HealthPercent() <= 30 and Unit(unitID):TimeToDieX(20) <= 3 and Unit(unitID):HasDeBuffs(A.OrbofPowerBlue.ID) == 0 and Unit(unitID):HasDeBuffs(A.OrbofPowerGreen.ID) == 0 
+		and Unit(unitID):HasDeBuffs(A.OrbofPowerPurple.ID) == 0 and Unit(unitID):HasDeBuffs(A.OrbofPowerOrange.ID) == 0 
+		and not Unit(unitID):HasFlags() then
             return A.BlessingofProtection:Show(icon)
         end    
         
@@ -1246,23 +1055,25 @@ A[3] = function(icon, isMulti)
         -- Dispel Sniper
         if A.Cleanse:IsReady() and A.GetToggle(2, "DispelSniper") then
             for i = 1, #getmembersAll do 
-                if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") then  
-                    HealingEngine.SetTarget(getmembersAll[i].Unit, 2)                                      
+                if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") 
+				and (Unit(getmembersAll[i].Unit):HasDeBuffs(30108, true) == 0 or Unit(getmembersAll[i].Unit):HasDeBuffs(30108, true) > 0 and HealingEngine.GetDeBuffsCount(30108, 0, player, true) == 1) then  
+                    HealingEngine.SetTarget(getmembersAll[i].Unit)                                      
                 end                
             end
         end
         
         if A.BlessingofFreedom:IsReady() and A.GetToggle(2, "DispelSniper") then
             for i = 1, #getmembersAll do 
-                if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HasBuffs(A.BlessingofFreedom.ID) == 0 and AuraIsValid(getmembersAll[i].Unit, true, "BlessingofFreedom") then  
-                    HealingEngine.SetTarget(getmembersAll[i].Unit, 2)                                      
+                if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HasBuffs(A.BlessingofFreedom.ID) == 0 
+				and AuraIsValid(getmembersAll[i].Unit, true, "BlessingofFreedom") then  
+                    HealingEngine.SetTarget(getmembersAll[i].Unit)                                      
                 end                
             end
         end
         
         -- #1 HPvE Dispel
         if A.Cleanse:IsReady(unitID) and
-        useDispel and
+        useDispel and (Unit(unitID):HasDeBuffs(30108, true) == 0 or Unit(unitID):HasDeBuffs(30108, true) > 0 and HealingEngine.GetDeBuffsCount(30108, 0, player, true) == 1) and
         (
             -- MouseOver
             (
@@ -1352,23 +1163,24 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- #17 HPvE DivineToll
-			if A.DivineToll:IsReady(unit) and A.DivineToll:IsReadyByPassCastGCD(unit) and TeamCacheFriendlyType ~= "none" then
+			if A.DivineToll:IsReady(unit) and A.DivineToll:IsReadyByPassCastGCD(unit) then
 				for i = 1, #getmembersAll do 
-					if Unit(getmembersAll[i].Unit):IsPlayerOrPet() and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HealthPercent() <= 90 and not IsUnitEnemy(getmembersAll[i].Unit) and A.DivineToll:IsReady(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):GetRange() <= 30 
+					if Unit(getmembersAll[i].Unit):IsPlayerOrPet() and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HealthPercent() <= 90 and not IsUnitEnemy(getmembersAll[i].Unit) 
+					and A.DivineToll:IsReady(getmembersAll[i].Unit) and Unit(getmembersAll[i].Unit):GetRange() <= 30 
 					and
-					((Player:HolyPower() <= 1 and
-						((
-							TeamCacheFriendlyType == "party" and
-							HealingEngine.GetBelowHealthPercentUnits(80, 30) >= 3 
-						) or
+						((Player:HolyPower() <= 1 and
 						(
-							TeamCacheFriendlyType == "raid" and
-							HealingEngine.GetBelowHealthPercentUnits(80, 30) >= 3
-						))) or
-						HealingEngine.GetBelowHealthPercentUnits(40, 30) >= 3 and Player:HolyPower() <= 3
-					)
+							(TeamCacheFriendlyType == "none" and MultiUnits:GetByRange(10) > 2 and Unit(player):HealthPercent() <= 80) 
+							or
+							(TeamCacheFriendlyType == "party" and HealingEngine.GetBelowHealthPercentUnits(80, 30) >= 3) 
+							or
+							(TeamCacheFriendlyType == "raid" and HealingEngine.GetBelowHealthPercentUnits(80, 30) >= 3)
+						)
+						) 
+						or
+						HealingEngine.GetBelowHealthPercentUnits(40, 30) >= 3 and Player:HolyPower() <= 3)
 					then
-						HealingEngine.IsMostlyIncDMG(getmembersAll[i].Unit, 2)   
+						HealingEngine.IsMostlyIncDMG(getmembersAll[i].Unit)   
 						return A.DivineToll:Show(icon)
 					end
 				end
@@ -1424,42 +1236,44 @@ A[3] = function(icon, isMulti)
 			if A.DivineFavor:IsTalentLearned() and A.DivineFavor:IsReady(player) then
 				return A.DivineFavor:Show(icon)
 			end
-			
-			if ((A.HammerofWrath:GetCooldown() == 0 and (Unit(targettarget):HealthPercent() <= 20 or Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0)
-				or (not IsUnitEnemy(targettarget) and A.HammerofWrath:GetCooldown() == 0 and (Unit(focustarget):HealthPercent() <= 20 or Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0) and Unit(focustarget):GetRange() <= 10 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0))
-			and not Unit(target):IsDead() and IsUnitFriendly(target) then
-				return A.HammerofWrath:Show(icon)
-			end
-			
-			if ((A.CrusaderStrike:IsReady(targettarget) and Unit(targettarget):GetRange() <= 5 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0) 
-				or (not IsUnitEnemy(targettarget) and A.CrusaderStrike:IsReady(focustarget) and Unit(focustarget):GetRange() <= 5 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0)) 
-			and not Unit(target):IsDead() and IsUnitFriendly(target) and ((A.CrusadersMight:IsTalentLearned() and (A.HolyShock:GetCooldown() >= 1.5 or (A.HolyShock:GetCooldown() == 0 and A.CrusaderStrike:GetSpellChargesFrac() >= 1.7 and Player:HolyPower() < 5))) or A.CrusadersMight:IsTalentLearned() == 0 and Player:HolyPower() < 5) then
-				return A.CrusaderStrike:Show(icon)        
-			end
-			
-			local useCC = Action.InterruptIsValid(targettarget)
-				if useCC and A.HammerofJustice:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and A.HammerofJustice:AbsentImun(targettarget, Temp.TotalAndPhysAndCC) and not Unit(targettarget):IsBoss() and IsUnitFriendly(target) and not Unit(target):IsDead() and Unit(targettarget):CanInterrupt(true, nil, 20, 85)
-					then 
-						return A.HammerofJustice:Show(icon)       
-					end       
 				
-				if useCC and A.BlindingLight:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and A.BlindingLight:AbsentImun(targettarget, Temp.TotalAndPhysAndCC) and not Unit(targettarget):IsBoss() and IsUnitFriendly(target) and not Unit(target):IsDead() and Unit(targettarget):CanInterrupt(true, nil, 20, 85)
-					then 
-						return A.BlindingLight:Show(icon)       
-					end            
-			
-			if ((A.Judgment:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0 and Unit(targettarget):HasDeBuffs(196941, true) == 0) 
-				or (A.Judgment:IsReady(focustarget) and Unit(focustarget):GetRange() <= 10 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0 and Unit(focustarget):HasDeBuffs(196941, true) == 0)) 
-				and A.JudgmentofLight:IsTalentLearned() and not Unit(target):IsDead() and IsUnitFriendly(target) then
-				return A.Judgment:Show(icon)
-			end
-			
-
+			if A.Zone == "pvp" or A.Zone ~= "pvp" and inCombat then
+				
+				if ((A.HammerofWrath:GetCooldown() == 0 and (Unit(targettarget):HealthPercent() <= 20 or Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0)
+					or (not IsUnitEnemy(targettarget) and A.HammerofWrath:GetCooldown() == 0 and (Unit(focustarget):HealthPercent() <= 20 or Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0) and Unit(focustarget):GetRange() <= 10 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0))
+				and not Unit(target):IsDead() and IsUnitFriendly(target) then
+					return A.HammerofWrath:Show(icon)
+				end
+				
+				if ((A.CrusaderStrike:IsReady(targettarget) and Unit(targettarget):GetRange() <= 5 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0) 
+					or (not IsUnitEnemy(targettarget) and A.CrusaderStrike:IsReady(focustarget) and Unit(focustarget):GetRange() <= 5 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0)) 
+				and not Unit(target):IsDead() and IsUnitFriendly(target) and ((A.CrusadersMight:IsTalentLearned() and (A.HolyShock:GetCooldown() >= 1.5 or (A.HolyShock:GetCooldown() == 0 and A.CrusaderStrike:GetSpellChargesFrac() >= 1.7 and Player:HolyPower() < 5))) or A.CrusadersMight:IsTalentLearned() == 0 and Player:HolyPower() < 5) then
+					return A.CrusaderStrike:Show(icon)        
+				end
+				
+				local useCC = Action.InterruptIsValid(targettarget)
+					if useCC and A.HammerofJustice:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and A.HammerofJustice:AbsentImun(targettarget, Temp.TotalAndPhysAndCC) and not Unit(targettarget):IsBoss() and IsUnitEnemy(targettarget) and IsUnitFriendly(target) and not Unit(target):IsDead() and Unit(targettarget):CanInterrupt(true, nil, 20, 85)
+						then 
+							return A.HammerofJustice:Show(icon)       
+						end       
 					
-			-- Consecration
-			if A.Consecration:IsReady(player) and not Unit(target):IsDead() and (IsUnitEnemy(targettarget) or IsUnitEnemy(focustarget)) and IsUnitFriendly(target) and (Unit(focustarget):GetRange() <= 5 or Unit(targettarget):GetRange() <= 5) then
-				return A.Consecration:Show(icon)
-			end        
+					if useCC and A.BlindingLight:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and A.BlindingLight:AbsentImun(targettarget, Temp.TotalAndPhysAndCC) and not Unit(targettarget):IsBoss() and IsUnitEnemy(targettarget) and IsUnitFriendly(target) and not Unit(target):IsDead() and Unit(targettarget):CanInterrupt(true, nil, 20, 85)
+						then 
+							return A.BlindingLight:Show(icon)       
+						end            
+				
+				if ((A.Judgment:IsReady(targettarget) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0 and Unit(targettarget):HasDeBuffs(196941, true) == 0) 
+					or (A.Judgment:IsReady(focustarget) and Unit(focustarget):GetRange() <= 10 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0 and Unit(focustarget):HasDeBuffs(196941, true) == 0)) 
+					and A.JudgmentofLight:IsTalentLearned() and not Unit(target):IsDead() and IsUnitFriendly(target) then
+					return A.Judgment:Show(icon)
+				end
+				
+				-- Consecration
+				if A.Consecration:IsReady(player) and not Unit(target):IsDead() and (IsUnitEnemy(targettarget) or IsUnitEnemy(focustarget)) and IsUnitFriendly(target) and (Unit(focustarget):GetRange() <= 5 or Unit(targettarget):GetRange() <= 5) then
+					return A.Consecration:Show(icon)
+				end        
+			
+			end
 			
 			--Light's Hammer
 			if A.LightsHammer:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(85, 15) >= 3 then
@@ -1493,7 +1307,7 @@ A[3] = function(icon, isMulti)
 				end    
 				
 				--Flash of Light Infusion proc
-				if A.FlashofLight:IsReady(unitID) and not Unit(unitID):IsDead() and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
+				if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.DivineFavor.ID, true) == 0 and not Unit(unitID):IsDead() and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 0 and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
 					return A.FlashofLight:Show(icon)
 				end
 				
@@ -1503,7 +1317,7 @@ A[3] = function(icon, isMulti)
 				end    
 				
 				--Flash of Light no infusion
-				if A.FlashofLight:IsReady(unitID) and not Unit(unitID):IsDead() and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
+				if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.DivineFavor.ID, true) == 0 and not Unit(unitID):IsDead() and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
 					return A.FlashofLight:Show(icon)
 				end
 			end 
@@ -1518,7 +1332,7 @@ A[3] = function(icon, isMulti)
 				end    
 				
 				--Flash of Light no infusion            
-				if A.FlashofLight:IsReady(unitID) and not Unit(unitID):IsDead() and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
+				if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffs(A.DivineFavor.ID, true) == 0 and not Unit(unitID):IsDead() and A.FlashofLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= FlashofLightHP and Unit(player):GetCurrentSpeed() == 0 then
 					return A.FlashofLight:Show(icon)
 				end    
 				
@@ -1534,18 +1348,22 @@ A[3] = function(icon, isMulti)
 				return A.LightofMartyr:Show(icon)
 			end    
 			
-			if ((A.ShieldoftheRighteous:IsReady(player) and Unit(targettarget):GetRange() <= 5 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0) or (not IsUnitEnemy(targettarget) and A.ShieldoftheRighteous:IsReady(player) and Unit(focustarget):GetRange() <= 5 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0)) and IsUnitFriendly(target) and (HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 or (HealingEngine.GetBelowHealthPercentUnits(50, 40) < 1 and TeamCache.Friendly.Size <= 2)) then
-				return A.ShieldoftheRighteous:Show(icon)
-			end
-        
-			if HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 then
+			if A.Zone == "pvp" or A.Zone ~= "pvp" and inCombat then
+			
+				if ((A.ShieldoftheRighteous:IsReady(player) and Unit(targettarget):GetRange() <= 5 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0) or (not IsUnitEnemy(targettarget) and A.ShieldoftheRighteous:IsReady(player) and Unit(focustarget):GetRange() <= 5 and IsUnitEnemy(focustarget) and Unit(focustarget):HasDeBuffs(A.Cyclone.ID, true) == 0)) and IsUnitFriendly(target) and (HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 or (HealingEngine.GetBelowHealthPercentUnits(50, 40) < 1 and TeamCache.Friendly.Size <= 2)) then
+					return A.ShieldoftheRighteous:Show(icon)
+				end
+			
+				if HealingEngine.GetBelowHealthPercentUnits(90, 40) < 1 then
+					
+					if A.VanquishersHammer:IsReady(targettarget) and UseCovenant then
+						return A.VanquishersHammer:Show(icon)
+					end    
+												
+					if A.Judgment:IsReady(targettarget) and IsUnitFriendly(target) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0 then
+						return A.Judgment:Show(icon)
+					end
 				
-				if A.VanquishersHammer:IsReady(targettarget) and UseCovenant then
-					return A.VanquishersHammer:Show(icon)
-				end    
-											
-			    if A.Judgment:IsReady(targettarget) and IsUnitFriendly(target) and Unit(targettarget):GetRange() <= 10 and IsUnitEnemy(targettarget) and Unit(targettarget):HasDeBuffs(A.Cyclone.ID, true) == 0 then
-					return A.Judgment:Show(icon)
 				end
 			
 			end
@@ -1596,3 +1414,13 @@ A[3] = function(icon, isMulti)
     end         
 end 
 
+A[4] = nil
+A[5] = nil 
+A[6] = function(icon)    
+    
+    if IsUnitEnemy("mouseover") and Unit("mouseover"):IsExplosives() or IsUnitEnemy("mouseover") and Unit("mouseover"):IsTotem() then 
+        return A:Show(icon, ACTION_CONST_LEFT)
+    end
+end 
+A[7] = nil 
+A[8] = nil 
