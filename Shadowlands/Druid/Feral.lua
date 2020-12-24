@@ -87,7 +87,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     Hibernate								= Action.Create({ Type = "Spell", ID = 2637		}),
     Ironfur									= Action.Create({ Type = "Spell", ID = 192081	}),
     Mangle									= Action.Create({ Type = "Spell", ID = 33917	}),	
-    Moonfire								= Action.Create({ Type = "Spell", ID = 9821		}),
+    Moonfire								= Action.Create({ Type = "Spell", ID = 8921		}),
     MoonfireDebuff                       	= Create({ Type = "Spell", ID = 164812, Hidden = true     }),	
     Prowl									= Action.Create({ Type = "Spell", ID = 5215		}),	
     Rebirth									= Action.Create({ Type = "Spell", ID = 20484	}),
@@ -117,7 +117,6 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     TigersFury								= Action.Create({ Type = "Spell", ID = 5217		}),
     Clearcasting	                        = Action.Create({ Type = "Spell", ID = 135700, Hidden = true     }),
     PredatorySwiftness						= Action.Create({ Type = "Spell", ID = 69369, Hidden = true     }),
-	
 	
 	-- Balance Affinity
     Starfire								= Action.Create({ Type = "Spell", ID = 197628	}),
@@ -863,7 +862,7 @@ A[3] = function(icon)
 		end
 
 		--actions+=/thrash_cat,if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks
-		if A.Thrash:IsReady(unitID) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
+		if A.Thrash:IsReady(player) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Thrash:Show(icon)
 		end
 
