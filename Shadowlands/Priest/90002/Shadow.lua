@@ -757,7 +757,7 @@ A[3] = function(icon, isMulti)
 
 
 		--actions.precombat+=/shadowform,if=!buff.shadowform.up
-		if A.Shadowform:IsReady(unit) and Unit(player):HasBuffs(A.Shadowform.ID, true) == 0 and not VoidFormActive then
+		if A.Shadowform:IsReady(player) and Unit(player):HasBuffs(A.Shadowform.ID, true) == 0 and not VoidFormActive then
 			return A.Shadowform:Show(icon)
 		end
 
@@ -767,12 +767,12 @@ A[3] = function(icon, isMulti)
 		end		
 		
 		--actions+=/fireblood,if=buff.voidform.up
-		if A.Fireblood:IsReady(unit) and CanCast and UseRacial and VoidFormActive then
+		if A.Fireblood:IsReady(player) and CanCast and UseRacial and VoidFormActive then
 			return A.Fireblood:Show(icon)
 		end
 		
 		--actions+=/berserking,if=buff.voidform.up
-		if A.Berserking:IsReady(unit) and CanCast and UseRacial and VoidFormActive then
+		if A.Berserking:IsReady(player) and CanCast and UseRacial and VoidFormActive then
 			return A.Berserking:Show(icon)
 		end	
 		
@@ -783,12 +783,12 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--actions+=/ancestral_call,if=buff.voidform.up
-		if A.AncestralCall:IsReady(unit) and CanCast and UseRacial and VoidFormActive then
+		if A.AncestralCall:IsReady(player) and CanCast and UseRacial and VoidFormActive then
 			return A.AncestralCall:Show(icon)
 		end		
 
 		--UnfurlingDarkness Safety Net
-		if A.VampiricTouch:IsReady(unitID, nil, nil, A.GetToggle(2, "ByPassSpells")) and CanCast and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
+		if A.VampiricTouch:IsReady(unit, nil, nil, A.GetToggle(2, "ByPassSpells")) and CanCast and (Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.UnfurlingDarknessBuff.ID, true) < 3) then
 			return A.VampiricTouch:Show(icon)
 		end	
 
@@ -797,7 +797,7 @@ A[3] = function(icon, isMulti)
 			return A.MindBlast:Show(icon)
 		end
 		--actions.cds+=/mindgames,target_if=insanity<90&(variable.all_dots_up|buff.voidform.up)&(!talent.hungering_void.enabled|debuff.hungering_void.up|!buff.voidform.up)&(!talent.searing_nightmare.enabled|spell_targets.mind_sear<5)
-		if A.Mindgames:IsReady(unitID) and inCombat and CanCast and (not isMoving or StMActive) and UseCovenant and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then
+		if A.Mindgames:IsReady(unit) and inCombat and CanCast and (not isMoving or StMActive) and UseCovenant and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then
 			return A.Mindgames:Show(icon)
 		end	
 
