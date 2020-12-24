@@ -815,7 +815,7 @@ A[3] = function(icon, isMulti)
 				return A.RaptorStrike:Show(icon)
 			end						
 			--actions.bop+=/wildfire_bomb,if=focus+cast_regen<focus.max&!ticking&(full_recharge_time<gcd|!dot.wildfire_bomb.ticking&buff.mongoose_fury.remains>full_recharge_time-1*gcd|!dot.wildfire_bomb.ticking&!buff.mongoose_fury.remains)|time_to_die<18&!dot.wildfire_bomb.ticking
-			if A.WildfireBomb:IsReady(unitID) and Focus + Player:FocusCastRegen(A.WildfireBomb:GetSpellCastTime()) < FocusMax and not WildfireBombTicking and (A.WildfireBomb:GetSpellChargesFullRechargeTime() < A.GetGCD() or (not WildfireBombTicking and Unit(player):HasBuffs(A.MongooseFury.ID, true) > (A.WildfireBomb:GetSpellChargesFullRechargeTime() - 1) * A.GetGCD()) or not WildfireBombTicking and Unit(player):HasBuffs(A.MongooseFury.ID, true) == 0) or Unit(unit):TimeToDie() < 18 and not WildfireBombTicking then
+			if A.WildfireBomb:IsReady(unitID) and Focus + Player:FocusCastRegen(A.WildfireBomb:GetSpellCastTime()) < FocusMax and not WildfireBombTicking and (A.WildfireBomb:GetSpellChargesFullRechargeTime() < A.GetGCD() or (not WildfireBombTicking and Unit(player):HasBuffs(A.MongooseFury.ID, true) > (A.WildfireBomb:GetSpellChargesFullRechargeTime() - 1) * A.GetGCD()) or not WildfireBombTicking and Unit(player):HasBuffs(A.MongooseFury.ID, true) == 0) or Unit(unitID):TimeToDie() < 18 and not WildfireBombTicking then
 				return A.WildfireBombDebuff:Show(icon)
 			end
 			
