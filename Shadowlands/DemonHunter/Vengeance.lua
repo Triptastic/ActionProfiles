@@ -611,7 +611,7 @@ A[3] = function(icon, isMulti)
                 --check Trinket 1 DarkmoonDeckVoracity
                 if trinket1ID == 173087 then
                     if GoodVoracity then
-                        return A.Trinket1:show(icon)
+                        return A.Trinket1:Show(icon)
                     end
                 --check Trinket 1 SlimyCosumptiveOrgan 
                 elseif trinket1ID == 178770 then
@@ -630,7 +630,7 @@ A[3] = function(icon, isMulti)
                 --check Trinket 2 DarkmoonDeckVoracity
                 if trinket2ID == 173087 then
                     if GoodVoracity then
-                        return A.Trinket2:show(icon)
+                        return A.Trinket2:Show(icon)
                     end
                 --check Trinket 2 SlimyCosumptiveOrgan 
                 elseif trinket2ID == 178770 then
