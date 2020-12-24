@@ -396,7 +396,7 @@ local function SelfDefensives()
     
     -- AstralShift
     local AstralShift = A.GetToggle(2, "AstralShiftHP")
-    if Unit(player):HealthPercent() <= AstralShift then
+    if A.AstralShift:IsReady(player) and Unit(player):HealthPercent() <= AstralShift then
 		return A.AstralShift
     end     
 	
@@ -487,7 +487,7 @@ A[3] = function(icon, isMulti)
 			
 			-- # Use Stormkeeper precombat unless some adds will spawn soon.
 			-- actions.precombat+=/stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)
-			if A.Stormkeeper:IsReady(player) and not isMoving and MultiUnits:GetActiveEnemies() < 3 then
+			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and MultiUnits:GetActiveEnemies() < 3 then
 				return A.Stormkeeper:Show(icon)
 			end
 
@@ -497,12 +497,12 @@ A[3] = function(icon, isMulti)
 			end		
 			
 			-- actions.precombat+=/elemental_blast,if=talent.elemental_blast.enabled
-			if A.ElementalBlast:IsReady(unitID) and not isMoving then
+			if A.ElementalBlast:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.ElementalBlast:Show(icon)
 			end
 			
 			-- actions.precombat+=/lava_burst,if=!talent.elemental_blast.enabled
-			if A.LavaBurst:IsReady(unitID) and not isMoving and not A.ElementalBlast:IsTalentLearned() then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and not A.ElementalBlast:IsTalentLearned() then
 				return A.LavaBurst:Show(icon)
 			end
 
@@ -515,12 +515,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.aoe+=/chain_harvest
-			if A.ChainHarvest:IsReady(unitID) and not isMoving and UseCovenant then
+			if A.ChainHarvest:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and UseCovenant then
 				return A.ChainHarvest:Show(icon)
 			end
 			
 			-- actions.aoe+=/stormkeeper,if=talent.stormkeeper.enabled
-			if A.Stormkeeper:IsReady(player) and not isMoving then
+			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.Stormkeeper:Show(icon)
 			end
 			
@@ -560,7 +560,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.aoe+=/lava_burst,target_if=dot.flame_shock.remains,if=spell_targets.chain_lightning<4|buff.lava_surge.up|(talent.master_of_the_elements.enabled&!buff.master_of_the_elements.up&maelstrom>=60)
-			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and (MultiUnits:GetActiveEnemies() < 4 or (A.MasteroftheElements:IsTalentLearned() and Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) == 0 and Maelstrom >= 60)) then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and (MultiUnits:GetActiveEnemies() < 4 or (A.MasteroftheElements:IsTalentLearned() and Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) == 0 and Maelstrom >= 60)) then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -578,13 +578,13 @@ A[3] = function(icon, isMulti)
 			
 			-- # Only cast Lava Burst on three targets if it is an instant and Storm Elemental is NOT active.
 			-- actions.aoe+=/lava_burst,if=buff.lava_surge.up&spell_targets.chain_lightning<4&(!pet.storm_elemental.active)&dot.flame_shock.ticking
-			if A.LavaBurst:IsReady(unitID) and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0 and MultiUnits:GetActiveEnemies() < 4 and (not StormElementalActive) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then
+			if A.LavaBurst:IsReady(unitID) and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0 and (MultiUnits:GetActiveEnemies() < 4 or Unit(player):HasBuffs(A.PrimordialWaveBuff.ID, true) > 0) and (not StormElementalActive) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then
 				return A.LavaBurst:Show(icon)
 			end
 			
 			-- # Use Elemental Blast against up to 3 targets as long as Storm Elemental is not active.
 			-- actions.aoe+=/elemental_blast,if=talent.elemental_blast.enabled&spell_targets.chain_lightning<5&(!pet.storm_elemental.active)
-			if A.ElementalBlast:IsReady(unitID) and not isMoving and MultiUnits:GetActiveEnemies() < 5 and (not StormElementalActive) then
+			if A.ElementalBlast:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and MultiUnits:GetActiveEnemies() < 5 and (not StormElementalActive) then
 				return A.ElementalBlast:Show(icon)
 			end
 			
@@ -594,7 +594,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.aoe+=/chain_lightning
-			if A.ChainLightning:IsReady(unitID) and not isMoving then
+			if A.ChainLightning:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.ChainLightning:Show(icon)
 			end
 			
@@ -624,12 +624,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/elemental_blast,if=talent.elemental_blast.enabled
-			if A.ElementalBlast:IsReady(unitID) and not isMoving then
+			if A.ElementalBlast:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.ElementalBlast:Show(icon)
 			end
 			
 			-- actions.se_single_target+=/stormkeeper,if=talent.stormkeeper.enabled&(maelstrom<44)
-			if A.Stormkeeper:IsReady(player) and not isMoving and Maelstrom < 44 then
+			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Maelstrom < 44 then
 				return A.Stormkeeper:Show(icon)
 			end
 			
@@ -639,7 +639,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/lava_burst,if=buff.wind_gust.stack<18|buff.lava_surge.up
-			if A.LavaBurst:IsReady(unitID) and ((Unit(player):HasBuffsStacks(A.WindGust.ID, true) < 18 and not isMoving) or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) then
+			if A.LavaBurst:IsReady(unitID) and ((Unit(player):HasBuffsStacks(A.WindGust.ID, true) < 18 and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0)) or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -674,7 +674,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/lava_burst,if=buff.ascendance.up
-			if A.LavaBurst:IsReady(unitID) and not isMoving and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -684,12 +684,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/icefury,if=talent.icefury.enabled&!(maelstrom>75&cooldown.lava_burst.remains<=0)
-			if A.Icefury:IsReady(unitID) and not isMoving and Maelstrom < 75 and A.LavaBurst:GetCooldown() > 0 then
+			if A.Icefury:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Maelstrom < 75 and A.LavaBurst:GetCooldown() > 0 then
 				return A.Icefury:Show(icon)
 			end
 			
 			-- actions.se_single_target+=/lava_burst,if=cooldown_react&charges>talent.echo_of_the_elements.enabled
-			if A.LavaBurst:IsReady(unitID) and not isMoving and A.LavaBurst:GetSpellCharges() > num(A.EchooftheElements:IsTalentLearned()) then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and A.LavaBurst:GetSpellCharges() > num(A.EchooftheElements:IsTalentLearned()) then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -699,7 +699,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/chain_harvest
-			if A.ChainHarvest:IsReady(unitID) and not isMoving and UseCovenant then
+			if A.ChainHarvest:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and UseCovenant then
 				return A.ChainHarvest:Show(icon)
 			end
 			
@@ -714,7 +714,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/lightning_bolt
-			if A.LightningBolt:IsReady(unitID) and not isMoving then
+			if A.LightningBolt:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.LightningBolt:Show(icon)
 			end
 			
@@ -745,12 +745,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/elemental_blast,if=talent.elemental_blast.enabled&(talent.master_of_the_elements.enabled&(buff.master_of_the_elements.up&maelstrom<60|!buff.master_of_the_elements.up)|!talent.master_of_the_elements.enabled)
-			if A.ElementalBlast:IsReady(unitID) and not isMoving and ((Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 and Maelstrom < 60) or not A.MasteroftheElements:IsTalentLearned()) then
+			if A.ElementalBlast:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and ((Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 and Maelstrom < 60) or not A.MasteroftheElements:IsTalentLearned()) then
 				return A.ElementalBlast:Show(icon)
 			end
 			
 			-- actions.single_target+=/stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)&(maelstrom<44)
-			if A.Stormkeeper:IsReady(player) and not isMoving and MultiUnits:GetActiveEnemies() < 3 and Maelstrom < 44 then
+			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and MultiUnits:GetActiveEnemies() < 3 and Maelstrom < 44 then
 				return A.Stormkeeper:Show(icon)
 			end
 			
@@ -760,7 +760,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/lava_burst,if=talent.echoing_shock.enabled&buff.echoing_shock.up
-			if A.LavaBurst:IsReady(unitID) and Unit(player):HasBuffs(A.EchoingShock.ID, true) > 0 then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and Unit(player):HasBuffs(A.EchoingShock.ID, true) > 0 then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -800,22 +800,22 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/lava_burst,if=buff.ascendance.up
-			if A.LavaBurst:IsReady(unitID) and not isMoving and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
 				return A.LavaBurst:Show(icon)
 			end
 			
 			-- actions.single_target+=/lava_burst,if=cooldown_react&!talent.master_of_the_elements.enabled
-			if A.LavaBurst:IsReady(unitID) and not isMoving and not A.MasteroftheElements:IsTalentLearned() then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and not A.MasteroftheElements:IsTalentLearned() then
 				return A.LavaBurst:Show(icon)
 			end
 			
 			-- actions.single_target+=/icefury,if=talent.icefury.enabled&!(maelstrom>75&cooldown.lava_burst.remains<=0)
-			if A.Icefury:IsReady(unitID) and not isMoving and Maelstrom < 75 and A.LavaBurst:GetCooldown() > 0 then
+			if A.Icefury:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Maelstrom < 75 and A.LavaBurst:GetCooldown() > 0 then
 				return A.Icefury:Show(icon)
 			end
 			
 			-- actions.single_target+=/lava_burst,if=cooldown_react&charges>talent.echo_of_the_elements.enabled
-			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and A.LavaBurst:GetSpellCharges() > num(A.EchooftheElements:IsTalentLearned()) then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and A.LavaBurst:GetSpellCharges() > num(A.EchooftheElements:IsTalentLearned()) then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -825,7 +825,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/lava_burst,if=cooldown_react
-			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 and Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -848,7 +848,7 @@ A[3] = function(icon, isMulti)
 			--if A.FrostShock:IsReady(unitID) and ElementalEquilibrium and 
 			
 			-- actions.single_target+=/chain_harvest
-			if A.ChainHarvest:IsReady(unitID) and not isMoving and UseCovenant and BurstIsON(unitID) then
+			if A.ChainHarvest:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and UseCovenant and BurstIsON(unitID) then
 				return A.ChainHarvest:Show(icon)
 			end
 			
@@ -863,7 +863,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/lightning_bolt
-			if A.LightningBolt:IsReady(unitID) and not isMoving then
+			if A.LightningBolt:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) then
 				return A.LightningBolt:Show(icon)
 			end
 			
@@ -906,6 +906,11 @@ A[3] = function(icon, isMulti)
 		
 		-- actions+=/potion
 		-- actions+=/use_items
+
+		-- actions+=/primordial_wave,target_if=min:dot.flame_shock.remains,cycle_targets=1,if=!buff.primordial_wave.up
+		if A.PrimordialWave:IsReady(unitID) and UseCovenant and Unit(player):HasBuffs(A.PrimordialWaveBuff.ID, true) == 0 then
+			return A.PrimordialWave:Show(icon)
+		end
 		
 		-- actions+=/flame_shock,if=!ticking
 		if A.FlameShock:IsReady(unitID) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) == 0 then
@@ -946,11 +951,6 @@ A[3] = function(icon, isMulti)
 		if A.BagofTricks:IsReady(player) and BurstIsON(unitID) and UseRacial and Unit(player):HasBuffs(A.Ascendance.ID, true) == 0 then
 			return A.BagofTricks:Show(icon)
 		end		
-		
-		-- actions+=/primordial_wave,target_if=min:dot.flame_shock.remains,cycle_targets=1,if=!buff.primordial_wave.up
-		if A.PrimordialWave:IsReady(unitID) and UseCovenant and Unit(player):HasBuffs(A.PrimordialWaveBuff.ID, true) == 0 then
-			return A.PrimordialWave:Show(icon)
-		end
 		
 		-- actions+=/vesper_totem,if=covenant.kyrian
 		if A.VesperTotem:IsReady(player) and UseCovenant then
