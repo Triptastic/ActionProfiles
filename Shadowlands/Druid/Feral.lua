@@ -104,6 +104,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     Maim									= Action.Create({ Type = "Spell", ID = 22570	}),
     Rake									= Action.Create({ Type = "Spell", ID = 1822		}),
     RakeDebuff                              = Action.Create({ Type = "Spell", ID = 155722, Hidden = true   }),	
+    RakeStun	                            = Action.Create({ Type = "Spell", ID = 163505, Hidden = true   }),	
     RemoveCorruption						= Action.Create({ Type = "Spell", ID = 2782		}),
     Rip										= Action.Create({ Type = "Spell", ID = 1079		}),
     RipDebuff                               = Action.Create({ Type = "Spell", ID = 1079, Hidden = true     }),	
@@ -575,7 +576,7 @@ A[3] = function(icon)
 
 	local function EnemyRotation()
 
-	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4
+	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4 and Unit(unitID):HasDeBuffs(A.RakeStun.ID, true) == 0
 	local MoonfireRefreshable = Unit(unitID):HasDeBuffs(A.MoonfireDebuff.ID, true) < 4
 	local ThrashRefreshable = Unit(unitID):HasDeBuffs(A.Thrash.ID, true) < 4
 	local RipRefreshable = Unit(unitID):HasDeBuffs(A.RipDebuff.ID, true) < 7
@@ -609,7 +610,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down&spell_targets.swipe_cat>1
-			if A.Swipe:IsReady(player) and (MultiUnits:GetByRange(8, 2) > 1) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8, 2) > 1) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
 				return A.Swipe:Show(icon)
 			end
 			
@@ -619,7 +620,7 @@ A[3] = function(icon)
 			end	
 			
 			--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down
-			if A.Swipe:IsReady(player) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
 				return A.Swipe:Show(icon)
 			end
 			
@@ -704,7 +705,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.filler+=/swipe,if=variable.filler=4
-			if A.Swipe:IsReady(player) and (MultiUnits:GetByRange(8) > 2) then
+			if A.Swipe:IsReady(player) and not not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8) > 2) then
 				return A.Swipe:Show(icon)
 			end
 			--actions.filler+=/shred
@@ -770,7 +771,7 @@ A[3] = function(icon)
 		end
 		
 		--Bear Form for Frenzied Regeneration
-		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and A.GuardianAffinity:IsTalentLearned() then
+		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and A.GuardianAffinity:IsTalentLearned() and A.FrenziedRegeneration:IsReady(player) and inCombat then
 			return A.BearForm:Show(icon)
 		end
 
@@ -802,7 +803,7 @@ A[3] = function(icon)
 		end 
 
 		--actions.precombat+=/variable,name=filler,value=1
-		if A.Rake:IsReady(unitID) and not inCombat then
+		if A.Rake:IsReady(unitID) and RakeRefreshable and not inCombat then
 			return A.Rake:Show(icon)
 		end
 
@@ -826,7 +827,7 @@ A[3] = function(icon)
 		end	
 		
 		--actions+=/run_action_list,name=finisher,if=combo_points>=(5-variable.4cp_bite)
-		if ComboPoints >= 5 and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 then
+		if ComboPoints >= 5 and not Player:IsStealthed() then
 			if Finisher() then
 				return true
 			end
@@ -840,7 +841,7 @@ A[3] = function(icon)
 		end
 
 		--actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&(buff.bloodtalons.down|active_bt_triggers=2)
-		if A.Bloodtalons:IsTalentLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) and InMelee then
+		if A.Bloodtalons:IsTalentLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) and InMelee and not Player:IsStealthed() then
 			if BloodtalonsRotation() then
 				return true
 			end
@@ -869,7 +870,7 @@ A[3] = function(icon)
 		--actions+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 
 		--actions+=/swipe_cat,if=spell_targets.swipe_cat>2
-		if A.Swipe:IsReady(player) and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
+		if A.Swipe:IsReady(player) and not not A.BrutalSlash:IsTalentLearned() and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Swipe:Show(icon)
 		end
 		
@@ -879,7 +880,7 @@ A[3] = function(icon)
 		end
 		
 		--actions+=/call_action_list,name=filler
-		if inCombat and IsUnitEnemy(unitID) and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee then
+		if inCombat and IsUnitEnemy(unitID) and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			if Filler() then
 				return true
 			end
