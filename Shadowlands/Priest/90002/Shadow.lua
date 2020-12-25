@@ -469,6 +469,9 @@ A[3] = function(icon, isMulti)
 	if inCombat and A.ShadowCrash:GetCooldown() < 2 and A.ShadowCrash:IsTalentLearned() then
 	A.Toaster:SpawnByTimer("TripToast", 0, "Shadow Crash!", "Get your cursor ready!", A.ShadowCrash.ID)
 	end	
+
+	--actions.precombat+=/variable,name=mind_sear_cutoff,op=set,value=2
+	VarMindSearCutoff = 2
 	
 	--# Start using Searing Nightmare at 3+ targets or 4+ if you are in Voidform
 	--actions+=/variable,name=searing_nightmare_cutoff,op=set,value=spell_targets.mind_sear>2+buff.voidform.up
@@ -495,9 +498,6 @@ A[3] = function(icon, isMulti)
 			if A.ArcaneTorrent:IsReady(player) and UseRacial then
 				return A.ArcaneTorrent:Show(icon)
 			end
-
-			--actions.precombat+=/variable,name=mind_sear_cutoff,op=set,value=2
-			VarMindSearCutoff = 2
 			
 			--actions.precombat+=/vampiric_touch
 			if A.VampiricTouch:IsReady(unit) and Temp.VampiricTouchDelay == 0 and CanCast and not A.Damnation:IsReady(unit) and Unit(unit):HasDeBuffs(A.VampiricTouch.ID, true) == 0 then
