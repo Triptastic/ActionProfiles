@@ -705,7 +705,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.filler+=/swipe,if=variable.filler=4
-			if A.Swipe:IsReady(player) and not not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8) > 2) then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8, 3) > 2) then
 				return A.Swipe:Show(icon)
 			end
 			--actions.filler+=/shred
@@ -863,14 +863,14 @@ A[3] = function(icon)
 		end
 
 		--actions+=/thrash_cat,if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks
-		if A.Thrash:IsReady(player) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
+		if A.Thrash:IsReady(player) and ThrashRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Thrash:Show(icon)
 		end
 
 		--actions+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 
 		--actions+=/swipe_cat,if=spell_targets.swipe_cat>2
-		if A.Swipe:IsReady(player) and not not A.BrutalSlash:IsTalentLearned() and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
+		if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
 			return A.Swipe:Show(icon)
 		end
 		
@@ -880,7 +880,7 @@ A[3] = function(icon)
 		end
 		
 		--actions+=/call_action_list,name=filler
-		if inCombat and IsUnitEnemy(unitID) and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
+		if inCombat and IsUnitEnemy(unitID) and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
 			if Filler() then
 				return true
 			end
