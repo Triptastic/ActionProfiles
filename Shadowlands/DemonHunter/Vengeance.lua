@@ -489,7 +489,7 @@ A[3] = function(icon, isMulti)
             end    
             
             --Fracture if need fury/souls
-            if A.Fracture:IsReady(unit) and SoulFragments <= 4 then
+            if A.Fracture:IsReady(unit) and (SoulFragments <= 4 or Player:Fury() < 30) then
                 return A.Fracture:Show(icon)
             end    
             
