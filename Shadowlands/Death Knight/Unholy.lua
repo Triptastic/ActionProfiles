@@ -71,6 +71,7 @@ Action[ACTION_CONST_DEATHKNIGHT_UNHOLY] = {
     ControlUndead                    = Action.Create({ Type = "Spell", ID = 111673    }),
     DarkCommand                        = Action.Create({ Type = "Spell", ID = 56222    }),
     DeathandDecay                    = Action.Create({ Type = "Spell", ID = 43265    }),
+	DeathandDecayBuff                = Action.Create({ Type = "Spell", ID = 188290    }),
     DeathCoil                        = Action.Create({ Type = "Spell", ID = 47541    }),
     DeathGate                        = Action.Create({ Type = "Spell", ID = 50977    }),
     DeathGrip                        = Action.Create({ Type = "Spell", ID = 49576    }),
@@ -545,7 +546,7 @@ A[3] = function(icon, isMulti)
     local PotionTrue = Action.GetToggle(1, "Potion")    
     local GargoyleActive = A.SummonGargoyle:GetSpellTimeSinceLastCast() <= 30
     --    local UseArmyoftheDead = A.ArmyoftheDead:IsReady("player") and not A.ArmyoftheDead:IsBlocked() and Unit("target"):IsBoss()
-    local DeathandDecayTicking = A.DeathandDecay:GetSpellTimeSinceLastCast() <= 10
+    local DeathandDecayTicking = Unit(player):HasBuffs(A.DeathandDecayBuff.ID, true) > 0
     local Racial = Action.GetToggle(1, "Racial")
     local UseAoE = Action.GetToggle(2, "AoE")
     local DeathStrikeHP = Action.GetToggle(2, "DeathStrikeHP")    
@@ -603,104 +604,92 @@ A[3] = function(icon, isMulti)
             end
         end
 		
+		--Festering Switch with CD off
+		--if AutoSwitchFesteringStrike and not A.BurstIsON(unit) and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
+		-- then
+        --    local FesteringStrike_Nameplates = MultiUnits:GetActiveUnitPlates()
+        --    if FesteringStrike_Nameplates then  
+        --        for FesteringStrike_UnitID in pairs(FesteringStrike_Nameplates) do             
+        --            if Unit(FesteringStrike_UnitID):GetRange() < 6 and InMelee(FesteringStrike_UnitID) and not Unit(FesteringStrike_UnitID):InLOS() and Unit(FesteringStrike_UnitID):HasDeBuffsStacks(A.FesteringWound.ID, true) == 0 then 
+        --                return A:Show(icon, ACTION_CONST_AUTOTARGET)
+        --            end         
+        --        end 
+        --    end
+        --end
+		
 		--actions.cooldowns+=/raise_dead,if=!pet.ghoul.active
         if not Pet:IsActive() and A.RaiseDead:IsReady() then
             return A.RaiseDead:Show(icon)
         end  
 		
         --actions+=/arcane_torrent,if=runic_power.deficit>65&(pet.gargoyle.active|!talent.summon_gargoyle.enabled)&rune.deficit>=5
-        if A.ArcaneTorrent:IsReady(player) and Racial and RunicPowerDeficit > 65 and (GargoyleActive or not A.SummonGargoyle:IsTalentLearned()) and Player:Rune() < 2 then
+        if A.ArcaneTorrent:IsReady(player) and A.BurstIsON(unit) and Racial and RunicPowerDeficit > 65 and (GargoyleActive or not A.SummonGargoyle:IsTalentLearned()) and Player:Rune() < 2 then
             return A.ArcaneTorrent:Show(icon)
         end    
         
         --actions+=/blood_fury,if=pet.gargoyle.active|buff.unholy_assault.up|talent.army_of_the_damned.enabled&(pet.army_ghoul.active|cooldown.army_of_the_dead.remains>target.time_to_die)
-        if A.BloodFury:IsReady(player) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) and Unit("player"):CombatTime() > 0 then
+        if A.BloodFury:IsReady(player) and A.BurstIsON(unit) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) and Unit("player"):CombatTime() > 0 then
             return A.BloodFury:Show(icon)
         end    
         
         --actions+=/berserking,if=pet.gargoyle.active|buff.unholy_assault.up|talent.army_of_the_damned.enabled&(pet.army_ghoul.active|cooldown.army_of_the_dead.remains>target.time_to_die)
-        if A.Berserking:IsReady(player) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) then
+        if A.Berserking:IsReady(player) and A.BurstIsON(unit) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) then
             return A.Berserking:Show(icon)
         end                
         --actions+=/lights_judgment,if=buff.unholy_strength.up
-        if A.LightsJudgment:IsReady(unit) and Racial and Unit(player):HasBuffs(A.UnholyStrength.ID, true) > 0 then
+        if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and Racial and Unit(player):HasBuffs(A.UnholyStrength.ID, true) > 0 then
             return A.LightsJudgment:Show(icon)
         end
         
         --actions+=/ancestral_call,if=pet.gargoyle.active|buff.unholy_assault.up|talent.army_of_the_damned.enabled&(pet.army_ghoul.active|cooldown.army_of_the_dead.remains>target.time_to_die)
-        if A.AncestralCall:IsReady(player) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) then
+        if A.AncestralCall:IsReady(player) and A.BurstIsON(unit) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) then
             return A.AncestralCall:Show(icon)
         end    
         
         --[[actions+=/arcane_pulse,if=active_enemies>=2|(rune.deficit>=5&runic_power.deficit>=60)
-        if A.ArcanePulse:IsReady(unit) and Racial and MultiUnits:GetByRange(8, 2) >= 2 or (Player:Rune() < 2 and RunicPowerDeficit >= 60) then
+        if A.ArcanePulse:IsReady(unit) and A.BurstIsON(unit) and Racial and MultiUnits:GetByRange(8, 2) >= 2 or (Player:Rune() < 2 and RunicPowerDeficit >= 60) then
             return A.ArcanePulse:Show(icon)
         end    ]]
         
         --actions+=/fireblood,if=pet.gargoyle.active|buff.unholy_assault.up|talent.army_of_the_damned.enabled&(pet.army_ghoul.active|cooldown.army_of_the_dead.remains>target.time_to_die)
-        if A.Fireblood:IsReady(player) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) and Unit("player"):CombatTime() > 0then
+        if A.Fireblood:IsReady(player) and A.BurstIsON(unit) and Racial and (GargoyleActive or Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 or A.ArmyoftheDamned:IsTalentLearned()) and (A.ArmyoftheDamned:IsTalentLearned()) and Unit("player"):CombatTime() > 0 then
             return A.Fireblood:Show(icon)
         end                
         
         --actions+=/bag_of_tricks,if=buff.unholy_strength.up&active_enemies=1
-        if A.BagofTricks:IsReady(unit) and Racial and Unit(player):HasBuffs(A.UnholyStrength.ID, true) > 0 and MultiUnits:GetByRange(10, AoETargets) < AoETargets then
+        if A.BagofTricks:IsReady(unit) and A.BurstIsON(unit) and Racial and Unit(player):HasBuffs(A.UnholyStrength.ID, true) > 0 and MultiUnits:GetByRange(10, AoETargets) < AoETargets then
             return A.BagofTricks:Show(icon)
         end   
 		
 		--actions+=/outbreak,if=dot.virulent_plague.refreshable&!talent.unholy_blight.enabled&!raid_event.adds.exists
         if A.Outbreak:IsReady(unit) and VirulentPlagueRefreshable and not A.UnholyBlight:IsTalentLearned() then
             return A.Outbreak:Show(icon)
-        end    
+        end 
+
+		-- If Burst is off
+		if A.Outbreak:IsReady(unit) and not A.BurstIsON(unit) and VirulentPlagueRefreshable then
+            return A.Outbreak:Show(icon)
+        end 
         
         --actions+=/outbreak,if=dot.virulent_plague.refreshable&(!talent.unholy_blight.enabled|talent.unholy_blight.enabled&cooldown.unholy_blight.remains)&active_enemies>=2
         if A.Outbreak:IsReady(unit) and VirulentPlagueRefreshable and (not A.UnholyBlight:IsTalentLearned() or (A.UnholyBlight:IsTalentLearned() and A.UnholyBlight:GetCooldown() > 0)) then
             return A.Outbreak:Show(icon)
-        end   
-			
+        end  
+		
 		--actions+=/outbreak,if=runeforge.superstrain&(dot.frost_fever.refreshable|dot.blood_plague.refreshable)
 		if A.Outbreak:IsReady(unit) and Player:HasLegendaryCraftingPower(A.Superstrain) and (FrostFeverRefreshable or BloodPlagueRefreshable) then
 			return A.Outbreak:Show(icon)
 		end
-          
-		--actions.covenants=swarming_mist,if=variable.st_planning&runic_power.deficit>16
-		if A.SwarmingMist:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and RunicPowerDeficit > 16 then
-			return A.SwarmingMist:Show(icon)
-		end
-		  
-		--actions.covenants+=/swarming_mist,if=cooldown.apocalypse.remains&(active_enemies>=2&active_enemies<=5&runic_power.deficit>10+(active_enemies*6)|active_enemies>5&runic_power.deficit>40)
-		if A.SwarmingMist:IsReady() and A.Apocalypse:GetCooldown() > 0 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets and MultiUnits:GetByRange(10, AoETargets) <= 5 and RunicPowerDeficit > (10 + (6 * MultiUnits:GetByRange(10, AoETargets))) or MultiUnits:GetByRange(10, AoETargets) > 5 and RunicPowerDeficit>40) then
-			return A.SwarmingMist:Show(icon)
-		end	   
-			
-		--actions.covenants+=/abomination_limb,if=variable.st_planning&!soulbind.lead_by_example&cooldown.apocalypse.remains&rune.time_to_4>(3+buff.runic_corruption.remains)
-		if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and not A.LeadbyExample:IsSoulbindLearned() and A.Apocalypse:GetCooldown() > 0 and Player:RuneTimeToX(4) > (3 + Unit(player):HasBuffs(A.RunicCorruption.ID, true)) then
-			return A.AbominationLimb:Show(icon)
+		
+		-- If Burst is off
+		if A.Outbreak:IsReady(unit) and not A.BurstIsON(unit) and Player:HasLegendaryCraftingPower(A.Superstrain) and (FrostFeverRefreshable or BloodPlagueRefreshable) then
+			return A.Outbreak:Show(icon)
 		end
 		
-		--actions.covenants+=/abomination_limb,if=variable.st_planning&soulbind.lead_by_example&(cooldown.unholy_blight.remains|!talent.unholy_blight&cooldown.dark_transformation.remains)
-		if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.LeadbyExample:IsSoulbindLearned() and (A.UnholyBlight:GetCooldown() > 0 or not A.UnholyBlight:IsTalentLearned() and A.DarkTransformation:GetCooldown() > 0) then
-			return A.AbominationLimb:Show(icon)
-		end
-		
-		--actions.covenants+=/abomination_limb,if=active_enemies>=2&rune.time_to_4>(3+buff.runic_corruption.remains)
-		if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and Player:RuneTimeToX(4) > (3 + Unit(player):HasBuffs(A.RunicCorruption.ID, true)) then
-			return A.AbominationLimb:Show(icon)
-		end
-			
-		--actions.covenants+=/unholy_blight,if=variable.st_planning&(cooldown.army_of_the_dead.remains>5|death_knight.disable_aotd)&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)&(!runeforge.deadliest_coil|!talent.army_of_the_damned|conduit.convocation_of_the_dead.rank<5)
-		--if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.ArmyoftheDead:GetCooldown() > 5 and (A.DarkTransformation:IsReadyByPassCastGCD() or not Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0) then
-		--	return A.UnholyBlight:Show(icon)
-		--end  
-		
-		--actions.covenants+=/shackle_the_unworthy,if=variable.st_planning&cooldown.apocalypse.remains
-		if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.Apocalypse:GetCooldown() > 0 then
-			return A.ShackletheUnworthy:Show(icon)
-		end
-		
-		--actions.covenants+=/shackle_the_unworthy,if=active_enemies>=2&(death_and_decay.ticking|raid_event.adds.remains<=14)
-		if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (DeathandDecayTicking or MultiUnits:GetByRange(10, AoETargets) <= 14) then
-			return A.ShackletheUnworthy:Show(icon)
-		end
+		--SoulReaper if CD is off
+        if not A.BurstIsON(unit) and A.SoulReaper:IsReady(unit) and Unit("target"):TimeToDieX(35) < 5 and Unit("target"):TimeToDie() > 5 then
+            return A.SoulReaper:Show(icon)
+        end    
 		
 		--actions.cooldowns+=/raise_dead,if=!pet.ghoul.active
 		if not Pet:IsActive() and A.RaiseDead:IsReady() then
@@ -799,7 +788,7 @@ A[3] = function(icon, isMulti)
 			end
             
             --actions.aoe_setup+=/festering_strike,target_if=max:debuff.festering_wound.stack,if=debuff.festering_wound.stack<=3&cooldown.apocalypse.remains<3
-            if A.FesteringStrike:IsReady(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) <= 3 and A.Apocalypse:GetCooldown() < 3 then
+            if A.FesteringStrike:IsReady(unit) and A.BurstIsON and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) <= 3 and A.Apocalypse:GetCooldown() < 3 then
                 return A.FesteringStrike:Show(icon)
             end    
             
@@ -883,6 +872,46 @@ A[3] = function(icon, isMulti)
             if A.Trinket2:IsReady(unit) and Unit(unit):GetRange() <= 7 and ((Unit(player):HasBuffs(A.UnholyAssault.ID, true) > 0 and A.UnholyAssault:IsTalentLearned()) or (GargoyleActive and A.SummonGargoyle:IsTalentLearned()) or A.ArmyoftheDamned:IsTalentLearned()) then
                 return A.Trinket2:Show(icon)    
             end         
+					
+			--actions.covenants=swarming_mist,if=variable.st_planning&runic_power.deficit>16
+			if A.SwarmingMist:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and RunicPowerDeficit > 16 then
+				return A.SwarmingMist:Show(icon)
+			end
+		  
+			--actions.covenants+=/swarming_mist,if=cooldown.apocalypse.remains&(active_enemies>=2&active_enemies<=5&runic_power.deficit>10+(active_enemies*6)|active_enemies>5&runic_power.deficit>40)
+			if A.SwarmingMist:IsReady() and A.Apocalypse:GetCooldown() > 0 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets and MultiUnits:GetByRange(10, AoETargets) <= 5 and RunicPowerDeficit > (10 + (6 * MultiUnits:GetByRange(10, AoETargets))) or MultiUnits:GetByRange(10, AoETargets) > 5 and RunicPowerDeficit>40) then
+				return A.SwarmingMist:Show(icon)
+			end	   
+			
+			--actions.covenants+=/abomination_limb,if=variable.st_planning&!soulbind.lead_by_example&cooldown.apocalypse.remains&rune.time_to_4>(3+buff.runic_corruption.remains)
+			if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and not A.LeadbyExample:IsSoulbindLearned() and A.Apocalypse:GetCooldown() > 0 and Player:RuneTimeToX(4) > (3 + Unit(player):HasBuffs(A.RunicCorruption.ID, true)) then
+				return A.AbominationLimb:Show(icon)
+			end
+		
+			--actions.covenants+=/abomination_limb,if=variable.st_planning&soulbind.lead_by_example&(cooldown.unholy_blight.remains|!talent.unholy_blight&cooldown.dark_transformation.remains)
+			if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.LeadbyExample:IsSoulbindLearned() and (A.UnholyBlight:GetCooldown() > 0 or not A.UnholyBlight:IsTalentLearned() and A.DarkTransformation:GetCooldown() > 0) then
+				return A.AbominationLimb:Show(icon)
+			end
+		
+			--actions.covenants+=/abomination_limb,if=active_enemies>=2&rune.time_to_4>(3+buff.runic_corruption.remains)
+			if A.AbominationLimb:IsReady() and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and Player:RuneTimeToX(4) > (3 + Unit(player):HasBuffs(A.RunicCorruption.ID, true)) then
+				return A.AbominationLimb:Show(icon)
+			end
+			
+			--actions.covenants+=/unholy_blight,if=variable.st_planning&(cooldown.army_of_the_dead.remains>5|death_knight.disable_aotd)&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)&(!runeforge.deadliest_coil|!talent.army_of_the_damned|conduit.convocation_of_the_dead.rank<5)
+			--if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.ArmyoftheDead:GetCooldown() > 5 and (A.DarkTransformation:IsReadyByPassCastGCD() or not Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0) then
+			--	return A.UnholyBlight:Show(icon)
+			--end  
+		
+			--actions.covenants+=/shackle_the_unworthy,if=variable.st_planning&cooldown.apocalypse.remains
+			if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.Apocalypse:GetCooldown() > 0 then
+				return A.ShackletheUnworthy:Show(icon)
+			end
+		
+			--actions.covenants+=/shackle_the_unworthy,if=active_enemies>=2&(death_and_decay.ticking|raid_event.adds.remains<=14)
+			if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (DeathandDecayTicking or MultiUnits:GetByRange(10, AoETargets) <= 14) then
+				return A.ShackletheUnworthy:Show(icon)
+			end
 			
 			--actions.cooldowns+=/army_of_the_dead,if=cooldown.unholy_blight.remains<3&cooldown.dark_transformation.remains<3&talent.unholy_blight|!talent.unholy_blight
 			if A.ArmyoftheDead:IsReady(palyer) and A.UnholyBlight:GetCooldown() < 3 and A.DarkTransformation:GetCooldown() < 3 then
@@ -1027,8 +1056,17 @@ A[3] = function(icon, isMulti)
             
             if A.ClawingShadows:IsReady(unit) and Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0 and A.UnholyBlight:IsTalentLearned() and ((not A.ArmyoftheDamned:IsTalentLearned() and not A.ConvocationoftheDead:IsSoulbindLearned()) or (A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned())) and (A.UnholyBlight:GetCooldown() > 10 and Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) <= 0 or A.Apocalypse:GetCooldown() > 10) then
                 return A.ClawingShadows:Show(icon)
-            end                   
-                     
+            end
+
+			--Wound Spender if CD is off
+			if A.ScourgeStrike:IsReady(unit) and not A.BurstIsON(unit) and Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0 then
+				return A.ScourgeStrike:Show(icon)
+			end
+			
+			if A.ClawingShadows:IsReady(unit) and not A.BurstIsON(unit) and Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0 then
+				return A.ScourgeStrike:Show(icon)
+			end
+			
             --actions.generic+=/death_coil,if=runic_power.deficit<20&!variable.pooling_for_gargoyle
             if A.DeathCoil:IsReady(unit) and RunicPowerDeficit < 20 and not VarPoolingForGargoyle then
                 return A.DeathCoil:Show(icon)
@@ -1040,14 +1078,19 @@ A[3] = function(icon, isMulti)
             end    
             
             --actions.generic+=/festering_strike,if=debuff.festering_wound.stack<4&cooldown.apocalypse.remains<5&(!talent.unholy_blight|talent.army_of_the_damned&conduit.convocation_of_the_dead.rank<5|!talent.army_of_the_damned&conduit.convocation_of_the_dead.rank>=5|!conduit.convocation_of_the_dead)
-            if A.FesteringStrike:IsReady(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 4 and A.Apocalypse:GetCooldown() < 5 and (not A.UnholyBlight:IsTalentLearned() or (A.ArmyoftheDamned:IsTalentLearned() and not A.ConvocationoftheDead:IsSoulbindLearned()) or (not A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned()) or not A.ConvocationoftheDead:IsSoulbindLearned()) then
+            if A.FesteringStrike:IsReady(unit) and A.BurstIsON(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 4 and A.Apocalypse:GetCooldown() < 5 and (not A.UnholyBlight:IsTalentLearned() or (A.ArmyoftheDamned:IsTalentLearned() and not A.ConvocationoftheDead:IsSoulbindLearned()) or (not A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned()) or not A.ConvocationoftheDead:IsSoulbindLearned()) then
                 return A.FesteringStrike:Show(icon)
             end    
             
             --actions.generic+=/festering_strike,if=debuff.festering_wound.stack<4&talent.unholy_blight&(!talent.army_of_the_damned&conduit.convocation_of_the_dead.rank<5|talent.army_of_the_damned&conduit.convocation_of_the_dead.rank>=5)&(cooldown.unholy_blight.remains<10|cooldown.apocalypse.remains<10&dot.unholy_blight_dot.remains)
-            if A.FesteringStrike:IsReady(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 4 and A.UnholyBlight:IsTalentLearned() and ((not A.ArmyoftheDamned:IsTalentLearned() and not A.ConvocationoftheDead:IsSoulbindLearned()) or (A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned())) and (A.UnholyBlight:GetCooldown() < 10 or (A.Apocalypse:GetCooldown() < 10 and Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0)) then
+            if A.FesteringStrike:IsReady(unit) and A.BurstIsON(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 4 and A.UnholyBlight:IsTalentLearned() and ((not A.ArmyoftheDamned:IsTalentLearned() and not A.ConvocationoftheDead:IsSoulbindLearned()) or (A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned())) and (A.UnholyBlight:GetCooldown() < 10 or (A.Apocalypse:GetCooldown() < 10 and Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0)) then
                 return A.FesteringStrike:Show(icon)
-            end    
+            end
+
+			--if Burst is off
+			if A.FesteringStrike:IsReady(unit) and not A.BurstIsON(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
+                return A.FesteringStrike:Show(icon)
+            end
             
             --actions.generic+=/death_coil,if=!variable.pooling_for_gargoyle
             if A.DeathCoil:IsReady(unit) and not VarPoolingForGargoyle then
@@ -1084,24 +1127,38 @@ A[3] = function(icon, isMulti)
             
             if A.ClawingShadows:IsReady(unit) and ((A.Apocalypse:GetCooldown() > 5 and Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0) or Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) > 4) and (Player:AreaTTD(10) < (A.DeathandDecay:GetCooldown() + 10) or (Player:AreaTTD(8) > A.Apocalypse:GetCooldown())) then 
                 return A.ClawingShadows:Show(icon)
-            end                
+            end
+
+			--if Burst is off
+			if A.ScourgeStrike:IsReady(unit) and not A.BurstIsON(unit) and (Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0) then 
+                return A.ScourgeStrike:Show(icon)
+            end
+
+			if A.ClawingShadows:IsReady(unit) and not A.BurstIsON(unit) and (Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0) then 
+                return A.ClawingShadows:Show(icon)
+            end   
             
             --actions.generic_aoe+=/festering_strike,target_if=max:debuff.festering_wound.stack,if=debuff.festering_wound.stack<=3&cooldown.apocalypse.remains<3|debuff.festering_wound.stack<1
-            if A.FesteringStrike:IsReady(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) <= 3 and A.Apocalypse:GetCooldown() < 3 or Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
+            if A.FesteringStrike:IsReady(unit) and A.BurstIsON(unit) and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) <= 3 and A.Apocalypse:GetCooldown() < 3 or Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
                 return A.FesteringStrike:Show(icon)
-            end            
+            end
             
             --actions.generic_aoe+=/festering_strike,target_if=min:debuff.festering_wound.stack,if=cooldown.apocalypse.remains>5&debuff.festering_wound.stack<1
-            if A.FesteringStrike:IsReady(unit) and A.Apocalypse:GetCooldown() > 5 and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
+            if A.FesteringStrike:IsReady(unit) and A.BurstIsON(unit) and A.Apocalypse:GetCooldown() > 5 and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
                 return A.FesteringStrike:Show(icon)
             end        
+			
+			--Festering if Burst if off
+            if A.FesteringStrike:IsReady(unit) and not A.BurstIsON and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 1 then
+                return A.FesteringStrike:Show(icon)
+            end  
             
         end    
         
         
         --actions+=/call_action_list,name=cooldowns.. force CDs always
-        if (A.BurstIsON(unit) or not A.BurstIsON(unit)) and inCombat and Cooldowns() then     
-            return true
+        if A.BurstIsON(unit) and inCombat and Cooldowns() then     
+            return Cooldowns()
         end
         
         --actions+=/run_action_list,name=aoe_setup,if=active_enemies>=2&(cooldown.death_and_decay.remains<10&!talent.defile|cooldown.defile.remains<10&talent.defile)&!death_and_decay.ticking
