@@ -674,7 +674,7 @@ A[3] = function(icon, isMulti)
 				return A.Mindbender:Show(icon)
 			end
 			
-			if A.Shadowfiend:IsReady(unit) and not A.Mindbender:IsTalentLearned() and CanCast and Unit(unit):HasDeBuffs(A.VampiricTouch.ID, true) > 0 and (A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > VarMindSearCutoff or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) > 0) then
+			if A.Shadowfiend:IsReady(unit) and BurstIsON(unit) and not A.Mindbender:IsTalentLearned() and CanCast and Unit(unit):HasDeBuffs(A.VampiricTouch.ID, true) > 0 and (A.SearingNightmare:IsTalentLearned() and MultiUnits:GetActiveEnemies() > VarMindSearCutoff or Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) > 0) then
 				return A.Shadowfiend:Show(icon)
 			end			
 			
