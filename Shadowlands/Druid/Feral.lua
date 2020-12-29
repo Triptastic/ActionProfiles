@@ -760,6 +760,12 @@ A[3] = function(icon)
 			return A.Prowl:Show(icon)
 		end
 
+        -- Interrupts
+        local Interrupt = Interrupts(unit)
+        if inCombat and Interrupt then 
+            return Interrupt:Show(icon)
+        end 
+
 		-- Purge (high) 
 		if unitID ~= "targettarget" and A.Soothe:IsReady(unitID, nil, nil, true) and A.Soothe:AbsentImun(unitID, Temp.AuraForOnlyCCAndStun) and A.AuraIsValid(unitID, "UseExpelEnrage", "Enrage") then 
 			return A.Soothe:Show(icon)

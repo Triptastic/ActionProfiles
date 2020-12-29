@@ -516,7 +516,7 @@ A[3] = function(icon, isMulti)
 
         -- Interrupts
         local Interrupt = Interrupts(unit)
-        if inCombat and CanCast and Interrupt then 
+        if inCombat and Interrupt then 
             return Interrupt:Show(icon)
         end 
 
