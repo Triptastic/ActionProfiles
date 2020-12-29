@@ -542,7 +542,7 @@ A[3] = function(icon, isMulti)
 				end
 				
 				-- skullsplitter,if=rage<52&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and (Player:Rage() < 52 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 or Player:Rage() < 20) then
+				if A.Skullsplitter:IsReady(unit) and Player:Rage() < 20 then
 					return A.Skullsplitter:Show(icon)
 				end
 				
