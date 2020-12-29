@@ -649,17 +649,17 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/earthquake,if=buff.echoes_of_great_sundering.up
-			if A.Earthquake:IsReady(player) and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0 then
+			if A.Earthquake:IsReady(player) and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0 and UseAoE then
 				return A.Earthquake:Show(icon)
 			end
 			
 			-- actions.se_single_target+=/earthquake,if=(spell_targets.chain_lightning>1)&(!dot.flame_shock.refreshable)
-			if A.Earthquake:IsReady(player) and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then
+			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then
 				return A.Earthquake:Show(icon)
 			end
 			
 			-- actions.se_single_target+=/earth_shock,if=spell_targets.chain_lightning<2&maelstrom>=60&(buff.wind_gust.stack<20|maelstrom>90)
-			if A.EarthShock:IsReady(unitID) and MultiUnits:GetActiveEnemies() < 2 and Maelstrom >= 60 and (Unit(player):HasBuffsStacks(A.WindGust.ID, true) < 20 or Maelstrom > 90) then
+			if A.EarthShock:IsReady(unitID) and (MultiUnits:GetActiveEnemies() < 2 or not UseAoE) and Maelstrom >= 60 and (Unit(player):HasBuffsStacks(A.WindGust.ID, true) < 20 or Maelstrom > 90) then
 				return A.EarthShock:Show(icon)
 			end
 			
@@ -750,7 +750,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/stormkeeper,if=talent.stormkeeper.enabled&(raid_event.adds.count<3|raid_event.adds.in>50)&(maelstrom<44)
-			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and MultiUnits:GetActiveEnemies() < 3 and Maelstrom < 44 then
+			if A.Stormkeeper:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and (MultiUnits:GetActiveEnemies() < 3 or not UseAoE) and Maelstrom < 44 then
 				return A.Stormkeeper:Show(icon)
 			end
 			
@@ -770,22 +770,22 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/lightning_bolt,if=buff.stormkeeper.up&spell_targets.chain_lightning<2&(buff.master_of_the_elements.up)
-			if A.LightningBolt:IsReady(unitID) and Unit(player):HasBuffs(A.Stormkeeper.ID, true) > 0 and MultiUnits:GetActiveEnemies() < 2 and Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 then
+			if A.LightningBolt:IsReady(unitID) and Unit(player):HasBuffs(A.Stormkeeper.ID, true) > 0 and (MultiUnits:GetActiveEnemies() < 2 or not UseAoE) and Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 then
 				return A.LightningBolt:Show(icon)
 			end
 			
 			-- actions.single_target+=/earthquake,if=buff.echoes_of_great_sundering.up&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up)
-			if A.Earthquake:IsReady(player) and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0) then
+			if A.Earthquake:IsReady(player) and UseAoE and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0) then
 				return A.Earthquake:Show(icon)
 			end
 			
 			-- actions.single_target+=/earthquake,if=spell_targets.chain_lightning>1&!dot.flame_shock.refreshable&!runeforge.echoes_of_great_sundering.equipped&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up|cooldown.lava_burst.remains>0&maelstrom>=92)
-			if A.Earthquake:IsReady(player) and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and not EchoesofGreatSundering and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92)) then
+			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and not EchoesofGreatSundering and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92)) then
 				return A.Earthquake:Show(icon)
 			end
 			
 			-- actions.single_target+=/earth_shock,if=talent.master_of_the_elements.enabled&(buff.master_of_the_elements.up|cooldown.lava_burst.remains>0&maelstrom>=92|spell_targets.chain_lightning<2&buff.stormkeeper.up&cooldown.lava_burst.remains<=gcd)|!talent.master_of_the_elements.enabled
-			if A.EarthShock:IsReady(unitID) and (Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92) or (MultiUnits:GetActiveEnemies() < 2 and Unit(player):HasBuffs(A.Stormkeeper.ID, true) > 0 and A.LavaBurst:GetCooldown() <= A.GetGCD())) then
+			if A.EarthShock:IsReady(unitID) and (Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92) or ((MultiUnits:GetActiveEnemies() < 2 or not UseAoE) and Unit(player):HasBuffs(A.Stormkeeper.ID, true) > 0 and A.LavaBurst:GetCooldown() <= A.GetGCD())) then
 				return A.EarthShock:Show(icon)
 			end
 			
@@ -835,7 +835,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/earthquake,if=spell_targets.chain_lightning>1&!runeforge.echoes_of_great_sundering.equipped|buff.echoes_of_great_sundering.up
-			if A.Earthquake:IsReady(player) and MultiUnits:GetActiveEnemies() > 1 and (not EchoesofGreatSundering or Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0) then
+			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and (not EchoesofGreatSundering or Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0) then
 				return A.Earthquake:Show(icon)
 			end
 			
@@ -963,21 +963,21 @@ A[3] = function(icon, isMulti)
 		end
 		
 		-- actions+=/run_action_list,name=aoe,if=active_enemies>2&(spell_targets.chain_lightning>2|spell_targets.lava_beam>2)
-		if MultiUnits:GetActiveEnemies() > 2 and inRange then
+		if MultiUnits:GetActiveEnemies() > 2 and inRange and UseAoE then
 			if AoERotation() then
 				return true
 			end
 		end
 		
 		-- actions+=/run_action_list,name=single_target,if=!talent.storm_elemental.enabled&active_enemies<=2
-		if not A.StormElemental:IsTalentLearned() and MultiUnits:GetActiveEnemies() <= 2 and inRange then
+		if not A.StormElemental:IsTalentLearned() and (MultiUnits:GetActiveEnemies() <= 2 or not UseAoE) and inRange then
 			if SingleTarget() then
 				return true
 			end
 		end
 		
 		-- actions+=/run_action_list,name=se_single_target,if=talent.storm_elemental.enabled&active_enemies<=2
-		if A.StormElemental:IsTalentLearned() and MultiUnits:GetActiveEnemies() <= 2 and inRange then
+		if A.StormElemental:IsTalentLearned() and (MultiUnits:GetActiveEnemies() <= 2 or not UseAoE) and inRange then
 			if SESingleTarget() then
 				return true
 			end
