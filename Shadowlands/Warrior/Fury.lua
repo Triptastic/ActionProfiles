@@ -514,6 +514,12 @@ A[3] = function(icon, isMulti)
 			return A.BerserkerRage:Show(icon)
 		end
 
+        -- Interrupts
+        local Interrupt = Interrupts(unit)
+        if inCombat and CanCast and Interrupt then 
+            return Interrupt:Show(icon)
+        end 
+
 		--actions+=/charge
 		if A.Charge:IsReady(unitID) and Unit(unitID):GetRange() > 10 then
 			return A.Charge:Show(icon)
