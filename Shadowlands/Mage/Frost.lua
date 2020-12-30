@@ -585,12 +585,12 @@ A[3] = function(icon, isMulti)
             
             --[[ fire_blast,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
             if A.FireBlast:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandFireBuff.ID, true)) then
-                return A.FireBlast:Show(icon)
+                return A.SpatialRift:Show(icon)
             end]]
             
             --[[ arcane_explosion,if=mana.pct>30&!runeforge.cold_front.equipped&(!runeforge.freezing_winds.equipped|buff.freezing_winds.up)
             if A.ArcaneExplosion:IsReady(unit) and (Player:ManaPercentageP() > 30 and not runeforge.cold_front.equipped and (not runeforge.freezing_winds.equipped or Unit("player"):HasBuffs(A.FreezingWindsBuff.ID, true))) then
-                return A.ArcaneExplosion:Show(icon)
+                return A.Regeneratin:Show(icon)
             end]]
             
             -- ebonbolt
@@ -754,12 +754,12 @@ A[3] = function(icon, isMulti)
             
             -- arcane_explosion,if=mana.pct>30&active_enemies>=2
             if A.ArcaneExplosion:IsReady("player") and Player:ManaPercentageP() > 30 and MultiUnits:GetByRange(10) >= 2 and Action.GetToggle(2, "AoE") then
-                return A.ArcaneExplosion:Show(icon)
+                return A.Regeneratin:Show(icon)
             end
             
             -- fire_blast
             if A.FireBlast:IsReady(unit) then
-                return A.FireBlast:Show(icon)
+                return A.SpatialRift:Show(icon)
             end
             
             -- ice_lance
@@ -886,12 +886,12 @@ A[3] = function(icon, isMulti)
             
             --[[ arcane_explosion,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_arcane.down
             if A.ArcaneExplosion:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand.ID:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandArcaneBuff.ID, true)) then
-                return A.ArcaneExplosion:Show(icon)
+                return A.Regeneratin:Show(icon)
             end]]
             
             --[[ fire_blast,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
             if A.FireBlast:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand.ID:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandFireBuff.ID, true)) then
-                return A.FireBlast:Show(icon)
+                return A.SpatialRift:Show(icon)
             end]]
             
             -- glacial_spike,if=buff.brain_freeze.react

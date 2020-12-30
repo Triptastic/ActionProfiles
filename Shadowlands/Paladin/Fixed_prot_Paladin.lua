@@ -1479,6 +1479,10 @@ A[3] = function(icon, isMulti)
 					
 				end
 				
+				if A.HammerofWrath:IsReady(unit) then
+					return A.HammerofWrath:Show(icon)
+				end
+				
 				-- avengers_shield,if=cooldown_react
 				if A.AvengersShield:GetCooldown() < 1 then
 					return A.AvengersShield:Show(icon)
@@ -1619,7 +1623,7 @@ A[3] = function(icon, isMulti)
 				return A.ShieldoftheRighteous:Show(icon)
 			end
 
-	
+		end
 		
     end
     -- End on EnemyRotation()

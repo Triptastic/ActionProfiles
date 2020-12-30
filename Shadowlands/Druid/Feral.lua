@@ -14,6 +14,7 @@ local GetPing									= Action.GetPing
 local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell								= Action.FrameHasSpell
 local Azerite									= LibStub("AzeriteTraits")
@@ -86,7 +87,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     Hibernate								= Action.Create({ Type = "Spell", ID = 2637		}),
     Ironfur									= Action.Create({ Type = "Spell", ID = 192081	}),
     Mangle									= Action.Create({ Type = "Spell", ID = 33917	}),	
-    Moonfire								= Action.Create({ Type = "Spell", ID = 9821		}),
+    Moonfire								= Action.Create({ Type = "Spell", ID = 8921		}),
     MoonfireDebuff                       	= Create({ Type = "Spell", ID = 164812, Hidden = true     }),	
     Prowl									= Action.Create({ Type = "Spell", ID = 5215		}),	
     Rebirth									= Action.Create({ Type = "Spell", ID = 20484	}),
@@ -103,6 +104,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     Maim									= Action.Create({ Type = "Spell", ID = 22570	}),
     Rake									= Action.Create({ Type = "Spell", ID = 1822		}),
     RakeDebuff                              = Action.Create({ Type = "Spell", ID = 155722, Hidden = true   }),	
+    RakeStun	                            = Action.Create({ Type = "Spell", ID = 163505, Hidden = true   }),	
     RemoveCorruption						= Action.Create({ Type = "Spell", ID = 2782		}),
     Rip										= Action.Create({ Type = "Spell", ID = 1079		}),
     RipDebuff                               = Action.Create({ Type = "Spell", ID = 1079, Hidden = true     }),	
@@ -116,7 +118,6 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     TigersFury								= Action.Create({ Type = "Spell", ID = 5217		}),
     Clearcasting	                        = Action.Create({ Type = "Spell", ID = 135700, Hidden = true     }),
     PredatorySwiftness						= Action.Create({ Type = "Spell", ID = 69369, Hidden = true     }),
-	
 	
 	-- Balance Affinity
     Starfire								= Action.Create({ Type = "Spell", ID = 197628	}),
@@ -160,7 +161,13 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     FeralFrenzy								= Action.Create({ Type = "Spell", ID = 274837	}),	
 
 	-- PvP Talents
-	
+    Thorns									= Action.Create({ Type = "Spell", ID = 305497	}),							
+
+	-- AntiFake icons
+	WildChargeRed							= Action.Create({ Type = "SpellSingleColor", ID = 102401, Color = "RED", Desc = "[1] CC Focus"}), 
+	MightyBashGreen							= Action.Create({ Type = "SpellSingleColor", ID = 5211, Color = "GREEN", Desc = "[1] CC Focus", isTalent = true}), 
+	CycloneFocus							= Action.Create({ Type = "Spell", ID = 33786, Desc = "[1] CC Focus", isTalent = true}), 
+	SkullBashGreen							= Action.Create({ Type = "SpellSingleColor", ID = 106839, Color = "GREEN", Desc = "[2] Kick", QueueForbidden = true}),	
 
 	-- Covenant Abilities
     SummonSteward							= Action.Create({ Type = "Spell", ID = 324739	}),
@@ -233,6 +240,7 @@ local Temp = {
     TotalAndMagKick                         = {"TotalImun", "DamageMagicImun", "KickImun"},
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
+	AuraForOnlyCCAndStun					= {"CCTotalImun", "StunImun"},
 }
 
 local IsIndoors, UnitIsUnit, UnitName = IsIndoors, UnitIsUnit, UnitName
@@ -266,7 +274,7 @@ local function InMelee(unitID)
 end 
 
 local function countInterruptGCD(unit)
-    if not A.SkullBash:IsReadyByPassCastGCD(unit) or not A.SkullBash:AbsentImun(unit, Temp.TotalAndMagKick) then
+    if not A.SkullBash:IsReadyByPassCastGCD(unit) or not A.SkullBash:AbsentImun(unit, Temp.TotalAndPhysKick) then
 	    return true
 	end
 end
@@ -285,17 +293,6 @@ local function Interrupts(unit)
         end  
 		    
     end
-end
-
-local function HandleStealth()
-    local choice = GetToggle(2, "AutoStealthOOC")
-    local unit = "target"
-    return     (
-        (IsInRaid() and choice[1]) or 
-        (IsInGroup() and choice[2]) or
-        (A.IsInPvP and choice[3]) or
-		(A.Prowl:IsReady() and choice[4])
-    )
 end
 
 local function SelfDefensives()
@@ -513,6 +510,44 @@ local function SelfDefensives()
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
+-- [1] CC Focus AntiFake Rotation
+A[1] = function(icon)  
+	local unitID = "focus"
+	
+	if A.WildCharge:IsSpellLearned() and A.MightyBashGreen:IsSpellLearned() and A.MightyBashGreen:GetCooldown() == 0 and Unit(unitID):GetRange() >= 8 and Unit(unitID):GetRange() <= 28
+	and A.WildChargeRed:IsReady(unitID) then
+		return A.WildChargeRed:Show(icon)
+	end
+	
+	 if A.MightyBashGreen:IsReady(unitID) and A.MightyBashGreen:AbsentImun(unitID, Temp.TotalAndPhysAndCCAndStun) and 
+	 Unit(unitID):IsControlAble("stun", 0) and A.IsUnitEnemy(unitID) then
+		return A.MightyBashGreen:Show(icon)
+	 end
+	 
+	 if A.CycloneFocus:IsReady(unitID) and A.MightyBash:GetCooldown() > 0 then
+		return A.CycloneFocus:Show(icon)
+	 end
+end
+
+-- [2] Kick AntiFake Rotation
+A[2] = function(icon)	
+	-- Note: This will ignore energy check!
+	local unitID
+	if A.IsUnitEnemy("target") then 
+		unitID = "target"	
+	end 
+			
+	if unitID then 		
+		local castLeft, _, _, _, notKickAble = Unit(unitID):IsCastingRemains()
+		if castLeft > 0 then 
+			-- Kick 
+			if not notKickAble and A.SkullBashGreen:IsReady(unit, nil, nil, true) and A.SkullBashGreen:AbsentImun(unitID, Temp.TotalAndPhysKick) then 
+				return A.SkullBashGreen:Show(icon)	
+			end 
+		end 
+	end 																		
+end
+
 A[3] = function(icon)
 
 	--Function remaps
@@ -524,7 +559,7 @@ A[3] = function(icon)
 	local EnergyDeficit = Player:EnergyDeficit()
 	local ComboPoints = Player:ComboPoints()
 	local ComboPointsDeficit = Player:ComboPointsDeficit()
-	local HandleStealth = HandleStealth()	
+	local InMelee = InMelee()
 	
 	--Toggle remaps
 	local UseAoE = A.GetToggle(2, "AoE")
@@ -541,11 +576,13 @@ A[3] = function(icon)
 
 	local function EnemyRotation()
 
-	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4
+	local RakeRefreshable = Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true) < 4 and Unit(unitID):HasDeBuffs(A.RakeStun.ID, true) == 0
 	local MoonfireRefreshable = Unit(unitID):HasDeBuffs(A.MoonfireDebuff.ID, true) < 4
 	local ThrashRefreshable = Unit(unitID):HasDeBuffs(A.Thrash.ID, true) < 4
 	local RipRefreshable = Unit(unitID):HasDeBuffs(A.RipDebuff.ID, true) < 7
-
+	
+	local drTick, drDuration = Unit(unitID):GetDR("stun")
+	
 	--[[###############################
 		###### BLOODTALONS LOGIC ######
 		###############################]]
@@ -558,22 +595,22 @@ A[3] = function(icon)
 			end	
 			
 			--actions.bloodtalons+=/lunar_inspiration,target_if=refreshable&buff.bt_moonfire.down
-			if A.MoonfireCat:IsReady(unitID) and MoonfireRefreshable and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 then
+			if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable and A.MoonfireCat:GetSpellTimeSinceLastCast() > 4 then
 				return A.MoonfireCat:Show(icon)
 			end
 			
 			--actions.bloodtalons+=/thrash_cat,target_if=refreshable&buff.bt_thrash.down&druid.thrash_cat.ticks_gained_on_refresh>8
-			if A.Thrash:IsReady(unitID) and ThrashRefreshable and A.Thrash:GetSpellTimeSinceLastCast() > 4 then
+			if A.Thrash:IsReady(player) and ThrashRefreshable and A.Thrash:GetSpellTimeSinceLastCast() > 4 then
 				return A.Thrash:Show(icon)
 			end	 
 			
 			--actions.bloodtalons+=/brutal_slash,if=buff.bt_brutal_slash.down
-			if A.BrutalSlash:IsReady(unitID) and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4 then
+			if A.BrutalSlash:IsReady(player) and A.BrutalSlash:GetSpellTimeSinceLastCast() > 4 then
 				return A.BrutalSlash:Show(icon)
 			end
 			
 			--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down&spell_targets.swipe_cat>1
-			if A.Swipe:IsReady(unitID) and (MultiUnits:GetByRange(8, 2) > 1) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8, 2) > 1) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
 				return A.Swipe:Show(icon)
 			end
 			
@@ -583,12 +620,12 @@ A[3] = function(icon)
 			end	
 			
 			--actions.bloodtalons+=/swipe_cat,if=buff.bt_swipe.down
-			if A.Swipe:IsReady(unitID) and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and A.Swipe:GetSpellTimeSinceLastCast() > 4 then
 				return A.Swipe:Show(icon)
 			end
 			
 			--actions.bloodtalons+=/thrash_cat,if=buff.bt_thrash.down
-			if A.Thrash:IsReady(unitID) and A.Thrash:GetSpellTimeSinceLastCast() > 4 then
+			if A.Thrash:IsReady(player) and A.Thrash:GetSpellTimeSinceLastCast() > 4 then
 				return A.Thrash:Show(icon)
 			end
 
@@ -609,12 +646,6 @@ A[3] = function(icon)
 			if A.Incarnation:IsReady(player) and ComboPoints >= 3 then
 				return A.Incarnation:Show(icon)
 			end
-			
-			--actions.cooldown+=/tigers_fury,if=energy.deficit>55|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
-					--Try and not waste TF energy, but also just use it for zerk and incarns
-			if A.TigersFury:IsReady(player) and (EnergyDeficit > 55 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0) or (A.Predator:IsTalentLearned() and Unit(unitID):TimeToDie() < 3)) then
-				return A.TigersFury:Show(icon)
-			end 
 					
 
 			--actions.cooldown+=/berserking,if=buff.tigers_fury.up|buff.bs_inc.up
@@ -633,7 +664,7 @@ A[3] = function(icon)
 			end
 			
 			--actions.cooldown+=/kindred_spirits,if=buff.tigers_fury.up|(conduit.deep_allegiance.enabled)
-			if (A.LoneEmpowerment:IsReady(unitID) or A.KindredEmpowerment:IsReady(unitID)) and UseCovenant and Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
+			if (A.LoneEmpowerment:IsReady(player) or A.KindredEmpowerment:IsReady(player)) and UseCovenant and Unit(player):HasBuffs(A.TigersFury.ID, true) > 0 then --or A.DeepAllegiance:IsSoulbindLearned()) then
 				return A.KindredSpirits:Show(icon)
 			end
 			
@@ -670,11 +701,11 @@ A[3] = function(icon)
 			
 			--actions.filler+=/lunar_inspiration,if=variable.filler=3
 			if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable then
-				return A.Moonfire:Show(icon)
+				return A.MoonfireCat:Show(icon)
 			end
 			
 			--actions.filler+=/swipe,if=variable.filler=4
-			if A.Swipe:IsReady(player) and (MultiUnits:GetByRange(8) > 2) then
+			if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and (MultiUnits:GetByRange(8, 3) > 2) then
 				return A.Swipe:Show(icon)
 			end
 			--actions.filler+=/shred
@@ -725,17 +756,28 @@ A[3] = function(icon)
 		end
 		
 		--actions+=/prowl
-		if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 and not Player:IsMounted() and not Player:IsStealthed() and HandleStealth then
+		if A.Prowl:IsReady(player) and not inCombat and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 and not Player:IsMounted() and not Player:IsStealthed() then
 			return A.Prowl:Show(icon)
 		end
 
+        -- Interrupts
+        local Interrupt = Interrupts(unit)
+        if inCombat and Interrupt then 
+            return Interrupt:Show(icon)
+        end 
+
+		-- Purge (high) 
+		if unitID ~= "targettarget" and A.Soothe:IsReady(unitID, nil, nil, true) and A.Soothe:AbsentImun(unitID, Temp.AuraForOnlyCCAndStun) and A.AuraIsValid(unitID, "UseExpelEnrage", "Enrage") then 
+			return A.Soothe:Show(icon)
+		end 
+
 		--Regrowth
-		if A.Regrowth:IsReady(player) and RegrowthProcs and Unit(player):HealthPercent() <= 90 and Unit(player):HasBuffs(A.PredatorySwiftness.ID, true) > 0 then
+		if A.Regrowth:IsReady(player) and RegrowthProcs and Unit(player):HealthPercent() <= 90 and Unit(player):HasBuffs(A.PredatorySwiftness.ID, true) > 0 and not Player:IsStealthed() then
 			return A.Regrowth:Show(icon)
 		end
 		
 		--Bear Form for Frenzied Regeneration
-		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and A.GuardianAffinity:IsTalentLearned() then
+		if A.BearForm:IsReady(player) and Unit(player):HealthPercent() <= FrenziedRegeneration and Unit(player):HasBuffs(A.BearForm.ID, true) == 0 and A.GuardianAffinity:IsTalentLearned() and A.FrenziedRegeneration:IsReady(player) and inCombat then
 			return A.BearForm:Show(icon)
 		end
 
@@ -760,18 +802,38 @@ A[3] = function(icon)
 		
 		end
 
+		--actions.cooldown+=/tigers_fury,if=energy.deficit>55|buff.bs_inc.up|(talent.predator.enabled&variable.shortest_ttd<3)
+				--Try and not waste TF energy, but also just use it for zerk and incarns
+		if A.TigersFury:IsReady(player) and (EnergyDeficit > 55 or (Unit(player):HasBuffs(A.Berserk.ID, true) > 0 or Unit(player):HasBuffs(A.Incarnation.ID, true) > 0) or (A.Predator:IsTalentLearned() and Unit(unitID):TimeToDie() < 3)) then
+			return A.TigersFury:Show(icon)
+		end 
+
 		--actions.precombat+=/variable,name=filler,value=1
-		if A.Rake:IsReady(unitID) and not inCombat then
+		if A.Rake:IsReady(unitID) and RakeRefreshable and not inCombat then
 			return A.Rake:Show(icon)
 		end
 
+		--STUN PVP 
+		if A.IsInPvP then 	
+			if A.MightyBash:IsReady(unitID) and A.MightyBash:AbsentImun(unitID, Temp.TotalAndPhysAndCCAndStun) and Unit(unitID):IsControlAble("stun", 50) and 
+			(A.Berserk:IsReady(player) or A.FeralFrenzy:IsReady(unitID) or EnemyTeam("HEALER"):GetCC() >= A.GetGCD() * 3) and Unit(unitID):HasBuffs("DeffBuffs") == 0 then
+				return A.MightyBash:Show(icon)
+			end
+			
+			if A.Maim:IsReady(unitID) and A.Maim:AbsentImun(unitID, Temp.TotalAndPhysAndCCAndStun) and Unit(unitID):IsControlAble("stun", 50) and Unit(unitID):HasDeBuffs("Stuned") == 0 and 
+			ComboPoints > 3 then
+				return A.Maim:Show(icon)
+			end
+			
+		end
+
 		--actions+=/call_action_list,name=cooldown
-		if BurstIsON(unitID) and inCombat and Cooldowns() then
+		if BurstIsON(unitID) and inCombat and Cooldowns() and InMelee then
 			return true
 		end	
 		
 		--actions+=/run_action_list,name=finisher,if=combo_points>=(5-variable.4cp_bite)
-		if ComboPoints >= 5 and Unit(player):HasBuffs(A.Prowl.ID, true) == 0 then
+		if ComboPoints >= 5 and not Player:IsStealthed() then
 			if Finisher() then
 				return true
 			end
@@ -779,52 +841,52 @@ A[3] = function(icon)
 
 		--actions+=/run_action_list,name=stealth,if=buff.bs_inc.up|buff.sudden_ambush.up
 
-		--actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))>=(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
-		if A.Bloodtalons:IsTalentLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and EnergyDeficit >= 20 and VarNoBT then	
+		--actions+=/pool_resource,if=talent.bloodtalons.enabled&buff.bloodtalons.down&(energy+3.5*energy.regen+(40*buff.clearcasting.up))<(115-23*buff.incarnation_king_of_the_jungle.up)&active_bt_triggers=0
+		if A.Bloodtalons:IsTalentLearned() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and (Energy + (3.5 * EnergyRegen) + (40 * num(Unit(player):HasBuffs(A.Clearcasting.ID, true) > 0))) < (115 - 23 * num(Unit(player):HasBuffs(A.Incarnation.ID, true) > 0)) and VarNoBT then	
 			return A.PoolResource:Show(icon)
 		end
 
 		--actions+=/run_action_list,name=bloodtalons,if=talent.bloodtalons.enabled&(buff.bloodtalons.down|active_bt_triggers=2)
-		if A.Bloodtalons:IsTalentLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) then
+		if A.Bloodtalons:IsTalentLearned() and (Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 or VarTwoBT) and InMelee and not Player:IsStealthed() then
 			if BloodtalonsRotation() then
 				return true
 			end
 		end
 		
 		--actions+=/rake,target_if=refreshable|persistent_multiplier>dot.rake.pmultiplier
-		if A.Rake:IsReady(unitID) and RakeRefreshable then
+		if A.Rake:IsReady(unitID) and RakeRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 then
 			return A.Rake:Show(icon)
 		end
 
 		--actions+=/feral_frenzy,if=combo_points=0
-		if A.FeralFrenzy:IsReady(unitID) and ComboPoints == 0 then
+		if A.FeralFrenzy:IsReady(unitID) and ComboPoints < 3 and not Player:IsStealthed() then
 			return A.FeralFrenzy:Show(icon)
 		end
 
 		--actions+=/moonfire_cat,target_if=refreshable
-		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable then
-			return A.Moonfire:Show(icon)
+		if A.MoonfireCat:IsReady(unitID) and A.LunarInspiration:IsTalentLearned() and MoonfireRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
+			return A.MoonfireCat:Show(icon)
 		end
 
 		--actions+=/thrash_cat,if=refreshable&druid.thrash_cat.ticks_gained_on_refresh>variable.thrash_ticks
-		if A.Thrash:IsReady(unitID) and ThrashRefreshable and Unit(unitID):GetRange() <= 5 then
+		if A.Thrash:IsReady(player) and ThrashRefreshable and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and InMelee and not Player:IsStealthed() then
 			return A.Thrash:Show(icon)
 		end
 
 		--actions+=/brutal_slash,if=(buff.tigers_fury.up&(raid_event.adds.in>(1+max_charges-charges_fractional)*recharge_time))&(spell_targets.brutal_slash*action.brutal_slash.damage%action.brutal_slash.cost)>(action.shred.damage%action.shred.cost)
 
 		--actions+=/swipe_cat,if=spell_targets.swipe_cat>2
-		if A.Swipe:IsReady(player) and MultiUnits:GetByRange(8, 2) > 2 then
+		if A.Swipe:IsReady(player) and not A.BrutalSlash:IsTalentLearned() and MultiUnits:GetByRange(8, 2) > 2 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
 			return A.Swipe:Show(icon)
 		end
 		
 		--actions+=/shred,if=buff.clearcasting.up
-		if A.Shred:IsReady(unitID) and Unit(player):HasBuffs(A.Clearcasting.ID, true) > 0 then
+		if A.Shred:IsReady(unitID) and Unit(player):HasBuffs(A.Clearcasting.ID, true) > 0 and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 then
 			return A.Shred:Show(icon)
 		end
 		
 		--actions+=/call_action_list,name=filler
-		if inCombat and IsUnitEnemy(unitID) then
+		if inCombat and IsUnitEnemy(unitID) and A.LastPlayerCastName ~= A.FeralFrenzy:Info() and Unit(player):HasBuffs(A.BloodtalonsBuff.ID, true) == 0 and not Player:IsStealthed() then
 			if Filler() then
 				return true
 			end
@@ -836,7 +898,7 @@ A[3] = function(icon)
 	
     -- Defensive
     local SelfDefensive = SelfDefensives()
-    if SelfDefensive then 
+    if SelfDefensive and inCombat then 
         return SelfDefensive:Show(icon)
     end 
 
@@ -857,3 +919,74 @@ A[3] = function(icon)
 
     end
 end
+
+--[[ local function ArenaRotation(icon, unitID)
+    if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then     
+		--Dispell Enrage
+		if unitID ~= "targettarget" and A.Soothe:IsReady(unitID, nil, nil, true) and A.Soothe:AbsentImun(unitID, Temp.AuraForOnlyCCAndStun) and A.AuraIsValid(unitID, "UseExpelEnrage", "Enrage") then 
+			return A.Soothe:Show(icon)
+		end 
+		
+		--Root
+		if A.EntanglingRoots:IsReady(unitID) and A.EntanglingRoots:AbsentImun(unitID, Temp.AuraForDisableMag) and not UnitIsUnit(unitID, "target") and 
+		Unit(unitID):IsMelee() and (Unit(unitID):HasBuffs("DamageBuffs") > 0 or Unit(unitID):GetDMG() == 0) and Unit(player):HasBuffs(A.PredatorySwiftnessBuff.ID, true) > 0 and 
+		Unit(unitID):HasBuffs("Reflect") == 0 then
+			return A.EntanglingRoots:Show(icon)
+		end
+		
+		
+		if Player:ComboPoints() == Player:ComboPointsMax() then
+			if A.Rip:IsReady(unitID) and A.Rip:AbsentImun(unitID, Temp.TotalAndPhys) and Unit(unitID):HasDeBuffs(A.RipDebuff.ID, true) <= A.GetGCD() + A.GetCurrentGCD() and 
+			Unit(unitID):TimeToDie() > 4 then --and Unit("target"):TimeToDie() > 10 and Unit("target"):HasDeBuffs("Stuned") == 0 then
+				return A.Rip:Show(icon)
+			end
+		end
+		
+		if Player:ComboPoints() < Player:ComboPointsMax() then
+			if A.Rake:IsReady(unitID) and A.Rake:AbsentImun(unitID, Temp.TotalAndPhys) and Unit(unitID):HasDeBuffs(A.RakeDebuff.ID, true, true) <= A.GetGCD() + A.GetCurrentGCD() and
+			Unit(unitID):TimeToDie() > 4 then-- and Unit("target"):TimeToDie() > 10 and Unit("target"):HasDeBuffs("Stuned") == 0 then
+				return A.Rake:Show(icon)
+			end
+		end
+	end
+end
+
+local function PartyRotation(unitID) 
+	-- Dispel 
+    if A.RemoveCorruption:IsReady(unitID) and A.RemoveCorruption:AbsentImun(unitID) and A.AuraIsValid(unitID, "UseDispel", "Dispel") and not Unit(unitID):InLOS() then                         
+        return A.RemoveCorruption
+    end    
+	
+	local ThornsHP = A.GetToggle(2, "ThornsPvP")
+	if A.IsInPvP and A.Thorns:IsReady(unitID) and A.Thorns:AbsentImun(unitID) and Unit(unitID):IsFocused("MELEE") and Unit(unitID):HealthPercent() <= ThornsHP and not Unit(unitID):InLOS() then
+		return A.Thorns
+    end
+	
+end 
+
+A[6] = function(icon)    
+	local ThornsHP	= A.GetToggle(2, "ThornsPvP")
+	if A.IsInPvP and A.Thorns:IsReady(player) and A.Thorns:AbsentImun(player) and Unit(player):IsFocused("MELEE") and Unit(player):HealthPercent() <= ThornsHP then
+		return A.Thorns:Show(icon)
+	end
+
+   return ArenaRotation(icon, "arena1")
+end
+
+A[7] = function(icon)
+    local Party = PartyRotation("party1") 
+    if Party then 
+        return Party:Show(icon)
+    end 
+    
+    return ArenaRotation(icon, "arena2")
+end
+
+A[8] = function(icon)
+    local Party = PartyRotation("party2") 
+    if Party then 
+        return Party:Show(icon)
+    end     
+    
+    return ArenaRotation(icon, "arena3")
+end]]

@@ -201,6 +201,67 @@ A.Data.ProfileUI = {
 			},	
 		},	
 		[ACTION_CONST_DRUID_BALANCE] = {             
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< GENERAL ><><><l ",
+                    },
+                },
+            },            
+            { -- GENERAL OPTIONS FIRST ROW
+                { -- MOUSEOVER
+                    E = "Checkbox", 
+                    DB = "mouseover",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use @mouseover", 
+                        ruRU = "Использовать @mouseover", 
+                        frFR = "Utiliser les fonctions @mouseover",
+                    }, 
+                    TT = { 
+                        enUS = "Will unlock use actions for @mouseover units\nExample: Resuscitate, Healing", 
+                        ruRU = "Разблокирует использование действий для @mouseover юнитов\nНапример: Воскрешение, Хилинг", 
+                        frFR = "Activera les actions via @mouseover\n Exemple: Ressusciter, Soigner",
+                    }, 
+                    M = {},
+                },
+				{ -- AOE
+                    E = "Checkbox", 
+                    DB = "AoE",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use AoE", 
+                        ruRU = "Использовать AoE", 
+                        frFR = "Utiliser l'AoE",
+                    }, 
+                    TT = { 
+                        enUS = "Enable multiunits actions", 
+                        ruRU = "Включает действия для нескольких целей", 
+                        frFR = "Activer les actions multi-unités",
+                    }, 
+                    M = {
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
+                },             
+                {
+                    E = "Checkbox", 
+                    DB = "AutoShift",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Shift"
+                    }, 
+                    TT = { 
+                        ANY = "Automatically shift forms where appropriate."
+                    }, 
+                    M = {},
+                },
+			},		
 		},
         [ACTION_CONST_DRUID_GUARDIAN] = {
             { -- [7]
@@ -855,7 +916,15 @@ A.Data.ProfileUI = {
         },
         [ACTION_CONST_DRUID_RESTORATION] = { 
             LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },
-            { -- [1]                             
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< GENERAL ><><><l ",
+                    },
+                },
+            }, 
+			{
                 {
                     E = "Checkbox", 
                     DB = "mouseover",
@@ -898,894 +967,130 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-            },
-            {			
-                {
-                    E = "Checkbox", 
-                    DB = "TasteInterruptList",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
-                    }, 
-                    TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
-                    }, 
-                    M = {},
-                },				
-                {
-                    E = "Checkbox", 
-                    DB = "UseRotationPassive",
-                    DBV = true,
-                    L = { 
-					    enUS = "Use\nPassive\nRotation",
-                        ruRU = "Включить\nПассивную\nРотацию" 
-	                },
-                    M = {},
-                },  
-            }, 
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Healing Engine -- ",
-                    },
-                },
-            },	
-   	        { -- [7] 
-                {
-                    E = "Checkbox", 
-                    DB = "ManaManagement",
-                    DBV = true,
-                    L = { 
-                        enUS = "Boss Fight\nManaSave\n(PvE)", 
-                        ruRU = "Бой с Боссом\nУправление Маной\n(PvE)",
-                    }, 
-                    TT = { 
-                        enUS = "Enable to keep small mana save tricks during boss fight\nMana will keep going to save phase if Boss HP >= our Mana", 
-                        ruRU = "Включает сохранение малого количества маны с помощью некоторых манипуляций в течении боя против Босса\nМана будет переходить в фазу сохранения если ХП Босса >= нашей Маны", 
-                    }, 
-                    M = {},
-                }, 			
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "ManaPotion",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Use\nMana Potion",
-                        ruRU = "Использовать\nЗелье Маны",
-					},
-        	        M = {},
-       	        },
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "StopCastOverHeal",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Stop Cast\noverhealing",
-                        ruRU = "Stop Cast\noverhealing",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to automatically stop the current cast to avoid overhealing.",
-                        ruRU = "Enable this option to automatically stop the current cast to avoid overhealing.",
-					},
-        	        M = {},
-       	        },	 				
-        	    {	    
-           	        E = "Checkbox", 
-           	        DB = "StartByPreCast",
-           	        DBV = true,
-           	        L = { 
-					    enUS = "Begin Combat\nBy PreHot",
-                        ruRU = "Начинать Бой\nЗаранее произнося", 
-	                },
-           	        TT = { 
-					    enUS = "Will start rotation on enemy by available longer\ncasting spell depended on your spec",
-                        ruRU = "Будет начинать ротация на противнике с доступной\nдлинной произносящейся способности в зависимости от спека",
-					},
-           	        M = {},
-        	    },
-   	        },
-            { -- [6]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Party -- ",
-                    },
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@party1", value = 1 },
-                        { text = "@party2", value = 2 },
-                    },
-                    MULT = true,
-                    DB = "PartyUnits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                    }, 
-                    L = { 
-                        ANY = "Party Units",
-                    }, 
-                    TT = { 
-                        enUS = "Enable/Disable relative party passive rotation\nExample : Pet Dispell over party members.", 
-                        ruRU = "Включить/Выключить относительно группы пассивную ротацию\nExample : Pet Dispell over party members.", 
-						frFR = "Active/Désactive la rotation spécifique aux alliés pour les personnes dans le groupe.\nExemple : Dispell automatique sur les membres du groupe.",
-                    }, 
-                    M = {},
-                }, 			
-                {
-                    E = "Checkbox", 
-                    DB = "AutoDispel",
-                    DBV = true,
-                    L = { 
-					    enUS = "Activate auto dispel of friendly team",
-                        ruRU = "Activate auto dispel of friendly team",
-	                },
-                    M = {},
-                },  							
-            }, 		
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Mythic + -- ",
-                    },
-                },
-            },	
-			{
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "MythicPlusLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Smart Mythic+",
-                        ruRU = "Smart Mythic+",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-                        ruRU = "Enable this option to activate critical healing logic depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-					},
-        	        M = {},
-       	        },
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "SnipeFriendly",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Snipe Friendly",
-                        ruRU = "Snipe Friendly",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to predict critical healing and instant target unit depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-                        ruRU = "Enable this option to predict critical healing and instant target unit depending of the current dungeon.\nExample:Fulminating Zap in Junkyard",
-					},
-        	        M = {},
-       	        },					
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "GrievousWoundsLogic",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Grievous Wounds\nlogic",
-                        ruRU = "Grievous Wounds\nlogic",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-                        ruRU = "Enable this option to activate critical healing logic for friendly units that got Grievous Wounds debuff.",
-					},
-        	        M = {},
-       	        },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 5,                            
-                    DB = "GrievousWoundsMinStacks",                    
-                    DBV = 2,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Grievous Wounds\nmin stacks",                        
-                    },   
-          	        TT = { 
-					    enUS = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-                        ruRU = "How many stacks of Grievous Wounds should be up on friendly unit before force targetting on this unit.\nExample: 2 means friendly unit will be urgently targetted if he got 2 stacks.", 
-					},					
-                    M = {},
-                },				
-      	        {
-         	        E = "Checkbox", 
-         	        DB = "StopCastQuake",
-         	        DBV = true,
-         	        L = { 
-					    enUS = "Stop Cast\nquaking",
-                        ruRU = "Stop Cast\nquaking",
-					},
-          	        TT = { 
-					    enUS = "Enable this option to automatically stop your current cast before Quake.",
-                        ruRU = "Enable this option to automatically stop your current cast before Quake.",
-					},
-        	        M = {},
-       	        },	
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 3,                            
-                    DB = "StopCastQuakeSec",                    
-                    DBV = 1,
-					Precision = 1,
-                    ONOFF = false,
-                    L = { 
-                        ANY = "Stop Cast\nquaking seconds",                      
-                    },
-          	        TT = { 
-					    enUS = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-                        ruRU = "Define the value you want to stop your cast before next Quake hit.\nValue is in seconds.\nExample: 1 means you will stop cast at 1sec remaining on Quaking.",            
-					},					
-                    M = {},
-                },
-			},			
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Racials -- ",
-                    },
-                },
-            },	
-			{
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "RacialBurstHealing",                    
-                    DBV = 100,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Healing HP %)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "RacialBurstDamaging",                    
-                    DBV = 100,
-                    ONOFF = false,
-                    L = { 
-                        ANY = A.GetLocalization()["TAB"][1]["RACIAL"] .. "\n(Damaging HP %)",                        
-                    },                     
-                    M = {},
-                },
 			},
-            { -- Trinkets
+            { -- LAYOUT SPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },				
+            { -- GENERAL HEADER
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Trinkets -- ",
-                    },
-                },
-            },	
-            {     			
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "Always", value = "Always" },
-                        { text = "Burst Synchronized", value = "BurstSync" },                    
-                    },
-                    DB = "TrinketBurstSyncUP",
-                    DBV = "Always",
-                    L = { 
-					    enUS = "Damager: How to use trinkets",
-                        ruRU = "Урон: Как использовать аксессуары", 
-					},
-                    TT = { 
-					    enUS = "Always: On cooldown\nBurst Synchronized: By Burst Mode in 'General' tab",
-                        ruRU = "Always: По доступности\nBurst Synchronized: От Режима Бурстов во вкладке 'Общее'", 
-					}, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 100,                            
-                    DB = "TrinketMana",
-                    DBV = 85,
-                    ONLYOFF = false,
-                    L = { 
-					    enUS = "Trinket: Mana(%)",
-                        ruRU = "Trinket: Mana(%)",
-	                },
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 100,                            
-                    DB = "TrinketBurstHealing",
-                    DBV = 75,
-                    ONLYOFF = false,
-                    L = { 
-					    enUS = "Healer: Target Health (%)",
-                        ruRU = "Лекарь: Здоровье Цели (%)", 
-	                },
-                    M = {},
-                },		
-		    },
-            { -- [2]
-                {
-                    E = "Header",
-                    L = {
-                        enUS = " -- Self Defensives -- ",
-                        ruRU = " -- Своя Оборона -- ",
+                        ANY = " l><><>< ROTATION CHANGES ><><><l ",
                     },
                 },
             }, 
+			{
+                {
+                    E = "Checkbox", 
+                    DB = "AutoShift",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Form Shift" 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically switch forms based on your affinity."
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "UseDispel",
+                    DBV = true,
+                    L = { 
+                        ANY = "Auto Dispel" 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically Dispel from your Aura List."
+                    }, 
+                    M = {},
+                },	
+                {
+                    E = "Checkbox", 
+                    DB = "DarkTitan",
+                    DBV = false,
+                    L = { 
+                        ANY = "The Dark Titan's Lesson" 
+                    }, 
+                    TT = { 
+                        ANY = "Check this if you're using The Dark Titan's Lesson."
+                    }, 
+                    M = {},
+                },	
+                {
+                    E = "Checkbox", 
+                    DB = "EfflorescenceOnSelf",
+                    DBV = false,
+                    L = { 
+                        ANY = "Efflorescence on self" 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically drop Efflorescence on yourself (NOTE: YOU NEED TO SET YOUR EFFLORESCENCE MACRO TO /CAST [@PLAYER]"
+                    }, 
+                    M = {},
+                },					
+            },
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
+                    },
+                },
+            },
             { -- [3]     
                 {
                     E = "Slider",                                                     
                     MIN = -1, 
-                    MAX = 85,                            
+                    MAX = 100,                            
                     DB = "Barkskin",
-                    DBV = 85,
+                    DBV = 75,
                     ONOFF = true,
                     L = { 
                         ANY = A.GetSpellInfo(22812) .. " (%)",
                     }, 
                     M = {},
-                },
-                {                    
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "Stoneform",
-                    DBV = 100,
-                    ONOFF = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(20594) .. " (%)",                        
-                    }, 
-                    M = {},
-                },
-            }, 
-            { -- [4]    
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "Ironbark",
-                    DBV = 100,
-                    ONOFF = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(102342) .. " (%)",                        
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "BearForm",
-                    DBV = 100,
-                    ONOFF = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(5487) .. " (%)",
-                    }, 
-                    M = {},
-                },
-            }, 
-            { -- [5]    
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "DiffuseMagic",
-                    DBV = 100,
-                    ONOFF = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(122783) .. " (%)",                        
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "ManaPotion",
-                    DBV = 20,
-                    ONLYOFF = true,
-                    L = { 
-                        ANY = A.GetLocalization()["TAB"][1]["POTION"] .. " (Mana %)",
-                    }, 
-                    M = {},
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Essences -- ",
-                    },
-                },
-            },	
-			{
-			RowOptions = { margin = { top = 10 } },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "LucidDreamManaPercent",                    
-                    DBV = 85,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(299374) .. "\nMana %",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 10,                            
-                    DB = "LifeBindersInvocationUnits",                    
-                    DBV = 5,
-                    ONOFF = false,
-                    L = { 
-                        ANY = A.GetSpellInfo(299944) .. "\nunits number",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "LifeBindersInvocationHP",                    
-                    DBV = 85,
-                    ONOFF = false,
-                    L = { 
-                        ANY = A.GetSpellInfo(299944) .. "\n(%)",                        
-                    },                     
-                    M = {},
-                },
-			},
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Force Spread Macro -- ",
-                    },
-                },
-            },	
-            {			
-                {
-                    E         = "Button",
-                    H         = 35,
-                    OnClick = function(self, button, down)     
-                        if button == "LeftButton" then 
-							TR.ToggleForceRejuvenation()
-                        else                
-                            Action.CraftMacro("QB:BurstHeal", [[#showtip ]] .. Action[ACTION_CONST_DRUID_RESTORATION].Rejuvenation:Info() .. "\n" .. [[/run Action.TasteRotation.ToggleForceRejuvenation(state)]], 1, true, true) 
-                        end 
-                    end, 
-                    L = { 
-                        ANY = "Burst\nMacro Creator",
-                    }, 
-                    TT = { 
-                        enUS = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
-                        ruRU = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
-                        frFR = "Click this button to create the special " .. A.GetSpellInfo(774) .. " macro.\n@USAGE: Create the macro and add it to your spellbar or keybind it. Then if you know some big damage are incoming, just press once to spread Rejuvenation on max units and press again to stop.", 
-                    },                           
-                },
-            },				
-            { -- LIFEBLOOM
-                {
-                    E = "Header",
-                    L = {
-                        ANY = A.GetSpellInfo(33763),
-                    },
-                },
-            }, 
-            { -- [11] 
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "LifebloomHP",
-                    DBV = 100,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(33763) .. " (%)",                        
-                    }, 
-                    TT = { 
-                        enUS = "Offset Health Percent on which start casting 'Lifebloom'", 
-                        ruRU = "Значение Процента Здоровья на котором начинать произносить 'Lifebloom'", 
-                    },
-                    M = {},
-                }, 			
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "Auto", value = "Auto" },    
-                        { text = "Tanking Units", value = "Tanking Units" },                    
-                        { text = "Mostly Inc. Damage", value = "Mostly Inc. Damage" },
-                    },
-                    DB = "LifebloomWorkMode",
-                    DBV = "Auto",
-                    L = { 
-                        ANY = A.GetSpellInfo(33763) .. " Work Mode",
-                    }, 
-                    TT = { 
-                        enUS = "These conditions will activate differents logic behind.\nAuto: Fully automated settings, priorise Photosynthesis on you if talent is learned.\nTanking Units: Will make sure Lifebloom is always present on tanks.\nMostly Inc. Damage: Friendly unit taking the more damage in the current situation.", 
-                        ruRU = "These conditions will activate differents logic behind.\nAuto: Fully automated settings, priorise Photosynthesis on you if talent is learned.\nTanking Units: Will make sure Lifebloom is always present on tanks.\nMostly Inc. Damage: Friendly unit taking the more damage in the current situation.",
-                    },                    
-                    M = {},
-                },
-            }, 
-			
-			
-            { -- TRANQUILITY
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- " .. A.GetSpellInfo(740) .. " -- ",
-                    },
                 }, 
-            },
-			{
-			    RowOptions = { margin = { top = -10 } },
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Raid -- ",
-                    },
-                },
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Dungeon -- ",
-                    },
-                },
-			},
-            -- Tranquility
-            { -- [3] 
-              	RowOptions = { margin = { top = 10 } },		
                 {
                     E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "TranquilityRaidUnits",
-                    DBV = 5,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(740) .. "\n(Total Units)",    
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "TranquilityPartyUnits",
-                    DBV = 3,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(740) .. "\n(Total Units)",    
-                    },                     
-                    M = {},
-                },
-			},
-			{
-			    RowOptions = { margin = { top = 10 } },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
+                    MIN = -1, 
                     MAX = 100,                            
-                    DB = "TranquilityRaidHP",
-                    DBV = 65,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 100,                            
-                    DB = "TranquilityPartyHP",
-                    DBV = 60,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(740) .. "\n(Per UnitHealth %)",                        
-                    },                     
-                    M = {},
-                },			    
-            },	
-            { -- FLOURISH
-                {
-                    E = "Header",
-                    L = {
-                        ANY = A.GetSpellInfo(197721),
-                    },
-                },
-            }, 
-            { -- [13]    
-                RowOptions = { margin = { top = 10 } },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "FlourishHP",                    
-                    DBV = 70,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(197721) .. "\n(Per UnitHealth %)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "FlourishUnits",
-                    DBV = 4,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(197721) .. "\n(Total Units)",    
-                    },                     
-                    M = {},
-                },
-            },
-            { -- EFFLORESCENCE
-                {
-                    E = "Header",
-                    L = {
-                        ANY = A.GetSpellInfo(145205),
-                    },
-                },
-            }, 		
-            { -- [10]
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 5,                            
-                    DB = "EfflorescenceRefresh",
-                    DBV = 2,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(145205) .. "\nrefresh(sec)",                        
-                    }, 
-                    TT = { 
-                        enUS = "Time remaining in seconds before refreshing " .. A.GetSpellInfo(145205), 
-                        ruRU = "Time remaining in seconds before refreshing " .. A.GetSpellInfo(145205), 
-                    },
-                    M = {},
-                },            
-            },			
-            { -- [10]
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "SwiftmendHP",
-                    DBV = 85,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(18562) .. " (%)",                        
-                    }, 
-                    TT = { 
-                        enUS = "Offset Health Percent on which start casting 'Swiftmend'", 
-                        ruRU = "Значение Процента Здоровья на котором начинать произносить 'Swiftmend'", 
-                    },
-                    M = {},
-                },            
-            },
-            { -- [14]    
-                RowOptions = { margin = { top = 10 } },
-                {
-                    E = "Slider",                                                     
-                    MIN = 0, 
-                    MAX = 100,                            
-                    DB = "WildGrowthHP",                    
-                    DBV = 93,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(48438) .. "\n(Per UnitHealth %)",                        
-                    },                     
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 7,                            
-                    DB = "WildGrowthUnits",
-                    DBV = 3,
-                    ONLYON = true,
-                    L = { 
-                        ANY = A.GetSpellInfo(48438) .. "\n(Total Units)",    
-                    },                     
-                    M = {},
-                },
-            },  
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Overlay -- ",
-                    },
-                },
-            },
-            { -- [2] 2nd Row
-                {
-                    E = "Checkbox", 
-                    DB = "UseAnnouncer",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Smart Announcer", 
-                        ruRU = "Use Smart Announcer",  
-                        frFR = "Use Smart Announcer", 
-                    }, 
-                    TT = { 
-                        enUS = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        ruRU = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                        frFR = "Will make the rotation to announce importants informations.\nUseful to get fast and clear status of what the rotation is doing and why it is doing.\nFor example :\n- Blind on enemy healer to interrupt an incoming heal.\n- Vanish to survive incoming damage.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "AnnouncerInCombatOnly",
-                    DBV = true,
-                    L = { 
-                        enUS = "Only use in combat", 
-                        ruRU = "Only use in combat", 
-                        frFR = "Only use in combat",
-                    }, 
-                    TT = { 
-                        enUS = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work with precombat actions if available.\nFor example : Sap out of combat, pre potion.", 
-                        ruRU = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",
-                        frFR = "Will only use Smart Announcer while in combat.\nDisable it will make Smart Announcer work out of combat if precombat actions are available.\nFor example : Sap out of combat, pre potion.",  
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "AnnouncerDelay",
-                    DBV = 2, -- 2sec
+                    DB = "FrenziedRegeneration",
+                    DBV = 30,
                     ONOFF = true,
                     L = { 
-                        ANY = "Alerts delay (sec)",
-                    },
-                    TT = { 
-                        enUS = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        ruRU = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                        frFR = "Will force a specific delay before the alerts fade.\nDefault value : 2 seconds.", 
-                    }, 					
+                        ANY = A.GetSpellInfo(22842) .. " (%)",
+                    }, 
+                    M = {},
+                },
+			},
+			{
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "Renewal",
+                    DBV = 40,
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Renewal (%)",
+                    }, 
                     M = {},
                 },				
-            },						
-            { -- [17]
                 {
-                    E = "Header",
-                    L = {
-                        ANY = " -- PvP -- ",
-                    },
-                },
-            }, 
-            { -- [18]
-                {
-                    E = "Checkbox", 
-                    DB = "MouseButtonsCheck",
-                    DBV = true,
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "SpiritualHealingPotionHP",
+                    DBV = 30,
+                    ONOFF = true,
                     L = { 
-                        enUS = A.GetSpellInfo(145205) .. "\nCheck Mouse Buttons", 
-                        ruRU = A.GetSpellInfo(145205) .. "\nПроверять Кнопки Мышки", 
-                    }, 
-                    TT = { 
-                        enUS = "Prevents use if the camera is currently spinning with the mouse button held down", 
-                        ruRU = "Предотвращает использование если камера в текущий момент крутится с помощью зажатой кнопки мыши", 
+                        ANY = "Spiritual Healing Potion (%)",
                     }, 
                     M = {},
-                },
-            }, 
-            { -- [19]
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "ON MELEE BURST", value = "ON MELEE BURST" },
-                        { text = "ON COOLDOWN", value = "ON COOLDOWN" },                    
-                        { text = "OFF", value = "OFF" },
-                    },
-                    DB = "CyclonePvP",
-                    DBV = "ON MELEE BURST",
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(33786),
-                    }, 
-                    TT = { 
-                        enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                        ruRU = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Только если игрок ближнего боя имеет бафы на урон\nON COOLDOWN - значит будет использовано по игрокам ближнего боя по восстановлению способности\nOFF - Выключает из ротации, но при этом позволяет Очередь и MSG системам работать\nЕсли нужно полностью выключить, тогда установите блокировку во вкладке 'Действия'", 
-                        frFR = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Seulement si le joueur de mêlée a des buffs de dégâts\nON COOLDOWN - les moyens seront toujours utilisés sur les joueurs de mêlée\nOFF - Coupé de la rotation mais autorisant toujours le travail dans la file d'attente et Systèmes MSG\nSi vous souhaitez l'éteindre complètement, vous devez définir SetBlocker dans l'onglet 'Actions'", 
-                    },
-                    M = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@arena1", value = 1 },
-                        { text = "@arena2", value = 2 },
-                        { text = "@arena3", value = 3 },
-                        { text = "primary", value = 4 },
-                    },
-                    MULT = true,
-                    DB = "CyclonePvPunits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                        [3] = true,
-                        [4] = true,
-                    }, 
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(33786) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
-                        ruRU = "primary - это @target, @mouseover, @targettarget (эти юниты зависят от чекбоксов наверху)", 
-                    }, 
-                    M = {},
-                },
-            },
-            { -- [19]
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "ON MELEE BURST", value = "ON MELEE BURST" },
-                        { text = "ON COOLDOWN", value = "ON COOLDOWN" },                    
-                        { text = "OFF", value = "OFF" },
-                    },
-                    DB = "MightyBashPvP",
-                    DBV = "ON MELEE BURST",
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(5211),
-                    }, 
-                    TT = { 
-                        enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                        ruRU = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Только если игрок ближнего боя имеет бафы на урон\nON COOLDOWN - значит будет использовано по игрокам ближнего боя по восстановлению способности\nOFF - Выключает из ротации, но при этом позволяет Очередь и MSG системам работать\nЕсли нужно полностью выключить, тогда установите блокировку во вкладке 'Действия'", 
-                        frFR = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Seulement si le joueur de mêlée a des buffs de dégâts\nON COOLDOWN - les moyens seront toujours utilisés sur les joueurs de mêlée\nOFF - Coupé de la rotation mais autorisant toujours le travail dans la file d'attente et Systèmes MSG\nSi vous souhaitez l'éteindre complètement, vous devez définir SetBlocker dans l'onglet 'Actions'", 
-                    },
-                    M = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@arena1", value = 1 },
-                        { text = "@arena2", value = 2 },
-                        { text = "@arena3", value = 3 },
-                        { text = "primary", value = 4 },
-                    },
-                    MULT = true,
-                    DB = "MightyBashPvPunits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                        [3] = true,
-                        [4] = true,
-                    }, 
-                    L = { 
-                        ANY = "PvP " .. A.GetSpellInfo(5211) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
-                        ruRU = "primary - это @target, @mouseover, @targettarget (эти юниты зависят от чекбоксов наверху)", 
-                    }, 
-                    M = {},
-                },
-            },     
+                },			
+            },   
         },
     },
     -- MSG Actions UI

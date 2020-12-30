@@ -29,7 +29,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {    
-    DateTime = "v1.1.0 (8 Dec 2020)",
+    DateTime = "v1.5.0 (23 Dec 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_SHAMAN_ENCHANCEMENT] = {
@@ -637,12 +637,11 @@ A.Data.ProfileUI = {
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- General -- ",
+                        ANY = " l><><>< GENERAL ><><><l ",
                     },
                 },
-            },        
-            { -- [1] 1st Row
-                
+            },
+            { -- [1] 1st Row    
                 {
                     E = "Checkbox", 
                     DB = "mouseover",
@@ -681,205 +680,98 @@ A.Data.ProfileUI = {
                         TabN = '@number' or nil,                                
                         Print = '@string' or nil,
                     },
-                },  
-                {
-                    E = "Checkbox", 
-                    DB = "TasteInterruptList",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use BFA Mythic+ & Raid\nsmart interrupt list", 
-                        ruRU = "использование BFA Mythic+ & Raid\nумный список прерываний", 
-                        frFR = "Liste d'interrupts intelligente\nBFA Mythic+ & Raid",
-                    }, 
-                    TT = { 
-                        enUS = "If Enabled : Will force a special interrupt list containing all the BFA Mythic+ and Raid stuff WHEN YOU ARE IN MYTHIC+ OR RAID ZONE.\nYou can edit this list in the Interrupts tab\nand customize it as you want",
-                        ruRU = "Если включено : Запустит специальный список прерываний, содержащий все BFA Mythic+ и Raid stuff КОГДА ВЫ НАХОДИТЕСЬ В МИФИЧЕСКОЙ + ИЛИ ЗОНЕ RAID.\nВы можете редактировать этот список на вкладке Прерывания\nи настраивай как хочешь",
-                        frFR = "Si activé : Force une liste d'interruption spéciale contenant tous les éléments BFA Mythic + et Raid QUAND VOUS ETES EN MYTHIC+ OU EN RAID.\nVous pouvez modifier cette liste dans l'onglet Interruptions\net la personnaliser comme vous le souhaitez", 
-                    }, 
-                    M = {},
-                },                    
-            }, 
-            { -- [7] Spell Status Frame
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Spell Status Frame -- ",
-                    },
                 },
-            },    
-            {
-                {
-                    E         = "Button",
-                    H         = 35,
-                    OnClick = function(self, button, down)     
-                        if button == "LeftButton" then 
-                            TR.ToggleStatusFrame() 
-                        else                
-                            Action.CraftMacro("Status Frame", [[/run Action.TasteRotation.ToggleStatusFrame()]], 1, true, true)   
-                        end 
-                    end, 
-                    L = { 
-                        ANY = "Status Frame\nMacro Creator",
-                    }, 
-                    TT = { 
-                        enUS = "Click this button to create the special status frame macro.\nStatus Frame is a new windows that allow user to track blocked spells during fight. So you don't have to check your chat anymore.", 
-                        ruRU = "Нажмите эту кнопку, чтобы создать специальный макрос статуса.\nStatus Frame - это новые окна, которые позволяют пользователю отслеживать заблокированные заклинания во время боя. Так что вам больше не нужно проверять свой чат.",  
-                        frFR = "Cliquez sur ce bouton pour créer la macro de cadre d'état spécial.\nLe cadre d'état est une nouvelle fenêtre qui permet à l'utilisateur de suivre les sorts bloqués pendant le combat. Vous n'avez donc plus besoin de vérifier votre chat.", 
-                    },                           
-                },
-            },                
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Trinkets -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "TrinketsAoE",
-                    DBV = true,
-                    L = { 
-                        enUS = "Trinkets\nAoE only", 
-                        ruRU = "Trinkets\nAoE only",  
-                        frFR = "Trinkets\nAoE only",  
-                    }, 
-                    TT = { 
-                        enUS = "Enable this to option to trinkets for AoE usage ONLY.", 
-                        ruRU = "Включите эту опцию для Брелков ТОЛЬКО для использования AoE.", 
-                        frFR = "Activez cette option pour les trinkets pour une utilisation AoE UNIQUEMENT.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 15,                            
-                    DB = "TrinketsMinTTD",
-                    DBV = 5, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Min TTD",
-                    },
-                    TT = { 
-                        enUS = "Minimum Time To Die for units in range before using Trinkets.\nNOTE: This will calculate Time To Die of your current target OR the Area Time To Die if multiples units are detected.", 
-                        ruRU = "Минимальное время до смерти для юнитов в радиусе действия до использования Брелков.\nПРИМЕЧАНИЕ. При этом будет рассчитано время до смерти текущей цели ИЛИ время до смерти в случае обнаружения нескольких единиц.", 
-                        frFR = "Temps minimum pour mourir pour les unités à portée avant d'utiliser des Trinkets.\nREMARQUE: Cela calculera le temps de mourir de votre cible actuelle OU le temps de mourir de la zone si plusieurs unités sont détectées.", 
-                    },                    
-                    M = {},
-                },
-            },
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = 2, 
-                    MAX = 10,                            
-                    DB = "TrinketsMinUnits",
-                    DBV = 2, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Min Units",
-                    },
-                    TT = { 
-                        enUS = "Minimum number of units in range to activate Trinkets.", 
-                        ruRU = "Минимальное количество юнитов в радиусе действия для активации Брелков.", 
-                        frFR = "Nombre minimum d'unités à portée pour activer les Trinkets.",  
-                    },                    
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 40,                            
-                    DB = "TrinketsUnitsRange",
-                    DBV = 30, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Max AoE range",
-                    },
-                    TT = { 
-                        enUS = "Maximum range for units detection to automatically activate trinkets.", 
-                        ruRU = "Максимальная дальность обнаружения юнитов для автоматической активации безделушек.", 
-                        frFR = "Portée maximale de détection des unités pour activer automatiquement les trinkets.",  
-                    },                    
-                    M = {},
-                },
-            },
-            { -- [4] 4th Row
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },
-            { -- [7] 
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Miscellaneous -- ",
-                    },
-                },
-            },
-            {
                 {
                     E = "Checkbox", 
                     DB = "ForceAoE",
                     DBV = true,
                     L = { 
-                        enUS = "Force AoE opener", 
-                        ruRU = "Force AoE opener", 
-                        frFR = "Force AoE opener", 
+                        ANY = "Force AoE Opener",
                     }, 
                     TT = { 
-                        enUS = "If activated, opener will use Chain Lightning instead of Lava Burst.\nUsefull if you got issue with AoE detection on opener.", 
-                        ruRU = "If activated, opener will use Chain Lightning instead of Lava Burst.\nUsefull if you got issue with AoE detection on opener.",
-                        frFR = "If activated, opener will use Chain Lightning instead of Lava Burst.\nUsefull if you got issue with AoE detection on opener.",
+                        ANY = "Force your first spell out of combat to be Chain Lightning in an attempt to detect AoE.",
                     }, 
                     M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "UseGhostWolf",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Ghost Wolf", 
-                        ruRU = "Use Ghost Wolf", 
-                        frFR = "Use Ghost Wolf",
-                    }, 
-                    TT = { 
-                        enUS = "Automatically use Ghost Wolf if out of range and in combat.", 
-                        ruRU = "Automatically use Ghost Wolf if out of range and in combat.", 
-                        frFR = "Automatically use Ghost Wolf if out of range and in combat.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "UseCapacitorTotem",
-                    DBV = true,
-                    L = { 
-                        enUS = "Use Capacitor Totem", 
-                        ruRU = "Use Capacitor Totem", 
-                        frFR = "Use Capacitor Totem", 
-                    }, 
-                    TT = { 
-                        enUS = "Will force use of Capacitor Totem if Wind Shear is not ready.", 
-                        ruRU = "Will force use of Capacitor Totem if Wind Shear is not ready.",
-                        frFR = "Will force use of Capacitor Totem if Wind Shear is not ready.",
-                    }, 
-                    M = {},
-                },
+                },				
             },
-            
-            { -- [7] 
+            { -- LAYOUT SPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },   			
+            { -- [7]
                 {
                     E = "Header",
                     L = {
-                        ANY = " -- Defensives -- ",
+                        ANY = " l><><>< EXTRA STUFF ><><><l ",
                     },
                 },
-            },            
+            },
+			{
+                {
+                    E = "Checkbox", 
+                    DB = "SkybreakersFieryDemise",
+                    DBV = true,
+                    L = { 
+                        ANY = "Skybreaker's Fiery Demise",
+                    }, 
+                    TT = { 
+                        ANY = "Skybreaker's Fiery Demise Legendary Equipped",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "EchoesofGreatSundering",
+                    DBV = true,
+                    L = { 
+                        ANY = "Echoes of Great Sundering",
+                    }, 
+                    TT = { 
+                        ANY = "Echoes of Great Sundering Legendary Equipped",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Checkbox", 
+                    DB = "DeeptremorStone",
+                    DBV = true,
+                    L = { 
+                        ANY = "Deeptremor Stone",
+                    }, 
+                    TT = { 
+                        ANY = "Deeptremor Stone Legendary Equipped",
+                    }, 
+                    M = {},
+                },
+			},
+			{
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 5,                            
+                    DB = "SpiritwalkersGraceTime",
+                    DBV = 3, 
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Spiritwalker's Grace Time",
+                    }, 
+                    M = {},
+                },			
+			},
+            { -- LAYOUT SPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },   			
+            { -- [7]
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
+                    },
+                },
+            },           
             { -- [3] 3rd Row 
                 {
                     E = "Slider",                                                     
@@ -897,201 +789,11 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "EarthShieldHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(974) .. " (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
                     DB = "HealingSurgeHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
                         ANY = GetSpellInfo(8004) .. " (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "AbyssalHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(301308) .. " (%)",
-                    }, 
-                    M = {},
-                },
-            },
-            {
-                {
-                    E = "Checkbox", 
-                    DB = "UseEarthElemental",
-                    DBV = true,
-                    L = { 
-                        enUS = "Defensive Earth Elemental", 
-                        ruRU = "Defensive Earth Elemental", 
-                        frFR = "Defensive Earth Elemental", 
-                    }, 
-                    TT = { 
-                        enUS = "Will use Earth Elemental defensively depending on your settings.", 
-                        ruRU = "Will use Earth Elemental defensively depending on your settings.", 
-                        frFR = "Will use Earth Elemental defensively depending on your settings.", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "EarthElementalHP",
-                    DBV = 40, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Health",
-                    },
-                    TT = { 
-                        enUS = "Current player health percentage to use Earth Elemental.", 
-                        ruRU = "Current player health percentage to use Earth Elemental.", 
-                        frFR = "Current player health percentage to use Earth Elemental.",
-                    },                    
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 15,                            
-                    DB = "EarthElementalEnemies",
-                    DBV = 3, 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Enemies",
-                    }, 
-                    TT = { 
-                        enUS = "Number of enemies around to use Earth Elemental.", 
-                        ruRU = "Number of enemies around to use Earth Elemental.", 
-                        frFR = "Number of enemies around to use Earth Elemental.",
-                    },
-                    M = {},
-                },
-            },
-            { -- [4] 4th Row
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Ancestral Guidance -- ",
-                    },
-                },
-            },
-            {
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "In Raid", value = "In Raid" },
-                        { text = "In Dungeon", value = "In Dungeon" },
-                        { text = "In PvP", value = "In PvP" },
-                        { text = "Everywhere", value = "Everywhere" },
-                    },
-                    MULT = false,
-                    DB = "AncestralGuidanceSelection",
-                    DBV = "In Dungeon", 
-                    L = { 
-                        ANY = "Ancestral Guidance usage",
-                    }, 
-                    TT = { 
-                        enUS = "Choose where you want to automatically Ancestral Guidance units.", 
-                        ruRU = "Choose where you want to automatically Ancestral Guidance units.",
-                    }, 
-                    M = {},
-                },    
-            },    
-            {
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "AncestralGuidanceHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Defensive Logic",
-                    },
-                    TT = { 
-                        enUS = "Auto : Will dynamically take in account your current group size, current group damage and healing per second to determine when to use assist healing.\nNOT Auto : the value set with slider will be the current percent damage per second on your group.", 
-                        ruRU = "Auto : Will dynamically take in account your current group size, current group damage and healing per second to determine when to use assist healing.\nNOT Auto : the value set with slider will be the current percent damage per second on your group.", 
-                        frFR = "Auto : Will dynamically take in account your current group size, current group damage and healing per second to determine when to use assist healing.\nNOT Auto : the value set with slider will be the current percent damage per second on your group.", 
-                    },                    
-                    M = {},
-                },
-            },
-            
-            { -- [4] 4th Row
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            }, 
-            { -- [7]
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- PvP -- ",
-                    },
-                },
-            },
-            { -- [5] 5th Row     
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "ON MELEE BURST", value = "ON MELEE BURST" },
-                        { text = "ON COOLDOWN", value = "ON COOLDOWN" },                    
-                        { text = "OFF", value = "OFF" },
-                    },
-                    DB = "HexPvP",
-                    DBV = "ON MELEE BURST",
-                    L = { 
-                        ANY = "PvP " .. GetSpellInfo(51514),
-                    }, 
-                    TT = { 
-                        enUS = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Only if melee player has damage buffs\nON COOLDOWN - means will use always on melee players\nOFF - Cut out from rotation but still allow work through Queue and MSG systems\nIf you want fully turn it OFF then you should make SetBlocker in 'Actions' tab", 
-                        ruRU = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Только если игрок ближнего боя имеет бафы на урон\nON COOLDOWN - значит будет использовано по игрокам ближнего боя по восстановлению способности\nOFF - Выключает из ротации, но при этом позволяет Очередь и MSG системам работать\nЕсли нужно полностью выключить, тогда установите блокировку во вкладке 'Действия'", 
-                        frFR = "@arena1-3, @target, @mouseover, @targettarget\nON MELEE BURST - Seulement si le joueur de mêlée a des buffs de dégâts\nON COOLDOWN - les moyens seront toujours utilisés sur les joueurs de mêlée\nOFF - Coupé de la rotation mais autorisant toujours le travail dans la file d'attente et Systèmes MSG\nSi vous souhaitez l'éteindre complètement, vous devez définir SetBlocker dans l'onglet 'Actions'", 
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "@arena1", value = 1 },
-                        { text = "@arena2", value = 2 },
-                        { text = "@arena3", value = 3 },
-                        { text = "primary", value = 4 },
-                    },
-                    MULT = true,
-                    DB = "HexPvPUnits",
-                    DBV = {
-                        [1] = true, 
-                        [2] = true,
-                        [3] = true,
-                        [4] = true,
-                    }, 
-                    L = { 
-                        ANY = "PvP " .. GetSpellInfo(51514) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "primary - is @target, @mouseover, @targettarget (these units are depend on toggles above)", 
-                        ruRU = "primary - это @target, @mouseover, @targettarget (эти юниты зависят от чекбоксов наверху)", 
                     }, 
                     M = {},
                 },
@@ -1168,7 +870,19 @@ A.Data.ProfileUI = {
                         ANY = "What shield do you want to use on yourself?"
                     },                    
                     M = {},
-                },           
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 10,                            
+                    DB = "ChainLightningTargets",
+                    DBV = 3,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Lightning Targets",
+                    }, 
+                    M = {},
+                }, 				
             },					
             { -- LAYOUT SPACE
                 
@@ -1228,7 +942,59 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },               
-            },                  
+            }, 
+            {
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "HealingWaveHP",
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Healing Wave HP (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "HealingSurgeHP",
+                    DBV = 40,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Healing Surge HP (%)",
+                    }, 
+                    M = {},
+                }, 				
+            },
+			{
+                {
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "ChainHealHP",
+                    DBV = 80,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Heal HP (%)",
+                    }, 
+                    M = {},
+                }, 	
+                {
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 10,                            
+                    DB = "ChainHealTargets",
+                    DBV = 3,
+                    ONOFF = false,
+                    L = { 
+                        ANY = "Chain Heal Targets",
+                    }, 
+                    M = {},
+                }, 				
+            },				
         },
     },
     -- MSG Actions UI

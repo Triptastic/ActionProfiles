@@ -775,17 +775,17 @@ A[3] = function(icon, isMulti)
             
             --actions.aoe+=/malefic_rapture,if=dot.soul_rot.ticking&!talent.sow_the_seeds.enabled
             if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.SoulRot.ID, true) > 0 and not A.SowtheSeeds:IsTalentLearned() then
-                return A.MaleficRapture:Show(icon)
+                return A.SpatialRift:Show(icon)
             end    
             
             --actions.aoe+=/malefic_rapture,if=!talent.vile_taint.enabled    
             if A.MaleficRapture:IsReady("player") and (not isMoving) and not A.VileTaint:IsTalentLearned() then
-                return A.MaleficRapture:Show(icon)
+                return A.SpatialRift:Show(icon)
             end    
             
             --actions.aoe+=/malefic_rapture,if=soul_shard>4
             if A.MaleficRapture:IsReady("player") and (not isMoving) and Player:SoulShards() > 4 then
-                return A.MaleficRapture:Show(icon)
+                return A.SpatialRift:Show(icon)
             end    
             
             --[[actions.aoe+=/siphon_life,cycle_targets=1,if=active_dot.siphon_life<=3,target_if=!dot.siphon_life.ticking
