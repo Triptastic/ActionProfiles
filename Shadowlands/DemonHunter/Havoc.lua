@@ -903,15 +903,19 @@ A[3] = function(icon, isMulti)
         --    return A.ConsumeMagic:Show(icon)
         --end
 		
-        if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UsePurge", "MagicMovement") then
-            return A.ConsumeMagic:Show(icon)
-        end
-        if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UsePurge", "PurgeHigh") then
-            return A.ConsumeMagic:Show(icon)
-        end
-        if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UsePurge", "PurgeLow") then
-            return A.ConsumeMagic:Show(icon)
-        end
+		if A.ConsumeMagic:IsReady(unit) and Action.AuraIsValid(unit, "Dispel", "UseDispel") then
+			return A.ConsumeMagic:Show(icon)
+		end  
+		
+		if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "MagicMovement") then
+			return A.ConsumeMagic:Show(icon)
+		end
+		if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "PurgeHigh") then
+			return A.ConsumeMagic:Show(icon)
+		end
+		if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "PurgeLow") then
+			return A.ConsumeMagic:Show(icon)
+		end
         
         -- Imprison CrowdControl PvP
         if inCombat and Action.ImprisonIsReady(unit) then

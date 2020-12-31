@@ -174,12 +174,12 @@ Action[ACTION_CONST_DEMONHUNTER_VENGEANCE] = {
     --Anima Powers - to add later...
     
     -- Trinkets
-    SlimyCosumptiveOrgan			 = Action.Create({ Type = "Trinket", ID = 178770	   }),
-		SlimyStacks                  	 = Action.Create({ Type = "Spell", ID = 334511    }),
-	DarkmoonDeckVoracity             = Action.Create({ Type = "Trinket", ID = 173087    }),
-		DMVoracity6                      = Action.Create({ Type = "Spell", ID = 311489    }),
-		DMVoracity7                      = Action.Create({ Type = "Spell", ID = 311488    }),
-		DMVoracity8                      = Action.Create({ Type = "Spell", ID = 311490    }),
+    SlimyCosumptiveOrgan             = Action.Create({ Type = "Trinket", ID = 178770       }),
+    SlimyStacks                       = Action.Create({ Type = "Spell", ID = 334511    }),
+    DarkmoonDeckVoracity             = Action.Create({ Type = "Trinket", ID = 173087    }),
+    DMVoracity6                      = Action.Create({ Type = "Spell", ID = 311489    }),
+    DMVoracity7                      = Action.Create({ Type = "Spell", ID = 311488    }),
+    DMVoracity8                      = Action.Create({ Type = "Spell", ID = 311490    }),
     
     -- Potions
     PotionofUnbridledFury            = Action.Create({ Type = "Potion", ID = 169299    }),     
@@ -404,7 +404,7 @@ A[3] = function(icon, isMulti)
     local Trinket1IsAllowed = Action.GetToggle(1, "Trinkets")[1]
     local Trinket2IsAllowed = Action.GetToggle(1, "Trinkets")[2]
     local MissingSpiritBomb = Unit("target"):HasDeBuffs(A.SpiritBombDebuff.ID, true) < 3
-	
+    
     if Temp.InfernalStrikeDelay == 0 and Unit(player):IsCasting() == A.InfernalStrike:Info()  then
         Temp.InfernalStrikeDelay = 90
     end
@@ -449,7 +449,7 @@ A[3] = function(icon, isMulti)
             end    
             
             --actions.cooldown+=/elysian_decree
-            if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.5 and MultiUnits:GetByRange(5, 2) >= 2 and Unit(unit):TimeToDie() >= 5 then
+            if A.ElysianDecree:IsReady(player) and Player:IsStayingTime() > 0.2 and MultiUnits:GetByRange(5, 2) >= 2 and Unit(unit):TimeToDie() >= 5 then
                 return A.ElysianDecree:Show(icon)
             end    
             
@@ -495,7 +495,7 @@ A[3] = function(icon, isMulti)
             
             --Spirit Bomb if four or more souls
             if A.SpiritBomb:IsReady(unit) and A.SpiritBomb:IsTalentLearned() and SoulFragments >= 4 then
-                    return A.SpiritBomb:Show(icon)
+                return A.SpiritBomb:Show(icon)
             end
             
             --Sigil of Flame (try not to overlap with Sigil from Abyssal Strike talent)
@@ -512,12 +512,12 @@ A[3] = function(icon, isMulti)
             if A.SoulCleave:IsReady(unit) and Player:Fury() >= 30 and (SoulFragments == 0 and A.SpiritBomb:IsTalentLearned()) then
                 return A.SoulCleave:Show(icon)
             end
-			
+            
             --Soul Cleave Fiery Brand and other Builds
             if A.SoulCleave:IsReady(unit) and Player:Fury() >= 30 and (SoulFragments >= 1 and not A.SpiritBomb:IsTalentLearned()) then
                 return A.SoulCleave:Show(icon)
             end
-						
+            
             --Shear
             if A.Shear:IsReady(unit) and not A.Fracture:IsTalentLearned() then
                 return A.Shear:Show(icon)
@@ -549,7 +549,7 @@ A[3] = function(icon, isMulti)
             end
             
             --Fel Devastation on cooldown
-            if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and Unit(player):HealthPercent() <= FelDevHP then
+            if A.FelDevastation:IsReady("player") and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) and Unit("target"):GetRange() <= 15 and Unit(player):HealthPercent() <= FelDevHP then
                 return A.SpectralSight:Show(icon)
             end            
             
@@ -575,7 +575,6 @@ A[3] = function(icon, isMulti)
         
         
         local function Utilities()
-           
             
             -- Interrupt
             local Interrupt = Interrupts(unit)
@@ -586,9 +585,19 @@ A[3] = function(icon, isMulti)
             -- Purge
             -- Note: Toggles  ("UseDispel", "UsePurge", "UseExpelEnrage")
             -- Category ("Dispel", "MagicMovement", "PurgeFriendly", "PurgeHigh", "PurgeLow", "Enrage")
-            if A.ConsumeMagic:IsReady(unit) and Action.AuraIsValid(unit, "UsePurge", "PurgeHigh") then
+            if A.ConsumeMagic:IsReady(unit) and Action.AuraIsValid(unit, "Dispel", "UseDispel") then
                 return A.ConsumeMagic:Show(icon)
-            end    
+            end  
+            
+            if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "MagicMovement") then
+                return A.ConsumeMagic:Show(icon)
+            end
+            if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "PurgeHigh") then
+                return A.ConsumeMagic:Show(icon)
+            end
+            if inCombat and A.ConsumeMagic:IsReady(unit) and not Unit(unit):IsBoss() and not IsInRaid() and AuraIsValid(unit, "UseDispel", "PurgeLow") then
+                return A.ConsumeMagic:Show(icon)
+            end
             
             -- Auto Taunt (without target switching)
             if A.Torment:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsBoss() and not Unit(unit):IsDummy() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() and Unit("targettarget"):InfoGUID() ~= nil ) then 
@@ -613,17 +622,17 @@ A[3] = function(icon, isMulti)
                     if GoodVoracity then
                         return A.Trinket1:Show(icon)
                     end
-                --check Trinket 1 SlimyCosumptiveOrgan 
+                    --check Trinket 1 SlimyCosumptiveOrgan 
                 elseif trinket1ID == 178770 then
                     if Gluttonous and Unit(player):HealthPercent() <= 80 then
                         return A.Trinket1:Show(icon)
                     end
-                --if nothing show Trinket 1
+                    --if nothing show Trinket 1
                 else    
                     return A.Trinket1:Show(icon)
                 end
             end
-
+            
             -- Trinket2
             -- check Trinket2 Ready and Allowed ready
             if A.Trinket2:IsReady(unitID) and Trinket2IsAllowed then
@@ -632,12 +641,12 @@ A[3] = function(icon, isMulti)
                     if GoodVoracity then
                         return A.Trinket2:Show(icon)
                     end
-                --check Trinket 2 SlimyCosumptiveOrgan 
+                    --check Trinket 2 SlimyCosumptiveOrgan 
                 elseif trinket2ID == 178770 then
                     if Gluttonous and Unit(player):HealthPercent() <= 80 then
                         return A.Trinket2:Show(icon)
                     end
-                --if nothing show Trinket 2
+                    --if nothing show Trinket 2
                 else    
                     return A.Trinket2:Show(icon)
                 end
