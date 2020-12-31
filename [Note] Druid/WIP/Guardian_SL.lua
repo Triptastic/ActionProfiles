@@ -236,42 +236,17 @@ local function SelfDefensives()
         return A.Ironfur
     end 
 
-    -- Emergency FrenziedRegeneration
-    local FrenziedRegeneration = Action.GetToggle(2, "FrenziedRegenerationHP")
-    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady("player") and Unit("player"):HasBuffs(A.FrenziedRegeneration.ID, true) == 0 and
-    (
-        (   -- Auto 
-            FrenziedRegeneration >= 100 and 
-            (
-                -- HP lose per sec >= 5
-                Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 15 or 
-                Unit("player"):GetRealTimeDMG() >= Unit("player"):HealthMax() * 0.15 or 
-                -- TTD 
-                Unit("player"):TimeToDieX(25) < 5 or 
-				-- Custom logic with current HPS and DMG
-				Unit("player"):HealthPercent() <= 85 or
-	    		Unit("player"):GetHEAL() * 2 < Unit("player"):GetDMG() or
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit("player"):UseDeff() or 
-                        (
-                            Unit("player", 5):HasFlags() and 
-                            Unit("player"):GetRealTimeDMG() > 0 and 
-                            Unit("player"):IsFocused() 
-                        )
-                    )
-                )
-            ) 
-        ) or 
-        (    -- Custom
-            FrenziedRegeneration < 100 and 
-            Unit("player"):HealthPercent() <= FrenziedRegeneration
-        )
-    ) 
-    then 
-        return A.FrenziedRegeneration
-    end 
+    -- Emergency FrenziedRegeneration **Thanks Trips**
+	local FrenziedRegeneration = Action.GetToggle(2, "FrenziedRegenerationHP")
+    if FrenziedRegeneration >= 0 and FrenziedRegeneration < 100 and A.FrenziedRegeneration:IsReady("player") and Unit("player"):HasBuffs(A.FrenziedRegeneration.ID, true) == 0 and Unit("player"):HealthPercent() <= FrenziedRegeneration then
+        if A.TheNaturalOrdersWill:HasLegendaryCraftingPower() and A.Barkskin:GetCooldown() > 0 and Unit("player"):HasBuffs(A.Barkskin.ID, true) == 0 then
+            return A.FrenziedRegeneration
+        end
+
+        if not A.TheNaturalOrdersWill:HasLegendaryCraftingPower() then
+            return A.FrenziedRegeneration
+        end
+    end  
 	
 	    --Emergency Renewal
     local Renewal = Action.GetToggle(2, "RenewalHP")

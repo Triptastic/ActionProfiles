@@ -607,7 +607,7 @@ A[3] = function(icon, isMulti)
 			
 			-- berserk,if=buff.bear_form.up,burstON
 			if A.Berserk:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) > 0 or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
-				return A.Berserk:Show(icon)
+				return A.Incarnation:Show(icon)
 			end
 			
 			if A.RavenousFrenzy:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) > 0 or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
