@@ -505,7 +505,7 @@ A[3] = function(icon, isMulti)
             
             --Fel Devastation on cooldown
             if A.FelDevastation:IsReady("player") and Unit("target"):GetRange() <= 15 and FelDevDMG then
-                return A.SpectralSight:Show(icon)
+                return A.FelDevastation:Show(icon)
             end
             
             --Soul Cleave Spirit Bomb Build
@@ -550,7 +550,7 @@ A[3] = function(icon, isMulti)
             
             --Fel Devastation on cooldown
             if A.FelDevastation:IsReady("player") and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) and Unit("target"):GetRange() <= 15 and Unit(player):HealthPercent() <= FelDevHP then
-                return A.SpectralSight:Show(icon)
+                return A.FelDevastation:Show(icon)
             end            
             
             if A.PotionofHardenedShadows:IsReady(unit) and AutoPotionSelect == "HardenedShadowsPot" and PotionTrue and Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) == 0 and

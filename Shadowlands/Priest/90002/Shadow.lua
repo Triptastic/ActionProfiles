@@ -567,13 +567,13 @@ A[3] = function(icon, isMulti)
 			--# Use Searing Nightmare if you will hit enough targets and Power Infusion and Voidform are not ready, or to refresh SW:P on two or more targets.
 			--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pool_for_cds)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
 			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and Player:IsChanneling() == A.MindSear:Info() and ((VarSearingNightmareCutoff and not VarPoolForCDs) or (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 1)) then
-				return A.RocketJump:Show(icon)
+				return A.SearingNightmare:Show(icon)
 			end
 			
 			--# Short Circuit Searing Nightmare condition to keep SW:P up in AoE
 			--actions.cwc+=/searing_nightmare,use_while_casting=1,target_if=talent.searing_nightmare.enabled&dot.shadow_word_pain.refreshable&spell_targets.mind_sear>2
 			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and Player:IsChanneling() == A.MindSear:Info() and Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 2 then
-				return A.RocketJump:Show(icon)
+				return A.SearingNightmare:Show(icon)
 			end
 			
 			--# Only_cwc makes the action only usable during channeling and not as a regular action.

@@ -754,12 +754,12 @@ A[3] = function(icon, isMulti)
             
             -- arcane_explosion,if=mana.pct>30&active_enemies>=2
             if A.ArcaneExplosion:IsReady("player") and Player:ManaPercentageP() > 30 and MultiUnits:GetByRange(10) >= 2 and Action.GetToggle(2, "AoE") then
-                return A.Regeneratin:Show(icon)
+                return A.ArcaneExplosion:Show(icon)
             end
             
             -- fire_blast
             if A.FireBlast:IsReady(unit) then
-                return A.SpatialRift:Show(icon)
+                return A.FireBlast:Show(icon)
             end
             
             -- ice_lance

@@ -1052,7 +1052,7 @@ A[3] = function(icon, isMulti)
 			
 			--actions.cooldowns+=/sacrificial_pact,if=active_enemies>=2&!buff.dark_transformation.up&!cooldown.dark_transformation.ready
 			if A.SacrificialPact:IsReady() and A.RaiseDead:IsReady() and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 and A.DarkTransformation:GetCooldown() > 0 then
-				return A.Shadowmeld:Show(icon)
+				return A.SacrificialPact:Show(icon)
 			end
 			
 			--actions.cooldowns+=/raise_dead,if=!pet.ghoul.active

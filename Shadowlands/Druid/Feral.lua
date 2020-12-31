@@ -416,7 +416,7 @@ local function SelfDefensives()
     then 
         -- Notification                    
         A.Toaster:SpawnByTimer("TripToast", 0, "Barkskin!", "Using Barkskin!", A.Barkskin.ID)
-        return A.Darkflight
+        return A.Barkskin
     end	
 
 	if not Player:IsStealthed() then 	

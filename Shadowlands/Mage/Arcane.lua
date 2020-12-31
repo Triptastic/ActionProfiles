@@ -919,7 +919,7 @@ A[3] = function(icon, isMulti)
 			
             -- mirror_image
             if A.MirrorImage:IsReady(player) and A.BurstIsON(unit) then
-                return A.RocketJump:Show(icon)
+                return A.MirrorImage:Show(icon)
             end
 			
             -- potion
@@ -1019,7 +1019,7 @@ A[3] = function(icon, isMulti)
 		
         -- Manually added: touch_of_the_magi,if=cooldown.arcane_power.up&buff.arcane_charge.stack=0&cooldown.evocation.remains<=variable.average_burn_length
         if A.TouchoftheMagi:IsReady(unit) and (A.ArcanePower:GetCooldown() == 0 and Player:ArcaneChargesP() == 0 and A.Evocation:GetCooldown() <= VarAverageBurnLength) then
-            return A.Regeneratin:Show(icon)
+            return A.TouchoftheMagi:Show(icon)
         end
 		
         -- Burn
@@ -1047,12 +1047,12 @@ A[3] = function(icon, isMulti)
         if inCombat and not BurnPhase:On() then
             -- mirror_image
             if A.MirrorImage:IsReady(player) and A.BurstIsON(unit) then
-                return A.RocketJump:Show(icon)
+                return A.MirrorImage:Show(icon)
             end
 
             -- Manually added: touch_of_the_magi,if=cooldown.arcane_power.remains>45&buff.arcane_charge.stack=0
             if A.TouchoftheMagi:IsReady(unit) and (A.ArcanePower:GetCooldown() > 45 and Player:ArcaneChargesP() == 0) then
-              	return A.Regeneratin:Show(icon)
+              	return A.TouchoftheMagi:Show(icon)
             end
 			
             -- nether_tempest,if=(refreshable|!ticking)&buff.arcane_charge.stack=buff.arcane_charge.max_stack&buff.rune_of_power.down&buff.arcane_power.down

@@ -770,22 +770,22 @@ A[3] = function(icon, isMulti)
             
             --actions.aoe+=/malefic_rapture,if=dot.vile_taint.ticking
             if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.VileTaint.ID, true) > 0 and Unit("target"):TimeToDie() >= 3 then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end        
             
             --actions.aoe+=/malefic_rapture,if=dot.soul_rot.ticking&!talent.sow_the_seeds.enabled
             if A.MaleficRapture:IsReady("player") and (not isMoving) and Unit("target"):HasDeBuffs(A.SoulRot.ID, true) > 0 and not A.SowtheSeeds:IsTalentLearned() then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end    
             
             --actions.aoe+=/malefic_rapture,if=!talent.vile_taint.enabled    
             if A.MaleficRapture:IsReady("player") and (not isMoving) and not A.VileTaint:IsTalentLearned() then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end    
             
             --actions.aoe+=/malefic_rapture,if=soul_shard>4
             if A.MaleficRapture:IsReady("player") and (not isMoving) and Player:SoulShards() > 4 then
-                return A.SpatialRift:Show(icon)
+                return A.MaleficRapture:Show(icon)
             end    
             
             --[[actions.aoe+=/siphon_life,cycle_targets=1,if=active_dot.siphon_life<=3,target_if=!dot.siphon_life.ticking
@@ -988,7 +988,7 @@ A[3] = function(icon, isMulti)
         
         --actions+=/malefic_rapture,if=soul_shard>4
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and Player:SoulShards() > 4 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end    
         
         --actions+=/call_action_list,name=darkglare_prep,if=covenant.venthyr&(cooldown.impending_catastrophe.ready|dot.impending_catastrophe_dot.ticking)&cooldown.summon_darkglare.remains<2&(dot.phantom_singularity.remains>2|!talent.phantom_singularity.enabled)
@@ -1027,27 +1027,27 @@ A[3] = function(icon, isMulti)
         
         --actions+=/malefic_rapture,if=dot.vile_taint.ticking
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.VileTaint:IsTalentLearned() and Unit(unit):HasDeBuffs(A.VileTaint.ID, true) > 0 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end    
         
         --actions+=/malefic_rapture,if=dot.impending_catastrophe_dot.ticking
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.ImpendingCatastrophe.ID, true) > 0 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end    
         
         --actions+=/malefic_rapture,if=dot.soul_rot.ticking
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.SoulRot.ID, true) > 0 then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end                
         
         --actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking|soul_shard>3|time_to_die<cooldown.phantom_singularity.remains)
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or Player:SoulShards() > 3 or Unit(unit):TimeToDie() < A.PhantomSingularity:GetCooldown()) then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end                
         
         --actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
         if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.SowtheSeeds:IsTalentLearned() then
-            return A.SpatialRift:Show(icon)
+            return A.MaleficRapture:Show(icon)
         end                
         
         --actions+=/drain_life,if=buff.inevitable_demise.stack>40|buff.inevitable_demise.up&time_to_die<4

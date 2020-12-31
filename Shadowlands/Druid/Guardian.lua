@@ -602,7 +602,7 @@ A[3] = function(icon, isMulti)
 			
 			-- berserk,if=buff.bear_form.up,burstON
 			if A.Berserk:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
-				return A.Incarnation:Show(icon)
+				return A.Berserk:Show(icon)
 			end
 			
 			-- venthyr,if=buff.bear_form.up,burstON
