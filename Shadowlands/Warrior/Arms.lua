@@ -2,10 +2,10 @@
 --##### TRIP'S ARMS WARRIOR #####
 --###############################
 
-local TMW                                       = TMW
-local CNDT                                      = TMW.CNDT
-local Env                                       = CNDT.Env
-local Action                                    = Action
+local _G, setmetatable							= _G, setmetatable
+local A                         			    = _G.Action
+local Covenant									= _G.LibStub("Covenant")
+local TMW										= _G.TMW
 local Listener                                  = Action.Listener
 local Create                                    = Action.Create
 local GetToggle                                 = Action.GetToggle
@@ -15,118 +15,173 @@ local GetCurrentGCD                             = Action.GetCurrentGCD
 local GetPing                                   = Action.GetPing
 local ShouldStop                                = Action.ShouldStop
 local BurstIsON                                 = Action.BurstIsON
+local CovenantIsON								= Action.CovenantIsON
 local AuraIsValid                               = Action.AuraIsValid
+local AuraIsValidByPhialofSerenity				= A.AuraIsValidByPhialofSerenity
 local InterruptIsValid                          = Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
-local Azerite                                   = LibStub("AzeriteTraits")
 local Utils                                     = Action.Utils
 local TeamCache                                 = Action.TeamCache
 local EnemyTeam                                 = Action.EnemyTeam
 local FriendlyTeam                              = Action.FriendlyTeam
 local LoC                                       = Action.LossOfControl
-local Player                                    = Action.Player
+local Player                                    = Action.Player 
 local MultiUnits                                = Action.MultiUnits
 local UnitCooldown                              = Action.UnitCooldown
-local Unit                                      = Action.Unit
+local Unit                                      = Action.Unit 
 local IsUnitEnemy                               = Action.IsUnitEnemy
 local IsUnitFriendly                            = Action.IsUnitFriendly
-local HealingEngine                             = Action.HealingEngine
 local ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()
-local TeamCacheFriendly                         = TeamCache.Friendly
-local TeamCacheFriendlyIndexToPLAYERs           = TeamCacheFriendly.IndexToPLAYERs
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
-local TR                                        = Action.TasteRotation
-local Pet                                       = LibStub("PetLibrary")
-local next, pairs, type, print                  = next, pairs, type, print
-local math_floor                                = math.floor
-local math_ceil                                 = math.ceil
-local tinsert                                   = table.insert
-local select, unpack, table                     = select, unpack, table
-local CombatLogGetCurrentEventInfo              = _G.CombatLogGetCurrentEventInfo
-local UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower = UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower
-local _G, setmetatable, select, math            = _G, setmetatable, select, math
-local huge                                      = math.huge
-local UIParent                                  = _G.UIParent
-local CreateFrame                               = _G.CreateFrame
-local wipe                                      = _G.wipe
-local IsUsableSpell                             = IsUsableSpell
-local UnitPowerType                             = UnitPowerType
+local pairs                                     = pairs
+
+--For Toaster
+local Toaster									= _G.Toaster
+local GetSpellTexture 							= _G.TMW.GetSpellTexture
 
 --- ============================ CONTENT =========================== ---
 --- ======================= SPELLS DECLARATION ===================== ---
 
 Action[ACTION_CONST_WARRIOR_ARMS] = {
     -- Racial
-    ArcaneTorrent                          = Create({ Type = "Spell", ID = 50613     }),
-    BloodFury                              = Create({ Type = "Spell", ID = 20572      }),
-    Fireblood                              = Create({ Type = "Spell", ID = 265221     }),
-    AncestralCall                          = Create({ Type = "Spell", ID = 274738     }),
-    Berserking                             = Create({ Type = "Spell", ID = 26297    }),
-    ArcanePulse                            = Create({ Type = "Spell", ID = 260364    }),
-    QuakingPalm                            = Create({ Type = "Spell", ID = 107079     }),
-    Haymaker                               = Create({ Type = "Spell", ID = 287712     }), 
-    WarStomp                               = Create({ Type = "Spell", ID = 20549     }),
-    BullRush                               = Create({ Type = "Spell", ID = 255654     }),  
-    BagofTricks                            = Create({ Type = "Spell", ID = 312411 }),	
-    GiftofNaaru                            = Create({ Type = "Spell", ID = 59544    }),
-    Shadowmeld                             = Create({ Type = "Spell", ID = 58984    }), -- usable in Action Core 
-    Stoneform                              = Create({ Type = "Spell", ID = 20594    }), 
-    WilloftheForsaken                      = Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
-    EscapeArtist                           = Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
-    EveryManforHimself                     = Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
-    -- Generics
-    Rend                                   = Create({ Type = "Spell", ID = 772 }),
-    RendDebuff                             = Create({ Type = "Spell", ID = 772, Hidden = true }),
-    DeadlyCalm                             = Create({ Type = "Spell", ID = 262228 }),
-    Skullsplitter                          = Create({ Type = "Spell", ID = 260643 }),
-    Ravager                                = Create({ Type = "Spell", ID = 152277 }),
-    ColossusSmash                          = Create({ Type = "Spell", ID = 167105 }),
-    Warbreaker                             = Create({ Type = "Spell", ID = 262161 }),
-    MortalStrike                           = Create({ Type = "Spell", ID = 12294 }),
-    DeepWoundsDebuff                       = Create({ Type = "Spell", ID = 262115, Hidden = true }),
-    Cleave                                 = Create({ Type = "Spell", ID = 845 }),
-    CleaveBuff                             = Create({ Type = "Spell", ID = 231833 }),
-    Bladestorm                             = Create({ Type = "Spell", ID = 227847 }),
-    TestofMightBuff                        = Create({ Type = "Spell", ID = 275540 }),
-    DeadlyCalmBuff                         = Create({ Type = "Spell", ID = 262228, Hidden = true }),
-    Execute                                = Create({ Type = "Spell", ID = 163201 }),
-    ColossusSmashDebuff                    = Create({ Type = "Spell", ID = 208086 }),
-    Slam                                   = Create({ Type = "Spell", ID = 1464 }),
-    CrushingAssaultBuff                    = Create({ Type = "Spell", ID = 278826 }),
-    Overpower                              = Create({ Type = "Spell", ID = 7384 }),
-    Massacre                               = Create({ Type = "Spell", ID = 281001, Hidden = true }),
-    SuddenDeathBuff                        = Create({ Type = "Spell", ID = 52437 }),
-    TestofMight                            = Create({ Type = "Spell", ID = 275529 }),
-    Whirlwind                              = Create({ Type = "Spell", ID = 1680 }),
-    FervorofBattle                         = Create({ Type = "Spell", ID = 202316 }),
-    Charge                                 = Create({ Type = "Spell", ID = 100 }),
-    Berserking                             = Create({ Type = "Spell", ID = 26297 }),
-    LightsJudgment                         = Create({ Type = "Spell", ID = 255647 }),
-    Avatar                                 = Create({ Type = "Spell", ID = 107574 }),
-    SweepingStrikes                        = Create({ Type = "Spell", ID = 260708 }),
-    ReapingFlames                          = Create({ Type = "Spell", ID = 311195 }),
-    CondensedLifeforce                     = Create({ Type = "Spell", ID = 299357 }),
-	IgnorePain							   = Create({ Type = "Spell", ID = 190456 }),
-	RallyingCry							   = Create({ Type = "Spell", ID = 97462 }),
-	VictoryRush							   = Create({ Type = "Spell", ID = 34428 }),
-	ImpendingVictory					   = Create({ Type = "Spell", ID = 202168 }),	
-    -- Trinkets	
+    ArcaneTorrent					= Action.Create({ Type = "Spell", ID = 50613    }),
+    BloodFury						= Action.Create({ Type = "Spell", ID = 20572    }),
+    Fireblood						= Action.Create({ Type = "Spell", ID = 265221   }),
+    AncestralCall					= Action.Create({ Type = "Spell", ID = 274738   }),
+    Berserking						= Action.Create({ Type = "Spell", ID = 26297    }),
+    ArcanePulse						= Action.Create({ Type = "Spell", ID = 260364   }),
+    QuakingPalm						= Action.Create({ Type = "Spell", ID = 107079   }),
+    Haymaker						= Action.Create({ Type = "Spell", ID = 287712   }), 
+    WarStomp						= Action.Create({ Type = "Spell", ID = 20549    }),
+    BullRush						= Action.Create({ Type = "Spell", ID = 255654   }),  
+    GiftofNaaru						= Action.Create({ Type = "Spell", ID = 59544    }),
+    Shadowmeld						= Action.Create({ Type = "Spell", ID = 58984    }), 
+    Stoneform						= Action.Create({ Type = "Spell", ID = 20594    }), 
+    BagofTricks						= Action.Create({ Type = "Spell", ID = 312411	}),
+    WilloftheForsaken				= Action.Create({ Type = "Spell", ID = 7744		}),   
+    EscapeArtist					= Action.Create({ Type = "Spell", ID = 20589    }), 
+    EveryManforHimself				= Action.Create({ Type = "Spell", ID = 59752    }), 
+	LightsJudgment					= Action.Create({ Type = "Spell", ID = 255647	}),
 
-    -- Potions
-    PotionofUnbridledFury                  = Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
-    SuperiorBattlePotionOfAgility          = Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    PotionTest                             = Create({ Type = "Potion", ID = 142117, QueueForbidden = true }), 
-	PotionofSpectralStrength			   = Create({ Type = "Potion", ID = 171275, QueueForbidden = true }),
+	-- Warrior General
+    BattleShout						= Action.Create({ Type = "Spell", ID = 6673		}),
+    BerserkerRage					= Action.Create({ Type = "Spell", ID = 18499	}),
+    Charge							= Action.Create({ Type = "Spell", ID = 100		}),
+    ChallengingShout				= Action.Create({ Type = "Spell", ID = 1161		}),		
+    Execute							= Action.Create({ Type = "Spell", ID = 5308		}),
+    Hamstring						= Action.Create({ Type = "Spell", ID = 1715		}),
+    HeroicLeap						= Action.Create({ Type = "Spell", ID = 6544		}),
+    HeroicThrow						= Action.Create({ Type = "Spell", ID = 57755	}),
+    IgnorePain						= Action.Create({ Type = "Spell", ID = 190456	}),
+    Intervene						= Action.Create({ Type = "Spell", ID = 3411		}),	
+    IntimidatingShout				= Action.Create({ Type = "Spell", ID = 5246		}),
+    Pummel							= Action.Create({ Type = "Spell", ID = 6552		}),
+    RallyingCry						= Action.Create({ Type = "Spell", ID = 97462	}),
+    ShatteringThrow					= Action.Create({ Type = "Spell", ID = 64382	}),	
+    ShieldBlock						= Action.Create({ Type = "Spell", ID = 2565		}),
+    ShieldSlam						= Action.Create({ Type = "Spell", ID = 23922	}),
+    Slam							= Action.Create({ Type = "Spell", ID = 1464		}),	
+    SpellReflection					= Action.Create({ Type = "Spell", ID = 23950	}),
+    Taunt							= Action.Create({ Type = "Spell", ID = 355		}),
+    VictoryRush						= Action.Create({ Type = "Spell", ID = 34428	}),
+    Whirlwind						= Action.Create({ Type = "Spell", ID = 190411	}),		
+    WhirlwindBuff					= Action.Create({ Type = "Spell", ID = 85739, Hidden = true 	}),		
+	
+	-- Arms Specific
+    Bladestorm						= Action.Create({ Type = "Spell", ID = 227847	}),
+    ColossusSmash					= Action.Create({ Type = "Spell", ID = 167105	}),
+    ColossusSmashDebuff				= Action.Create({ Type = "Spell", ID = 208086 	}),	
+    DiebytheSword					= Action.Create({ Type = "Spell", ID = 118038	}),
+    MortalStrike					= Action.Create({ Type = "Spell", ID = 12294	}),
+    Overpower						= Action.Create({ Type = "Spell", ID = 7384		}),
+    PiercingHowl					= Action.Create({ Type = "Spell", ID = 12323	}),
+    SweepingStrikes					= Action.Create({ Type = "Spell", ID = 260708	}),
+    DeepWounds						= Action.Create({ Type = "Spell", ID = 262115, Hidden = true }),	
+
+	-- Normal Talents
+    WarMachine						= Action.Create({ Type = "Spell", ID = 262231, Hidden = true	}),
+    SuddenDeath						= Action.Create({ Type = "Spell", ID = 29725, Hidden = true		}),
+    Skullsplitter					= Action.Create({ Type = "Spell", ID = 260643	}),	
+    DoubleTime						= Action.Create({ Type = "Spell", ID = 103827, Hidden = true	}),	
+    ImpendingVictory				= Action.Create({ Type = "Spell", ID = 202168	}),	
+    StormBolt						= Action.Create({ Type = "Spell", ID = 107570	}),	
+    Massacre						= Action.Create({ Type = "Spell", ID = 281001, Hidden = true	}),
+    FervorofBattle					= Action.Create({ Type = "Spell", ID = 202316, Hidden = true	}),	
+    Rend							= Action.Create({ Type = "Spell", ID = 772		}),	
+    SecondWind						= Action.Create({ Type = "Spell", ID = 29838, Hidden = true		}),
+    BoundingStride					= Action.Create({ Type = "Spell", ID = 202163, Hidden = true	}),
+    DefensiveStance					= Action.Create({ Type = "Spell", ID = 197690	}),
+    CollateralDamage				= Action.Create({ Type = "Spell", ID = 334779, Hidden = true	}),
+    Warbreaker						= Action.Create({ Type = "Spell", ID = 262161	}),	
+    Cleave							= Action.Create({ Type = "Spell", ID = 845		}),
+    InForTheKill					= Action.Create({ Type = "Spell", ID = 248621, Hidden = true	}),	
+    Avatar							= Action.Create({ Type = "Spell", ID = 107574	}),	
+    DeadlyCalm						= Action.Create({ Type = "Spell", ID = 262228	}),	
+    AngerManagement					= Action.Create({ Type = "Spell", ID = 152278, Hidden = true	}),	
+    Dreadnaught						= Action.Create({ Type = "Spell", ID = 262150, Hidden = true	}),
+    Ravager							= Action.Create({ Type = "Spell", ID = 152277	}),	
+
+	-- PvP Talents
+    MasterandCommander				= Action.Create({ Type = "Spell", ID = 235941, Hidden = true	}),
+    ShadowoftheColossus				= Action.Create({ Type = "Spell", ID = 198807, Hidden = true 	}),	
+    StormofDestruction				= Action.Create({ Type = "Spell", ID = 236308, Hidden = true	}),	
+    WarBanner						= Action.Create({ Type = "Spell", ID = 236320	}),
+    SharpenBlade					= Action.Create({ Type = "Spell", ID = 198817	}),
+    Duel							= Action.Create({ Type = "Spell", ID = 236273	}),
+    DeathSentence					= Action.Create({ Type = "Spell", ID = 198500, Hidden = true	}),
+    Disarm							= Action.Create({ Type = "Spell", ID = 236077	}),	
+    Demolition						= Action.Create({ Type = "Spell", ID = 329033, Hidden = true	}),
+    Overwatch						= Action.Create({ Type = "Spell", ID = 329035, Hidden = true	}),	
+	
+	-- Covenant Abilities
+    SummonSteward					= Action.Create({ Type = "Spell", ID = 324739	}),
+    DoorofShadows					= Action.Create({ Type = "Spell", ID = 300728	}),
+    Fleshcraft						= Action.Create({ Type = "Spell", ID = 331180	}),
+    Soulshape						= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker							= Action.Create({ Type = "Spell", ID = 324701	}),
+    SpearofBastion					= Action.Create({ Type = "Spell", ID = 307865	}),
+    Condemn							= Action.Create({ Type = "Spell", ID = 317349	}),	
+    ConquerorsBanner				= Action.Create({ Type = "Spell", ID = 324143	}),
+    AncientAftershock				= Action.Create({ Type = "Spell", ID = 325886	}),	
+
+	-- Conduits
+
+
+	-- Legendaries
+	-- General Legendaries
+
+
+	--Arms Legendaries
+	WilloftheBerserker				= Action.Create({ Type = "Spell", ID = 335594	}),	
+
+	--Anima Powers - to add later...
+	
+	
+	-- Trinkets
+	
+
+	-- Potions
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
+    PotionofSpectralStrength		= Action.Create({ Type = "Potion", ID = 171275, QueueForbidden = true }),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),  	
 
     -- Misc
-    Channeling                             = Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
-    TargetEnemy                            = Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
-    StopCast                               = Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
-    CyclotronicBlast                       = Create({ Type = "Spell", ID = 293491, Hidden = true}),
-    ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
-    RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
-    ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
+    Channeling                      = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
+    TargetEnemy                     = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)
+    StopCast                        = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),        -- spell_magic_polymorphrabbit
+    PoolResource                    = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),
+	Quake                           = Action.Create({ Type = "Spell", ID = 240447, Hidden = true     }), -- Quake (Mythic Plus Affix)
+	Bloodlust						= Action.Create({ Type = "Spell", ID = 2825, Hidden = true	}),
+	Heroism							= Action.Create({ Type = "Spell", ID = 32182, Hidden = true	}),
+	TimeWarp						= Action.Create({ Type = "Spell", ID = 80353, Hidden = true	}),	
+	PrimalRage						= Action.Create({ Type = "Spell", ID = 264667, Hidden = true	}),	
+	DrumsofDeathlyFerocity			= Action.Create({ Type = "Spell", ID = 309658, Hidden = true	}),		
 
 };
 
@@ -134,9 +189,9 @@ Action[ACTION_CONST_WARRIOR_ARMS] = {
 
 local A = setmetatable(Action[ACTION_CONST_WARRIOR_ARMS], { __index = Action })
 
-
-
-
+local player = "player"
+local target = "target"
+local mouseover = "mouseover"
 
 local function num(val)
     if val then return 1 else return 0 end
@@ -253,75 +308,6 @@ GetByRange = A.MakeFunctionCachedDynamic(GetByRange)
 local function UpdateExecuteID()
     Execute = A.Massacre:IsTalentLearned() and A.ExecuteMassacre or A.ExecuteDefault
 end
-
---[[ [1] CC AntiFake Rotation
-local function AntiFakeStun(unit) 
-    return 
-    A.IsUnitEnemy(unit) and  
-    Unit(unit):GetRange() <= 20 and 
-    (
-        (A.IsInPvP and Unit(unit):IsControlAble("stun", 0)) 
-        or
-        not A.IsInPvP        
-    ) 
-    and A.StormboltGreen:AbsentImun(unit, Temp.TotalAndPhysAndCCAndStun, true)          
-end 
-A[1] = function(icon)    
-    if    A.StormboltGreen:IsReady(nil, nil, nil, true) and 
-    (
-        AntiFakeStun("mouseover") or 
-        AntiFakeStun("target") or 
-        (
-            not A.IsUnitEnemy("mouseover") and 
-            not A.IsUnitEnemy("target")
-        )
-    )
-    then 
-        return A.StormboltGreen:Show(icon)         
-    end                                                                     
-end
-
--- [2] Kick AntiFake Rotation
-A[2] = function(icon)        
-    local unit
-    if A.IsUnitEnemy("mouseover") then 
-        unit = "mouseover"
-    elseif A.IsUnitEnemy("target") then 
-        unit = "target"
-    end 
-    
-    if unit then         
-        local castLeft, _, _, _, notKickAble = Unit(unit):IsCastingRemains()
-        if castLeft > 0 then 
-            -- Pummel        
-            if not notKickAble and A.PummelGreen:IsReady(unit, nil, nil, true) and A.PummelGreen:AbsentImun(unit, Temp.TotalAndPhysKick, true) then
-                return A.PummelGreen:Show(icon)                                                  
-            end 
-            
-            -- Stormbolt
-            if A.Stormbolt:IsReady(unit, nil, nil, true) and A.Stormbolt:AbsentImun(unit, Temp.TotalAndPhysAndStun, true) and Unit(unit):IsControlAble("stun", 0) then
-                return A.Stormbolt:Show(icon)                  
-            end 
-            
-            -- Racials 
-            if A.QuakingPalm:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.QuakingPalm:Show(icon)
-            end 
-            
-            if A.Haymaker:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.Haymaker:Show(icon)
-            end 
-            
-            if A.WarStomp:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.WarStomp:Show(icon)
-            end 
-            
-            if A.BullRush:IsRacialReadyP(unit, nil, nil, true) then 
-                return A.BullRush:Show(icon)
-            end                         
-        end 
-    end                                                                                 
-end]]
 
 local function SelfDefensives()
     local HPLoosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
@@ -474,6 +460,16 @@ local function SelfDefensives()
 end 
 SelfDefensives = A.MakeFunctionCachedStatic(SelfDefensives)
 
+function Action:IsSuspended(delay, reset)
+    -- @return boolean
+    -- Returns true if action should be delayed before use, reset argument is a internal refresh cycle of expiration future time
+    if (self.expirationSuspend or 0) + reset <= TMW.time then
+        self.expirationSuspend = TMW.time + delay
+    end 
+    
+    return self.expirationSuspend > TMW.time
+end
+
 -- Non GCD spell check
 local function countInterruptGCD(unit)
     if not A.Pummel:IsReadyByPassCastGCD(unit) or not A.Pummel:AbsentImun(unit, Temp.TotalAndMagKick) then
@@ -492,9 +488,9 @@ local function Interrupts(unit)
             return A.Pummel
         end 
     
-        -- Stormbolt
-        if useCC and A.Stormbolt:IsReady(unit) and A.Stormbolt:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):CanInterrupt(true, nil, 25, 70) and Unit(unit):IsControlAble("stun", 0) then
-            return A.Stormbolt              
+        -- StormBolt
+        if useCC and A.StormBolt:IsReady(unit) and A.StormBolt:AbsentImun(unit, Temp.TotalAndPhysAndCC, true) and Unit(unit):CanInterrupt(true, nil, 25, 70) and Unit(unit):IsControlAble("stun", 0) then
+            return A.StormBolt              
         end  
     
         -- IntimidatingShout
@@ -510,251 +506,340 @@ end
 
 A[3] = function(icon, isMulti)
 
+	local UseRacial = A.GetToggle(1, "Racial")
+	local UseAoE = A.GetToggle(2, "AoE")	
+
 	local function EnemyRotation()
-		--    local Precombat, Execute, SingleUnit(unit)
-	  --UpdateRanges()
-	  --Everyone.AoEToggleEnemiesUpdate()
-	  --UpdateExecuteID()
-			--Precombat
-			local function Precombat(unit)
-			
-				-- flask
-				-- food
-				-- augmentation
-				-- snapshot_stats
-				-- use_item,name=azsharas_font_of_power
-				
-				-- potion
-				
+	
+
+		local function ExecuteRotation()
+			-- actions.execute=deadly_calm
+			if A.DeadlyCalm:IsReady(unit) then
+				return A.DeadlyCalm:Show(icon)
 			end
 			
-			--Execute
-			local function Execute(unit)
-			
-				-- rend,if=remains<=duration*0.3
-				if A.Rend:IsReady(unit) and Unit(unit):HasDeBuffs(A.RendDebuff.ID, true) <= 5 then
-					return A.Rend:Show(icon)
-				end
-				
-				-- deadly_calm
-				if A.DeadlyCalm:IsReady("player") then
-					return A.DeadlyCalm:Show(icon)
-				end
-				
-				-- skullsplitter,if=rage<52&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and Player:Rage() < 20 then
-					return A.Skullsplitter:Show(icon)
-				end
-				
-				-- ravager,,if=cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2)
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and Unit("target"):GetRange() <= 5 and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
-					return A.Ravager:Show(icon)
-				end
-				
-				-- colossus_smash,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.ColossusSmash:IsReady(unit) then
-					return A.ColossusSmash:Show(icon)
-				end
-				
-				-- warbreaker,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>10)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and Unit(unitID):GetRange() <= 5 then
-					return A.Warbreaker:Show(icon)
-				end
-				
-				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!spell_targets.whirlwind>1&!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
-					return A.MortalStrike:Show(icon)
-				end
-				
-				-- cleave,if=(spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3)|(spell_targets.whirlwind>3)
-				if A.Cleave:IsReady("player") and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) or MultiUnits:GetByRange(8, 4) > 3 then
-					return A.Cleave:Show(icon)
-				end
-				
-				-- bladestorm,if=!buff.memory_of_lucid_dreams.up&buff.test_of_might.up&rage<30&!buff.deadly_calm.up
-				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 and Player:Rage() < 30 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) then
-					return A.Bladestorm:Show(icon)
-				end
-				
-				-- execute,if=buff.memory_of_lucid_dreams.up|buff.deadly_calm.up|debuff.colossus_smash.up|buff.test_of_might.up
-				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) > 0 or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) then
-					return A.Execute:Show(icon)
-				end
-				
-				-- slam,if=buff.crushing_assault.up&buff.memory_of_lucid_dreams.down
-				if A.Slam:IsReady(unit) and (Unit("player"):HasBuffs(A.CrushingAssaultBuff.ID, true) > 0 and Unit("player"):HasBuffs(A.MemoryofLucidDreams.ID, true) == 0) then
-					return A.Slam:Show(icon)
-				end
-				
-				-- overpower
-				if A.Overpower:IsReady(unit) then
-					return A.Overpower:Show(icon)
-				end
-				
-				-- execute
-				if A.Execute:IsReady(unit) then
-					return A.Execute:Show(icon)
-				end
-				
+			-- actions.execute+=/rend,if=remains<=duration*0.3
+			if A.Rend:IsReady(unit) and Unit(unit):HasDeBuffs(A.Rend.ID, true) <= 4 and Unit(unit):TimeToDie() >= 4 then
+				return A.Rend:Show(icon)
 			end
 			
-			--SingleUnit(unit)
-			local function SingleUnit(unit)
-			
-				-- rend,if=remains<=duration*0.3
-				if A.Rend:IsReady(unit) and Unit(unit):HasDeBuffs(A.RendDebuff.ID, true) <= 5 then
-					return A.Rend:Show(icon)
-				end
-				
-				-- deadly_calm
-				if A.DeadlyCalm:IsReady(unit) then
-					return A.DeadlyCalm:Show(icon)
-				end
-				
-				-- skullsplitter,if=rage<60&buff.deadly_calm.down&buff.memory_of_lucid_dreams.down|rage<20
-				if A.Skullsplitter:IsReady(unit) and ((Player:Rage() < 60 and Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) or Player:Rage() < 20) then
-					return A.Skullsplitter:Show(icon)
-				end
-				
-				-- ravager,if=(cooldown.colossus_smash.remains<2|(talent.warbreaker.enabled&cooldown.warbreaker.remains<2))
-				if A.Ravager:IsReady("player") and BurstIsON(unit) and Unit("target"):GetRange() <= 5 and (A.ColossusSmash:GetCooldown() < 2 or (A.Warbreaker:IsTalentLearned() and A.Warbreaker:GetCooldown() < 2)) then
-					return A.Ravager:Show(icon)
-				end
-				
-				-- mortal_strike,if=dot.deep_wounds.remains<=duration*0.3&(spell_targets.whirlwind=1|!talent.cleave.enabled)
-				if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4 and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
-					return A.MortalStrike:Show(icon)
-				end
-				
-				-- cleave,if=spell_targets.whirlwind>2&dot.deep_wounds.remains<=duration*0.3
-				if A.Cleave:IsReady("player") and (MultiUnits:GetByRange(8, 3) > 2 and Unit(unit):HasDeBuffs(A.DeepWoundsDebuff.ID, true) <= 4) then
-					return A.Cleave:Show(icon)
-				end
-				
-				-- colossus_smash,if=!essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>50)|essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>80)|talent.massacre.enabled&(target.time_to_pct_35>10|target.time_to_die>50)
-				if A.ColossusSmash:IsReady(unit) and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
-					return A.ColossusSmash:Show(icon)
-				end
-				
-				-- warbreaker,if=!essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>50)|essence.condensed_lifeforce.enabled&!talent.massacre.enabled&(target.time_to_pct_20>10|target.time_to_die>80)|talent.massacre.enabled&(target.time_to_pct_35>10|target.time_to_die>50)
-				if A.Warbreaker:IsReady(unit) and A.BurstIsON(unit) and Unit(unitID):GetRange() <= 5 and (not A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 50) or A.CondensedLifeforce:IsTalentLearned() and not A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 25 or Unit(unit):TimeToDie() > 80) or A.Massacre:IsTalentLearned() and (Unit(unit):HealthPercent() <= 40 or Unit(unit):TimeToDie() > 50)) then
-					return A.Warbreaker:Show(icon)
-				end
-				
-				-- execute,if=buff.sudden_death.react
-				if A.Execute:IsReady(unit) and (Unit("player"):HasBuffs(A.SuddenDeathBuff.ID, true) > 0) then
-					return A.Execute:Show(icon)
-				end
-				
-				-- bladestorm,if=cooldown.mortal_strike.remains&debuff.colossus_smash.down&(!talent.deadly_calm.enabled|buff.deadly_calm.down)&((debuff.colossus_smash.up&!azerite.test_of_might.enabled)|buff.test_of_might.up)&buff.memory_of_lucid_dreams.down&rage<40
-				if A.Bladestorm:IsReady("player") and A.BurstIsON(unit) and (not A.MortalStrike:IsReady() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and (not A.DeadlyCalm:IsTalentLearned() or Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) == 0) and ((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0) and Player:Rage() < 40) then
-					return A.Bladestorm:Show(icon)
-				end
-				
-				-- mortal_strike,if=spell_targets.whirlwind=1|!talent.cleave.enabled
-				if A.MortalStrike:IsReady(unit) and (MultiUnits:GetByRange(8, 2) == 1 or (MultiUnits:GetByRange(8, 2) > 1 and Unit("player"):HasBuffs(A.SweepingStrikes.ID, true) > 0)) then
-					return A.MortalStrike:Show(icon)
-				end
-				
-				-- cleave,if=spell_targets.whirlwind>2
-				if A.Cleave:IsReady("player") and MultiUnits:GetByRange(8, 3) > 2 then
-					return A.Cleave:Show(icon)
-				end
-				
-				-- whirlwind,if=(((buff.memory_of_lucid_dreams.up)|(debuff.colossus_smash.up)|(buff.deadly_calm.up))&talent.fervor_of_battle.enabled)|((buff.memory_of_lucid_dreams.up|rage>89)&debuff.colossus_smash.up&buff.test_of_might.down&!talent.fervor_of_battle.enabled)
-				if A.Whirlwind:IsReady(player) and Unit("target"):GetRange() <= 5 and ((((Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0) or (Unit("player"):HasBuffs(A.DeadlyCalmBuff.ID, true) > 0)) and A.FervorofBattle:IsTalentLearned()) or (Player:Rage() > 89) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and not A.FervorofBattle:IsTalentLearned()) then
-					return A.Whirlwind:Show(icon)
-				end
-				
-				-- slam,if=!talent.fervor_of_battle.enabled&(buff.memory_of_lucid_dreams.up|debuff.colossus_smash.up)
-				if A.Slam:IsReady(unit) and not A.FervorofBattle:IsTalentLearned() and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
-					return A.Slam:Show(icon)
-				end
-				
-				-- overpower
-				if A.Overpower:IsReady(unit) then
-					return A.Overpower:Show(icon)
-				end
-				
-				-- whirlwind,if=talent.fervor_of_battle.enabled&(buff.test_of_might.up|debuff.colossus_smash.down&buff.test_of_might.down&rage>60)
-				if A.Whirlwind:IsReady("player") and Unit("target"):GetRange() <= 5 and (A.FervorofBattle:IsTalentLearned() and (Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and Unit("player"):HasBuffs(A.TestofMightBuff.ID, true) == 0 and Player:Rage() > 60)) then
-					return A.Whirlwind:Show(icon)
-				end
-				
-				-- slam,if=!talent.fervor_of_battle.enabled
-				if A.Slam:IsReady(unit) and (not A.FervorofBattle:IsTalentLearned()) then
-					return A.Slam:Show(icon)
-				end
-				
+			-- actions.execute+=/skullsplitter,if=rage<60&(!talent.deadly_calm.enabled|buff.deadly_calm.down)
+			if A.Skullsplitter:IsReady(unit) and Player:Rage() < 60 and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 then
+				return A.Skullsplitter:Show(icon)
 			end
 			
+			-- actions.execute+=/avatar,if=cooldown.colossus_smash.remains<8&gcd.remains=0
+			if A.Avatar:IsReady(player) and BurstIsON(unit) and A.ColossusSmash:GetCooldown() < 8 then
+				return A.Avatar:Show(icon)
+			end
 			
-			--[[ call precombat
-			if Precombat(unit) and not inCombat and Unit(unit):IsExists() and unit ~= "mouseover" then 
-				return true
+			-- actions.execute+=/ravager,if=buff.avatar.remains<18&!dot.ravager.remains
+			if A.Ravager:IsReady(player) and A.Ravager:IsTalentLearned() and Unit(player):HasBuffs(A.Avatar.ID, true) < 18 then
+				return A.Ravager:Show(icon)
+			end
+			
+			-- actions.execute+=/cleave,if=spell_targets.whirlwind>1&dot.deep_wounds.remains<gcd
+			if A.Cleave:IsReady(player) and MultiUnits:GetByRange(8, 2) > 1 and Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) < A.GetGCD() then
+				return A.Cleave:Show(icon)
+			end
+			
+			-- actions.execute+=/warbreaker
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+				return A.Warbreaker:Show(icon)
+			end
+			
+			-- actions.execute+=/colossus_smash
+			if A.ColossusSmash:IsReady(unit) and not A.Warbreaker:IsTalentLearned() then
+				return A.ColossusSmash:Show(icon)
+			end
+			
+			-- actions.execute+=/condemn,if=debuff.colossus_smash.up|buff.sudden_death.react|rage>65
+			if A.Execute:IsReady(unit) and Player:GetCovenant() == 2 and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 or Player:Rage() > 65) then
+				return A.Execute:Show(icon)
+			end
+			
+			-- actions.execute+=/overpower,if=charges=2
+			if A.Overpower:IsReady(unit) and A.Overpower:GetSpellCharges() > 1 then
+				return A.Overpower:Show(icon)
+			end
+			
+			-- actions.execute+=/bladestorm,if=buff.deadly_calm.down&rage<50
+			if A.Bladestorm:IsReady(player) and BurstIsON(unit) and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 and Player:Rage() < 50 then
+				return A.Bladestorm:Show(icon)
+			end
+			
+			-- actions.execute+=/mortal_strike,if=dot.deep_wounds.remains<=gcd
+			if A.MortalStrike:IsReady(unit) and Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) <= A.GetGCD() then
+				return A.MortalStrike:Show(icon)
+			end
+			
+			-- actions.execute+=/skullsplitter,if=rage<40
+			if A.Skullsplitter:IsReady(unit) and Player:Rage() < 40 then
+				return A.Skullsplitter:Show(icon)
+			end
+			
+			-- actions.execute+=/overpower
+			if A.Overpower:IsReady(unit) then
+				return A.Overpower:Show(icon)
+			end
+			
+			--[[ actions.execute+=/condemn
+			if A.Condemn:IsReady(unit) then
+				return A.Condemn:Show(icon)
 			end]]
 			
-			if Unit(unit):IsExists() then
-				-- charge
-				
-				if A.Charge:IsReady(unit) then
-					return A.Charge:Show(icon)
-				end
-				
-				-- auto_attack
-				-- blood_fury,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.BloodFury:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
-					return A.BloodFury:Show(icon)
-				end
-				
-				-- berserking,if=buff.memory_of_lucid_dreams.up|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Berserking:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
-					return A.Berserking:Show(icon)
-				end
-				
-				-- arcane_torrent,if=cooldown.mortal_strike.remains>1.5&buff.memory_of_lucid_dreams.down&rage<50
-				if A.ArcaneTorrent:AutoRacial(player) and Racial and A.BurstIsON(unit) and (A.MortalStrike:GetCooldown() > 1.5 and Player:Rage() < 50) then
-					return A.ArcaneTorrent:Show(icon)
-				end
-				
-				-- lights_judgment,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and not A.MortalStrike:IsReady()) then
-					return A.LightsJudgment:Show(icon)
-				end
-				
-				-- fireblood,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.Fireblood:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
-					return A.Fireblood:Show(icon)
-				end
-				
-				-- ancestral_call,if=buff.memory_of_lucid_dreams.remains<5|(!essence.memory_of_lucid_dreams.major&debuff.colossus_smash.up)
-				if A.AncestralCall:AutoRacial(player) and Racial and A.BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
-					return A.AncestralCall:Show(icon)
-				end
-				
-				-- bag_of_tricks,if=debuff.colossus_smash.down&buff.memory_of_lucid_dreams.down&cooldown.mortal_strike.remains
-				if A.BagofTricks:IsReady(unit) and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and not A.MortalStrike:IsReady()) then
-					return A.BagofTricks:Show(icon)
-				end
-				
-				-- avatar,if=!essence.memory_of_lucid_dreams.major|(buff.memory_of_lucid_dreams.up|cooldown.memory_of_lucid_dreams.remains>45)
-				if A.Avatar:IsReady("player") and A.BurstIsON(unit) and Player:AreaTTD(10) > 9 then
-					return A.Avatar:Show(icon)
-				end
-				
-				-- sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>10|cooldown.colossus_smash.remains>8|azerite.test_of_might.enabled)
-				if A.SweepingStrikes:IsReady("player") and MultiUnits:GetByRange(8, 2) > 1 and ((A.Bladestorm:GetCooldown() > 10 and not A.Ravager:IsTalentLearned()) or A.ColossusSmash:GetCooldown() > 8) and Player:AreaTTD(10) > 9 then
-					return A.SweepingStrikes:Show(icon)
-				end
-				
-				-- run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20
-				if ((A.Massacre:IsTalentLearned() and Unit(unit):HealthPercent() < 35) or Unit(unit):HealthPercent() < 20) then
-					return Execute(unit)
-				else
-				-- run_action_list,name=single_target
-					return SingleUnit(unit)
-				end
+			-- actions.execute+=/execute
+			if A.Execute:IsReady(unit) then
+				return A.Execute:Show(icon)
 			end
+			
+			
+		end	
+
+		local function HAC()
+			-- actions.hac=skullsplitter,if=rage<60&buff.deadly_calm.down
+			if A.Skullsplitter:IsReady(unit) and Player:Rage() < 60 and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 then
+				return A.Skullsplitter:Show(icon)
+			end
+			
+			-- actions.hac+=/avatar,if=cooldown.colossus_smash.remains<1
+			if A.Avatar:IsReady(player) and BurstIsON(unit) and A.ColossusSmash:GetCooldown() < 1 then
+				return A.Avatar:Show(icon)
+			end
+			
+			-- actions.hac+=/cleave,if=dot.deep_wounds.remains<=gcd
+			if A.Cleave:IsReady(player) and Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) <= A.GetGCD() then
+				return A.Cleave:Show(icon)
+			end
+			
+			-- actions.hac+=/warbreaker
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+				return A.Warbreaker:Show(icon)
+			end
+			
+			-- actions.hac+=/bladestorm
+			if A.Bladestorm:IsReady(player) and not A.Ravager:IsTalentLearned() and BurstIsON(unit) then
+				return A.Bladestorm:Show(icon)
+			end
+			
+			-- actions.hac+=/ravager
+			if A.Ravager:IsReady(player) and A.Ravager:IsTalentLearned() then
+				return A.Ravager:Show(icon)
+			end
+			
+			-- actions.hac+=/colossus_smash
+			if A.ColossusSmash:IsReady(unit) then
+				return A.ColossusSmash:Show(icon)
+			end
+			
+			-- actions.hac+=/rend,if=remains<=duration*0.3&buff.sweeping_strikes.up
+			if A.Rend:IsReady(unit) and Unit(unit):HasDeBuffs(A.Rend.ID, true) < 4 and Unit(player):HasBuffs(A.SweepingStrikes.ID, true) > 0 then
+				return A.Rend:Show(icon)
+			end
+			
+			-- actions.hac+=/cleave
+			if A.Cleave:IsReady(player) then
+				return A.Cleave:Show(icon)
+			end
+			
+			-- actions.hac+=/mortal_strike,if=buff.sweeping_strikes.up|dot.deep_wounds.remains<gcd&!talent.cleave.enabled
+			if A.MortalStrike:IsReady(unit) and (Unit(player):HasBuffs(A.SweepingStrikes.ID, true) > 0 or Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) < A.GetGCD() and not A.Cleave:IsTalentLearned()) then
+				return A.MortalStrike:Show(icon)
+			end
+			
+			-- actions.hac+=/overpower,if=talent.dreadnaught.enabled
+			if A.Overpower:IsReady(unit) and A.Dreadnaught:IsTalentLearned() then
+				return A.Overpower:Show(icon)
+			end
+			
+			-- actions.hac+=/condemn
+			if A.Execute:IsReady(unit) and Player:GetCovenant() == 2 then
+				return A.Execute:Show(icon)
+			end
+			
+			-- actions.hac+=/execute,if=buff.sweeping_strikes.up
+			if A.Execute:IsReady(unit) and Unit(player):HasBuffs(A.SweepingStrikes.ID, true) > 0 then
+				return A.Execute:Show(icon)
+			end
+			
+			-- actions.hac+=/overpower
+			if A.Overpower:IsReady(unit) then
+				return A.Overpower:Show(icon)
+			end
+			
+			-- actions.hac+=/whirlwind
+			if A.Whirlwind:IsReady(player) then
+				return A.Whirlwind:Show(icon)
+			end
+			
+		end	
+
+		local function SingleTarget()	
+			-- actions.single_target=avatar,if=cooldown.colossus_smash.remains<8&gcd.remains=0
+			if A.Avatar:IsReady(player) and BurstIsON(unit) and A.ColossusSmash:GetCooldown() < 8 then
+				return A.Avatar:Show(icon)
+			end
+			
+			-- actions.single_target+=/rend,if=remains<=duration*0.3
+			if A.Rend:IsReady(unit) and Unit(unit):HasDeBuffs(A.Rend.ID, true) <= 4 and Unit(unit):TimeToDie() >= 4 then
+				return A.Rend:Show(icon)
+			end
+			
+			-- actions.single_target+=/cleave,if=spell_targets.whirlwind>1&dot.deep_wounds.remains<gcd
+			if A.Cleave:IsReady(player) and MultiUnits:GetByRange(8, 2) > 1 and Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) < A.GetGCD() then
+				return A.Cleave:Show(icon)
+			end			
+			
+			-- actions.single_target+=/warbreaker
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+				return A.Warbreaker:Show(icon)
+			end
+			
+			-- actions.single_target+=/colossus_smash
+			if A.ColossusSmash:IsReady(unit) and not A.Warbreaker:IsTalentLearned() then
+				return A.ColossusSmash:Show(icon)
+			end
+			
+			-- actions.single_target+=/ravager,if=buff.avatar.remains<18&!dot.ravager.remains
+			if A.Ravager:IsReady(player) and Unit(player):HasBuffs(A.Avatar.ID, true) < 18 then
+				return A.Ravager:Show(icon)
+			end
+			
+			-- actions.single_target+=/overpower,if=charges=2
+			if A.Overpower:IsReady(unit) and A.Overpower:GetSpellCharges() > 1 then
+				return A.Overpower:Show(icon)
+			end
+			
+			-- actions.single_target+=/bladestorm,if=buff.deadly_calm.down&(debuff.colossus_smash.up&rage<30|rage<70)
+			if A.Bladestorm:IsReady(player) and BurstIsON(unit) and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 and (Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 and Player:Rage() < 30 or Player:Rage() < 70) then
+				return A.Bladestorm:Show(icon)
+			end
+			
+			-- actions.single_target+=/mortal_strike,if=buff.overpower.stack>=2&buff.deadly_calm.down|(dot.deep_wounds.remains<=gcd&cooldown.colossus_smash.remains>gcd)
+			if A.MortalStrike:IsReady(unit) and (Unit(player):HasBuffsStacks(A.Overpower.ID, true) >= 2 and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 or (Unit(unit):HasDeBuffs(A.DeepWounds.ID, true) <= A.GetGCD() and A.ColossusSmash:GetCooldown() > A.GetGCD())) then
+				return A.MortalStrike:Show(icon)
+			end
+			
+			-- actions.single_target+=/deadly_calm
+			if A.DeadlyCalm:IsReady(player) then
+				return A.DeadlyCalm:Show(icon)
+			end
+			
+			-- actions.single_target+=/skullsplitter,if=rage<60&buff.deadly_calm.down
+			if A.Skullsplitter:IsReady(unit) and Player:Rage() < 60 and Unit(player):HasBuffs(A.DeadlyCalm.ID, true) == 0 then
+				return A.Skullsplitter:Show(icon)
+			end
+			
+			-- actions.single_target+=/overpower
+			if A.Overpower:IsReady(unit) then
+				return A.Overpower:Show(icon)
+			end
+			
+			-- actions.single_target+=/condemn,if=buff.sudden_death.react
+			
+			-- actions.single_target+=/execute,if=buff.sudden_death.react
+			if A.Execute:IsReady(unit) then
+				return A.Execute:Show(icon)
+			end
+			
+			-- actions.single_target+=/mortal_strike
+			if A.MortalStrike:IsReady(unit) then
+				return A.MortalStrike:Show(icon)
+			end
+			
+			-- actions.single_target+=/whirlwind,if=talent.fervor_of_battle.enabled
+			if A.Whirlwind:IsReady(player) and Unit(unit):GetRange() <= 8 and A.FervorofBattle:IsTalentLearned() then
+				return A.Whirlwind:Show(icon)
+			end
+			
+			-- actions.single_target+=/slam,if=!talent.fervor_of_battle.enabled
+			if A.Slam:IsReady(unit) and not A.FervorofBattle:IsTalentLearned() then
+				return A.Slam:Show(icon)
+			end
+		
+		end
+
+		--ZakLL Berserker Rage
+		if LoC:Get("FEAR") > 0 and not A.BerserkerRage:IsSuspended((math_random(25, 40) / 100) - GetLatency(), 6) then
+			return A.BerserkerRage:Show(icon)
+		end
+
+        -- Interrupts
+        local Interrupt = Interrupts(unit)
+        if inCombat and Interrupt then 
+            return Interrupt:Show(icon)
+        end 
+
+		-- actions=charge
+		if A.Charge:IsReady(unit) then
+			return A.Charge:Show(icon)
+		end
+		
+		-- actions+=/blood_fury,if=debuff.colossus_smash.up
+		if A.BloodFury:IsReady(player) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
+			return A.BloodFury:Show(icon)
+		end
+		
+		-- actions+=/berserking,if=debuff.colossus_smash.remains>6
+		if A.Berserking:IsReady(player) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 6 then
+			return A.Berserking:Show(icon)
+		end
+		
+		-- actions+=/arcane_torrent,if=cooldown.mortal_strike.remains>1.5&rage<50
+		if A.ArcaneTorrent:IsReady(player) and UseRacial and BurstIsON(unit) and A.MortalStrike:GetCooldown() > 1.5 and Player:Rage() < 50 then
+			return A.ArcaneTorrent:Show(icon)
+		end
+		
+		-- actions+=/lights_judgment,if=debuff.colossus_smash.down&cooldown.mortal_strike.remains
+		if A.LightsJudgment:IsReady(unit) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and A.MortalStrike:GetCooldown() > 0 then
+			return A.LightsJudgment:Show(icon)
+		end
+		
+		-- actions+=/fireblood,if=debuff.colossus_smash.up
+		if A.Fireblood:IsReady(player) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
+			return A.Fireblood:Show(icon)
+		end
+		
+		-- actions+=/ancestral_call,if=debuff.colossus_smash.up
+		if A.AncestralCall:IsReady(player) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) > 0 then
+			return A.AncestralCall:Show(icon)
+		end		
+		
+		-- actions+=/bag_of_tricks,if=debuff.colossus_smash.down&cooldown.mortal_strike.remains
+		if A.BagofTricks:IsReady(unit) and UseRacial and BurstIsON(unit) and Unit(unit):HasDeBuffs(A.ColossusSmashDebuff.ID, true) == 0 and A.MortalStrike:GetCooldown() > 0 then
+			return A.BagofTricks:Show(icon)
+		end		
+		
+		-- actions+=/use_item,name=inscrutable_quantum_device
+		
+		-- actions+=/use_item,name=dreadfire_vessel
+		
+		
+		-- actions+=/sweeping_strikes,if=spell_targets.whirlwind>1&(cooldown.bladestorm.remains>15|talent.ravager.enabled)
+		if A.SweepingStrikes:IsReady(player) and UseAoE and MultiUnits:GetByRange(8, 2) > 1 and (not BurstIsON(unit) or (A.Bladestorm:GetCooldown() > 15 and BurstIsON(unit)) or A.Ravager:IsTalentLearned()) then
+			return A.SweepingStrikes:Show(icon)
+		end
+		
+		-- actions+=/run_action_list,name=hac,if=raid_event.adds.exists
+		if UseAoE and MultiUnits:GetByRange(8, 2) > 1 then
+			if HAC() then
+				return true
+			end
+		end
+		
+		-- actions+=/run_action_list,name=execute,if=(talent.massacre.enabled&target.health.pct<35)|target.health.pct<20|(target.health.pct>80&covenant.venthyr)
+		if Unit(unit):GetRange() <= 8 and (A.Massacre:IsTalentLearned() and Unit(unit):HealthPercent() < 35) or Unit(unit):HealthPercent() < 20 or (Unit(unit):HealthPercent() > 80 and Player:GetCovenant() == 2) then
+			if ExecuteRotation() then
+				return true
+			end
+		end
+		
+		-- actions+=/run_action_list,name=single_target
+		if SingleTarget() and Unit(unit):GetRange() <= 8 then
+			return true
+		end
+		
+
 	end		
 
     -- End on EnemyRotation()
@@ -783,63 +868,3 @@ A[3] = function(icon, isMulti)
     end
 end
 -- Finished
-
--- [4] AoE Rotation
-A[4] = function(icon)
-    return A[3](icon, true)
-end
- -- [5] Trinket Rotation
--- No specialization trinket actions 
--- Passive 
---[[local function FreezingTrapUsedByEnemy()
-    if     UnitCooldown:GetCooldown("arena", 3355) > UnitCooldown:GetMaxDuration("arena", 3355) - 2 and
-    UnitCooldown:IsSpellInFly("arena", 3355) and 
-    Unit("player"):GetDR("incapacitate") >= 50 
-    then 
-        local Caster = UnitCooldown:GetUnitID("arena", 3355)
-        if Caster and Unit(Caster):GetRange() <= 40 then 
-            return true 
-        end 
-    end 
-end 
-local function ArenaRotation(icon, unit)
-    if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then
-        -- Note: "arena1" is just identification of meta 6
-        if (unit == "arena1" or unit == "arena2" or unit == "arena3") then 
-            -- Reflect Casting BreakAble CC
-            if A.NetherWard:IsReady() and A.NetherWard:IsTalentLearned() and Action.ShouldReflect(EnemyTeam()) and EnemyTeam():IsCastingBreakAble(0.25) then 
-                return A.NetherWard:Show(icon)
-            end 
-        end
-    end 
-end 
-local function PartyRotation(unit)
-    if (unit == "party1" and not A.GetToggle(2, "PartyUnits")[1]) or (unit == "party2" and not A.GetToggle(2, "PartyUnits")[2]) then 
-        return false 
-    end
-
-  	-- SingeMagic
-    if A.SingeMagic:IsCastable() and A.SingeMagic:AbsentImun(unit, Temp.TotalAndMag) and IsSchoolFree() and Action.AuraIsValid(unit, "UseDispel", "Magic") and not Unit(unit):InLOS() then
-        return A.SingeMagic:Show(icon)
-    end
-end 
-
-A[6] = function(icon)
-    return ArenaRotation(icon, "arena1")
-end
-
-A[7] = function(icon)
-    local Party = PartyRotation("party1") 
-    if Party then 
-        return Party:Show(icon)
-    end 
-    return ArenaRotation(icon, "arena2")
-end
-
-A[8] = function(icon)
-    local Party = PartyRotation("party2") 
-    if Party then 
-        return Party:Show(icon)
-    end     
-    return ArenaRotation(icon, "arena3")
-end]]--
