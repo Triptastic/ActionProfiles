@@ -72,6 +72,7 @@ Action[ACTION_CONST_DRUID_FERAL] = {
     WilloftheForsaken                       = Create({ Type = "Spell", ID = 7744		}),    
     EscapeArtist                            = Create({ Type = "Spell", ID = 20589		}),
     EveryManforHimself                      = Create({ Type = "Spell", ID = 59752		}), 
+	Darkflight								= Create({ Type = "Spell", ID = 68992 		}),	
 
 	-- Druid General
     Barkskin								= Action.Create({ Type = "Spell", ID = 22812	}),
@@ -273,22 +274,22 @@ local function InMelee(unitID)
     return A.Rake:IsInRange(unitID)
 end 
 
-local function countInterruptGCD(unit)
-    if not A.SkullBash:IsReadyByPassCastGCD(unit) or not A.SkullBash:AbsentImun(unit, Temp.TotalAndPhysKick) then
+local function countInterruptGCD()
+    if not A.SkullBash:IsReadyByPassCastGCD(unitID) or not A.SkullBash:AbsentImun(unitID, Temp.TotalAndPhysKick) then
 	    return true
 	end
 end
 
-local function Interrupts(unit)
+local function Interrupts()
 
-    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
+    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unitID, nil, nil, countInterruptGCD(unitID))
     
 	if castRemainsTime >= A.GetLatency() then
-        if useKick and A.SkullBash:IsReady(unit) and A.SkullBash:AbsentImun(unit, Temp.TotalAndPhysKick, true) then 
+        if useKick and A.SkullBash:IsReady(unitID) and A.SkullBash:AbsentImun(unit, Temp.TotalAndPhysKick, true) then 
             return A.SkullBash
         end         
 
-        if useCC and A.MightyBash:IsReady(unit) and A.MightyBash:IsTalentLearned() and A.MightyBash:AbsentImun(unit, Temp.TotalAndPhysKick, true) then 
+        if useCC and A.MightyBash:IsReady(unitID) and A.MightyBash:IsTalentLearned() and A.MightyBash:AbsentImun(unitID, Temp.TotalAndPhysKick, true) then 
             return A.MightyBash
         end  
 		    
@@ -415,7 +416,7 @@ local function SelfDefensives()
     then 
         -- Notification                    
         A.Toaster:SpawnByTimer("TripToast", 0, "Barkskin!", "Using Barkskin!", A.Barkskin.ID)
-        return A.Barkskin
+        return A.Darkflight
     end	
 
 	if not Player:IsStealthed() then 	
@@ -761,7 +762,7 @@ A[3] = function(icon)
 		end
 
         -- Interrupts
-        local Interrupt = Interrupts(unit)
+        local Interrupt = Interrupts(unitID)
         if inCombat and Interrupt then 
             return Interrupt:Show(icon)
         end 
