@@ -803,7 +803,7 @@ A[3] = function(icon, isMulti)
 
 		--# Use Unholy Nova on CD, holding briefly to wait for power infusion or add spawns.
 		--actions.cds+=/unholy_nova,if=((!raid_event.adds.up&raid_event.adds.in>20)|raid_event.adds.remains>=15|raid_event.adds.duration<15)&
-		if A.UnholyNova:IsReady(player) and inCombat and UseCovenant and ((MultiUnits:GetByRange(15, 2) > 2 and Player:AreaTTD() > 5) or (Unit(unit):IsBoss() and Unit(unit):GetRange() <= 15)) then
+		if A.UnholyNova:IsReady(unit) and inCombat and UseCovenant and ((MultiUnits:GetActiveEnemies() > 2 and Player:AreaTTD() > 5) or Unit(unit):IsBoss()) then
 			return A.UnholyNova:Show(icon)
 		end
 		
