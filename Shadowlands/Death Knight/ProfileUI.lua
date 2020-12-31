@@ -2,35 +2,35 @@
 --##### TRIP'S DEATH KNIGHT PROFILE UI#####
 --#########################################
 
-local TMW											= TMW 
-local CNDT											= TMW.CNDT
-local Env											= CNDT.Env
+local TMW                                            = TMW 
+local CNDT                                            = TMW.CNDT
+local Env                                            = CNDT.Env
 
-local A												= Action
-local GetToggle										= A.GetToggle
-local InterruptIsValid								= A.InterruptIsValid
+local A                                                = Action
+local GetToggle                                        = A.GetToggle
+local InterruptIsValid                                = A.InterruptIsValid
 
-local UnitCooldown									= A.UnitCooldown
-local Unit											= A.Unit 
-local Player										= A.Player 
-local Pet											= A.Pet
-local LoC											= A.LossOfControl
-local MultiUnits									= A.MultiUnits
-local EnemyTeam										= A.EnemyTeam
-local FriendlyTeam									= A.FriendlyTeam
-local TeamCache										= A.TeamCache
-local InstanceInfo									= A.InstanceInfo
+local UnitCooldown                                    = A.UnitCooldown
+local Unit                                            = A.Unit 
+local Player                                        = A.Player 
+local Pet                                            = A.Pet
+local LoC                                            = A.LossOfControl
+local MultiUnits                                    = A.MultiUnits
+local EnemyTeam                                        = A.EnemyTeam
+local FriendlyTeam                                    = A.FriendlyTeam
+local TeamCache                                        = A.TeamCache
+local InstanceInfo                                    = A.InstanceInfo
 local TR                                            = Action.TasteRotation
-local select, setmetatable							= select, setmetatable
+local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.1.0 (26 November 2020)",
+    DateTime = "v2.0 (31 December 2020)",
     -- Class settings
     [2] = {
-        -- Unholy	
+        -- Unholy    
         [ACTION_CONST_DEATHKNIGHT_UNHOLY] = {
-        LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },			
+            LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },            
             { -- GENERAL HEADER
                 {
                     E = "Header",
@@ -38,7 +38,7 @@ A.Data.ProfileUI = {
                         ANY = " l><><>< GENERAL ><><><l ",
                     },
                 },
-            },			
+            },            
             { -- GENERAL OPTIONS
                 { -- MOUSEOVER CHECKBOX
                     E = "Checkbox", 
@@ -71,16 +71,28 @@ A.Data.ProfileUI = {
                         frFR = "Activer les actions multi-unités",
                     }, 
                     M = {
-					    Custom = "/run Action.AoEToggleMode()",
-						-- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
-						Value = value or nil, 
-						-- Very Very Optional, no idea why it will be need however.. 
-						TabN = '@number' or nil,								
-						Print = '@string' or nil,
-					},
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
                 },
-			},
-			{
+				{ -- Soul Reaper MOUSEOVER
+                    E = "Checkbox", 
+                    DB = "SoulReaperMouseover",
+                    DBV = true,
+                    L = { 
+                        ANY = "Soul Reaper @mouseover", 
+                    }, 
+                    TT = { 
+                        ANY = "/cast [@mouseover, harm]Soul Reaper; Soul Reaper"
+                    }, 
+                    M = {},
+                },
+            },
+            {
                 { -- DEATHGRIP INTERRUPT
                     E = "Checkbox", 
                     DB = "DeathGripInterrupt",
@@ -90,9 +102,9 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Use Death Grip to Interrupt if Mind Freeze is on cooldown."
-					},
+                    },
                     M = {},
-				},
+                },
                 { -- ASPHYXIATE INTERRUPT
                     E = "Checkbox", 
                     DB = "AsphyxiateInterrupt",
@@ -102,15 +114,41 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Use Asphyxiate to Interrupt if Mind Freeze is on cooldown."
-					},
+                    },
                     M = {},
-				},				
-			},	
+                },  
+				{ -- Slow Spiteful @ MouseOver
+                    E = "Checkbox", 
+                    DB = "SlowSpiteful",
+                    DBV = true,
+                    L = { 
+                        ANY = "Slow Spiteful with Chains @mouseover"
+                    }, 
+                    TT = { 
+                        ANY = "/cast [@mouseover, harm]Chains of Ice; Chains of Ice"
+                    },
+                    M = {},
+                },					
+            },    
+			{
+				{ -- Legendary Swap Opening
+                    E = "Checkbox", 
+                    DB = "LegoSwap",
+                    DBV = true,
+                    L = { 
+                        ANY = "Legendary Swap Opening"
+                    }, 
+                    TT = { 
+                        ANY = "Must have BOTH Deadliest Coil and Frenzied Monstrocity"
+                    },
+                    M = {},
+                },	
+			},
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
                 },
-            },			
+            },            
             { -- AOE HEADER
                 {
                     E = "Header",
@@ -118,9 +156,9 @@ A.Data.ProfileUI = {
                         ANY = " l><><>< AOE ><><><l ",
                     },
                 },
-            },			
-			{ -- AOE SETTINGS
-                {	-- AUTO SWITCH FESTERING STRIKE
+            },            
+            { -- AOE SETTINGS
+                {    -- AUTO SWITCH FESTERING STRIKE
                     E = "Checkbox", 
                     DB = "AutoSwitchFesteringStrike",
                     DBV = true,
@@ -147,8 +185,8 @@ A.Data.ProfileUI = {
                         ANY = "Amount of targets to use AoE rotation",
                     }, 
                     M = {},
-                },				
-			},						
+                },                
+            },                        
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
@@ -190,7 +228,7 @@ A.Data.ProfileUI = {
                         frFR = "Enable this to option to automatically cast " .. A.GetSpellInfo(48792) .. " when you are stunned.",
                     }, 
                     M = {},
-                }, 	
+                },     
             },
             { -- SLIDERS 2
                 { -- DEATHPACTHP SLIDER
@@ -217,8 +255,8 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-			},
-			{
+            },
+            {
                 { -- HEALING POTION 
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -230,7 +268,7 @@ A.Data.ProfileUI = {
                         ANY = "Spiritual Healing Potion HP (%)",
                     }, 
                     M = {},
-                },	
+                },    
                 { -- DeathStrikeHP
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -243,19 +281,19 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Will use Death Strike at this percent HP."
-					},					
+                    },                    
                     M = {},
                 },
-			},
+            },
             { -- LAYOUTSPACE
                 {
                     E = "LayoutSpace",                                                                         
                 },
             },
         },
-		-- Frost
+        -- Frost
         [ACTION_CONST_DEATHKNIGHT_FROST] = {  
-        LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },	        
+            LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },            
             { -- GENERAL HEADER
                 {
                     E = "Header",
@@ -263,7 +301,7 @@ A.Data.ProfileUI = {
                         ANY = " l><><>< GENERAL ><><><l ",
                     },
                 },
-            },			
+            },            
             { -- GENERAL OPTIONS
                 { -- MOUSEOVER CHECKBOX
                     E = "Checkbox", 
@@ -296,16 +334,16 @@ A.Data.ProfileUI = {
                         frFR = "Activer les actions multi-unités",
                     }, 
                     M = {
-					    Custom = "/run Action.AoEToggleMode()",
-						-- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
-						Value = value or nil, 
-						-- Very Very Optional, no idea why it will be need however.. 
-						TabN = '@number' or nil,								
-						Print = '@string' or nil,
-					},
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
                 },
-			},
-			{
+            },
+            {
                 { -- DEATHGRIP INTERRUPT
                     E = "Checkbox", 
                     DB = "DeathGripInterrupt",
@@ -315,9 +353,9 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Use Death Grip to Interrupt if Mind Freeze is on cooldown."
-					},
+                    },
                     M = {},
-				},
+                },
                 { -- ASPHYXIATE INTERRUPT
                     E = "Checkbox", 
                     DB = "AsphyxiateInterrupt",
@@ -327,10 +365,10 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Use Asphyxiate to Interrupt if Mind Freeze is on cooldown."
-					},
+                    },
                     M = {},
-				},				
-			},							
+                },                
+            },                            
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
@@ -372,7 +410,7 @@ A.Data.ProfileUI = {
                         frFR = "Enable this to option to automatically cast " .. A.GetSpellInfo(48792) .. " when you are stunned.",
                     }, 
                     M = {},
-                }, 	
+                },     
             },
             { -- SLIDERS 2
                 { -- DEATHPACTHP SLIDER
@@ -399,8 +437,8 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-			},
-			{
+            },
+            {
                 { -- HEALING POTION 
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -425,10 +463,10 @@ A.Data.ProfileUI = {
                     }, 
                     TT = { 
                         ANY = "Will use Death Strike at this percent HP."
-					},					
+                    },                    
                     M = {},
-                },	
-			},
+                },    
+            },
             { -- LAYOUTSPACE
                 {
                     E = "LayoutSpace",                                                                         
@@ -1683,7 +1721,7 @@ A.Data.ProfileUI = {
 -----------------------------------------
 --                   PvP  
 -----------------------------------------
- 
+
 
 function A.Main_CastBars(unit, list)
     if not A.IsInitialized or A.IamHealer or (A.Zone ~= "arena" and A.Zone ~= "pvp") then 

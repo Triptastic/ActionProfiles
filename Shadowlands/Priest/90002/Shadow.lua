@@ -566,13 +566,13 @@ A[3] = function(icon, isMulti)
 		local function CWC()
 			--# Use Searing Nightmare if you will hit enough targets and Power Infusion and Voidform are not ready, or to refresh SW:P on two or more targets.
 			--actions.cwc=searing_nightmare,use_while_casting=1,target_if=(variable.searing_nightmare_cutoff&!variable.pool_for_cds)|(dot.shadow_word_pain.refreshable&spell_targets.mind_sear>1)
-			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and ((VarSearingNightmareCutoff and not VarPoolForCDs) or (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 1)) then
+			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and Player:IsChanneling() == A.MindSear:Info() and ((VarSearingNightmareCutoff and not VarPoolForCDs) or (Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 1)) then
 				return A.RocketJump:Show(icon)
 			end
 			
 			--# Short Circuit Searing Nightmare condition to keep SW:P up in AoE
 			--actions.cwc+=/searing_nightmare,use_while_casting=1,target_if=talent.searing_nightmare.enabled&dot.shadow_word_pain.refreshable&spell_targets.mind_sear>2
-			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 2 then
+			if A.SearingNightmare:IsReady(player, nil, nil, true) and CanCast and (not isMoving or StMActive) and Player:IsChanneling() == A.MindSear:Info() and Unit(unit):HasDeBuffs(A.ShadowWordPain.ID, true) < 4.8 and MultiUnits:GetActiveEnemies() > 2 then
 				return A.RocketJump:Show(icon)
 			end
 			
@@ -803,7 +803,7 @@ A[3] = function(icon, isMulti)
 
 		--# Use Unholy Nova on CD, holding briefly to wait for power infusion or add spawns.
 		--actions.cds+=/unholy_nova,if=((!raid_event.adds.up&raid_event.adds.in>20)|raid_event.adds.remains>=15|raid_event.adds.duration<15)&
-		if A.UnholyNova:IsReady(unit) and inCombat and UseCovenant and ((MultiUnits:GetActiveEnemies() > 2 and Player:AreaTTD() > 5) or Unit(unit):IsBoss()) then
+		if A.UnholyNova:IsReady(unit) and inCombat and UseCovenant and ((MultiUnits:GetActiveEnemies() > 2 and Player:AreaTTD(40) > 5) or BurstIsON(unit)) then
 			return A.UnholyNova:Show(icon)
 		end
 		
