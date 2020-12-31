@@ -2,8 +2,6 @@
 --##### TRIP'S PALADINUI #####
 --############################
 
--- Full credit to Taste
-
 local TMW											= TMW 
 local CNDT											= TMW.CNDT
 local Env											= CNDT.Env
@@ -27,7 +25,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.30 (13 Dec 2020)",
+    DateTime = "v1.50 (31 Dec 2020)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_PALADIN_RETRIBUTION] = {          
@@ -1015,6 +1013,7 @@ A.Data.ProfileUI = {
             },
         },	
         [ACTION_CONST_PALADIN_HOLY] = {          
+            LayoutOptions = { gutter = 5, padding = { left = 10, right = 10 } },    
             { -- [7]
                 {
                     E = "Header",
@@ -1062,7 +1061,75 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },                                  
+                {
+                    E = "Checkbox", 
+                    DB = "ForceGlimmerOnMaxUnits",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use\nGlimmer\nSpread",
+                        ruRU = "Включить\nПассивную\nРотацию" 
+                    },
+                    M = {},
+                },           
             },     
+            { -- [7] 
+                {
+                    E = "Header",
+                    L = {
+                        " -- Holy Light and Flash of Light HP Thresholds (or Off) -- ",
+                    },
+                },
+            },            
+            { -- [3]     
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "FlashofLightHP",
+                    DBV = 70,
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(19750) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "HolyLightHP",
+                    DBV = 90,
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(82326) .. " (%)",
+                    }, 
+                    M = {},
+                },
+				{
+                    E = "Slider",                                                     
+                    MIN = 80, 
+                    MAX = 100,                            
+                    DB = "HolyShockHP",
+                    DBV = 93,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(20473) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                {
+                    E = "Slider",                                                     
+                    MIN = 70, 
+                    MAX = 100,                            
+                    DB = "WordofGloryHP",
+                    DBV = 86,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(85673) .. " (%)",
+                    }, 
+                    M = {},
+                },
+            },    
             { -- [7]
                 {
                     E = "Header",
