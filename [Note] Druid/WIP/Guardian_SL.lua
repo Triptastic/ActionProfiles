@@ -67,6 +67,7 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     WilloftheForsaken                      = Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
     EscapeArtist                           = Action.Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
     EveryManforHimself                     = Action.Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
+	Darkflight								= Action.Create({ Type = "Spell", ID = 68992 		}),		
     -- Generics
     BearFormBuff                           = Action.Create({ Type = "Spell", ID = 5487, Hidden = true }),
     BearForm                               = Action.Create({ Type = "Spell", ID = 5487 }),
@@ -124,7 +125,8 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
 	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
 	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
 	PotionofSacrificialAnima               = Action.Create ({ Type = "Potion", ID = 322301, QueueForbidden = true }),
-	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),  
+	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),
+    SpiritualHealingPotion					= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),	
     -- Trinkets
 	-- Generic Covenants
 	Fleshcraft                             = Action.Create({ Type = "Spell", ID = 324631 }),
@@ -600,7 +602,7 @@ A[3] = function(icon, isMulti)
 			
 			-- berserk,if=buff.bear_form.up,burstON
 			if A.Berserk:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
-				return A.Berserk:Show(icon)
+				return A.Incarnation:Show(icon)
 			end
 			
 			-- venthyr,if=buff.bear_form.up,burstON

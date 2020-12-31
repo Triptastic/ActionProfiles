@@ -1,5 +1,6 @@
 -------------------------------
 -- Note TMW Action Rotation --
+--      Version 1.0.0       --
 -------------------------------
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
@@ -13,6 +14,7 @@ local GetPing									= Action.GetPing
 local ShouldStop								= Action.ShouldStop
 local BurstIsON									= Action.BurstIsON
 local AuraIsValid								= Action.AuraIsValid
+local AuraIsValidByPhialofSerenity              = A.AuraIsValidByPhialofSerenity
 local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell								= Action.FrameHasSpell
 local Utils										= Action.Utils
@@ -65,6 +67,7 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     WilloftheForsaken                      = Action.Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
     EscapeArtist                           = Action.Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
     EveryManforHimself                     = Action.Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
+	Darkflight								= Action.Create({ Type = "Spell", ID = 68992 		}),		
     -- Generics
     BearFormBuff                           = Action.Create({ Type = "Spell", ID = 5487, Hidden = true }),
     BearForm                               = Action.Create({ Type = "Spell", ID = 5487 }),
@@ -72,7 +75,6 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     HeartEssence                           = Action.Create({ Type = "Spell", ID = 298554 }),
     LightsJudgment                         = Action.Create({ Type = "Spell", ID = 255647 }),
     Barkskin                               = Action.Create({ Type = "Spell", ID = 22812 }),
-    LunarBeam                              = Action.Create({ Type = "Spell", ID = 204066, predictName = "LunarBeam" }),
     BristlingFur                           = Action.Create({ Type = "Spell", ID = 155835 }),
     Incarnation                            = Action.Create({ Type = "Spell", ID = 102558 }),
     MoonfireDebuff                         = Action.Create({ Type = "Spell", ID = 164812 }),
@@ -105,6 +107,7 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     -- Defensive
 	SurvivalInstincts                     = Action.Create({ Type = "Spell", ID = 61336   }),
 	FrenziedRegeneration                  = Action.Create({ Type = "Spell", ID = 22842, predictName = "FrenziedRegeneration"   }),
+	Renewal                               = Action.Create({ Type = "Spell", ID = 108238   }),
     -- Buffs
     IronfurBuff                            = Action.Create({ Type = "Spell", ID = 192081, Hidden = true }),
     PulverizeBuff                         = Action.Create({ Type = "Spell", ID = 158792, Hidden = true     }),
@@ -116,35 +119,35 @@ Action[ACTION_CONST_DRUID_GUARDIAN] = {
     ThrashBearDebuff                      = Action.Create({ Type = "Spell", ID = 192090, Hidden = true     }),
     MoonfireDebuff                        = Action.Create({ Type = "Spell", ID = 164812, Hidden = true     }), 
     -- Potions
-    PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }),  
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-	SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
-	AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
-	PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
-	SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
-	PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
+	SuperiorSteelskinPotion                = Action.Create ({ Type = "Potion", ID = 168501, QueueForbidden = true }),
+	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),	
+	PotonofDeathlyFixation                 = Action.Create ({ Type = "Potion", ID = 307384, QueueForbidden = true }),
+	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
+	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
+	PotionofSacrificialAnima               = Action.Create ({ Type = "Potion", ID = 322301, QueueForbidden = true }),
+	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),
+    SpiritualHealingPotion					= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),	
     -- Trinkets
 	-- Generic Covenants
-	Fleshcraft                             = Action.Create({ Type = "Potion", ID = 324631 }),
-	SummonSteward                          = Action.Create({ Type = "Potion", ID = 324739 }),
-	DoorOfShadows                          = Action.Create({ Type = "Potion", ID = 300728 }),
-	SoulShape                              = Action.Create({ Type = "Potion", ID = 310143 }),
+	Fleshcraft                             = Action.Create({ Type = "Spell", ID = 324631 }),
+	SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739 }),
+	DoorOfShadows                          = Action.Create({ Type = "Spell", ID = 300728 }),
+	SoulShape                              = Action.Create({ Type = "Spell", ID = 310143 }),
 	-- Covenants
-	AdaptiveSwarm                          = Action.Create({ Type = "Potion", ID = 325727 }),
-	KindredSpirits                         = Action.Create({ Type = "Potion", ID = 326434 }),
-	RavenousFrenzy                         = Action.Create({ Type = "Potion", ID = 323546 }),
-	ConvokeTheSpirit                       = Action.Create({ Type = "Potion", ID = 323764 }),
+	AdaptiveSwarm                          = Action.Create({ Type = "Spell", ID = 325727 }),
+	KindredSpirits                         = Action.Create({ Type = "Spell", ID = 326434 }),
+	RavenousFrenzy                         = Action.Create({ Type = "Spell", ID = 323546 }),
+	ConvokeTheSpirit                       = Action.Create({ Type = "Spell", ID = 323764 }),
 	-- Generic Legendaries
-	DraughtOfDeepFocus                     = Action.Create({ Type = "Potion", ID = 338658 }),
-	CircleOfLifeAndDeath                   = Action.Create({ Type = "Potion", ID = 338657 }),
-	LycarasFleetingGlimpse                 = Action.Create({ Type = "Potion", ID = 340059 }),
-	OathOfTheElderDruid                    = Action.Create({ Type = "Potion", ID = 338608 }),
+	DraughtOfDeepFocus                     = Action.Create({ Type = "Spell", ID = 338658 }),
+	CircleOfLifeAndDeath                   = Action.Create({ Type = "Spell", ID = 338657 }),
+	LycarasFleetingGlimpse                 = Action.Create({ Type = "Spell", ID = 340059 }),
+	OathOfTheElderDruid                    = Action.Create({ Type = "Spell", ID = 338608 }),
 	-- Guardian Legendaries
-	TheNaturalOrdersWill                   = Action.Create({ Type = "Potion", ID = 339063 }),
-	UrsocsFuryRemembered                   = Action.Create({ Type = "Potion", ID = 339056 }),
-	LuffaInfusedEmbrace                    = Action.Create({ Type = "Potion", ID = 339060 }),
-	LegacyOfTheSleeper                     = Action.Create({ Type = "Potion", ID = 339062 }),
+	TheNaturalOrdersWill                   = Action.Create({ Type = "Spell", ID = 339063 }),
+	UrsocsFuryRemembered                   = Action.Create({ Type = "Spell", ID = 339056 }),
+	LuffaInfusedEmbrace                    = Action.Create({ Type = "Spell", ID = 339060 }),
+	LegacyOfTheSleeper                     = Action.Create({ Type = "Spell", ID = 339062 }),
 	-- Conduits
     -- Misc
     Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
@@ -235,12 +238,24 @@ local function SelfDefensives()
         return A.Ironfur
     end 
 
-    -- Emergency FrenziedRegeneration
-    local FrenziedRegeneration = Action.GetToggle(2, "FrenziedRegenerationHP")
-    if     FrenziedRegeneration >= 0 and A.FrenziedRegeneration:IsReady("player") and Unit("player"):HasBuffs(A.FrenziedRegeneration.ID, true) == 0 and
+    -- Emergency FrenziedRegeneration **Thanks Trips**
+	local FrenziedRegeneration = Action.GetToggle(2, "FrenziedRegenerationHP")
+    if FrenziedRegeneration >= 0 and FrenziedRegeneration < 100 and A.FrenziedRegeneration:IsReady("player") and Unit("player"):HasBuffs(A.FrenziedRegeneration.ID, true) == 0 and Unit("player"):HealthPercent() <= FrenziedRegeneration then
+        if A.TheNaturalOrdersWill:HasLegendaryCraftingPower() and A.Barkskin:GetCooldown() > 0 and Unit("player"):HasBuffs(A.Barkskin.ID, true) == 0 then
+            return A.FrenziedRegeneration
+        end
+
+        if not A.TheNaturalOrdersWill:HasLegendaryCraftingPower() then
+            return A.FrenziedRegeneration
+        end
+    end  
+	
+	    --Emergency Renewal
+    local Renewal = Action.GetToggle(2, "RenewalHP")
+    if     Renewal >= 0 and A.Renewal:IsReady("player") and Unit("player"):HasBuffs(A.Renewal.ID, true) == 0 and
     (
         (   -- Auto 
-            FrenziedRegeneration >= 100 and 
+            Renewal >= 100 and 
             (
                 -- HP lose per sec >= 5
                 Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax() >= 15 or 
@@ -264,13 +279,13 @@ local function SelfDefensives()
             ) 
         ) or 
         (    -- Custom
-            FrenziedRegeneration < 100 and 
-            Unit("player"):HealthPercent() <= FrenziedRegeneration
+            Renewal < 100 and 
+            Unit("player"):HealthPercent() <= Renewal
         )
     ) 
     then 
-        return A.FrenziedRegeneration
-    end 
+        return A.Renewal
+    end
 			
     -- SurvivalInstincts
     if A.SurvivalInstincts:IsReadyByPassCastGCD(player) then 
@@ -326,49 +341,33 @@ local function SelfDefensives()
             return A.Barkskin
         end 
     end 
-
-	-- SuperiorSteelskinPotion
-    local SuperiorSteelskinPotion = A.GetToggle(2, "SuperiorSteelskinPotionHP")
-    if     SuperiorSteelskinPotion >= 0 and A.SuperiorSteelskinPotion:IsReady(player) and 
-    (
-        (     -- Auto 
-            SuperiorSteelskinPotion >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 3 or 
-				GetByRange(5, 15) and Unit(player):HealthPercent() <= 25 and Player:AreaTTD(15) > 20 or
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            SuperiorSteelskinPotion < 100 and 
-            Unit(player):HealthPercent() <= SuperiorSteelskinPotion
-        )
-    ) 
-    then 
-        return A.SuperiorSteelskinPotion
-    end
 	
-	-- HealingPotion
-    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
-    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady(player) and 
+        -- PhialofSerenity
+        if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+            -- Healing 
+            local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+            if PhialofSerenityOperator == "AND" then 
+                if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            else
+                if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            end 
+            
+            -- Dispel 
+            if AuraIsValidByPhialofSerenity() then 
+                return A.PhialofSerenity    
+            end 
+        end		
+
+	-- SpiritualHealingPotionHP
+    local SpiritualHealingPotion = A.GetToggle(1, "HealthStone")
+    if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
-            AbyssalHealingPotion >= 100 and 
+            SpiritualHealingPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
@@ -390,15 +389,16 @@ local function SelfDefensives()
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            AbyssalHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= AbyssalHealingPotion
+            SpiritualHealingPotion < 100 and 
+            Unit(player):HealthPercent() <= SpiritualHealingPotion
         )
     ) 
     then 
-        return A.AbyssalHealingPotion
-    end 			
+        return A.SpiritualHealingPotion
+    end 	
 
 end 
+
 SelfDefensives = A.MakeFunctionCachedDynamic(SelfDefensives)
 
 -- Non GCD spell check
@@ -590,11 +590,6 @@ A[3] = function(icon, isMulti)
                 return A.AncestralCall:Show(icon)
             end
 			
-            -- lunar_beam,if=buff.bear_form.up
-            if A.LunarBeam:IsReady(unit) and (Unit("player"):HasBuffs(A.BearFormBuff.ID, true)) then
-                return A.LunarBeam:Show(icon)
-            end
-			
             -- bristling_fur,if=buff.bear_form.up
             if A.BristlingFur:IsReady(unit) and Unit("player"):HasBuffs(A.BearFormBuff.ID, true) and Player:Rage() < Action.GetToggle(2, "BristlingFurRage") then
                 return A.BristlingFur:Show(icon)
@@ -607,7 +602,17 @@ A[3] = function(icon, isMulti)
 			
 			-- berserk,if=buff.bear_form.up,burstON
 			if A.Berserk:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
-				return A.Berserk:Show(icon)
+				return A.Incarnation:Show(icon)
+			end
+			
+			-- venthyr,if=buff.bear_form.up,burstON
+			if A.RavenousFrenzy:IsReady(unit) and ((Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) or MultiUnits:GetByRange(30) > 1) and Unit(unit):HasDeBuffs(A.ThrashBearDebuff.ID, true)) then
+				return A.RavenousFrenzy:Show(icon)
+			end
+			
+			-- necrolord, if=buff.bear_form.up,burstON,(dot.adaptiveswarm.ticking|active_enemies>1)
+			if A.AdaptiveSwarm:IsReady(unit) and A.BurstIsON(unit) and not (Unit(unit):HasDeBuffs(A.AdaptiveSwarm.ID, true)) then
+				return A.AdaptiveSwarm:Show(icon)
 			end
 			
             -- use_items
@@ -635,25 +640,22 @@ A[3] = function(icon, isMulti)
                 return Interrupt:Show(icon)
             end	
 								
-		    -- Taunt 
-            if A.GetToggle(2, "AutoTaunt") 
-			and combatTime > 0     
-			then 
-			     -- if not fully aggroed or we are not current target then use taunt
-			    if A.Growl:IsReady(unit, true, nil, nil, nil) and not Unit(unit):IsDummy() and not Unit(unit):IsBoss() and Unit(unit):GetRange() <= 30 and ( Unit("targettarget"):InfoGUID() ~= Unit("player"):InfoGUID() ) then 
-                    return A.Growl:Show(icon)
-				-- else if all good on current target, switch to another one we know we dont currently tank
-                else
-                    local Growl_Nameplates = MultiUnits:GetActiveUnitPlates()
-                    if Growl_Nameplates then  
-                        for Growl_UnitID in pairs(Growl_Nameplates) do             
-                            if not Unit(Growl_UnitID):IsPlayer() and not UnitIsUnit("target", Growl_UnitID) and A.Growl:IsReady(Growl_UnitID, true, nil, nil, nil) and not Unit(Growl_UnitID):IsDummy() and not Unit(Growl_UnitID):IsBoss() and Unit(Growl_UnitID):GetRange() <= 30 and not Unit(Growl_UnitID):InLOS() and Unit("player"):ThreatSituation(Growl_UnitID) ~= 3 then 
-                                return A:Show(icon, ACTION_CONST_AUTOTARGET)
-                            end         
-                        end 
+		    --[[ Taunt logic by KhalDrogo1988
+            if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then 
+				if not Unit(unit):IsBoss() and
+                A.Growl:IsReady(unit) then
+					local agroLevels = TargetWithAgroExsist()
+                    if agroLevels[0] and Unit(player):ThreatSituation(unit) ~= 0 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
                     end
-				end
-            end 
+                    if agroLevels[1] and Unit(player):ThreatSituation(unit) > 1 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
+                    end
+                    if agroLevels[2] and Unit(player):ThreatSituation(unit) > 2 then
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
+                    end
+                end
+            end]]
 			
 			-- Moonfire
             if A.Moonfire:IsReady(unit) and (Unit("player"):HasBuffs(A.GalacticGuardianBuff.ID, true) > 0 or (MultiUnits:GetByRange(30) >= 2 and Unit(unit):HasDeBuffs(A.MoonfireDebuff.ID, true) == 0)) then

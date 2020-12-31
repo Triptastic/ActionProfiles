@@ -27,7 +27,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {    
-    DateTime = "v1.5.0 (15 Dec 2020)",
+    DateTime = "v1.6.0 (31 December 2020)",
     -- Class settings
     [2] = {
         [ACTION_CONST_DRUID_FERAL] = {             
@@ -691,11 +691,11 @@ A.Data.ProfileUI = {
                     E = "Slider",                                                     
                     MIN = -1, 
                     MAX = 100,                            
-                    DB = "LunarBeamHP",
+                    DB = "RenewalHP",
                     DBV = 100, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
-                        ANY = GetSpellInfo(204066) .. " (%)",
+                        ANY = "Renewal HP (%)",
                     }, 
                     M = {},
                 },
@@ -752,40 +752,6 @@ A.Data.ProfileUI = {
                         ruRU = "Minimum rage required before using Bristling Fur", 
                     }, 
                     M = {},
-                },
-            },
-            { -- [4] Potions 
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "SpiritualHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Spiritual Healing Potion HP (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "PhialOfSerenityHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Phial of Serenity HP (%)",
-                    }, 
-                    M = {},
-                },
-            },
-            { -- [7] Multidots settings
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " -- Multidots settings -- ",
-                    },
                 },
             },
 			{
