@@ -831,7 +831,7 @@ A[3] = function(icon, isMulti)
 		--#####################
 
 		--actions+=/variable,name=blade_dance,value=talent.first_blood.enabled|spell_targets.blade_dance1>=(3-(talent.trail_of_ruin.enabled+buff.metamorphosis.up))|runeforge.chaos_theory&buff.chaos_theory.down
-		VarBladeDance = A.FirstBlood:IsTalentLearned() or (MultiUnits:GetByRange(8, 3) >= (3 - num(A.TrailofRuin:IsTalentLearned()) + num(Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0))) or (Player:HasLegendaryCraftingPower(A.ChaosTheory) and Unit(player):HasBuffs(A.ChaosTheoryBuff.ID, true) == 0)
+		VarBladeDance = A.FirstBlood:IsTalentLearned() or (MultiUnits:GetByRange(8, 3) >= (3 - (num(A.TrailofRuin:IsTalentLearned()) + num(Unit(player):HasBuffs(A.MetamorphosisBuff.ID, true) > 0)))) or (A.ChaosTheory:HasLegendaryCraftingPower() and Unit(player):HasBuffs(A.ChaosTheoryBuff.ID, true) == 0)
 
 		--actions+=/variable,name=pooling_for_meta,value=!talent.demonic.enabled&cooldown.metamorphosis.remains<6&fury.deficit>30		
         VarPoolingForMeta = not A.Demonic:IsTalentLearned() and A.Metamorphosis:GetCooldown() < 6 and FuryDeficit > 30         
@@ -1108,7 +1108,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.essence_break+=/death_sweep,if=variable.blade_dance&debuff.essence_break.up
-			if A.DeathSweep:IsReady(unitID) and VarBladeDance and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 and Unit(unit):GetRange() <= 8 then
+			if A.DeathSweep:IsReady(player) and VarBladeDance and Unit(unit):HasDeBuffs(A.EssenceBreakDebuff.ID, true) > 0 and Unit(unit):GetRange() <= 8 then
 				return A.DeathSweep:Show(icon)
 			end	
 			
@@ -1146,7 +1146,7 @@ A[3] = function(icon, isMulti)
 			end	]]
 			
 			--actions.demonic+=/death_sweep,if=variable.blade_dance
-			if A.DeathSweep:IsReady(unit) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+			if A.DeathSweep:IsReady(player) and VarBladeDance and Unit(unit):GetRange() <= 8 then
 				return A.DeathSweep:Show(icon)
 			end
 			
@@ -1195,7 +1195,7 @@ A[3] = function(icon, isMulti)
 				return A.FelRush:Show(icon)
 			end	]]
 			--actions.demonic+=/demons_bite,target_if=min:debuff.burning_wound.remains,if=runeforge.burning_wound.equipped&debuff.burning_wound.remains<4
-			if A.DemonsBite:IsReady(unit) and Player:HasLegendaryCraftingPower(A.BurningWound) and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
+			if A.DemonsBite:IsReady(unit) and A.BurningWound:HasLegendaryCraftingPower() and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
 				return A.DemonsBite:Show(icon)
 			end	
 			
@@ -1235,18 +1235,18 @@ A[3] = function(icon, isMulti)
 			if A.LastPlayerCastID == A.VengefulRetreat.ID then
 				if A.Felblade:IsReady(unit) and A.FelRush:GetSpellChargesFrac() < 1.8 then
 					return A.Felblade:Show(icon)
-				elseif A.FelRush:IsReady(unitID, true) then
+				elseif A.FelRush:IsReady(player, true) then
 					return A.FelRush:Show(icon)
 				end
 			end
 		
 			--actions.normal=vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down&time>1
-			if A.VengefulRetreat:IsReady(unitID) and CanCast and UseMovement and A.Momentum:IsTalentLearned() and Unit(player):HasBuffs(A.Prepared.ID, true) == 0 and inCombat and Unit(unit):GetRange() <= 5 and (A.Felblade:GetCooldown() < 1 or A.FelRush:GetSpellChargesFrac() > 1.8) then
+			if A.VengefulRetreat:IsReady(player) and CanCast and UseMovement and A.Momentum:IsTalentLearned() and Unit(player):HasBuffs(A.Prepared.ID, true) == 0 and inCombat and Unit(unit):GetRange() <= 5 and (A.Felblade:GetCooldown() < 1 or A.FelRush:GetSpellChargesFrac() > 1.8) then
 				return A.VengefulRetreat:Show(icon)
 			end	
 			
 			--actions.normal+=/fel_rush,if=(variable.waiting_for_momentum|talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-			if A.FelRush:IsReady(unitID, true) and UseMovement and inCombat and (VarWaitingForMomentum or (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0)) and A.FelRush:GetSpellChargesFrac() > 1.8 then
+			if A.FelRush:IsReady(player, true) and UseMovement and inCombat and (VarWaitingForMomentum or (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0)) and A.FelRush:GetSpellChargesFrac() > 1.8 then
 				return A.FelRush:Show(icon)
 			end
 
@@ -1256,21 +1256,21 @@ A[3] = function(icon, isMulti)
 			end	]]
 			
 			--actions.normal+=/fel_barrage,if=active_enemies>desired_targets|raid_event.adds.in>30
-			if A.FelBarrage:IsReady(unitID, true) and MultiUnits:GetByRange(8) >= 2 then
+			if A.FelBarrage:IsReady(unit, true) and MultiUnits:GetByRange(8) >= 2 then
 				return A.FelBarrage:Show(icon)
 			end			
 			
 			--actions.normal+=/death_sweep,if=variable.blade_dance
-			if A.DeathSweep:IsReady(unitID) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+			if A.DeathSweep:IsReady(player) and VarBladeDance and Unit(unit):GetRange() <= 8 then
 				return A.DeathSweep:Show(icon)
 			end	
 			
 			--actions.normal+=/immolation_aura
-			if A.ImmolationAura:IsReady(unitID, true) then
+			if A.ImmolationAura:IsReady(player, true) then
 				return A.ImmolationAura:Show(icon)
 			end	
 			--actions.normal+=/glaive_tempest,if=!variable.waiting_for_momentum&(active_enemies>desired_targets|raid_event.adds.in>10)
-			if A.GlaiveTempest:IsReady(unit) and Player:IsStayingTime() > 0.5 and (not VarWaitingForMomentum) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
+			if A.GlaiveTempest:IsReady(player) and Player:IsStayingTime() > 0.5 and (not VarWaitingForMomentum) and (A.MultiUnits:GetByRange(5) >= 2 or Unit(unit):IsBoss()) then
 				return A.GlaiveTempest:Show(icon)
 			end	
 			
@@ -1280,14 +1280,14 @@ A[3] = function(icon, isMulti)
 			end	 
 			
 			--actions.normal+=/eye_beam,if=active_enemies>1&(!raid_event.adds.exists|raid_event.adds.up)&!variable.waiting_for_momentum
-            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and MultiUnits:GetByRange(5) >= 2 and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not VarWaitingForMomentum then
+            if A.EyeBeam:IsReady(player, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and MultiUnits:GetByRange(5) >= 2 and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not VarWaitingForMomentum then
                 -- Notification                    
 				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
             end    
 			
 			--actions.normal+=/blade_dance,if=variable.blade_dance
-			if A.BladeDance:IsReady(unitID) and VarBladeDance and Unit(unit):GetRange() <= 8 then
+			if A.BladeDance:IsReady(player) and VarBladeDance and Unit(unit):GetRange() <= 8 then
 				return A.BladeDance:Show(icon)
 			end	
 			
@@ -1306,7 +1306,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.normal+=/eye_beam,if=!talent.blind_fury.enabled&!variable.waiting_for_essence_break&raid_event.adds.in>cooldown
-            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not A.BlindFury:IsTalentLearned() and not VarWaitingForEssenceBreak then
+            if A.EyeBeam:IsReady(player, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) and not A.BlindFury:IsTalentLearned() and not VarWaitingForEssenceBreak then
                 -- Notification                    
 				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
@@ -1314,14 +1314,14 @@ A[3] = function(icon, isMulti)
 			
 			
 			--actions.normal+=/eye_beam,if=talent.blind_fury.enabled&raid_event.adds.in>cooldown
-            if A.EyeBeam:IsReady(unitID, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and A.BlindFury:IsTalentLearned() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) then
+            if A.EyeBeam:IsReady(player, true) and not ShouldDelayEyeBeam() and not Unit(unit):IsDead() and HandleEyeBeam() and A.BlindFury:IsTalentLearned() and Unit(unit):GetRange() <= EyeBeamRange and (Unit(unit):TimeToDie() > EyeBeamTTD or Unit(unit):IsBoss()) then
                 -- Notification                    
 				A.Toaster:SpawnByTimer("TripToast", 0, "Eye Beam!", "Stop moving!", A.EyeBeam.ID)               
                 return A.EyeBeam:Show(icon)
             end			
 			
 			--actions.normal+=/demons_bite,target_if=min:debuff.burning_wound.remains,if=runeforge.burning_wound.equipped&debuff.burning_wound.remains<4
-			if A.DemonsBite:IsReady(unit) and Player:HasLegendaryCraftingPower(A.BurningWound) and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
+			if A.DemonsBite:IsReady(unit) and A.BurningWound:HasLegendaryCraftingPower() and Unit(unit):HasDeBuffs(A.BurningWound.ID, true) < 4 then
 				return A.DemonsBite:Show(icon)
 			end				
 			
@@ -1331,7 +1331,7 @@ A[3] = function(icon, isMulti)
 			end	
 			
 			--actions.normal+=/fel_rush,if=!talent.momentum.enabled&raid_event.movement.in>charges*10&talent.demon_blades.enabled
-			if A.FelRush:IsReady(unitID, true) and UseMovement and inCombat and not A.Momentum:IsTalentLearned() and A.FelRush:GetSpellCharges() > 1 and A.DemonBlades:IsTalentLearned() then
+			if A.FelRush:IsReady(player, true) and UseMovement and inCombat and not A.Momentum:IsTalentLearned() and A.FelRush:GetSpellCharges() > 1 and A.DemonBlades:IsTalentLearned() then
 				return A.FelRush:Show(icon)
 			end
 			
