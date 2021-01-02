@@ -544,7 +544,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.execute+=/warbreaker
-			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() and Unit(unit):GetRange() <= 5 and BurstIsON(unit) and Unit(unit):TimeToDie() >= 8 then
 				return A.Warbreaker:Show(icon)
 			end
 			
@@ -613,7 +613,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.hac+=/warbreaker
-			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() and Unit(unit):GetRange() <= 5 and BurstIsON(unit) and Unit(unit):TimeToDie() >= 8 then
 				return A.Warbreaker:Show(icon)
 			end
 			
@@ -691,7 +691,7 @@ A[3] = function(icon, isMulti)
 			end			
 			
 			-- actions.single_target+=/warbreaker
-			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() then
+			if A.Warbreaker:IsReady(player) and A.Warbreaker:IsTalentLearned() and Unit(unit):GetRange() <= 5 and BurstIsON(unit) and Unit(unit):TimeToDie() >= 8 then
 				return A.Warbreaker:Show(icon)
 			end
 			
