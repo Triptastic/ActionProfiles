@@ -25,7 +25,7 @@ local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v2.0 (31 December 2020)",
+    DateTime = "v1.5.0 (3 January 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
@@ -230,7 +230,37 @@ A.Data.ProfileUI = {
                     M = {},
                 },     
             },
-            { -- SLIDERS 2
+			{ -- SLIDERS 2 
+                { -- Lichborne SLIDER
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "LichborneHP",
+                    DBV = 100, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(49039) .. " (%)",
+                    }, 
+                    M = {},
+                },
+				{ -- LichborneAntiStun
+                    E = "Checkbox", 
+                    DB = "LichborneAntiStun",
+                    DBV = true,
+                    L = { 
+                        enUS = A.GetSpellInfo(49039) .. " AntiStun", 
+                        ruRU = A.GetSpellInfo(49039) .. " AntiStun", 
+                        frFR = A.GetSpellInfo(49039) .. " AntiStun",
+                    }, 
+                    TT = { 
+                        enUS = "Enable this to option to automatically cast " .. A.GetSpellInfo(49039) .. " when you are stunned.", 
+                        ruRU = "Enable this to option to automatically cast " .. A.GetSpellInfo(49039) .. " when you are stunned.",
+                        frFR = "Enable this to option to automatically cast " .. A.GetSpellInfo(49039) .. " when you are stunned.",
+                    }, 
+                    M = {},
+                },     
+            },
+            { -- SLIDERS 3
                 { -- DEATHPACTHP SLIDER
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -256,7 +286,7 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },
-            {
+            { -- SLIDERS 4
                 { -- HEALING POTION 
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -272,16 +302,13 @@ A.Data.ProfileUI = {
                 { -- DeathStrikeHP
                     E = "Slider",                                                     
                     MIN = -1, 
-                    MAX = 100,                            
+                    MAX = 99,                            
                     DB = "DeathStrikeHP",
-                    DBV = 40, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
+                    DBV = 30, -- Set healthpercentage @30% life. 
+                    ONOFF = false,
                     L = { 
                         ANY = "Death Strike HP (%)",
-                    }, 
-                    TT = { 
-                        ANY = "Will use Death Strike at this percent HP."
-                    },                    
+                    },                  
                     M = {},
                 },
             },

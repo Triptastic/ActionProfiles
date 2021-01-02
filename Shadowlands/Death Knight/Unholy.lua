@@ -217,6 +217,7 @@ Action[ACTION_CONST_DEATHKNIGHT_UNHOLY] = {
 	GCD                     	 = Action.Create({ Type = "Spell", ID = 61304, Hidden = true     }),   
 }
 
+
 -- To create essences use next code:
 A:CreateEssencesFor(ACTION_CONST_DEATHKNIGHT_UNHOLY)  -- where PLAYERSPEC is Constance (example: ACTION_CONST_MONK_BM)
 local A = setmetatable(Action[ACTION_CONST_DEATHKNIGHT_UNHOLY], { __index = Action })
@@ -406,6 +407,45 @@ local function SelfDefensives(unit)
     then 
         return A.IceboundFortitude
     end  
+	
+	-- Lichborne
+	local LichborneAntiStun = GetToggle(2, "LichborneAntiStun")
+    local Lichborne = GetToggle(2, "LichborneHP")
+    if     Lichborne >= 0 and A.Lichborne:IsReady(player) and 
+    (
+        (   -- Auto 
+            Lichborne >= 100 and 
+            (
+                -- HP lose per sec >= 20
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 30 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.30 or 
+                -- TTD 
+                Unit(player):TimeToDieX(25) < 2 or
+                -- Player stunned
+                LoC:Get("STUN") > 2 and LichborneAntiStun or  				
+                (
+                    A.IsInPvP and 
+                    (
+                        Unit(player):UseDeff() or 
+                        (
+                            Unit(player, 5):HasFlags() and 
+                            Unit(player):GetRealTimeDMG() > 0 and 
+                            Unit(player):IsFocused() 
+                        )
+                    )
+                )
+            ) and 
+            Unit(player):HasBuffs("DeffBuffs", true) == 0
+        ) or 
+        (    -- Custom
+            Lichborne < 100 and 
+            Unit(player):HealthPercent() <= Lichborne
+        )
+    ) 
+    then 
+        return A.Lichborne
+    end  
+	
     
     -- Emergency AntiMagicShell
     local AntiMagicShell = GetToggle(2, "AntiMagicShellHP")
@@ -559,6 +599,7 @@ A[3] = function(icon, isMulti)
     local MissingFesteringWound = MultiUnits:GetByRangeMissedDoTs(10, 5, A.FesteringWound.ID)
     local ActiveFesteringWound = MultiUnits:GetByRangeAppliedDoTs(6, 5, A.FesteringWound.ID)
 	local MouseoverTarget = UnitName("mouseover")
+	
     
     --actions+=/variable,name=pooling_for_gargoyle,value=cooldown.summon_gargoyle.remains<5&talent.summon_gargoyle.enabled
     VarPoolingForGargoyle = A.SummonGargoyle:GetCooldown() < 8 and A.SummonGargoyle:IsTalentLearned() and BurstIsON("target")
@@ -567,22 +608,21 @@ A[3] = function(icon, isMulti)
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
      local function EnemyRotation(unit)
-        
+
+
 		--LegoSwap
-		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) then
-			if IsEquippedItem(171412) and A.DarkTransformation:GetCooldown() == 0 then 
+		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) and not UnitIsDead("target") then
+			if A.DeadliestCoil:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 then 
 				return A.QuakingPalm:Show(icon)
-				else if IsEquippedItem(171416) and A.DarkTransformation:GetCooldown() == 0 then
+				else if A.FrenziedMonstrosity:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 and Unit("pet"):HasDeBuffs(A.ControlUndead.ID, true) == 0 then
 					return A.DarkTransformation:Show(icon) 
-					else if IsEquippedItem(171416) and A.DarkTransformation:GetCooldown() > 0 then
+					else if A.FrenziedMonstrosity:HasLegendaryCraftingPower() and A.DarkTransformation:GetSpellTimeSinceLastCast() < 60 then
 						return A.DarkFlight:Show(icon)
 						
 					end
 				end
 			end
 		end
-		
-		
 		
         --Force Timmy to claw
 		--if A.PetClaw:IsReady("pettarget") and UnitExists("pet") and UnitPower("pet") >= 40 and Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 and GetSpellCooldown(47468) <= 0 and IsSpellInRange(77575, "pettarget") == 1 then
@@ -621,14 +661,14 @@ A[3] = function(icon, isMulti)
 		if A.ChainsofIce:IsReady("mouseover") and Action.GetToggle(2, "SlowSpiteful") and (string.find(UnitGUID("mouseover"), 174773)) and Unit("mouseover"):GetRange() < 30 and UnitName("mouseovertarget") == UnitName(player) then
 		return A.ChainsofIce:Show(icon)
 		end
-        
+		        
 		--Soul Reaper scan for <35 or TimeTo35 < 5  @mouseover     
         if A.SoulReaper:IsReady() and Action.GetToggle(2, "mouseover") and Action.GetToggle(2, "SoulReaperMouseover") and Unit("mouseover"):GetRange() < 5 and Unit("target"):TimeToDieX(35) > 5 and InMelee("mouseover") and not Unit("mouseover"):InLOS() and Unit("mouseover"):TimeToDieX(35) < 5 and Unit("mouseover"):TimeToDie() > 5 and Unit("mouseover"):HasDeBuffs(A.SoulReaper.ID, true) == 0 then 
             return A.SoulReaper:Show(icon)
         end
 		
         -- Festering Strike auto target (credit to Taste for this)
-        if AutoSwitchFesteringStrike and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
+        if AutoSwitchFesteringStrike and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and A.Apocalypse:GetCooldown() > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
         then
             local FesteringStrike_Nameplates = MultiUnits:GetActiveUnitPlates()
             if FesteringStrike_Nameplates then  
@@ -641,9 +681,10 @@ A[3] = function(icon, isMulti)
         end
 		
 		-- Return to Focus
-		if UnitGUID("target") ~= UnitGUID("focus") and UnitExists("focus") and UnitHealth("focus") > 0 and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 then
+		if UnitGUID("target") ~= UnitGUID("focus") and UnitExists("focus") and UnitHealth("focus") > 0 and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and IsItemInRange(37727, "focus") then
 			return A.RocketJump:Show(icon)
-		end 
+		end
+		
 		
 		--Festering Switch with CD off
 		--if AutoSwitchFesteringStrike and not A.BurstIsON(unit) and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
@@ -718,12 +759,12 @@ A[3] = function(icon, isMulti)
         end  
 		
 		--actions+=/outbreak,if=runeforge.superstrain&(dot.frost_fever.refreshable|dot.blood_plague.refreshable)
-		if A.Outbreak:IsReady(unit) and Player:HasLegendaryCraftingPower(A.Superstrain) and (FrostFeverRefreshable or BloodPlagueRefreshable) then
+		if A.Outbreak:IsReady(unit) and A.Superstrain:HasLegendaryCraftingPower() and (FrostFeverRefreshable or BloodPlagueRefreshable) then
 			return A.Outbreak:Show(icon)
 		end
 		
 		-- If Burst is off
-		if A.Outbreak:IsReady(unit) and not A.BurstIsON(unit) and Player:HasLegendaryCraftingPower(A.Superstrain) and (FrostFeverRefreshable or BloodPlagueRefreshable) then
+		if A.Outbreak:IsReady(unit) and not A.BurstIsON(unit) and A.Superstrain:HasLegendaryCraftingPower() and (FrostFeverRefreshable or BloodPlagueRefreshable) then
 			return A.Outbreak:Show(icon)
 		end
 		
@@ -756,20 +797,33 @@ A[3] = function(icon, isMulti)
             end
             			
 			--actions.aoe_burst+=/epidemic,if=runic_power.deficit<(10+death_knight.fwounded_targets*3)&death_knight.fwounded_targets<6&!variable.pooling_for_gargoyle|buff.swarming_mist.up
-            if A.Epidemic:IsReady(player) and RunicPowerDeficit < (10 + (ActiveFesteringWound * 3)) and ActiveFesteringWound < 6 and not VarPoolingForGargoyle or A.SwarmingMist:GetSpellTimeSinceLastCast() < 8 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and (((A.DeadliestCoil:HasLegendaryCraftingPower()) and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and RunicPowerDeficit < (10 + (ActiveFesteringWound * 3)) and ActiveFesteringWound < 6 and not VarPoolingForGargoyle or A.SwarmingMist:GetSpellTimeSinceLastCast() < 8 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end    
+            end 
+
+			--DeathCoil if Deadliest Coil lego
+			if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3))  and RunicPowerDeficit < (10 + (ActiveFesteringWound * 3)) and ActiveFesteringWound < 6 and not VarPoolingForGargoyle or A.SwarmingMist:GetSpellTimeSinceLastCast() < 8 then
+				return A.DeathCoil:Show(icon)
+			end
             
             --actions.aoe_burst+=/epidemic,if=runic_power.deficit<25&death_knight.fwounded_targets>5&!variable.pooling_for_gargoyle
-            if A.Epidemic:IsReady(player) and RunicPowerDeficit < 25 and ActiveFesteringWound > 5 and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and RunicPowerDeficit < 25 and ActiveFesteringWound > 5 and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end    
-            
+            end
+
+			if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and RunicPowerDeficit < 25 and ActiveFesteringWound > 5 and not VarPoolingForGargoyle then
+				return A.DeathCoil:Show(icon)
+			end
+
             --actions.aoe_burst+=/epidemic,if=!death_knight.fwounded_targets&!variable.pooling_for_gargoyle|fight_remains<5|raid_event.adds.exists&raid_event.adds.remains<5
-            if A.Epidemic:IsReady(unit) and ActiveFesteringWound > 1 and (not VarPoolingForGargoyle or Player:AreaTTD(10) < 5 or MultiUnits:GetByRange(10, AoETargets) < 5) and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then 
+            if A.Epidemic:IsReady(unit) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and ActiveFesteringWound > 1 and (not VarPoolingForGargoyle or Player:AreaTTD(10) < 5 or MultiUnits:GetByRange(10, 5) < 5) and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then 
                return A.Epidemic:Show(icon)
             end    
-            
+			
+            if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and ActiveFesteringWound > 1 and (not VarPoolingForGargoyle or Player:AreaTTD(10) < 5 or MultiUnits:GetByRange(10, 5) < 5) then 
+				return A.DeathCoil:Show(icon)
+			end
+     
             --actions.aoe_burst+=/wound_spender
             if A.ScourgeStrike:IsReady(unit) then
                 return A.ScourgeStrike:Show(icon)
@@ -780,14 +834,23 @@ A[3] = function(icon, isMulti)
             end
             
 			--actions.generic_aoe=epidemic,if=buff.sudden_doom.react
-            if A.Epidemic:IsReady(player) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end  
+            end 
+
+            if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 then
+				return A.DeathCoil:Show(icon)
+			end
 			
             --actions.aoe_burst+=/epidemic,if=!variable.pooling_for_gargoyle
-            if A.Epidemic:IsReady(player) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
             end       
+			
+			if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and not VarPoolingForGargoyle then
+				return A.DeathCoil:Show(icon)
+			end
+
             
         end 
         
@@ -825,15 +888,19 @@ A[3] = function(icon, isMulti)
             end   
 
 			--actions.aoe_setup+=/death_coil,if=buff.dark_transformation.up&runeforge.deadliest_coil&active_enemies<=3
-			if A.DeathCoil:IsReady(unit) and not Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 and Player:HasLegendaryCraftingPower(A.DeadliestCoil) and MultiUnits:GetByRange(10, AoETargets) <= 3 then
+			if A.DeathCoil:IsReady(unit) and Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 4) <= 3 then
 				return A.DeathCoil:Show(icon)
 			end
 			
 			--actions.aoe_setup+=/epidemic,if=!variable.pooling_for_gargoyle 
-			if A.Epidemic:IsReady(player) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+			if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
 			end
-            
+			
+			if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and not VarPoolingForGargoyle then
+				return A.DeathCoil:Show(icon)
+			end
+
             --actions.aoe_setup+=/festering_strike,target_if=max:debuff.festering_wound.stack,if=debuff.festering_wound.stack<=3&cooldown.apocalypse.remains<3
             if A.FesteringStrike:IsReady(unit) and A.BurstIsON and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) <= 3 and A.Apocalypse:GetCooldown() < 3 then
                 return A.FesteringStrike:Show(icon)
@@ -849,14 +916,23 @@ A[3] = function(icon, isMulti)
             end    
 				
 			--actions.generic_aoe=epidemic,if=buff.sudden_doom.react
-            if A.Epidemic:IsReady(player) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end  
+            end
+			
+            if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 then
+				return A.DeathCoil:Show(icon)
+			end
 			
             --actions.aoe_burst+=/epidemic,if=!variable.pooling_for_gargoyle
-            if A.Epidemic:IsReady(player) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
             end  
+			            
+			if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and not VarPoolingForGargoyle then
+				return A.DeathCoil:Show(icon)
+			end
+
 
 			--festering if finished spread or spread off
 			if A.ScourgeStrike:IsReady(unit) and (not AutoSwitchFesteringStrike or MissingFesteringWound == 0) then
@@ -935,7 +1011,7 @@ A[3] = function(icon, isMulti)
 			end
 		  
 			--actions.covenants+=/swarming_mist,if=cooldown.apocalypse.remains&(active_enemies>=2&active_enemies<=5&runic_power.deficit>10+(active_enemies*6)|active_enemies>5&runic_power.deficit>40)
-			if A.SwarmingMist:IsReady() and A.Apocalypse:GetCooldown() > 0 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets and MultiUnits:GetByRange(10, AoETargets) <= 5 and RunicPowerDeficit > (10 + (6 * MultiUnits:GetByRange(10, AoETargets))) or MultiUnits:GetByRange(10, AoETargets) > 5 and RunicPowerDeficit>40) then
+			if A.SwarmingMist:IsReady() and A.Apocalypse:GetCooldown() > 0 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets and MultiUnits:GetByRange(10, 6) <= 5 and RunicPowerDeficit > (10 + (6 * MultiUnits:GetByRange(10, 10))) or MultiUnits:GetByRange(10, 6) > 5 and RunicPowerDeficit>40) then
 				return A.SwarmingMist:Show(icon)
 			end	   
 			
@@ -960,7 +1036,7 @@ A[3] = function(icon, isMulti)
 			end
 		
 			--actions.covenants+=/shackle_the_unworthy,if=active_enemies>=2&(death_and_decay.ticking|raid_event.adds.remains<=14)
-			if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (DeathandDecayTicking or MultiUnits:GetByRange(10, AoETargets) <= 14) then
+			if A.ShackletheUnworthy:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and (DeathandDecayTicking or MultiUnits:GetByRange(10, 15) <= 14) then
 				return A.ShackletheUnworthy:Show(icon)
 			end
 			
@@ -981,12 +1057,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.cooldowns+=/unholy_blight,if=variable.st_planning&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)&(!runeforge.deadliest_coil|!talent.army_of_the_damned|conduit.convocation_of_the_dead.rank<5)
-			if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and (not Player:HasLegendaryCraftingPower(A.DeadliestCoil) or not A.ArmyoftheDamned:IsTalentLearned() or not A.ConvocationoftheDead:IsSoulbindLearned()) then
+			if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and (not A.DeadliestCoil:HasLegendaryCraftingPower() or not A.ArmyoftheDamned:IsTalentLearned() or not A.ConvocationoftheDead:IsSoulbindLearned()) then
 				return A.UnholyBlight:Show(icon)
 			end
 			
             --actions.cooldowns+=/unholy_blight,if=variable.st_planning&runeforge.deadliest_coil&talent.army_of_the_damned&conduit.convocation_of_the_dead.rank>=5&cooldown.apocalypse.remains<3&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)
-            if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Player:HasLegendaryCraftingPower(A.DeadliestCoil) and A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned() and A.Apocalypse:GetCooldown() < 3 and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) then
+            if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.DeadliestCoil:HasLegendaryCraftingPower() and A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned() and A.Apocalypse:GetCooldown() < 3 and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) then
                 return A.UnholyBlight:Show(icon)
             end     
 		
@@ -996,17 +1072,17 @@ A[3] = function(icon, isMulti)
 			end
             
             --actions.cooldowns+=/dark_transformation,if=variable.st_planning&(dot.unholy_blight_dot.remains|!talent.unholy_blight)
-            if A.DarkTransformation:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0 or not A.UnholyBlight:IsTalentLearned()) then
+            if A.DarkTransformation:IsReady(player) and Unit("pet"):HasDeBuffs(A.ControlUndead.ID, true) == 0 and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0 or not A.UnholyBlight:IsTalentLearned()) then
                 return A.DarkTransformation:Show(icon)
             end    
             
             --actions.cooldowns+=/dark_transformation,if=active_enemies>=2|fight_remains<21
-            if A.DarkTransformation:IsReady(player) and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets or Player:AreaTTD(10) < 5) then
+            if A.DarkTransformation:IsReady(player) and Unit("pet"):HasDeBuffs(A.ControlUndead.ID, true) == 0 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets or Player:AreaTTD(10) < 5) then
                 return A.DarkTransformation:Show(icon)
             end    
 			
             --actions.cooldowns+=/apocalypse,if=active_enemies=1&debuff.festering_wound.stack>=4&talent.unholy_blight&talent.army_of_the_damned&runeforge.deadliest_coil&conduit.convocation_of_the_dead.rank>=5&dot.unholy_blight_dot.remains
-            if A.Apocalypse:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) >= 4 and A.UnholyBlight:IsTalentLearned() and A.ArmyoftheDamned:IsTalentLearned() and Player:HasLegendaryCraftingPower(A.DeadliestCoil) and A.ConvocationoftheDead:IsSoulbindLearned() and Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0 then
+            if A.Apocalypse:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) >= 4 and A.UnholyBlight:IsTalentLearned() and A.ArmyoftheDamned:IsTalentLearned() and A.DeadliestCoil:HasLegendaryCraftingPower() and A.ConvocationoftheDead:IsSoulbindLearned() and Unit("target"):HasDeBuffs(A.UnholyBlightDebuff.ID, true) > 0 then
                 return A.Apocalypse:Show(icon)
             end    
             
@@ -1016,7 +1092,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.cooldowns+=/apocalypse,if=active_enemies=1&debuff.festering_wound.stack>=4&(!talent.unholy_blight|talent.army_of_the_damned&(!runeforge.deadliest_coil|conduit.convocation_of_the_dead.rank<5)|!talent.army_of_the_damned&conduit.convocation_of_the_dead.rank>=5|fight_remains<16)
-			if A.Apocalypse:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) >= 4 and (not A.UnholyBlight:IsTalentLearned() or (A.ArmyoftheDamned:IsTalentLearned() and ((not Player:HasLegendaryCraftingPower(A.DeadliestCoil) or not A.ConvocationoftheDead:IsSoulbindLearned())) or (not A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned())) or Player:AreaTTD(10) < 16) then
+			if A.Apocalypse:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) >= 4 and (not A.UnholyBlight:IsTalentLearned() or (A.ArmyoftheDamned:IsTalentLearned() and ((not A.DeadliestCoil:HasLegendaryCraftingPower() or not A.ConvocationoftheDead:IsSoulbindLearned())) or (not A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned())) or Player:AreaTTD(10) < 16) then
 				return A.Apocalypse:Show(icon)
 			end
 			
@@ -1080,11 +1156,11 @@ A[3] = function(icon, isMulti)
             end    
             
             --actions.generic+=/any_dnd,if=cooldown.apocalypse.remains&(talent.defile.enabled|covenant.night_fae|runeforge.phearomones)
-            if A.Defile:IsReady(player) and A.Apocalypse:GetCooldown() > 0 and (A.Defile:IsTalentLearned() or Player:HasLegendaryCraftingPower(A.Phearomones)) then
+            if A.Defile:IsReady(player) and A.Apocalypse:GetCooldown() > 0 and (A.Defile:IsTalentLearned() or A.Phearomones:HasLegendaryCraftingPower()) then
                 return A.Defile:Show(icon)
             end    
 			
-			if A.DeathsDue:IsReady(player) and A.Apocalypse:GetCooldown() > 0 and (Player:HasLegendaryCraftingPower(A.Phearomones)) then
+			if A.DeathsDue:IsReady(player) and A.Apocalypse:GetCooldown() > 0 and (A.Phearomones:HasLegendaryCraftingPower()) then
                 return A.DeathsDue:Show(icon)
             end  
             
@@ -1168,14 +1244,22 @@ A[3] = function(icon, isMulti)
             end 
 			
             --actions.generic_aoe=epidemic,if=buff.sudden_doom.react
-            if A.Epidemic:IsReady(player) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end    
+            end  
+
+            if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and Unit(player):HasBuffs(A.SuddenDoomBuff.ID, true) > 0 then
+				return A.DeathCoil:Show(icon)
+			end
             
             --actions.generic_aoe+=/epidemic,if=!variable.pooling_for_gargoyle
-            if A.Epidemic:IsReady(player) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
+            if A.Epidemic:IsReady(player) and ((A.DeadliestCoil:HasLegendaryCraftingPower() and MultiUnits:GetByRange(10, 3) > 2) or (not A.DeadliestCoil:HasLegendaryCraftingPower())) and (((Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) == 0 or MultiUnits:GetByRange(10, 4) > 3) and A.DeadliestCoil:HasLegendaryCraftingPower()) or not A.DeadliestCoil:HasLegendaryCraftingPower()) and not VarPoolingForGargoyle and Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) > 0 then
                 return A.Epidemic:Show(icon)
-            end       
+            end 
+
+            if A.DeathCoil:IsReady(unit) and A.DeadliestCoil:HasLegendaryCraftingPower() and (MultiUnits:GetByRange(10, 3) <= 2 or (Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0 and MultiUnits:GetByRange(10, 4) <= 3)) and not VarPoolingForGargoyle then
+				return A.DeathCoil:Show(icon)
+			end
 			
             --actions.generic_aoe+=/wound_spender,target_if=max:debuff.festering_wound.stack,if=(cooldown.apocalypse.remains>5&debuff.festering_wound.up|debuff.festering_wound.stack>4)&(fight_remains<cooldown.death_and_decay.remains+10|fight_remains>cooldown.apocalypse.remains)
             if A.ScourgeStrike:IsReady(unit) and ((A.Apocalypse:GetCooldown() > 5 and Unit("target"):HasDeBuffs(A.FesteringWound.ID, true) > 0) or Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) > 4) and (Player:AreaTTD(10) < (A.DeathandDecay:GetCooldown() + 10) or (Player:AreaTTD(8) > A.Apocalypse:GetCooldown())) then 
