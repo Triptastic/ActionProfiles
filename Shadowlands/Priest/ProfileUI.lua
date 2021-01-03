@@ -30,7 +30,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI                                     = {    
-    DateTime = "v1.6.0 (17 Dec 2020)",
+    DateTime = "v1.7.0 (4 January 2021)",
     [2] = {        
         [ACTION_CONST_PRIEST_SHADOW] = {             
             { -- GENERAL HEADER
@@ -146,29 +146,17 @@ A.Data.ProfileUI                                     = {
 			},
 			{
                 {
-                    E = "Checkbox", 
-                    DB = "ShadowflamePrism",
-                    DBV = false,
+                    E = "Slider",                                                     
+                    MIN = 0, 
+                    MAX = 100,                            
+                    DB = "MindgamesHP",
+                    DBV = 100, -- Set healthpercentage @60% life. 
+                    ONOFF = false,
                     L = { 
-                        ANY = "Shadowflame Prism",
-                    }, 
-                    TT = { 
-                        ANY = "Check this box if you have the Shadowflame Prism legendary.",
+                        ANY = "Mindgames HP (%)",
                     }, 
                     M = {},
-                },	
-                {
-                    E = "Checkbox", 
-                    DB = "Painbreaker",
-                    DBV = false,
-                    L = { 
-                        ANY = "Painbreaker",
-                    }, 
-                    TT = { 
-                        ANY = "Check this box if you have the Painbreaker legendary.",
-                    }, 
-                    M = {},
-                },				
+                },			
 			},
             { -- LAYOUT SPACE
                 

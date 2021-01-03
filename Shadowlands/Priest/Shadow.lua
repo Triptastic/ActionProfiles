@@ -172,6 +172,9 @@ Action[ACTION_CONST_PRIEST_SHADOW] = {
 	MeasuredContemplation			= Action.Create({ Type = "Spell", ID = 341804	}),	
 	TwinsoftheSunPriestess			= Action.Create({ Type = "Spell", ID = 336897	}),
 	VaultofHeavens					= Action.Create({ Type = "Spell", ID = 336470	}),
+	-- Shadow Legendaries
+	ShadowflamePrism				= Action.Create({ Type = "Spell", ID = 336143	}),
+	PainbreakerPsalm				= Action.Create({ Type = "Spell", ID = 336165	}),	
 
 	--Anima Powers - to add later...
 
@@ -421,9 +424,8 @@ A[3] = function(icon, isMulti)
 	local UseRacial = A.GetToggle(1, "Racial")
 	local CombatMeditation = A.GetToggle(2, "CombatMeditation")
 	local UseCovenant = A.GetToggle(1, "Covenant")
-	local ShadowflamePrism = A.GetToggle(2, "ShadowflamePrism")	
-	local Painbreaker = A.GetToggle(2, "Painbreaker")
 	local PWSAlways = A.GetToggle(2, "PWSAlways")
+	local MindgamesHP = A.GetToggle(2, "MindgamesHP")
 	
 	--Spell Fixes
     if Temp.VampiricTouchDelay == 0 and Player:IsCasting() == A.VampiricTouch:Info() then
@@ -653,7 +655,7 @@ A[3] = function(icon, isMulti)
 			
 			--# Use Shadow Word: Death if the target is about to die or you have Shadowflame Prism equipped with Mindbender or Shadowfiend active.
 			--actions.main+=/shadow_word_death,target_if=(target.health.pct<20&spell_targets.mind_sear<4)|(pet.fiend.active&runeforge.shadowflame_prism.equipped)
-			if A.ShadowWordDeath:IsReady(unit, nil, nil, true) and CanCast and ((Unit(unit):HealthPercent() < 20 and MultiUnits:GetActiveEnemies() < 4) or (FiendActive and ShadowflamePrism)) then
+			if A.ShadowWordDeath:IsReady(unit, nil, nil, true) and CanCast and ((Unit(unit):HealthPercent() < 20 and MultiUnits:GetActiveEnemies() < 4) or (FiendActive and A.ShadowflamePrism:HasLegendaryCraftingPower())) then
 				return A.ShadowWordDeath:Show(icon)
 			end
 			
@@ -680,7 +682,7 @@ A[3] = function(icon, isMulti)
 			
 			--# Use SW:D with Painbreaker Psalm unless the target will be below 20% before the cooldown comes back
 			--actions.main+=/shadow_word_death,if=runeforge.painbreaker_psalm.equipped&variable.dots_up&target.time_to_pct_20>(cooldown.shadow_word_death.duration+gcd)
-			if A.ShadowWordDeath:IsReady(unit) and Painbreaker and VarDotsUp and Unit(unit):TimeToDieX(20) > 17 then
+			if A.ShadowWordDeath:IsReady(unit) and A.PainbreakerPsalm:HasLegendaryCraftingPower() and VarDotsUp and Unit(unit):TimeToDieX(20) > 17 then
 				return A.ShadowWordDeath:Show(icon)
 			end	
 			
@@ -797,7 +799,7 @@ A[3] = function(icon, isMulti)
 			return A.MindBlast:Show(icon)
 		end
 		--actions.cds+=/mindgames,target_if=insanity<90&(variable.all_dots_up|buff.voidform.up)&(!talent.hungering_void.enabled|debuff.hungering_void.up|!buff.voidform.up)&(!talent.searing_nightmare.enabled|spell_targets.mind_sear<5)
-		if A.Mindgames:IsReady(unit) and inCombat and CanCast and (not isMoving or StMActive) and UseCovenant and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) then
+		if A.Mindgames:IsReady(unit) and inCombat and CanCast and (not isMoving or StMActive) and UseCovenant and Player:Insanity() < 90 and (VarAllDotsUp or VoidFormActive) and (not A.HungeringVoid:IsTalentLearned() or Unit(unit):HasDeBuffs(A.HungeringVoid.ID, true) > 0 or not VoidFormActive) and (not A.SearingNightmare:IsTalentLearned() or MultiUnits:GetActiveEnemies() < 5) and Unit(player):HealthPercent() <= MindgamesHP then
 			return A.Mindgames:Show(icon)
 		end	
 
