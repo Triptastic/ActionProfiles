@@ -25,7 +25,7 @@ local select, setmetatable							= select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.50 (31 Dec 2020)",
+    DateTime = "v1.6.0 (3 January 2021)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_PALADIN_RETRIBUTION] = {          
@@ -1107,25 +1107,65 @@ A.Data.ProfileUI = {
                 },
 				{
                     E = "Slider",                                                     
-                    MIN = 80, 
-                    MAX = 100,                            
+                    MIN = 1000, 
+                    MAX = 6000,                            
                     DB = "HolyShockHP",
-                    DBV = 93,
+                    DBV = 2700,
                     ONOFF = false,
                     L = { 
-                        ANY = A.GetSpellInfo(20473) .. " (%)",
+                        ANY = A.GetSpellInfo(20473) .. " (HPDeficit)",
                     }, 
                     M = {},
                 },
+				},
+				{
                 {
                     E = "Slider",                                                     
-                    MIN = 70, 
-                    MAX = 100,                            
+                    MIN = 3000, 
+                    MAX = 9000,                            
                     DB = "WordofGloryHP",
-                    DBV = 86,
+                    DBV = 5500,
                     ONOFF = false,
                     L = { 
-                        ANY = A.GetSpellInfo(85673) .. " (%)",
+                        ANY = A.GetSpellInfo(85673) .. " (HPDeficit)",
+                    }, 
+                    M = {},
+                },
+				{
+                    E = "Slider",                                                     
+                    MIN = 1000, 
+                    MAX = 6000,                            
+                    DB = "BestowFaithHP",
+                    DBV = 3600,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(223306) .. " (HPDeficit)",
+                    }, 
+                    M = {},
+                },
+				{
+                    E = "Slider",                                                     
+                    MIN = 1000, 
+                    MAX = 6000,                            
+                    DB = "HolyPrismHP",
+                    DBV = 2400,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(114165) .. " (HPDeficit)",
+                    }, 
+                    M = {},
+                },
+				},
+				{
+				{
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "LightofMartyrHP",
+                    DBV = 70,
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(183998) .. " (%)",
                     }, 
                     M = {},
                 },
@@ -1154,8 +1194,8 @@ A.Data.ProfileUI = {
                     E = "Dropdown",                                                         
                     OT = {   
                         { text = "Tanking Units", value = "Tanking Units" },                    
-                        { text = "Mostly Inc. Damage", value = "Mostly Inc. Damage" },
-                        { text = "HPS < Inc. Damage", value = "HPS < Inc. Damage" },
+                        { text = "Beacon of Faith + Saved By the Light", value = "Beacon of Faith + Saved By the Light" },
+                        { text = "Self", value = "Self" },
                     },
                     DB = "BeaconWorkMode",
                     DBV = "Tanking Units",
