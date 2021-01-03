@@ -25,7 +25,7 @@ local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.1.0 (26 November 2020)",
+    DateTime = "v2.0 (31 December 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
@@ -79,6 +79,18 @@ A.Data.ProfileUI = {
                         Print = '@string' or nil,
                     },
                 },
+                { -- Soul Reaper MOUSEOVER
+                    E = "Checkbox", 
+                    DB = "SoulReaperMouseover",
+                    DBV = true,
+                    L = { 
+                        ANY = "Soul Reaper @mouseover", 
+                    }, 
+                    TT = { 
+                        ANY = "/cast [@mouseover, harm]Soul Reaper; Soul Reaper"
+                    }, 
+                    M = {},
+                },
             },
             {
                 { -- DEATHGRIP INTERRUPT
@@ -104,8 +116,34 @@ A.Data.ProfileUI = {
                         ANY = "Use Asphyxiate to Interrupt if Mind Freeze is on cooldown."
                     },
                     M = {},
-                },                
+                },  
+                { -- Slow Spiteful @ MouseOver
+                    E = "Checkbox", 
+                    DB = "SlowSpiteful",
+                    DBV = true,
+                    L = { 
+                        ANY = "Slow Spiteful with Chains @mouseover"
+                    }, 
+                    TT = { 
+                        ANY = "/cast [@mouseover, harm]Chains of Ice; Chains of Ice"
+                    },
+                    M = {},
+                },                    
             },    
+            {
+                { -- Legendary Swap Opening
+                    E = "Checkbox", 
+                    DB = "LegoSwap",
+                    DBV = true,
+                    L = { 
+                        ANY = "Legendary Swap Opening"
+                    }, 
+                    TT = { 
+                        ANY = "Must have BOTH Deadliest Coil and Frenzied Monstrocity"
+                    },
+                    M = {},
+                },    
+            },
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
