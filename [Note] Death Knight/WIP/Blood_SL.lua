@@ -772,7 +772,7 @@ A[3] = function(icon, isMulti)
             end
 			
 			-- RaiseDead,BurstON,Use on CD
-            if A.RaiseDead:IsReady(unit) and A.BurstIsON(unit) then
+            if A.RaiseDead:IsReadyByPassCastGCD(player) and A.BurstIsON(unit) then
                 return A.RaiseDead:Show(icon)
             end
 			
@@ -867,7 +867,7 @@ A[3] = function(icon, isMulti)
             end
             
             -- SwarmingMistVenthyr
-            if A.SwarmingMist:IsReady(Unit) then
+            if A.SwarmingMist:IsReady(Unit) and Unit(player):HasBuffs(A.SwarmingMist.ID,true) == 0 then
                 return A.SwarmingMist:Show(icon)
             end
             
