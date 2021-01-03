@@ -91,7 +91,7 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     IceboundFortitude                      = Action.Create({ Type = "Spell", ID = 48792 }),
     AntiMagicShell                         = Action.Create({ Type = "Spell", ID = 48707 }),
     DancingRuneWeapon                      = Action.Create({ Type = "Spell", ID = 49028 }),
-    VampiricBlood                          = Action.Create({ Type = "Spell", ID = 55233 }),
+    VampiricBlood                          = Action.Create({ Type = "Spell", ID = 317133 }),
     DeathPact                              = Action.Create({ Type = "Spell", ID = 48743 }),    -- Talent
     GorefiendsGrasp                        = Action.Create({ Type = "Spell", ID = 108199 }),    -- Mass Grip
     MarkofBlood                            = Action.Create({ Type = "Spell", ID = 206940 }),
