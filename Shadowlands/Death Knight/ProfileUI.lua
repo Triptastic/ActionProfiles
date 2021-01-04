@@ -25,7 +25,7 @@ local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v2.0 (4 January 2020)",
+    DateTime = "v2.1 (5 January 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
@@ -39,6 +39,26 @@ A.Data.ProfileUI = {
                     },
                 },
             },            
+            {--Army Usage
+                {
+                    E = "Dropdown",
+                    OT = {
+                        { text = "Boss / Players",        value = "BOSS" },
+                        { text = "AoE",                value = "AoE" },
+                        { text = "Both",            value = "BOTH" },
+                        { text = "Everyone",        value = "EVERYONE" },
+                    },
+                    DB = "ArmyUsage",
+                    DBV = "BOSS",
+                    L = { 
+                        ANY = A.GetSpellInfo(42650) .. " usage",
+                    }, 
+                    TT = { 
+                        ANY = "Target for usage Army of the Dead.", 
+                    }, 
+                    M = {},
+                },
+            },
             { -- GENERAL OPTIONS
                 { -- MOUSEOVER CHECKBOX
                     E = "Checkbox", 
@@ -79,7 +99,7 @@ A.Data.ProfileUI = {
                         Print = '@string' or nil,
                     },
                 },
-				{ -- Soul Reaper MOUSEOVER
+                { -- Soul Reaper MOUSEOVER
                     E = "Checkbox", 
                     DB = "SoulReaperMouseover",
                     DBV = true,
@@ -117,7 +137,7 @@ A.Data.ProfileUI = {
                     },
                     M = {},
                 },  
-				{ -- Slow Spiteful @ MouseOver
+                { -- Slow Spiteful @ MouseOver
                     E = "Checkbox", 
                     DB = "SlowSpiteful",
                     DBV = true,
@@ -128,10 +148,10 @@ A.Data.ProfileUI = {
                         ANY = "/cast [@mouseover, harm]Chains of Ice; Chains of Ice"
                     },
                     M = {},
-                },					
+                },                    
             },    
-			{
-				{ -- Legendary Swap Opening
+            {
+                { -- Legendary Swap Opening
                     E = "Checkbox", 
                     DB = "LegoSwap",
                     DBV = true,
@@ -142,8 +162,20 @@ A.Data.ProfileUI = {
                         ANY = "Must have BOTH Deadliest Coil and Frenzied Monstrocity"
                     },
                     M = {},
-                },	
-			},
+                },
+                { -- FocusTunnel
+                    E = "Checkbox", 
+                    DB = "FocusTunnel",
+                    DBV = true,
+                    L = { 
+                        ANY = "Primary target /focus"
+                    }, 
+                    TT = { 
+                        ANY = "/target focus bind to Rocket Jump"
+                    },
+                    M = {},
+                },                    
+            },
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
@@ -186,7 +218,21 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },                
-            },                        
+            },  
+            { -- Row 2
+                { -- DnD Slider
+                    E = "Slider",                                                     
+                    MIN = 1, 
+                    MAX = 10,                            
+                    DB = "DnDSlider",
+                    DBV = 2, 
+                    ONOFF = false,
+                    L = { 
+                        ANY = "D&D Min Festering Wound",
+                    }, 
+                    M = {},
+                },                
+            },                
             { -- LAYOUT SPACE
                 {
                     E = "LayoutSpace",                                                                         
@@ -230,7 +276,7 @@ A.Data.ProfileUI = {
                     M = {},
                 },     
             },
-			{ -- SLIDERS 2 
+            { -- SLIDERS 2 
                 { -- Lichborne SLIDER
                     E = "Slider",                                                     
                     MIN = -1, 
@@ -243,7 +289,7 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
-				{ -- LichborneAntiStun
+                { -- LichborneAntiStun
                     E = "Checkbox", 
                     DB = "LichborneAntiStun",
                     DBV = true,
@@ -309,6 +355,38 @@ A.Data.ProfileUI = {
                     L = { 
                         ANY = "Death Strike HP (%)",
                     },                  
+                    M = {},
+                },
+            },
+            { -- LAYOUTSPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- PVP HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< PVP ><><><l ",
+                    },
+                },
+            },
+            {--Chains of Ice
+                {
+                    E = "Dropdown",
+                    OT = {
+                        { text = "Target",        value = "TARGET" },
+                        { text = "Focus",                value = "FOCUS" },
+                        { text = "Both",            value = "BOTH" },
+                    },
+                    DB = "ChainsPvPUsage",
+                    DBV = "TARGET",
+                    L = { 
+                        ANY = A.GetSpellInfo(45524) .. " usage",
+                    }, 
+                    TT = { 
+                        ANY = "Target for usage Chains of Ice in PvP.", 
+                    }, 
                     M = {},
                 },
             },
