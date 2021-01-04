@@ -187,7 +187,22 @@ Action[ACTION_CONST_PALADIN_RETRIBUTION] = {
     StopCast							= Create({ Type = "Spell", ID = 61721, Hidden = true	}),        -- spell_magic_polymorphrabbit
     PoolResource						= Create({ Type = "Spell", ID = 209274, Hidden = true	}),
     Quake								= Create({ Type = "Spell", ID = 240447, Hidden = true	}), -- Quake (Mythic Plus Affix)
-    Cyclone								= Create({ Type = "Spell", ID = 33786, Hidden = true	}), -- Cyclone     
+    Cyclone								= Create({ Type = "Spell", ID = 33786, Hidden = true	}), -- Cyclone 
+
+	-- Ally Checks
+    TouchofKarma						= Create({ Type = "Spell", ID = 125174, Hidden = true	}),	
+    DieByTheSword						= Create({ Type = "Spell", ID = 118038, Hidden = true	}),	
+	
+    TouchOfDeathDebuff					= Create({ Type = "Spell", ID = 115080, Hidden = true	}),
+    KarmaDebuff							= Create({ Type = "Spell", ID = 122470, Hidden = true	}),
+    VendettaDebuff						= Create({ Type = "Spell", ID = 79140, Hidden = true	}),
+    SolarBeamDebuff						= Create({ Type = "Spell", ID = 78675, Hidden = true	}),
+    IntimidatingShoutDebuff				= Create({ Type = "Spell", ID = 5246, Hidden = true		}),
+    SmokeBombDebuff						= Create({ Type = "Spell", ID = 76577, Hidden = true	}),
+    BlindDebuff							= Create({ Type = "Spell", ID = 2094, Hidden = true		}),
+    GarroteDebuff						= Create({ Type = "Spell", ID = 1330, Hidden = true		}),	
+    Taunt								= Create({ Type = "Spell", ID = 62124, Desc = "[6] PvP Pets Taunt", QueueForbidden = true	}),	
+    
 }
 
 local A = setmetatable(Action[ACTION_CONST_PALADIN_RETRIBUTION], { __index = Action })
@@ -211,6 +226,9 @@ local Temp = {
     TotalAndMagKick                         = {"TotalImun", "DamageMagicImun", "KickImun"},
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
+    BoPDebuffsPvP                            = {A.TouchOfDeathDebuff.ID, A.KarmaDebuff.ID},
+    -- Hex, Polly, Repentance, Blind, Wyvern Sting, Ring of Frost, Paralysis, Freezing Trap, Mind Control
+    BoSDebuffsPvP                            = {51514, 118, 20066, 2094, 19386, 82691, 115078, 3355, 605}	
 }
 
 local IsIndoors, UnitIsUnit = IsIndoors, UnitIsUnit
@@ -834,6 +852,18 @@ end
 A[4] = nil
 A[5] = nil 
 
+local function FreezingTrapUsedByEnemy()
+    if     UnitCooldown:GetCooldown("arena", ACTION_CONST_SPELLID_FREEZING_TRAP) > UnitCooldown:GetMaxDuration("arena", ACTION_CONST_SPELLID_FREEZING_TRAP) - 2 and 
+    UnitCooldown:IsSpellInFly("arena", ACTION_CONST_SPELLID_FREEZING_TRAP) and 
+    Unit(player):GetDR("incapacitate") > 0 
+    then 
+        local Caster = UnitCooldown:GetUnitID("arena", ACTION_CONST_SPELLID_FREEZING_TRAP)
+        if Caster and Unit(Caster):GetRange() <= 40 then 
+            return true 
+        end 
+    end 
+end 
+
 local function ArenaRotation(icon, unitID)
     if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then             
         -- Note: "arena1" is just identification of meta 6
@@ -862,26 +892,18 @@ local function ArenaRotation(icon, unitID)
             end 
         end
         
-        -- Interrupt - Rebuke (checkbox "useKick" for Interrupts tab in "PvP" and "Heal" categories)
-        if A.Rebuke:CanInterruptPassive(unitID) then 
-            return A.Rebuke:Show(icon) 
-        end
-        
-        -- Interrupt - HammerofJustice (checkbox "useCC" for Interrupts tab in "PvP" and "Heal" categories)
-        if A.HammerofJustice:CanInterruptPassive(unitID, countInterruptGCD(unitID)) then 
-            return A.HammerofJustice:Show(icon) 
-        end 
-        
         -- AutoSwitcher
         if unitID == "arena1" and A.GetToggle(1, "AutoTarget") and A.IsUnitEnemy(target) and not A.AbsentImun(nil, target, Temp.TotalAndPhys) and MultiUnits:GetByRange(12, 2) >= 2 then 
             return A:Show(icon, ACTION_CONST_AUTOTARGET)
         end
     end 
-end 
+end
 
 local function PartyRotation(icon, unitID)
     local isSchoolFree = IsHolySchoolFree()
-    
+    local WordofGloryHP = A.GetToggle(2, "WoGHP")
+	local BlessingofProtection = A.GetToggle(2, "BlessingofProtection")	
+	
     -- Return 
     if not isSchoolFree or Player:IsStealthed() or Player:IsMounted() then 
         return 
@@ -893,126 +915,32 @@ local function PartyRotation(icon, unitID)
     end
 
 	-- FoL/WoG
-	if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffsStacks(A.SelflessHealer.ID, true) >= 4 and Unit(unit):HealthPercent() <= WordofGloryHP then
+	if A.FlashofLight:IsReady(unitID) and Unit(player):HasBuffsStacks(A.SelflessHealer.ID, true) >= 4 and Unit(unitID):HealthPercent() <= WordofGloryHP then
 		return A.FlashofLight:Show(icon)
 	end
 
-	if A.WordofGlory:IsReady(unitID) and Unit(unit):HealthPercent() <= WordofGloryHP then
+	if A.WordofGlory:IsReady(unitID) and Unit(unitID):HealthPercent() <= WordofGloryHP then
 		return A.WordofGlory:Show(icon)
 	end
    
     -- BlessingofProtection
-    if A.BlessingofProtection:IsReadyByPassCastGCD(unitID) and not Unit(unitID):InLOS() and
-    (
-        A.IsInPvP and
-        ( 
-            (    -- Deffensive
-                Unit(unitID):HealthPercent() < 30 and
-                Unit(unitID):GetRealTimeDMG(3) > 0 and
-                (
-                    FriendlyTeam("HEALER"):GetCC() >= 3 or
-                    Unit(unitID):TimeToDieX(10) < 3
-                ) and 
-                Unit(unitID):HasBuffs("DeffBuffs") == 0
-            ) or
-            (    -- Healer Help
-                Unit(unitID):Role("HEALER") and 
-                (
-                    -- Blind
-                    Unit(unitID):HasDeBuffs(A.BlindDebuff.ID) >= 3.5 or
-                    (
-                        (
-                            Unit(unitID):HasDeBuffs("Stuned") >= 4 or
-                            -- Garrote
-                            Unit(unitID):HasDeBuffs(A.GarroteDebuff) >= 2.5
-                        ) and
-                        (
-                            A.BlessingofSanctuary:GetCooldown() > 0 or
-                            not A.BlessingofSanctuary:IsSpellLearned()
-                        )
-                    )                    
-                ) and
-                Unit(unitID):HasBuffs("DeffBuffs") <= GetGCD() + GetCurrentGCD() + GetLatency() and
-                Unit(unitID):IsFocused("MELEE", true)
-            ) or
-            (    -- DPS Help
-                Unit(unitID):HasBuffs("DamageBuffs") > 4 and Unit(unitID):Role("DAMAGER") and
-                (
-                    Unit(unitID):Role("MELEE") and
-                    Unit(unitID):HasDeBuffs("Disarmed") > 4.5
-                ) or
-                (    -- Blind
-                    Unit(unitID):HasDeBuffs(A.BlindDebuff.ID) >= 3.5 or
-                    --Intimidating Shout
-                    Unit(unitID):HasDeBuffs(A.IntimidatingShoutDebuff.ID) >= 3.2 and
-                    (
-                        A.BlessingofSanctuary:GetCooldown() > 0 or
-                        not A.BlessingofSanctuary:IsSpellLearned()
-                    )
-                )
-            ) or
-            (    -- PvP Debuffs (Touch of Death, Karma, Vendetta
-                Unit(unitID):HasDeBuffs(Temp.BoPDebuffsPvP) > 4 or
-                Unit(unitID):HasDeBuffs(A.VendettaDebuff.ID) > 15
-            )
-        )
-    ) then
-        return A.BlessingofProtection:Show(icon)
-    end
+	if A.BlessingofProtection:IsReady(unitID, nil, nil, true) and A.IsInPvP and ((Unit(unitID):HealthPercent() <= BlessingofProtection and Unit(unitID):IsFocused("MELEE", true)) or ((A.BlessingofSanctuary:GetCooldown() > 0 or not A.BlessingofSanctuary:IsTalentLearned()) and Unit(unitID):HasDeBuffs("Stuned") > 2)) and Unit(unitID):HasBuffs(A.TouchofKarma.ID, true) == 0 and Unit(unitID):HasBuffs(A.DieByTheSword.ID, true) == 0 then
+		return A.BlessingofProtection:Show(icon)
+	end
     
     -- BlessingofSacrifice
-    if A.BlessingofSacrifice:IsReadyByPassCastGCD(unitID) and not Unit(unitID):InLOS() and Unit(player):HealthPercent() > Unit(unitID):HealthPercent() * 1.5 and Unit(unitID):HasBuffs(A.BlessingofProtection.ID) == 0 and Unit(unitID):GetRealTimeDMG() > 0 and
-    (
-        Unit(unitID):HealthPercent() < 10 or
-        Unit(unitID):TimeToDie() < 10 and
-        (
-            Unit(unitID):HealthPercent() < 30  and
-            (
-                Unit(unitID):GetDMG() * 100 / Unit(unitID):HealthMax() >= 35 or
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.20
-            )
-        )
-    ) and Unit(unitID):HasBuffs("DeffBuffs") == 0 and A.BlessingofSacrifice:AbsentImun(unitID) then
+    if A.BlessingofSacrifice:IsReady(unitID, nil, nil, true) and Unit(player):HealthPercent() > Unit(unitID):HealthPercent() * 1.5 and Unit(unitID):HasBuffs(A.BlessingofProtection.ID) == 0 and Unit(unitID):GetRealTimeDMG() > 0 and Unit(unitID):HasBuffs("DeffBuffs") == 0 and A.BlessingofSacrifice:AbsentImun(unitID) then
         return A.BlessingofSacrifice:Show(icon) 
     end
     
     -- BlessingofSanctuary
-    if A.BlessingofSanctuary:IsReadyByPassCastGCD(unitID) and not Unit(unitID):InLOS() and
-    (
-        (
-            Unit(unitID):HasDeBuffs("Stuned") > 3.5 or
-            Unit(unitID):HasDeBuffs("Fear") > 3.5  or
-            (
-                Unit(unitID):HasDeBuffs("Silenced") > 3.5 and
-                Unit(unitID):HasDeBuffs(A.SolarBeamDebuff.ID) == 0
-            )
-        ) or 
-        (
-            Unit(unitID):HasDeBuffs(Temp.BoPDebuffsPvP) == 0 or
-            A.BlessingofProtection:GetCooldown() > 0 or 
-            Unit(unitID):HasDeBuffs(A.ForbearanceDebuff.ID) > 1 and 
-            (
-                (
-                    Unit(unitID):HasDeBuffs(A.IntimidatingShoutDebuff.ID) > 3.5 and
-                    not Unit(unitID):IsFocused()
-                ) or
-                Unit(unitID):HasDeBuffs("PhysStuned") > 3.5 and
-                (
-                    Unit(unitID):HasBuffs("DamageBuffs") > 3.5 or
-                    (
-                        Unit(unitID):HasDeBuffs(A.SmokeBombDebuff.ID) > 0 and
-                        Unit(unitID):IsFocused("MELEE", true)
-                    )
-                )
-            ) and Unit(unitID):HasDeBuffs(Temp.BoSDebuffsPvP) <= GetCurrentGCD()
-        )
-    ) and A.BlessingofSanctuary:AbsentImun(unitID) then
+    if A.BlessingofSanctuary:IsReady(unitID, nil, nil, true) and (Unit(unitID):HasDeBuffs("Stuned") > 2 or Unit(unitID):HasDeBuffs("Fear") > 2) then
         return A.BlessingofSanctuary:Show(icon) 
     end
     
     -- BlessingofFreedom
     if A.BlessingofFreedom:IsReadyByPassCastGCD(unitID) and not Unit(player, 5):HasFlags() and (Unit(unitID):IsFocused(nil, true) or (Unit(unitID):IsMelee() and Unit(unitID):HasBuffs("DamageBuffs") > 0)) and not Unit(unitID):InLOS() and A.BlessingofFreedom:AbsentImun(unitID) then
-        if Unit(unitID):HasDeBuffs("Rooted") > GetGCD() then 
+        if Unit(unitID):HasDeBuffs("Rooted") > A.GetGCD() then 
             return A.BlessingofFreedom:Show(icon) 
         end 
         

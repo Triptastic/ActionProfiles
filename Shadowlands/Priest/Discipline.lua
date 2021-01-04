@@ -350,7 +350,7 @@ A[3] = function(icon, isMulti) -- Single target icon displayer
 		
 	local function DamageRotation(unit) -- Damage rotation
 	
-		if A.ShadowWordDeath:IsReady(unit) and Unit(targettarget):HealthPercent() <= 20 then
+		if A.ShadowWordDeath:IsReady(unit) and Unit(unit):HealthPercent() <= 20 then
 			return A.ShadowWordDeath:Show(icon)
 		end	
 		
