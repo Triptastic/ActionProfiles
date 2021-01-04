@@ -1240,6 +1240,10 @@ A[3] = function(icon, isMulti)
         end
         
         --Word of Glory at 5 HP
+		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(90, 10) >= 4 then
+			return A.LightofDawn:Show(icon)
+		end
+
         if A.WordofGlory:IsReady(unitID) and not Unit(unitID):IsDead() and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthDeficit() >= (WordofGloryHP * StatMultiplier * AvengingWrathMultiplier) and Player:HolyPower() >= 5 then
             return A.WordofGlory:Show(icon)
         end
@@ -1423,7 +1427,7 @@ A[3] = function(icon, isMulti)
     end  
     
     -- Cleanse Mouseover 
-    if A.Cleanse:IsReady(mouseover) then 
+    if IsUnitFriendly(mouseover) and A.GetToggle(2, "mouseover") then 
         unitID = mouseover 
         
         if HealingRotation(unitID) then 
