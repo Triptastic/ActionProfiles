@@ -548,45 +548,17 @@ local function Interrupts(unit)
         unit = "target"
     end  
 
-    if A.GetToggle(2, "TasteInterruptList") then
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-    else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end   
+    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
     
     if castRemainsTime >= A.GetLatency() then
         if useKick and A.Rebuke:IsReady(unit) and A.Rebuke:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
-            -- Notification                    
-            Action.SendNotification("Rebuke interrupting on Target ", A.Rebuke.ID)
             return A.Rebuke
         end 
         
         if useCC and A.HammerofJustice:IsReady(unit) and A.HammerofJustice:AbsentImun(unit, Temp.TotalAndCC, true) and Unit(unit):IsControlAble("stun", 0) then 
-            -- Notification                    
-            Action.SendNotification("HammerofJustice interrupting...", A.HammerofJustice.ID)
             return A.HammerofJustice              
         end    
-        
-        -- Asphyxiate
-        if useCC and A.Asphyxiate:IsSpellLearned() and A.Asphyxiate:IsReady(unit) then 
-            return A.Asphyxiate
-        end 
-        
-        if useRacial and A.QuakingPalm:AutoRacial(unit) then 
-            return A.QuakingPalm
-        end 
-        
-        if useRacial and A.Haymaker:AutoRacial(unit) then 
-            return A.Haymaker
-        end 
-        
-        if useRacial and A.WarStomp:AutoRacial(unit) then 
-            return A.WarStomp
-        end 
-        
-        if useRacial and A.BullRush:AutoRacial(unit) then 
-            return A.BullRush
-        end 
+       
     end
 end
 Interrupts = A.MakeFunctionCachedDynamic(Interrupts)
