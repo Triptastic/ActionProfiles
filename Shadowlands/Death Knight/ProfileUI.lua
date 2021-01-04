@@ -25,7 +25,7 @@ local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v1.5.0 (3 January 2020)",
+    DateTime = "v2.0 (4 January 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
@@ -1306,32 +1306,6 @@ A.Data.ProfileUI = {
                     L = {
                         ANY = " -- General Defensives -- ",
                     },
-                },
-            },
-            { -- [3] 3rd Row 
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "SpiritualHealingPotionHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Spiritual Healing Potion HP (%)",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Slider",                                                     
-                    MIN = -1, 
-                    MAX = 100,                            
-                    DB = "PhialOfSerenityHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = "Phial of Serenity HP (%)",
-                    }, 
-                    M = {},
                 },
             },
             { -- [3] 3rd Row 
