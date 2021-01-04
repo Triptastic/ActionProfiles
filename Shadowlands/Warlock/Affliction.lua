@@ -536,7 +536,7 @@ A[3] = function(icon, isMulti)
         --##### PRECOMBAT #####
         --#####################        
         
-        local function Precombat(unit)
+        local function Precombat()
             
             -- Summon Pet 
             if SummonPet:IsReady("player") and (not isMoving) and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 then
@@ -575,12 +575,40 @@ A[3] = function(icon, isMulti)
                 return A.Agony:Show(icon)
             end        
         end
+
+        --#####################
+        --##### COVENANTS #####
+        --#####################
+        
+        local function CovenantCall()
+            
+            --actions.covenant=impending_catastrophe,if=cooldown.summon_darkglare.remains<10|cooldown.summon_darkglare.remains>50
+            if A.ImpendingCatastrophe:IsReady(unit) and (A.SummonDarkglare:GetCooldown() < 10 or A.SummonDarkglare:GetCooldown() > 50) then
+                return A.ImpendingCatastrophe:Show(icon)
+            end    
+            
+            --actions.covenant+=/decimating_bolt,if=cooldown.summon_darkglare.remains>5&(debuff.haunt.remains>4|!talent.haunt.enabled)
+            if A.DecimatingBolt:IsReady(unit) and A.SummonDarkglare:GetCooldown() > 5 and (Unit(unit):HasDeBuffs(A.Haunt.ID, true) > 4 or not A.Haunt:IsTalentLearned()) then
+                return A.DecimatingBolt:Show(icon)
+            end    
+            
+            --actions.covenant+=/soul_rot,if=cooldown.summon_darkglare.remains<5|cooldown.summon_darkglare.remains>50|cooldown.summon_darkglare.remains>25&conduit.corrupting_leer.enabled
+            if A.SoulRot:IsReady(unit) and (A.SummonDarkglare:GetCooldown() < 5 or A.SummonDarkglare:GetCooldown() > 50 or (A.SummonDarkglare:GetCooldown() > 25 and A.CorruptingLeer:IsSoulbindLearned())) then
+                return A.SoulRot:Show(icon)
+            end    
+            
+            --actions.covenant+=/scouring_tithe
+            if A.ScouringTithe:IsReady(unit) then
+                return A.ScouringTithe:Show(icon)
+            end    
+            
+        end
         
         --##########################
         --##### DARKGLARE PREP #####
         --##########################
         
-        local function PrepareDarkglare(unit)
+        local function PrepareDarkglare()
             
             --actions.darkglare_prep=vile_taint,if=cooldown.summon_darkglare.remains<2
             if A.VileTaint:IsReady(player) and (not isMoving) and A.SummonDarkglare:GetCooldown() < 2 then
@@ -648,39 +676,12 @@ A[3] = function(icon, isMulti)
             
         end
 
-        --#####################
-        --##### COVENANTS #####
-        --#####################
-        
-        local function CovenantCall(unit)
-            
-            --actions.covenant=impending_catastrophe,if=cooldown.summon_darkglare.remains<10|cooldown.summon_darkglare.remains>50
-            if A.ImpendingCatastrophe:IsReady(unit) and (A.SummonDarkglare:GetCooldown() < 10 or A.SummonDarkglare:GetCooldown() > 50) then
-                return A.ImpendingCatastrophe:Show(icon)
-            end    
-            
-            --actions.covenant+=/decimating_bolt,if=cooldown.summon_darkglare.remains>5&(debuff.haunt.remains>4|!talent.haunt.enabled)
-            if A.DecimatingBolt:IsReady(unit) and A.SummonDarkglare:GetCooldown() > 5 and (Unit(unit):HasDeBuffs(A.Haunt.ID, true) > 4 or not A.Haunt:IsTalentLearned()) then
-                return A.DecimatingBolt:Show(icon)
-            end    
-            
-            --actions.covenant+=/soul_rot,if=cooldown.summon_darkglare.remains<5|cooldown.summon_darkglare.remains>50|cooldown.summon_darkglare.remains>25&conduit.corrupting_leer.enabled
-            if A.SoulRot:IsReady(unit) and (A.SummonDarkglare:GetCooldown() < 5 or A.SummonDarkglare:GetCooldown() > 50 or (A.SummonDarkglare:GetCooldown() > 25 and A.CorruptingLeer:IsSoulbindLearned())) then
-                return A.SoulRot:Show(icon)
-            end    
-            
-            --actions.covenant+=/scouring_tithe
-            if A.ScouringTithe:IsReady(unit) then
-                return A.ScouringTithe:Show(icon)
-            end    
-            
-        end
         
         --########################
         --##### AOE ROTATION #####
         --########################
         
-        local function AoERotation(unit)
+        local function AoERotation()
             
             --actions.aoe=phantom_singularity
             if A.PhantomSingularity:IsReady(unit, nil, nil, true) and Unit("target"):TimeToDie() >= 14 and Unit(player):HealthPercent() >= DrainLifeHP then
@@ -838,7 +839,7 @@ A[3] = function(icon, isMulti)
         
         --Fel Domination if Pet dies
         if A.FelDomination:IsReady("player") and not Pet:IsActive() and Unit("player"):HasBuffs(A.GrimoireofSacrificeBuff.ID, true) == 0 and inCombat then
-            return A.RocketJump:Show(icon)
+            return A.FelDomination:Show(icon)
         end
         
         --Summon Pet with Fel Domination
@@ -987,7 +988,7 @@ A[3] = function(icon, isMulti)
         end    
         
         --actions+=/malefic_rapture,if=soul_shard>4
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and Player:SoulShards() > 4 then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and Player:SoulShards() > 4 then
             return A.MaleficRapture:Show(icon)
         end    
         
@@ -1026,27 +1027,27 @@ A[3] = function(icon, isMulti)
         end]]
         
         --actions+=/malefic_rapture,if=dot.vile_taint.ticking
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.VileTaint:IsTalentLearned() and Unit(unit):HasDeBuffs(A.VileTaint.ID, true) > 0 then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and (not isMoving) and A.VileTaint:IsTalentLearned() and Unit(unit):HasDeBuffs(A.VileTaint.ID, true) > 0 then
             return A.MaleficRapture:Show(icon)
         end    
         
         --actions+=/malefic_rapture,if=dot.impending_catastrophe_dot.ticking
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.ImpendingCatastrophe.ID, true) > 0 then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.ImpendingCatastrophe.ID, true) > 0 then
             return A.MaleficRapture:Show(icon)
         end    
         
         --actions+=/malefic_rapture,if=dot.soul_rot.ticking
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.SoulRot.ID, true) > 0 then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and (not isMoving) and Unit(unit):HasDeBuffs(A.SoulRot.ID, true) > 0 then
             return A.MaleficRapture:Show(icon)
         end                
         
         --actions+=/malefic_rapture,if=talent.phantom_singularity.enabled&(dot.phantom_singularity.ticking|soul_shard>3|time_to_die<cooldown.phantom_singularity.remains)
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or Player:SoulShards() > 3 or Unit(unit):TimeToDie() < A.PhantomSingularity:GetCooldown()) then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and (not isMoving) and A.PhantomSingularity:IsTalentLearned() and (Unit(unit):HasDeBuffs(A.PhantomSingularityDebuff.ID, true) > 0 or Player:SoulShards() > 3 or Unit(unit):TimeToDie() < A.PhantomSingularity:GetCooldown()) then
             return A.MaleficRapture:Show(icon)
         end                
         
         --actions+=/malefic_rapture,if=talent.sow_the_seeds.enabled
-        if A.MaleficRapture:IsReady(unit, nil, nil, true) and (not isMoving) and A.SowtheSeeds:IsTalentLearned() then
+        if A.MaleficRapture:IsReady("player", nil, nil, true) and (not isMoving) and A.SowtheSeeds:IsTalentLearned() then
             return A.MaleficRapture:Show(icon)
         end                
         
