@@ -376,35 +376,6 @@ A[2] = function(icon)
     end                                                                                 
 end
 
--- Darkness Handler --
-local function HandleDarkness()
-    local choice = Action.GetToggle(2, "DarknessMode")
-    
-    if choice == "In Raid" then
-        if IsInRaid() then
-            return true
-        else
-            return false
-        end
-    elseif choice == "In Dungeon" then 
-        if IsInGroup() then
-            return true
-        else
-            return false
-        end
-    elseif choice == "In PvP" then     
-        if A.IsInPvP then 
-            return true
-        else
-            return false
-        end        
-    elseif choice == "Everywhere" then 
-        return true
-    else
-        return false
-    end
-    --print(choice)
-end
 
 -- Fel Blade UI --
 local function HandleFelBlade()
@@ -430,63 +401,6 @@ local function HandleFelBlade()
     
 end
 
--- Auto Darkness Handler
-local function CanDarkness()
-    if A.Darkness:IsReady(player) then 
-        -- Darkness
-        local AutoDarkness = A.GetToggle(2, "AutoDarkness")
-        local DarknessUnits = A.GetToggle(2, "DarknessUnits")
-        local DarknessUnitsHP = A.GetToggle(2, "DarknessUnitsHP")    
-        local DarknessUnitsTTD = A.GetToggle(2, "DarknessUnitsTTD")
-        local totalMembers = HealingEngine.GetMembersAll()
-		
-        -- Auto Counter
-        if DarknessUnits > 1 then 
-            DarknessUnits = HealingEngine.GetMinimumUnits(1)
-            -- Reduce size in raid by 20%
-            if DarknessUnits > 5 then 
-                DarknessUnits = DarknessUnits - (#totalMembers * 0.2)
-            end 
-            -- If user typed counter higher than max available members 
-        elseif DarknessUnits >= TeamCache.Friendly.Size then 
-            DarknessUnits = TeamCache.Friendly.Size
-        end 
-        
-        if DarknessUnits < 3 and not A.IsInPvP then 
-            return false 
-        end 
-        
-        local counter = 0 
-        for i = 1, #totalMembers do 
-            -- Auto HP 
-            if DarknessUnitsHP >= 100 and totalMembers[i].HP <= 30 then 
-                counter = counter + 1
-            end 
-            
-            -- Auto TTD 
-            if DarknessUnitsTTD >= 100 and Unit(totalMembers[i].Unit):TimeToDie() <= 5 then 
-                counter = counter + 1
-            end 
-            
-            -- Custom HP 
-            if DarknessUnitsHP < 100 and totalMembers[i].HP <= DarknessUnitsHP then 
-                counter = counter + 1
-            end
-            
-            -- Custom TTD 
-            if DarknessUnitsTTD < 100 and Unit(totalMembers[i].Unit):TimeToDie() <= DarknessUnitsTTD then 
-                counter = counter + 1
-            end             
-            
-            if counter >= DarknessUnits then 
-                return true 
-            end 
-        end 
-    end 
-    return false 
-end 
-CanDarkness = A.MakeFunctionCachedStatic(CanDarkness)
-
 local function SelfDefensives()
     if Unit(player):CombatTime() == 0 then 
         return 
@@ -498,13 +412,6 @@ local function SelfDefensives()
     elseif A.IsUnitEnemy("target") then 
         unit = "target"
     end  
-    
-    -- Darkness
-    if AutoDarkness and HandleDarkness and CanDarkness() then 
-        -- Notification                    
-        A.Toaster:SpawnByTimer("TripToast", 0, "Darkness!", "Using Defensive Darkness!", A.Darkness.ID)
-        return A.Darkness
-    end
     
     -- Netherwalk
     local Netherwalk = A.GetToggle(2, "Netherwalk")
@@ -789,7 +696,6 @@ A[3] = function(icon, isMulti)
     local FelBladeRange = A.GetToggle(2, "FelBladeRange")
     local FelBladeFury = A.GetToggle(2, "FelBladeFury")       
     local ImprisonAsInterrupt = A.GetToggle(2, "ImprisonAsInterrupt")          
-    local HandleDarkness = HandleDarkness()
     local Fury = Player:Fury()
     local FuryDeficit = Player:FuryDeficit()
     local ImmolationAuraPrePull = Action.GetToggle(2, "ImmolationAuraPrePull")
@@ -871,7 +777,7 @@ A[3] = function(icon, isMulti)
 		end	
 		
 		--Announce Fel Rush
-		if inCombat and A.FelRush:GetSpellChargesFrac() > 1.8 and A.Momentum:IsTalentLearned() then
+		if inCombat and A.FelRush:GetSpellCharges() > 1.8 and A.Momentum:IsTalentLearned() then
 			A.Toaster:SpawnByTimer("TripToast", 0, "Fel Rush!", "Gonna dash like a madman! Get ready!", A.FelRush.ID)
 		end
 		
@@ -1233,7 +1139,7 @@ A[3] = function(icon, isMulti)
 			end	
 		
 			if A.LastPlayerCastID == A.VengefulRetreat.ID then
-				if A.Felblade:IsReady(unit) and A.FelRush:GetSpellChargesFrac() < 1.8 then
+				if A.Felblade:IsReady(unit) and A.FelRush:GetSpellCharges() < 1.8 then
 					return A.Felblade:Show(icon)
 				elseif A.FelRush:IsReady(player, true) then
 					return A.FelRush:Show(icon)
@@ -1241,12 +1147,12 @@ A[3] = function(icon, isMulti)
 			end
 		
 			--actions.normal=vengeful_retreat,if=talent.momentum.enabled&buff.prepared.down&time>1
-			if A.VengefulRetreat:IsReady(player) and CanCast and UseMovement and A.Momentum:IsTalentLearned() and Unit(player):HasBuffs(A.Prepared.ID, true) == 0 and inCombat and Unit(unit):GetRange() <= 5 and (A.Felblade:GetCooldown() < 1 or A.FelRush:GetSpellChargesFrac() > 1.8) then
+			if A.VengefulRetreat:IsReady(player) and CanCast and UseMovement and A.Momentum:IsTalentLearned() and Unit(player):HasBuffs(A.Prepared.ID, true) == 0 and inCombat and Unit(unit):GetRange() <= 5 and (A.Felblade:GetCooldown() < 1 or A.FelRush:GetSpellCharges() > 1.8) then
 				return A.VengefulRetreat:Show(icon)
 			end	
 			
 			--actions.normal+=/fel_rush,if=(variable.waiting_for_momentum|talent.unbound_chaos.enabled&buff.unbound_chaos.up)&(charges=2|(raid_event.movement.in>10&raid_event.adds.in>10))
-			if A.FelRush:IsReady(player, true) and UseMovement and inCombat and (VarWaitingForMomentum or (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0)) and A.FelRush:GetSpellChargesFrac() > 1.8 then
+			if A.FelRush:IsReady(player, true) and UseMovement and inCombat and (VarWaitingForMomentum or (A.UnboundChaos:IsTalentLearned() and Unit(player):HasBuffs(A.InnerDemon.ID, true) > 0)) and A.FelRush:GetSpellCharges() > 1.8 then
 				return A.FelRush:Show(icon)
 			end
 

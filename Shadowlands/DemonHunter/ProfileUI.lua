@@ -28,7 +28,7 @@ end
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v 2.0 (31 December 2020)",
+    DateTime = "v 2.1 (6 January 2021)",
     -- Class settings
     [2] = {        
         [ACTION_CONST_DEMONHUNTER_HAVOC] = {   
@@ -368,113 +368,6 @@ A.Data.ProfileUI = {
                     M = {},
                 },
             },    
-            { -- LAYOUT SPACE
-                
-                {
-                    E = "LayoutSpace",                                                                         
-                },
-            },
-            { -- DARKNESS HEADER
-                {
-                    E = "Header",
-                    L = {
-                        ANY = " l><><>< DARKNESS ><><><l ",
-                    },
-                },
-            },
-            { -- AUTO DARKNESS CHECKBOX
-                {
-                    E = "Checkbox", 
-                    DB = "AutoDarkness",
-                    DBV = false,
-                    L = { 
-                        ANY = "Auto " .. GetSpellInfo(196718),
-                    },
-                    TT = { 
-                        enUS = "If activated, will auto use " .. GetSpellInfo(196718) .. " depending on currents settings.\nFor high end raiding, it is recommended to keep Darkness when your Raid Leader call it.",
-                        ruRU = "Если активирован, будет автоматически использовать " .. GetSpellInfo(196718) .. " в зависимости от настроек токов.\nДля рейдового сегмента рекомендуется держать Тьму, когда ваш Рейдовый Лидер называет это.",
-                        frFR = "Si activé, utilisera automatiquement " .. GetSpellInfo(196718) .. " en fonction des paramètres de courant.\nPour les raids de haut niveau, il est recommandé de garder Ténèbres lorsque votre chef de raid l'appelle.",
-                    }, 
-                    M = {},
-                }, 
-                { -- AUTO DARKNESS DROPDOWN
-                    E = "Dropdown",                                                         
-                    OT = {
-                        { text = "In Raid", value = "In Raid" },
-                        { text = "In Dungeon", value = "In Dungeon" },
-                        { text = "In PvP", value = "In PvP" },
-                        { text = "Everywhere", value = "Everywhere" },
-                    },
-                    MULT = false,
-                    DB = "DarknessMode",
-                    DBV = "In Dungeon", 
-                    L = { 
-                        enUS = GetSpellInfo(196718) .. " where", 
-                        ruRU = GetSpellInfo(196718) .. " где", 
-                        frFR = GetSpellInfo(196718) .. " où", 
-                    }, 
-                    TT = { 
-                        enUS = "Choose where you want to automatically use " .. GetSpellInfo(196718),
-                        ruRU = "Выберите, где вы хотите использовать автоматически " .. GetSpellInfo(196718),
-                        frFR = "Choisissez où vous souhaitez utiliser automatiquement " .. GetSpellInfo(196718),
-                    }, 
-                    M = {},
-                }, 
-                {-- DARKNESS UNITS
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "DarknessUnits",
-                    DBV = 3, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196718) .. " units",
-                    }, 
-                    TT = { 
-                        enUS = "Define the number of party/raid members that have to be injured to use " .. GetSpellInfo(196718), 
-                        ruRU = "Определите количество членов партии/рейда, которые должны быть ранены, чтобы использовать " .. GetSpellInfo(196718),  
-                        frFR = "Définir le nombre de membres du groupe/raid qui doivent être blessés pour utiliser " .. GetSpellInfo(196718), 
-                    },
-                    M = {},
-                },
-            }, 
-            { -- AUTO DARKNESS CONTINUED
-                { -- AUTO DARKNESS TTD
-                    E = "Slider",                                                     
-                    MIN = 1, 
-                    MAX = 10,                            
-                    DB = "DarknessUnitsTTD",
-                    DBV = 5, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196718) .. " TTD",
-                    }, 
-                    TT = { 
-                        enUS = "Define the minimum Time To Die for party/raid members before using " .. GetSpellInfo(196718), 
-                        ruRU = "Определите минимальное время жизни для членов партии или рейда перед использованием " .. GetSpellInfo(196718), 
-                        frFR = "Définissez le temps minimum pour mourir pour les membres du groupe/raid avant d'utiliser " .. GetSpellInfo(196718),
-                    },
-                    M = {},
-                },
-                { -- AUTO DARKNESS HP
-                    E = "Slider",                                                     
-                    MIN = 5, 
-                    MAX = 100,                            
-                    DB = "DarknessUnitsHP",
-                    DBV = 60, -- Set healthpercentage @30% life. 
-                    ONOFF = true,
-                    L = { 
-                        ANY = GetSpellInfo(196718) .. " HP",
-                    }, 
-                    TT = { 
-                        enUS = "Define the minimum health percent for party/raid members before using " .. GetSpellInfo(196718), 
-                        ruRU = "Определите минимальный процент здоровья для участников группы или рейда перед использованием " .. GetSpellInfo(196718), 
-                        frFR = "Définissez le pourcentage de santé minimum pour les membres du groupe / raid avant d'utiliser " .. GetSpellInfo(196718),
-                    },
-                    M = {},
-                },
-                
-            },
             { -- LAYOUT SPACE
                 
                 {

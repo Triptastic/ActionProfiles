@@ -536,11 +536,11 @@ A[3] = function(icon, isMulti)
                 return A.Metamorphosis:Show(icon)
             end    
             
-            if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellChargesFrac() > 1.9 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes1HP then
+            if A.DemonSpikes:IsReady("player") and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellCharges() > 1.9 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes1HP then
                 return A.DemonSpikes:Show(icon)
             end
             
-            if A.DemonSpikes:IsReady(unit) and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellCharges() >= 1 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes2HP then
+            if A.DemonSpikes:IsReady("player") and Unit("player"):HasBuffs(A.DemonSpikesBuff.ID, true) == 0 and A.DemonSpikes:GetSpellCharges() >= 1 and Unit("player"):HasBuffs(A.Metamorphosis.ID, true) == 0 and (A.LastPlayerCastID ~= A.DemonSpikes.ID) and Unit(player):HealthPercent() <= DemonSpikes2HP then
                 return A.DemonSpikes:Show(icon)
             end            
             
@@ -652,7 +652,7 @@ A[3] = function(icon, isMulti)
                 end
             end   
         end 
-        
+		
         if DefenseRotation(unit) and inCombat then
             return true
         end
