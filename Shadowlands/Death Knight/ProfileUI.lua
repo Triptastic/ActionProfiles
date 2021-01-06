@@ -25,7 +25,7 @@ local select, setmetatable                            = select, setmetatable
 
 A.Data.ProfileEnabled[Action.CurrentProfile] = true
 A.Data.ProfileUI = {      
-    DateTime = "v2.1 (5 January 2020)",
+    DateTime = "v2.0 (31 December 2020)",
     -- Class settings
     [2] = {
         -- Unholy    
@@ -389,6 +389,188 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
+            },
+            { -- LAYOUTSPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+        },
+        -- Frost
+        [ACTION_CONST_DEATHKNIGHT_FROST] = {  
+            LayoutOptions = { gutter = 4, padding = { left = 5, right = 5 } },            
+            { -- GENERAL HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< GENERAL ><><><l ",
+                    },
+                },
+            },            
+            { -- GENERAL OPTIONS
+                { -- MOUSEOVER CHECKBOX
+                    E = "Checkbox", 
+                    DB = "mouseover",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use @mouseover", 
+                        ruRU = "Использовать @mouseover", 
+                        frFR = "Utiliser les fonctions @mouseover",
+                    }, 
+                    TT = { 
+                        enUS = "Will unlock use actions for @mouseover units\nExample: Resuscitate, Healing", 
+                        ruRU = "Разблокирует использование действий для @mouseover юнитов\nНапример: Воскрешение, Хилинг", 
+                        frFR = "Activera les actions via @mouseover\n Exemple: Ressusciter, Soigner",
+                    }, 
+                    M = {},
+                },
+                { -- AOE CHECKBOX
+                    E = "Checkbox", 
+                    DB = "AoE",
+                    DBV = true,
+                    L = { 
+                        enUS = "Use AoE", 
+                        ruRU = "Использовать AoE", 
+                        frFR = "Utiliser l'AoE",
+                    }, 
+                    TT = { 
+                        enUS = "Enable multiunits actions", 
+                        ruRU = "Включает действия для нескольких целей", 
+                        frFR = "Activer les actions multi-unités",
+                    }, 
+                    M = {
+                        Custom = "/run Action.AoEToggleMode()",
+                        -- It does call func CraftMacro(L[CL], macro above, 1) -- 1 means perCharacter tab in MacroUI, if nil then will be used allCharacters tab in MacroUI
+                        Value = value or nil, 
+                        -- Very Very Optional, no idea why it will be need however.. 
+                        TabN = '@number' or nil,                                
+                        Print = '@string' or nil,
+                    },
+                },
+            },
+            {
+                { -- DEATHGRIP INTERRUPT
+                    E = "Checkbox", 
+                    DB = "DeathGripInterrupt",
+                    DBV = true,
+                    L = { 
+                        ANY = "Use Death Grip for Interrupt"
+                    }, 
+                    TT = { 
+                        ANY = "Use Death Grip to Interrupt if Mind Freeze is on cooldown."
+                    },
+                    M = {},
+                },
+                { -- ASPHYXIATE INTERRUPT
+                    E = "Checkbox", 
+                    DB = "AsphyxiateInterrupt",
+                    DBV = true,
+                    L = { 
+                        ANY = "Use Asphyxiate for Interrupt"
+                    }, 
+                    TT = { 
+                        ANY = "Use Asphyxiate to Interrupt if Mind Freeze is on cooldown."
+                    },
+                    M = {},
+                },                
+            },                            
+            { -- LAYOUT SPACE
+                {
+                    E = "LayoutSpace",                                                                         
+                },
+            },
+            { -- DEFENSIVES HEADER
+                {
+                    E = "Header",
+                    L = {
+                        ANY = " l><><>< DEFENSIVES ><><><l ",
+                    },
+                },
+            },
+            { -- SLIDERS 1 
+                { -- IceboundFortitudeHP SLIDER
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "IceboundFortitudeHP",
+                    DBV = 100, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(48792) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                { -- IceboundFortitudeAntiStun
+                    E = "Checkbox", 
+                    DB = "IceboundFortitudeAntiStun",
+                    DBV = true,
+                    L = { 
+                        enUS = A.GetSpellInfo(48792) .. " AntiStun", 
+                        ruRU = A.GetSpellInfo(48792) .. " AntiStun", 
+                        frFR = A.GetSpellInfo(48792) .. " AntiStun",
+                    }, 
+                    TT = { 
+                        enUS = "Enable this to option to automatically cast " .. A.GetSpellInfo(48792) .. " when you are stunned.", 
+                        ruRU = "Enable this to option to automatically cast " .. A.GetSpellInfo(48792) .. " when you are stunned.",
+                        frFR = "Enable this to option to automatically cast " .. A.GetSpellInfo(48792) .. " when you are stunned.",
+                    }, 
+                    M = {},
+                },     
+            },
+            { -- SLIDERS 2
+                { -- DEATHPACTHP SLIDER
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DeathPactHP",
+                    DBV = 100, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(48743) .. " (%)",
+                    }, 
+                    M = {},
+                },
+                { -- ANTIMAGICSHELL SLIDER
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "AntiMagicShellHP",
+                    DBV = 100, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = A.GetSpellInfo(48707) .. " (%)",
+                    }, 
+                    M = {},
+                },
+            },
+            {
+                { -- HEALING POTION 
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "SpiritualHealingPotionHP",
+                    DBV = 100, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Spiritual Healing Potion HP (%)",
+                    }, 
+                    M = {},
+                },
+                { -- DeathStrikeHP
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "DeathStrikeHP",
+                    DBV = 40, -- Set healthpercentage @30% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Death Strike HP (%)",
+                    }, 
+                    TT = { 
+                        ANY = "Will use Death Strike at this percent HP."
+                    },                    
+                    M = {},
+                },    
             },
             { -- LAYOUTSPACE
                 {

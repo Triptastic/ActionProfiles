@@ -1,5 +1,6 @@
 -------------------------------
 -- Note TMW Action Rotation --
+--      Version 1.0.0       --
 -------------------------------
 
 --Full credit to Taste
@@ -17,6 +18,7 @@ local GetPing                                    = Action.GetPing
 local ShouldStop                                = Action.ShouldStop
 local BurstIsON                                    = Action.BurstIsON
 local AuraIsValid                                = Action.AuraIsValid
+local AuraIsValidByPhialofSerenity              = A.AuraIsValidByPhialofSerenity
 local InterruptIsValid                            = Action.InterruptIsValid
 local FrameHasSpell                                = Action.FrameHasSpell
 local Utils                                        = Action.Utils
@@ -40,6 +42,7 @@ local next, pairs, type, print                  = next, pairs, type, print
 --- ============================ CONTENT ===========================
 --- ======= APL LOCALS =======
 -- luacheck: max_line_length 9999
+
 -- Spells
 Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     -- Racial
@@ -83,17 +86,17 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     BloodFury                              = Action.Create({ Type = "Spell", ID = 20572 }),
     Berserking                             = Action.Create({ Type = "Spell", ID = 26297 }),
     Tombstone                              = Action.Create({ Type = "Spell", ID = 219809 }),
-	RaiseDead                              = Action.Create({ Type = "Spell", ID = 46585 }),
+    RaiseDead                              = Action.Create({ Type = "Spell", ID = 46585 }),
     -- Defensives
     IceboundFortitude                      = Action.Create({ Type = "Spell", ID = 48792 }),
     AntiMagicShell                         = Action.Create({ Type = "Spell", ID = 48707 }),
     DancingRuneWeapon                      = Action.Create({ Type = "Spell", ID = 49028 }),
-    VampiricBlood                          = Action.Create({ Type = "Spell", ID = 55233 }),
+    VampiricBlood                          = Action.Create({ Type = "Spell", ID = 317133 }),
     DeathPact                              = Action.Create({ Type = "Spell", ID = 48743 }),    -- Talent
     GorefiendsGrasp                        = Action.Create({ Type = "Spell", ID = 108199 }),    -- Mass Grip
     MarkofBlood                            = Action.Create({ Type = "Spell", ID = 206940 }),
     RuneTap                                = Action.Create({ Type = "Spell", ID = 194679 }),
-	SacrificialPact                        = Action.Create({ Type = "Spell", ID = 327574 }),
+    SacrificialPact                        = Action.Create({ Type = "Spell", ID = 327574 }),
     -- Utilities
     DarkCommand                            = Action.Create({ Type = "Spell", ID = 56222     }), 
     WraithWalk                             = Action.Create({ Type = "Spell", ID = 212552     }), 
@@ -104,33 +107,33 @@ Action[ACTION_CONST_DEATHKNIGHT_BLOOD] = {
     ChainsofIce                            = Action.Create({ Type = "Spell", ID = 45524     }), -- 70% snare, 8sec
     RaiseAlly                              = Action.Create({ Type = "Spell", ID = 61999     }),     -- Battle rez
     DeathCaress                            = Action.Create({ Type = "Spell", ID = 195292 }),
-	BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
+    BloodTap                               = Action.Create({ Type = "Spell", ID = 221699 }), --Talent
     -- Potions
-    PotionofUnbridledFury                  = Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Action.Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
-    SuperiorPotionofUnbridledFury          = Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    SuperiorSteelskinPotion                = Action.Create({ Type = "Potion", ID = 168501, QueueForbidden = true }), 
-    AbyssalHealingPotion                   = Action.Create({ Type = "Potion", ID = 169451, QueueForbidden = true }),     
-    PotionofFocusedResolve                 = Action.Create({ Type = "Potion", ID = 168506 }),
-    SuperiorBattlePotionofStrength         = Action.Create({ Type = "Potion", ID = 168500 }),
-    PotionofEmpoweredProximity             = Action.Create({ Type = "Potion", ID = 168529 }),
+	SuperiorSteelskinPotion                = Action.Create ({ Type = "Potion", ID = 168501, QueueForbidden = true }),
+	PotionofSpectralAgility                = Action.Create ({ Type = "Potion", ID = 307093, QueueForbidden = true }),	
+	PotonofDeathlyFixation                 = Action.Create ({ Type = "Potion", ID = 307384, QueueForbidden = true }),
+	PotionofEmpoweredExorcisms             = Action.Create ({ Type = "Potion", ID = 307381, QueueForbidden = true }),
+	PotionofPhantomFire                    = Action.Create ({ Type = "Potion", ID = 307382, QueueForbidden = true }),
+	PotionofSacrificialAnima               = Action.Create ({ Type = "Potion", ID = 322301, QueueForbidden = true }),
+	PotionofDivineAwakening                = Action.Create ({ Type = "Potion", ID = 307383, QueueForbidden = true }),
+    SpiritualHealingPotion					= Action.Create({ Type = "Item", ID = 171267, QueueForbidden = true }),		
     -- Trinkets
-	-- Covenant Abilities
-    SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739	}),
-    DoorofShadows                          = Action.Create({ Type = "Spell", ID = 300728	}),
-    Fleshcraft						       = Action.Create({ Type = "Spell", ID = 331180	}),
-    Soulshape                              = Action.Create({ Type = "Spell", ID = 310143	}),
-    Flicker                                = Action.Create({ Type = "Spell", ID = 324701	}),
-    ShackletheUnworthy                     = Action.Create({ Type = "Spell", ID = 312202	}),
-    SwarmingMist                           = Action.Create({ Type = "Spell", ID = 311648	}),	
-    AbominationLimb                        = Action.Create({ Type = "Spell", ID = 315443	}),
-    DeathsDue                              = Action.Create({ Type = "Spell", ID = 324128	}),	
-	--Generic Legendaries
-	DeathsEmbrace                          = Action.Create({ Type = "Spell", ID = 334728, Hidden = true	}),
-    GripoftheEverlasting                   = Action.Create({ Type = "Spell", ID = 334724, Hidden = true	}),
-    Phearomones                            = Action.Create({ Type = "Spell", ID = 335177, Hidden = true	}),
-    Superstain                             = Action.Create({ Type = "Spell", ID = 334974, Hidden = true	}),	
-	--ConduitsLATER
+    -- Covenant Abilities
+    SummonSteward                          = Action.Create({ Type = "Spell", ID = 324739    }),
+    DoorofShadows                          = Action.Create({ Type = "Spell", ID = 300728    }),
+    Fleshcraft                               = Action.Create({ Type = "Spell", ID = 331180    }),
+    Soulshape                              = Action.Create({ Type = "Spell", ID = 310143    }),
+    Flicker                                = Action.Create({ Type = "Spell", ID = 324701    }),
+    ShackletheUnworthy                     = Action.Create({ Type = "Spell", ID = 312202    }),
+    SwarmingMist                           = Action.Create({ Type = "Spell", ID = 311648    }),    
+    AbominationLimb                        = Action.Create({ Type = "Spell", ID = 315443    }),
+    DeathsDue                              = Action.Create({ Type = "Spell", ID = 324128    }),    
+    --Generic Legendaries
+    DeathsEmbrace                          = Action.Create({ Type = "Spell", ID = 334728, Hidden = true    }),
+    GripoftheEverlasting                   = Action.Create({ Type = "Spell", ID = 334724, Hidden = true    }),
+    Phearomones                            = Action.Create({ Type = "Spell", ID = 335177, Hidden = true    }),
+    Superstain                             = Action.Create({ Type = "Spell", ID = 334974, Hidden = true    }),    
+    --ConduitsLATER
     -- Misc
     Channeling                             = Action.Create({ Type = "Spell", ID = 209274, Hidden = true     }),    -- Show an icon during channeling
     TargetEnemy                            = Action.Create({ Type = "Spell", ID = 44603, Hidden = true     }),    -- Change Target (Tab button)
@@ -399,54 +402,38 @@ local function SelfDefensives(unit)
         return A.DeathPact
     end          
     
-    -- SuperiorSteelskinPotion
-    local SuperiorSteelskinPotion = A.GetToggle(2, "SuperiorSteelskinPotionHP")
-    if     SuperiorSteelskinPotion >= 0 and A.SuperiorSteelskinPotion:IsReady(player) and 
-    (
-        (     -- Auto 
-            SuperiorSteelskinPotion >= 100 and 
-            (
-                -- HP lose per sec >= 20
-                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
-                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
-                -- TTD 
-                Unit(player):TimeToDieX(20) < 3 or 
-                GetByRange(5, 15) and Unit(player):HealthPercent() <= 25 and Player:AreaTTD(15) > 20 or
-                (
-                    A.IsInPvP and 
-                    (
-                        Unit(player):UseDeff() or 
-                        (
-                            Unit(player, 5):HasFlags() and 
-                            Unit(player):GetRealTimeDMG() > 0 and 
-                            Unit(player):IsFocused() 
-                        )
-                    )
-                )
-            ) and 
-            Unit(player):HasBuffs("DeffBuffs", true) == 0
-        ) or 
-        (    -- Custom
-            SuperiorSteelskinPotion < 100 and 
-            Unit(player):HealthPercent() <= SuperiorSteelskinPotion
-        )
-    ) 
-    then 
-        return A.SuperiorSteelskinPotion
-    end
+        -- PhialofSerenity
+        if A.Zone ~= "arena" and (A.Zone ~= "pvp" or not A.InstanceInfo.isRated) and A.PhialofSerenity:IsReady(player) then 
+            -- Healing 
+            local PhialofSerenityHP, PhialofSerenityOperator, PhialofSerenityTTD = GetToggle(2, "PhialofSerenityHP"), GetToggle(2, "PhialofSerenityOperator"), GetToggle(2, "PhialofSerenityTTD")
+            if PhialofSerenityOperator == "AND" then 
+                if (PhialofSerenityHP <= 0 or Unit(player):HealthPercent() <= PhialofSerenityHP) and (PhialofSerenityTTD <= 0 or Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            else
+                if (PhialofSerenityHP > 0 and Unit(player):HealthPercent() <= PhialofSerenityHP) or (PhialofSerenityTTD > 0 and Unit(player):TimeToDie() <= PhialofSerenityTTD) then 
+                    return A.PhialofSerenity
+                end 
+            end 
+            
+            -- Dispel 
+            if AuraIsValidByPhialofSerenity() then 
+                return A.PhialofSerenity    
+            end 
+        end	 
     
-    -- HealingPotion
-    local AbyssalHealingPotion = A.GetToggle(2, "AbyssalHealingPotionHP")
-    if     AbyssalHealingPotion >= 0 and A.AbyssalHealingPotion:IsReady(player) and 
+	-- SpiritualHealingPotionHP
+    local SpiritualHealingPotion = A.GetToggle(1, "HealthStone")
+    if SpiritualHealingPotion >= 0 and A.SpiritualHealingPotion:IsReady(player) and 
     (
         (     -- Auto 
-            AbyssalHealingPotion >= 100 and 
+            SpiritualHealingPotion >= 100 and 
             (
                 -- HP lose per sec >= 20
                 Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 10 or 
                 Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.10 or 
                 -- TTD 
-                Unit(player):TimeToDieX(15) < 3 or 
+                Unit(player):TimeToDieX(20) < 5 or 
                 (
                     A.IsInPvP and 
                     (
@@ -462,14 +449,16 @@ local function SelfDefensives(unit)
             Unit(player):HasBuffs("DeffBuffs", true) == 0
         ) or 
         (    -- Custom
-            AbyssalHealingPotion < 100 and 
-            Unit(player):HealthPercent() <= AbyssalHealingPotion
+            SpiritualHealingPotion < 100 and 
+            Unit(player):HealthPercent() <= SpiritualHealingPotion
         )
     ) 
     then 
-        return A.AbyssalHealingPotion
-    end 
+        return A.SpiritualHealingPotion
+    end 	
+
 end 
+
 SelfDefensives = A.MakeFunctionCachedDynamic(SelfDefensives)
 
 -- Non GCD spell check
@@ -621,10 +610,10 @@ A[3] = function(icon, isMulti)
             then
                 return A.BloodDrinker:Show(icon)
             end
-			
-			if A.MarkofBlood:IsSpellLearned() and A.MarkofBlood:IsReady(unit) and Unit(unit):HasDeBuffs(A.MarkofBlood.ID, true) == 0 then
-				return A.MarkofBlood:Show(icon)
-			end
+            
+            if A.MarkofBlood:IsSpellLearned() and A.MarkofBlood:IsReady(unit) and Unit(unit):HasDeBuffs(A.MarkofBlood.ID, true) == 0 then
+                return A.MarkofBlood:Show(icon)
+            end
             
             -- marrowrend,if=(buff.bone_shield.remains<=rune.time_to_3|buff.bone_shield.remains<=(gcd+cooldown.blooddrinker.ready*talent.blooddrinker.enabled*2)|buff.bone_shield.stack<3)&runic_power.deficit>=20
             if A.Marrowrend:IsReady(unit) and 
@@ -634,9 +623,9 @@ A[3] = function(icon, isMulti)
                     or 
                     Unit(player):HasBuffs(A.BoneShieldBuff.ID, true) <= (A.GetGCD() + num(A.BloodDrinker:GetCooldown() == 0) * num(A.BloodDrinker:IsSpellLearned()) * 2) 
                     or 
-                    Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) < 5
+                    Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) <= 5
                 ) 
-                --and Player:RunicPowerDeficit() >= 20
+                and Player:RunicPowerDeficit() >= 20
             ) 
             then
                 return A.Marrowrend:Show(icon)
@@ -660,11 +649,11 @@ A[3] = function(icon, isMulti)
             if A.DeathandDecay:IsReadyByPassCastGCD(player) and not A.DeathsDue:IsSpellLearned() and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
                 return A.DeathandDecay:Show(icon)
             end
-			
-			-- deaths_due,if=spell_targets.deaths_due>=3
-			if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
-				return A.DeathsDue:Show(icon)
-			end
+            
+            -- deaths_due,if=spell_targets.deaths_due>=3
+            if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID, true) > 0 then
+                return A.DeathsDue:Show(icon)
+            end
             
             -- death_strike
             local DeathStrike = Action.GetToggle(2, "DeathStrikeHP")
@@ -717,7 +706,7 @@ A[3] = function(icon, isMulti)
             then
                 return A.DeathStrike:Show(icon)
             end    
-            
+			
             -- blood_boil,if=charges_fractional>=1.8&(buff.hemostasis.stack<=(5-spell_targets.blood_boil)|spell_targets.blood_boil>2)
             if A.BloodBoil:IsReady(unit) and A.LastPlayerCastName ~= A.BloodBoil:Info() and 
             (
@@ -730,15 +719,6 @@ A[3] = function(icon, isMulti)
             ) 
             then
                 return A.BloodBoil:Show(icon)
-            end
-            
-            -- marrowrend,if=buff.bone_shield.stack<5&talent.ossuary.enabled&runic_power.deficit>=15
-            if A.Marrowrend:IsReady(unit) and 
-            (
-                Unit(player):HasBuffsStacks(A.BoneShieldBuff.ID, true) < 5 and A.Ossuary:IsSpellLearned() and Player:RunicPowerDeficit() >= 15
-            ) 
-            then
-                return A.Marrowrend:Show(icon)
             end
             
             -- death_strike,if=runic_power.deficit<=(15+buff.dancing_rune_weapon.up*5+spell_targets.heart_strike*talent.heartbreaker.enabled*2)|Unit(unit):TimeToDie()<10
@@ -774,21 +754,31 @@ A[3] = function(icon, isMulti)
             then
                 return A.DeathandDecay:Show(icon)
             end
-			
-			--deaths_due,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.deathsdue>=2
-			if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Player:IsStayingTime() and
-			(
-				Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID,true) > 0
-				or
-				GetByRange(2, 15)
-			)
-			then
-				return A.DeathsDue:Show(icon)
-			end
+            
+            --deaths_due,if=buff.crimson_scourge.up|talent.rapid_decomposition.enabled|spell_targets.deathsdue>=2
+            if A.DeathsDue:IsSpellLearned() and A.DeathsDue:IsReadyByPassCastGCD(player) and Player:IsStayingTime() and
+            (
+                Unit(player):HasBuffs(A.CrimsonScourgeBuff.ID,true) > 0
+                or
+                GetByRange(2, 15)
+            )
+            then
+                return A.DeathsDue:Show(icon)
+            end
             
             -- consumption
             if A.Consumption:IsReady(unit) then
                 return A.Consumption:Show(icon)
+            end
+			
+			-- RaiseDead,BurstON,Use on CD
+            if A.RaiseDead:IsReadyByPassCastGCD(player) and A.BurstIsON(unit) then
+                return A.RaiseDead:Show(icon)
+            end
+			
+			--SacrificialPact,IF <= 4 enemies OR player=ToggleHP
+			if A.SacrificialPact:GetCooldown() > 0 and A.RaiseDead:GetCooldown() > 70 and MultiUnits:GetByRange(10) >= 4 then
+				return A.SacrificialPact:Show(icon)
             end
             
             -- blood_boil
@@ -876,9 +866,14 @@ A[3] = function(icon, isMulti)
                 end
             end
             
-            -- SwarmingMist
-            if A.SwarmingMist:IsReady(Unit) then
+            -- SwarmingMistVenthyr
+            if A.SwarmingMist:IsReady(Unit) and Unit(player):HasBuffs(A.SwarmingMist.ID,true) == 0 then
                 return A.SwarmingMist:Show(icon)
+            end
+            
+            -- ShackletheUnworthyKyrian
+            if A.ShackletheUnworthy:IsReady(unit) and Unit(unit):GetRange() > 8 and Unit(unit):GetRange() <= 30 and Unit(unit):HasDeBuffs(A.ShackletheUnworthy.ID, true) == 0 then
+                return A.ShackletheUnworthy:Show(icon)
             end
             
             -- Taunt (Updated by KhalDrogo1988)
@@ -1087,3 +1082,4 @@ A[8] = function(icon)
     end     
     return ArenaRotation(icon, "arena3")
 end
+
