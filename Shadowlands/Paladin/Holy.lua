@@ -245,7 +245,10 @@ local function RotationsVariables()
     WordofGloryHP = GetToggle(2, "WordofGloryHP")
     BestowFaithHP = GetToggle(2, "BestowFaithHP")
     HolyPrismHP = GetToggle(2, "HolyPrismHP")
-	LightofMartyrHP = GetToggle(2, "LightofMartyrHP")
+    LightofMartyrHP = GetToggle(2, "LightofMartyrHP")
+    LightofDawnHP = GetToggle(2, "LightofDawnHP")
+    LightofDawnUnits = GetToggle(2, "LightofDawnUnits")
+    UseLightofDawn = GetToggle(2, "UseLightofDawn")
     ForceGlimmerOnMaxUnits = GetToggle(2, "ForceGlimmerOnMaxUnits")
     -- Burst Settings from UI
     MythicPlusLogic = GetToggle(2, "MythicPlusLogic")
@@ -913,8 +916,8 @@ A[3] = function(icon, isMulti)
     if A.Zone ~= "arena" and not A.InstanceInfo.isRated then
         StatMultiplier = ((100 + Player:VersatilityDmgPct())/100)
     end
-	local HSMultiplier = 1
-	    if A.Zone == "arena" or A.InstanceInfo.isRated then
+    local HSMultiplier = 1
+    if A.Zone == "arena" or A.InstanceInfo.isRated then
         HSMultiplier = (((100 + Player:VersatilityDmgPct())/100) * 1.4)
     end
     if A.Zone ~= "arena" and not A.InstanceInfo.isRated then
@@ -955,7 +958,7 @@ A[3] = function(icon, isMulti)
             then 
                 return A.HammerofJustice:Show(icon)       
             end          
-			if useCC and A.HammerofJustice:IsReady(mouseover) and Unit(mouseover):GetRange() <= 10 and A.HammerofJustice:AbsentImun(mouseover, Temp.TotalAndPhysAndCC) and not Unit(mouseover):IsBoss() and IsUnitEnemy(mouseover) and not Unit(mouseover):IsDead() and Unit(mouseover):CanInterrupt(true, nil, 20, 85)
+            if useCC and A.HammerofJustice:IsReady(mouseover) and Unit(mouseover):GetRange() <= 10 and A.HammerofJustice:AbsentImun(mouseover, Temp.TotalAndPhysAndCC) and not Unit(mouseover):IsBoss() and IsUnitEnemy(mouseover) and not Unit(mouseover):IsDead() and Unit(mouseover):CanInterrupt(true, nil, 20, 85)
             then 
                 return A.HammerofJustice:Show(icon)     
             end
@@ -1044,7 +1047,7 @@ A[3] = function(icon, isMulti)
         
         --Blessing of Protection
         if A.BlessingofProtection:IsReady(unitID) and combatTime > 0 and not Unit(unitID):IsPet() and not Unit(unitID):IsTank() and not UnitIsUnit(unitID, player) and not Unit(unitID):IsDead() 
-        and Unit(unitID):HealthPercent() <= 30 and Unit(unitID):TimeToDieX(20) <= 3 and Unit(unitID):HasDeBuffs(A.OrbofPowerBlue.ID) == 0 and Unit(unitID):HasDeBuffs(A.OrbofPowerGreen.ID) == 0 
+        and Unit(unitID):HealthPercent() <= 30 and Unit(unitID):TimeToDieX(20) <= 4 and Unit(unitID):HasDeBuffs(A.OrbofPowerBlue.ID) == 0 and Unit(unitID):HasDeBuffs(A.OrbofPowerGreen.ID) == 0 
         and Unit(unitID):HasDeBuffs(A.OrbofPowerPurple.ID) == 0 and Unit(unitID):HasDeBuffs(A.OrbofPowerOrange.ID) == 0 
         and not Unit(unitID):HasFlags() then
             return A.BlessingofProtection:Show(icon)
@@ -1062,103 +1065,16 @@ A[3] = function(icon, isMulti)
                 return A.AuraMastery:Show(icon)
             end    
         end    
-
+        
         --Holy Light Infusion proc
         if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.DivineFavor.ID, true) > 0 and Unit(unitID):HealthDeficit() >= ((WordofGloryHP/1.211) * 1.3 * AvengingWrathMultiplier * StatMultiplier * 2) and not Unit(unitID):IsDead() and Unit(player):HasBuffs(A.InfusionofLightBuff.ID, true) > 2.3 + GetCurrentGCD() and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= HolyLightHP and Unit(player):GetCurrentSpeed() == 0 then
             return A.HolyLight:Show(icon)
         end    
-
+        
         --Holy Light no infusion
         if A.HolyLight:IsReady(unitID) and Unit(player):HasBuffs(A.DivineFavor.ID, true) > 0 and Unit(unitID):HealthDeficit() >= ((WordofGloryHP/1.211) * AvengingWrathMultiplier * StatMultiplier * 2) and not Unit(unitID):IsDead() and A.HolyLight:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= HolyLightHP and Unit(player):GetCurrentSpeed() == 0 then
             return A.HolyLight:Show(icon)
         end    
-        
-        --Word of Glory - Emergency
-        if A.WordofGlory:IsReady(unitID) and not Unit(unitID):IsDead() and Unit(unitID):HealthPercent() <= 30 and A.WordofGlory:PredictHeal(unitID) then
-            return A.WordofGlory:Show(icon)
-        end
-        
-        --Holy Shock - Emergency
-        if A.HolyShock:IsReady(unitID) and not Unit(unitID):IsDead() and Unit(unitID):HealthPercent() <= 30 and A.HolyShock:PredictHeal(unitID) then
-            return A.HolyShock:Show(icon)
-        end
-        
-        if not Action.InstanceInfo.isRated or Action.InstanceInfo.isRated and (Unit(unitID):HealthPercent() >= 30 or Unit(unitID):HealthPercent() < 30 and not A.HolyShock:IsReady() and not A.WordofGlory:IsReady()) then
-            
-            -- Dispel Sniper
-            if A.Cleanse:IsReady() and A.GetToggle(2, "DispelSniper") then
-                for i = 1, #getmembersAll do 
-                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") 
-                    and (Unit(getmembersAll[i].Unit):HasDeBuffs(316099, true) == 0 or not A.CleanseTheWeak:IsTalentLearned() and Unit(getmembersAll[i].Unit):HasDeBuffs(316099, true) > 0 and Unit(player):HealthPercent() >= 90 or A.CleanseTheWeak:IsTalentLearned() and Unit(getmembersAll[i].Unit):HasDeBuffs(316099, true) > 0 and Unit(player):HealthPercent() >= 90 and HealingEngine.GetDeBuffsCount(316099) <= 1) then  
-                        HealingEngine.SetTarget(getmembersAll[i].Unit, 0.3)                                      
-                    end                
-                end
-            end
-            
-            if A.BlessingofFreedom:IsReady() and A.GetToggle(2, "DispelSniper") then
-                for i = 1, #getmembersAll do 
-                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HasBuffs(A.BlessingofFreedom.ID) == 0 
-                    and AuraIsValid(getmembersAll[i].Unit, true, "BlessingofFreedom") then  
-                        HealingEngine.SetTarget(getmembersAll[i].Unit, 0.3)                                      
-                    end                
-                end
-            end
-            
-            
-            
-            -- #1 HPvE Dispel
-            if A.Cleanse:IsReady(unitID) and
-            useDispel and (Unit(unitID):HasDeBuffs(316099, true) == 0 or not A.CleanseTheWeak:IsTalentLearned() and Unit(unitID):HasDeBuffs(316099, true) > 0 and Unit(player):HealthPercent() >= 90 or A.CleanseTheWeak:IsTalentLearned() and Unit(unitID):HasDeBuffs(316099, true) > 0 and Unit(player):HealthPercent() >= 90 and HealingEngine.GetDeBuffsCount(316099) <= 1) and
-            (
-                -- MouseOver
-                (
-                    A.GetToggle(2, "mouseover") and
-                    Unit("mouseover"):IsExists() and 
-                    MouseHasFrame() and                      
-                    not IsUnitEnemy("mouseover") and         
-                    AuraIsValid(mouseover, "UseDispel", "Dispel")
-                ) or 
-                (
-                    (
-                        not A.GetToggle(2, "mouseover") or 
-                        not Unit("mouseover"):IsExists() or 
-                        IsUnitEnemy("mouseover")
-                    ) and        
-                    not IsUnitEnemy("target") and A.GetToggle(2, "DispelSniper") and
-                    AuraIsValid(target, "UseDispel", "Dispel")
-                )
-            )
-            then
-                return A.Cleanse:Show(icon)
-            end        
-            
-            -- #2 HPvE BoF
-            if A.BlessingofFreedom:IsReady(unitID) and Unit(unitID):HasBuffs(A.BlessingofFreedom.ID) == 0 and
-            useUtils and
-            (
-                -- MouseOver
-                (
-                    A.GetToggle(2, "mouseover") and
-                    Unit("mouseover"):IsExists() and 
-                    MouseHasFrame() and                      
-                    not IsUnitEnemy("mouseover") and         
-                    AuraIsValid(mouseover, true, "BlessingofFreedom")
-                ) or 
-                (
-                    (
-                        not A.GetToggle(2, "mouseover") or 
-                        not Unit("mouseover"):IsExists() or 
-                        IsUnitEnemy("mouseover")
-                    ) and        
-                    not IsUnitEnemy("target") and A.GetToggle(2, "DispelSniper") and
-                    AuraIsValid(target, true, "BlessingofFreedom")
-                )
-            )
-            then
-                return A.BlessingofFreedom:Show(icon)
-            end        
-            
-        end
         
         -- Beacon of Light - Self
         if A.BeaconofLight:IsReady() and BeaconWorkMode == "Self" then
@@ -1240,10 +1156,6 @@ A[3] = function(icon, isMulti)
         end
         
         --Word of Glory at 5 HP
-		if A.LightofDawn:IsReady(player) and HealingEngine.GetBelowHealthPercentUnits(90, 10) >= 4 then
-			return A.LightofDawn:Show(icon)
-		end
-
         if A.WordofGlory:IsReady(unitID) and not Unit(unitID):IsDead() and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthDeficit() >= (WordofGloryHP * StatMultiplier * AvengingWrathMultiplier) and Player:HolyPower() >= 5 then
             return A.WordofGlory:Show(icon)
         end
@@ -1262,18 +1174,98 @@ A[3] = function(icon, isMulti)
             return A.WordofGlory:Show(icon)
         end
         
-		if A.ArcaneTorrent:IsReady(player) and not Unit(player):IsDead() and Player:HolyPower() == 2 and combatTime > 0 then
-			return A.ArcaneTorrent:Show(icon)
-		end
-		
-		if A.HolyShock:IsReady(unitID) and not Unit(unitID):IsDead() and A.HolyShock:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and combatTime == 0 then
+        if A.LightofDawn:IsReady(unitID) and not Unit(unitID):IsDead() and A.LightofDawn:PredictHeal(unitID) and TeamCacheFriendlyType == "raid" and UseLightofDawn and HealingEngine.GetBelowHealthPercentUnits(LightofDawnHP, 15) >= LightofDawnUnits then
+            return A.LightofDawn:Show(icon)
+        end
+        
+        
+        if not Action.InstanceInfo.isRated or Action.InstanceInfo.isRated and (Unit(unitID):HealthPercent() >= 30 or Unit(unitID):HealthPercent() < 30 and not A.HolyShock:IsReady() and not A.WordofGlory:IsReady()) then
+            
+            -- Dispel Sniper
+            if A.Cleanse:IsReady() and A.GetToggle(2, "DispelSniper") then
+                for i = 1, #getmembersAll do 
+                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and AuraIsValid(getmembersAll[i].Unit, "UseDispel", "Dispel") 
+                    and (Unit(getmembersAll[i].Unit):HasDeBuffs(342938, true) == 0 or not A.CleanseTheWeak:IsTalentLearned() and Unit(getmembersAll[i].Unit):HasDeBuffs(342938, true) > 0 and Unit(player):HealthPercent() >= 90 or A.CleanseTheWeak:IsTalentLearned() and Unit(getmembersAll[i].Unit):HasDeBuffs(342938, true) > 0 and Unit(player):HealthPercent() >= 90 and HealingEngine.GetDeBuffsCount(342938) <= 1) then  
+                        HealingEngine.SetTarget(getmembersAll[i].Unit, 0.3)                                      
+                    end                
+                end
+            end
+            
+            if A.BlessingofFreedom:IsReady() and A.GetToggle(2, "DispelSniper") then
+                for i = 1, #getmembersAll do 
+                    if Unit(getmembersAll[i].Unit):GetRange() <= 40 and not Unit(getmembersAll[i].Unit):IsDead() and Unit(getmembersAll[i].Unit):HasBuffs(A.BlessingofFreedom.ID) == 0 
+                    and AuraIsValid(getmembersAll[i].Unit, true, "BlessingofFreedom") then  
+                        HealingEngine.SetTarget(getmembersAll[i].Unit, 0.3)                                      
+                    end                
+                end
+            end
+            
+            -- #1 HPvE Dispel
+            if A.Cleanse:IsReady(unitID) and
+            useDispel and (Unit(unitID):HasDeBuffs(342938, true) == 0 or not A.CleanseTheWeak:IsTalentLearned() and Unit(unitID):HasDeBuffs(342938, true) > 0 and Unit(player):HealthPercent() >= 90 or A.CleanseTheWeak:IsTalentLearned() and Unit(unitID):HasDeBuffs(342938, true) > 0 and Unit(player):HealthPercent() >= 90 and HealingEngine.GetDeBuffsCount(342938) <= 1) and
+            (
+                -- MouseOver
+                (
+                    A.GetToggle(2, "mouseover") and
+                    Unit("mouseover"):IsExists() and 
+                    MouseHasFrame() and                      
+                    not IsUnitEnemy("mouseover") and         
+                    AuraIsValid(mouseover, "UseDispel", "Dispel")
+                ) or 
+                (
+                    (
+                        not A.GetToggle(2, "mouseover") or 
+                        not Unit("mouseover"):IsExists() or 
+                        IsUnitEnemy("mouseover")
+                    ) and        
+                    not IsUnitEnemy("target") and A.GetToggle(2, "DispelSniper") and
+                    AuraIsValid(target, "UseDispel", "Dispel")
+                )
+            )
+            then
+                return A.Cleanse:Show(icon)
+            end        
+            
+            -- #2 HPvE BoF
+            if A.BlessingofFreedom:IsReady(unitID) and Unit(unitID):HasBuffs(A.BlessingofFreedom.ID) == 0 and
+            useUtils and
+            (
+                -- MouseOver
+                (
+                    A.GetToggle(2, "mouseover") and
+                    Unit("mouseover"):IsExists() and 
+                    MouseHasFrame() and                      
+                    not IsUnitEnemy("mouseover") and         
+                    AuraIsValid(mouseover, true, "BlessingofFreedom")
+                ) or 
+                (
+                    (
+                        not A.GetToggle(2, "mouseover") or 
+                        not Unit("mouseover"):IsExists() or 
+                        IsUnitEnemy("mouseover")
+                    ) and        
+                    not IsUnitEnemy("target") and A.GetToggle(2, "DispelSniper") and
+                    AuraIsValid(target, true, "BlessingofFreedom")
+                )
+            )
+            then
+                return A.BlessingofFreedom:Show(icon)
+            end        
+            
+        end
+        
+        if A.ArcaneTorrent:IsReady(player) and not Unit(player):IsDead() and Player:HolyPower() == 2 and combatTime > 0 then
+            return A.ArcaneTorrent:Show(icon)
+        end
+        
+        if A.HolyShock:IsReady(unitID) and not Unit(unitID):IsDead() and A.HolyShock:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and combatTime == 0 then
             return A.HolyShock:Show(icon)
         end
-		
-		if A.WordofGlory:IsReady(unitID) and not Unit(unitID):IsDead() and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and combatTime == 0 then
+        
+        if A.WordofGlory:IsReady(unitID) and not Unit(unitID):IsDead() and A.WordofGlory:PredictHeal(unitID) and Unit(unitID):HealthPercent() <= 90 and combatTime == 0 then
             return A.WordofGlory:Show(icon)
         end
-	
+        
         if A.GlimmerofLight:IsTalentLearned() and GlimmerofLightCount < 8 and ForceGlimmerOnMaxUnits and HealingEngine.GetBelowHealthPercentUnits(95, 40) < 1 then
             if (IsInGroup() or A.IsInPvP or IsInRaid()) then
                 for i = 1, #getmembersAll do 
@@ -1298,7 +1290,7 @@ A[3] = function(icon, isMulti)
             return A.BestowFaith:Show(icon)
         end    
         
-        if A.DivineFavor:IsTalentLearned() and Unit(unitID):HealthDeficit() >= ((WordofGloryHP/1.211) * AvengingWrathMultiplier * StatMultiplier * 2) and A.DivineFavor:IsReady(player) then
+        if A.DivineFavor:IsTalentLearned() and Unit(unitID):GetRange() <= 40 and Unit(unitID):HealthDeficit() >= ((WordofGloryHP/1.211) * AvengingWrathMultiplier * StatMultiplier * 2) and A.DivineFavor:IsReady(player) then
             return A.DivineFavor:Show(icon)
         end
         
@@ -1427,7 +1419,7 @@ A[3] = function(icon, isMulti)
     end  
     
     -- Cleanse Mouseover 
-    if IsUnitFriendly(mouseover) and A.GetToggle(2, "mouseover") then 
+    if A.Cleanse:IsReady(mouseover) then 
         unitID = mouseover 
         
         if HealingRotation(unitID) then 

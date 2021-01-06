@@ -894,13 +894,23 @@ A.Data.ProfileUI = {
                 {
                     E = "Checkbox", 
                     DB = "ForceGlimmerOnMaxUnits",
-                    DBV = true,
+                    DBV = false,
                     L = { 
                         enUS = "Use\nGlimmer\nSpread",
                         ruRU = "Включить\nПассивную\nРотацию" 
                     },
                     M = {},
                 },           
+				{
+                    E = "Checkbox", 
+                    DB = "UseLightofDawn",
+                    DBV = false,
+                    L = { 
+                        enUS = "Use\nLight\nOf\nDawn",
+                        ruRU = "Включить\nПассивную\nРотацию" 
+                    },
+                    M = {},
+                },       
             },     
             { -- [7] 
                 {
@@ -919,7 +929,7 @@ A.Data.ProfileUI = {
                     DBV = 70,
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(19750) .. " (%)",
+                        ANY = A.GetSpellInfo(19750) .. " (%HP)",
                     }, 
                     M = {},
                 },
@@ -931,7 +941,7 @@ A.Data.ProfileUI = {
                     DBV = 90,
                     ONOFF = true,
                     L = { 
-                        ANY = A.GetSpellInfo(82326) .. " (%)",
+                        ANY = A.GetSpellInfo(82326) .. " (%HP)",
                     }, 
                     M = {},
                 },
@@ -999,6 +1009,30 @@ A.Data.ProfileUI = {
                     }, 
                     M = {},
                 },
+				{
+                    E = "Slider",                                                     
+                    MIN = 3, 
+                    MAX = 10,                            
+                    DB = "LightofDawnUnits",
+                    DBV = 4,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(85222) .. " (# Players < HP %)",
+                    }, 
+                    M = {},
+                },
+				{
+                    E = "Slider",                                                     
+                    MIN = 50, 
+                    MAX = 95,                            
+                    DB = "LightofDawnHP",
+                    DBV = 90,
+                    ONOFF = false,
+                    L = { 
+                        ANY = A.GetSpellInfo(85222) .. " (%HP)",
+                    }, 
+                    M = {},
+                },				
             },    
             { -- [7]
                 {
