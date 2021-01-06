@@ -331,7 +331,7 @@ A[3] = function(icon, isMulti)
 				return A.RuneofPower:Show(icon)
 			end
 			
-			if A.DragonsBreath:IsReady(player) and MultiUnits:GetByRange(10, 3) >= 3 then
+			if A.DragonsBreath:IsReady(player) and UseAoE and MultiUnits:GetByRange(10, 3) >= 3 then
 				return A.DragonsBreath:Show(icon)
 			end
 			
@@ -353,7 +353,7 @@ A[3] = function(icon, isMulti)
 				return A.FireBlast:Show(icon)
 			end
 			
-			if A.Flamestrike:IsReady(player) and ((MultiUnits:GetActiveEnemies() >= 2 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 3) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
+			if A.Flamestrike:IsReady(player) and UseAoE and ((MultiUnits:GetActiveEnemies() >= 2 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 3) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
 				A.Toaster:SpawnByTimer("TripToast", 0, "Flamestrike!", "Keep your cursor on your enemies!", A.Flamestrike.ID)				
 				return A.Flamestrike:Show(icon)
 			end
@@ -370,7 +370,7 @@ A[3] = function(icon, isMulti)
 				return A.Scorch:Show(icon)
 			end
 			
-			if A.Flamestrike:IsReady(player) and A.FlamePatch:IsTalentLearned() and not isMoving and MultiUnits:GetActiveEnemies() >= 2 and Player:AreaTTD(40) >= 10 then
+			if A.Flamestrike:IsReady(player) and UseAoE and A.FlamePatch:IsTalentLearned() and not isMoving and MultiUnits:GetActiveEnemies() >= 2 and Player:AreaTTD(40) >= 10 then
 				A.Toaster:SpawnByTimer("TripToast", 0, "Hardcasting Flamestrike!", "Calculated to be worth it to hardcast right now!", A.Flamestrike.ID)	
 				return A.Flamestrike:Show(icon)
 			end
@@ -417,7 +417,7 @@ A[3] = function(icon, isMulti)
 				return A.Pyroblast:Show(icon)
 			end
 			
-			if A.Flamestrike:IsReady(unit) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 and ((MultiUnits:GetActiveEnemies() >= 3 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 6) then
+			if A.Flamestrike:IsReady(unit) and UseAoE and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 and ((MultiUnits:GetActiveEnemies() >= 3 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 6) then
 				A.Toaster:SpawnByTimer("TripToast", 0, "Flamestrike!", "Keep your cursor on your enemies!", A.Flamestrike.ID)
 				return A.Flamestrike:Show(icon)
 			end
