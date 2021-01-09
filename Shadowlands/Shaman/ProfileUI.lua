@@ -709,44 +709,6 @@ A.Data.ProfileUI = {
             },
 			{
                 {
-                    E = "Checkbox", 
-                    DB = "SkybreakersFieryDemise",
-                    DBV = true,
-                    L = { 
-                        ANY = "Skybreaker's Fiery Demise",
-                    }, 
-                    TT = { 
-                        ANY = "Skybreaker's Fiery Demise Legendary Equipped",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "EchoesofGreatSundering",
-                    DBV = true,
-                    L = { 
-                        ANY = "Echoes of Great Sundering",
-                    }, 
-                    TT = { 
-                        ANY = "Echoes of Great Sundering Legendary Equipped",
-                    }, 
-                    M = {},
-                },
-                {
-                    E = "Checkbox", 
-                    DB = "DeeptremorStone",
-                    DBV = true,
-                    L = { 
-                        ANY = "Deeptremor Stone",
-                    }, 
-                    TT = { 
-                        ANY = "Deeptremor Stone Legendary Equipped",
-                    }, 
-                    M = {},
-                },
-			},
-			{
-                {
                     E = "Slider",                                                     
                     MIN = 1, 
                     MAX = 5,                            
@@ -778,7 +740,7 @@ A.Data.ProfileUI = {
                     MIN = -1, 
                     MAX = 100,                            
                     DB = "AstralShiftHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
+                    DBV = 50, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
                         ANY = GetSpellInfo(108271) .. " (%)",
@@ -790,13 +752,25 @@ A.Data.ProfileUI = {
                     MIN = -1, 
                     MAX = 100,                            
                     DB = "HealingSurgeHP",
-                    DBV = 100, -- Set healthpercentage @60% life. 
+                    DBV = 40, -- Set healthpercentage @60% life. 
                     ONOFF = true,
                     L = { 
                         ANY = GetSpellInfo(8004) .. " (%)",
                     }, 
                     M = {},
                 },
+                {
+                    E = "Slider",                                                     
+                    MIN = -1, 
+                    MAX = 100,                            
+                    DB = "EarthShieldHP",
+                    DBV = 40, -- Set healthpercentage @60% life. 
+                    ONOFF = true,
+                    L = { 
+                        ANY = "Earth Shield HP (%)",
+                    }, 
+                    M = {},
+                },				
             },
         },
         [ACTION_CONST_SHAMAN_RESTORATION] = {

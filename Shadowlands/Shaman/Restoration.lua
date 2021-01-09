@@ -300,6 +300,10 @@ A[3] = function(icon, isMulti)
 			return A.FaeTransfusion:Show(icon)
 		end
 		
+		if A.EarthElemental:IsReady(unitID) and BurstIsON(unitID) and Unit(unitID):IsBoss() then
+			return A.EarthElemental:Show(icon)
+		end
+		
 		-- LavaBurst
         if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and A.LavaBurst:AbsentImun(unitID, Temp.TotalAndMag) and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 then 
             return A.LavaBurst:Show(icon)
@@ -329,7 +333,7 @@ A[3] = function(icon, isMulti)
 	
 		--Earth Shield on tank
 		local CurrentTanks = A.HealingEngine.GetMembersByMode("TANK")
-        if not A.IsInPvP and A.EarthShield:IsReady() and EarthShieldWorkMode == "Tanking Units" and A.LastPlayerCastID ~= A.EarthShield.ID and ActiveEarthShieldOnTank() == 0 then
+        if not A.IsInPvP and A.EarthShield:IsReady() and EarthShieldWorkMode == "Tanking Units" and A.LastPlayerCastID ~= A.EarthShield.ID and ActiveEarthShieldOnTank() == 0 and HealingEngine.GetBelowHealthPercentUnits(30, 40) < 1 then
             for i = 1, #CurrentTanks do 
                 if Unit(CurrentTanks[i].Unit):GetRange() <= 40 then 
                       if Unit(CurrentTanks[i].Unit):IsPlayer() and Unit(CurrentTanks[i].Unit):HasBuffsStacks(A.EarthShield.ID, true) < 2 then                       
@@ -341,7 +345,7 @@ A[3] = function(icon, isMulti)
         end
 		
 		--Earth Shield on most incoming damage
-        if inCombat and A.EarthShield:IsReady(unitID) then  
+        if inCombat and A.EarthShield:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(30, 40) < 1 then  
 		    if EarthShieldWorkMode == "Mostly Inc. Damage"  then
                 HealingEngine.SetTargetMostlyIncDMG(1) 			 
 				if Unit(unitID):HasBuffsStacks(A.EarthShield.ID, true) <= 2 and Unit(unitID):HasBuffs(A.WaterShield.ID, true) == 0 and Unit(unitID):HasBuffs(A.LightningShield.ID, true) == 0 then 		
@@ -397,13 +401,13 @@ A[3] = function(icon, isMulti)
 		
 		--Healing Tide Totem
 		if DungeonGroup then
-			if A.HealingTideTotem:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(50, 40) >= 4 and Player:IsStayingTime() > 0.5 and A.SpiritLinkTotem:GetSpellTimeSinceLastCast() > 6 then
+			if A.HealingTideTotem:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(50, 40) >= 3 and Player:IsStayingTime() > 0.5 then
 				return A.HealingTideTotem:Show(icon)
 			end
 		end
 		
 		if RaidGroup then
-			if A.HealingTideTotem:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(50, 40) >= 10 and Player:IsStayingTime() > 0.5 and A.SpiritLinkTotem:GetSpellTimeSinceLastCast() > 6 then
+			if A.HealingTideTotem:IsReady(unitID) and HealingEngine.GetBelowHealthPercentUnits(50, 40) >= 7 and Player:IsStayingTime() > 0.5 then
 				return A.HealingTideTotem:Show(icon)
 			end
 		end
@@ -471,7 +475,7 @@ A[3] = function(icon, isMulti)
 		end
 		
 		--Chain Heal
-		if A.ChainHeal:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and HealingEngine.GetBelowHealthPercentUnits(ChainHealHP, 40) >= ChainHealTargets and Unit(player):HasBuffsStacks(A.TidalWavesBuff.ID, true) < 2 and Unit(unitID):HealthPercent() > 20 and not isMoving then
+		if A.ChainHeal:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and HealingEngine.GetBelowHealthPercentUnits(ChainHealHP, 40) >= ChainHealTargets and Unit(player):HasBuffsStacks(A.TidalWavesBuff.ID, true) < 2 and Unit(unitID):HealthPercent() > 30 and not isMoving then
 			return A.ChainHeal:Show(icon)
 		end
 		
