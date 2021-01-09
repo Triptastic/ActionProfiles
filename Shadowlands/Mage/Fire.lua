@@ -78,7 +78,8 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     RemoveCurse		     		= Action.Create({ Type = "Spell", ID = 475		}),
     SlowFall		     		= Action.Create({ Type = "Spell", ID = 130		}),
     Spellsteal		     		= Action.Create({ Type = "Spell", ID = 30449	}),
-    TimeWarp		     		= Action.Create({ Type = "Spell", ID = 80353	}),	
+    TimeWarp		     		= Action.Create({ Type = "Spell", ID = 80353	}),
+    AlterTime		     		= Action.Create({ Type = "Spell", ID = 108978	}),	
 
 	--Fire Spells
     BlazingBarrier	     		= Action.Create({ Type = "Spell", ID = 235313	}),
@@ -91,6 +92,7 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     Pyroblast		     		= Action.Create({ Type = "Spell", ID = 11366	}),	
     Scorch			     		= Action.Create({ Type = "Spell", ID = 2948		}),	
     Cauterize		     		= Action.Create({ Type = "Spell", ID = 86949, Hidden = true		}),	
+    CauterizeDebuff	     		= Action.Create({ Type = "Spell", ID = 87024, Hidden = true		}),		
     CriticalMass	     		= Action.Create({ Type = "Spell", ID = 117216, Hidden = true	}),	
     HotStreak		     		= Action.Create({ Type = "Spell", ID = 195283, Hidden = true	}),
     HotStreakBuff	     		= Action.Create({ Type = "Spell", ID = 48108, Hidden = true		}),		
@@ -106,7 +108,7 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     IncantersFlow	     		= Action.Create({ Type = "Spell", ID = 1463, Hidden = true		}),
     FocusMagic		     		= Action.Create({ Type = "Spell", ID = 321358	}),	
     RuneofPower	     			= Action.Create({ Type = "Spell", ID = 116011	}),
-    RuneofPowerBuff    			= Action.Create({ Type = "Spell", ID = 116014	}),	
+    RuneofPowerBuff    			= Action.Create({ Type = "Spell", ID = 116014, Hidden = true	}),	
     FlameOn			     		= Action.Create({ Type = "Spell", ID = 205029, Hidden = true	}),	
     AlexstraszasFury     		= Action.Create({ Type = "Spell", ID = 235870, Hidden = true	}),	
     FromtheAshes	     		= Action.Create({ Type = "Spell", ID = 342344, Hidden = true	}),
@@ -118,10 +120,11 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     LivingBomb		     		= Action.Create({ Type = "Spell", ID = 44457	}),	
     Kindling		     		= Action.Create({ Type = "Spell", ID = 155148, Hidden = true	}),
     Pyroclasm		     		= Action.Create({ Type = "Spell", ID = 269650, Hidden = true	}),	
+    PyroclasmBuff	     		= Action.Create({ Type = "Spell", ID = 269651, Hidden = true	}),		
     Meteor			     		= Action.Create({ Type = "Spell", ID = 153561	}),	
 
 	--PvP Talents
-	--Later
+    GreaterPyroblast     		= Action.Create({ Type = "Spell", ID = 203286	}),		
 
 	--Covenant Abilities
     RadiantSpark				= Action.Create({ Type = "Spell", ID = 307443	}),
@@ -158,10 +161,7 @@ Action[ACTION_CONST_MAGE_FIRE] = {
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
     SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
-	
-	-- Borrowed Bindings
-	Darkflight						= Action.Create({ Type = "Spell", ID = 68992 }), -- used for AoE Combust	
-	RocketJump						= Action.Create({ Type = "Spell", ID = 69070 }), -- used for ST Combust	
+
 }
 local A = setmetatable(Action[ACTION_CONST_MAGE_FIRE], { __index = Action })
 
@@ -175,10 +175,7 @@ end
 
 local player = "player"
 local target = "target"
-
-------------------------------------------
----------- FIRE PRE APL SETUP -----------
-------------------------------------------
+local mouseover = "mouseover"
 
 local Temp = {
     TotalAndPhys                            = {"TotalImun", "DamagePhysImun"},
@@ -189,6 +186,7 @@ local Temp = {
     TotalAndPhysAndCCAndStun                = {"TotalImun", "DamagePhysImun", "CCTotalImun", "StunImun"},
     TotalAndMag                             = {"TotalImun", "DamageMagicImun"},
 	TotalAndMagKick                         = {"TotalImun", "DamageMagicImun", "KickImun"},
+    TotalAndMagAndCC                        = {"TotalImun", "DamageMagicImun", "CCTotalImun"},	
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
 }
@@ -205,6 +203,24 @@ local function InRange(unit)
 end 
 InRange = A.MakeFunctionCachedDynamic(InRange)
 
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+        local title, message, spellID = ...
+        toast:SetTitle(title or "nil")
+        toast:SetText(message or "nil")
+        if spellID then 
+            if type(spellID) ~= "number" then 
+                error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+                toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+            else 
+                toast:SetIconTexture((GetSpellTexture(spellID)))
+            end 
+        else 
+            toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+        end 
+        toast:SetUrgencyLevel("normal") 
+end)
+
 
 -- Non GCD spell check
 local function countInterruptGCD(unit)
@@ -213,38 +229,25 @@ local function countInterruptGCD(unit)
 	end
 end
 
--- Interrupts spells
-local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-	    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-	else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
+function Player:AreaTTD(range)
+    local ttdtotal = 0
+	local totalunits = 0
+    local r = range
     
-	if castRemainsTime >= A.GetLatency() then
-        -- CounterSpell
-        if useKick and not notInterruptable and A.CounterSpell:IsReady(unit) then 
-            return A.CounterSpell
-        end
-		    
-   	    if useRacial and A.QuakingPalm:AutoRacial(unit) then 
-   	        return A.QuakingPalm
-   	    end 
+	for _, unitID in pairs(ActiveUnitPlates) do 
+		if Unit(unitID):GetRange() <= r then 
+			local ttd = Unit(unitID):TimeToDie()
+			totalunits = totalunits + 1
+			ttdtotal = ttd + ttdtotal
+		end
+	end
     
-   	    if useRacial and A.Haymaker:AutoRacial(unit) then 
-            return A.Haymaker
-   	    end 
+	if totalunits == 0 then
+		return 0
+	end
     
-   	    if useRacial and A.WarStomp:AutoRacial(unit) then 
-            return A.WarStomp
-   	    end 
-    
-   	    if useRacial and A.BullRush:AutoRacial(unit) then 
-            return A.BullRush
-   	    end 
-    end
-end
-
+	return ttdtotal / totalunits
+end	
 
 --- ======= ACTION LISTS =======
 -- [3] Single Rotation
@@ -259,118 +262,283 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit(player):CombatTime()
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods_Pulling()
-    local DBM = Action.GetToggle(1, "DBM")
-    local HeartOfAzeroth = Action.GetToggle(1, "HeartOfAzeroth")
-    local Racial = Action.GetToggle(1, "Racial")
-    local Potion = Action.GetToggle(1, "Potion")
-	local Covenant = Action.GetToggle(1, "Covenant")
-	local UseAoE = Action.GetToggle(2, "AoE")
+    local DBM = A.GetToggle(1, "DBM")
+    local UseRacial = A.GetToggle(1, "Racial")
+    local UsePotion = A.GetToggle(1, "Potion")
+	local UseCovenant = A.GetToggle(1, "Covenant")
+	local UseAoE = A.GetToggle(2, "AoE")
+	local UseArcaneIntellect = A.GetToggle(2, "ArcaneIntellect")
 
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
-    local function EnemyRotation(unit)
+    local function EnemyRotation(unitID)
 	
-		local function NoCombust(unitID)
-	
-			if A.RuneofPower:IsReady(player) and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and A.Combustion:GetCooldown() > 10 then
-				return A.RuneofPower:Show(icon)
-			end	
+		local function Interrupt()
+		local EnemiesCasting = MultiUnits:GetByRangeCasting(10, 5, true)
 
-			if A.Combustion:IsReady(player) and A.PhoenixFlames:GetSpellChargesFrac() >= 2.9 and ((A.FireBlast:GetSpellChargesFrac() >= 1.9 and not A.FlameOn:IsTalentLearned()) or (A.FireBlast:GetSpellChargesFrac() >= 2.9 and A.FlameOn:IsTalentLearned())) and A.BurstIsON then
-				return A.Combustion:Show(icon)
-			end	
-
-			-- Covenant
-			if A.RadiantSpark:IsReady(unitID) and Covenant then
-				return A.RadiantSpark:Show(icon)
-			end	
-		
-			if A.MirrorsofTorment:IsReady(unitID) and Covenant then
-				return A.MirrorsofTorment:Show(icon)
-			end	
-		
-			if A.Deathborne:IsReady(unitID) and Covenant then
-				return A.Deathborne:Show(icon)
-			end	
-			
-			if A.ShiftingPower:IsReady(player) and A.Combustion:GetCooldown() > 4 and A.RuneofPower:GetCooldown() > 4 and A.FireBlast:GetSpellChargesFrac() < 1.5 and A.PhoenixFlames:GetSpellChargesFrac() < 1.5 and not isMoving then
-				return A.ShiftingPower:Show(icon)
-			end	
-
-			if A.Pyroblast:IsReady(unitID) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
-				return A.Pyroblast:Show(icon)
-			end	
-
-			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.FireBlast:GetSpellChargesFrac() > A.PhoenixFlames:GetSpellChargesFrac() and A.LastPlayerCastID ~= A.PhoenixFlames:Info() and ((A.Combustion:GetCooldown() > 10 and A.BurstIsON) or not A.BurstIsON) then
-				return A.FireBlast:Show(icon)
-			end				
-
-			if A.Flamestrike:IsReady(player) and A.FlamePatch:IsTalentLearned() and MultiUnits:GetActiveEnemies() >= 2 and UseAoE then
-				return A.Flamestrike:Show(icon)
+			useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
+			if castRemainsTime >= A.GetLatency() then
+				if useKick and not notInterruptable and A.CounterSpell:IsReady(unit) then 
+					return A.CounterSpell:Show(icon)
+				end	
+				
+				if useKick and A.CounterSpell:GetCooldown() > 0 and EnemiesCasting > 1 and A.DragonsBreath:AbsentImun(unit, Temp.TotalAndMagAndCC, true) then
+					return A.DragonsBreath:Show(icon)
+				end
+				
 			end
-
-			if A.Scorch:IsReady(unitID) and A.SearingTouch:IsTalentLearned() and Unit(unit):HealthPercent() <= 30 and Unit(player):HasBuffs(A.HeatingUp.ID, true) == 0 then
-				return A.Scorch:Show(icon)
-			end	
-			
-			if A.Fireball:IsReady(unitID) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) == 0 then
-				return A.Fireball:Show(icon)
-			end	
-
-		end
+		end	
+	
+		local function Defensives()
 		
-		local function YesCombust(unitID)
-
-			if MultiUnits:GetActiveEnemies() >= 3 and UseAoE then
-				A.Toaster:SpawnByTimer("TripToast", 0, "Flamestrike Spam!", "Get your cursor ready!", A.Flamestrike.ID)
-				if A.Flamestrike:IsReady(player) and Unit(player):HasBuffs(A.HotStreak.ID, true) > 0 then
-					return A.Flamestrike:Show(icon)
+			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() and Unit(player):HasDeBuffs(A.CauterizeDebuff.ID, true) > 0 then
+				return A.IceBlock:Show(icon)
+			end
+			
+			local AlterTimeActive = A.AlterTime:GetSpellTimeSinceLastCast() < 10
+			if combatTime > 2 and Unit(unit):HealthPercentLosePerSecond() >= 10 and not AlterTimeActive then
+				return A.AlterTime:Show(icon)
+			end
+			
+			if AlterTimeActive and Unit(player):HealthPercent() <= 25 then
+				return A.AlterTime:Show(icon)
+			end
+		
+		end
+	
+		local function Opener()
+			
+			if Pull < (Player:Execute_Time(A.Pyroblast.ID) + A.GetGCD()) then
+				if A.MirrorImage:IsReady(unitID) and A.BurstIsON(unitID) then
+					return A.MirrorImage:Show(icon)
 				end
 			end
-			
-			if MultiUnits:GetActiveEnemies() == 1 or not UseAoE then
-				if A.Pyroblast:IsReady(player) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
+		
+			if Pull < (Player:Execute_Time(A.Pyroblast.ID) + A.GetGCD()) then
+				if A.Pyroblast:IsReady(unitID) then
 					return A.Pyroblast:Show(icon)
 				end
 			end
-
-			if A.FireBlast:IsReady(unitID, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.LastPlayerCastID ~= A.PhoenixFlames:Info() then
-				return A.FireBlast:Show(icon)
+		
+		end
+		
+		local function NoCombustion()
+		
+			if A.Combustion:IsReady(unit, nil, nil, true) and BurstIsON(unit) and A.FireBlast:GetSpellCharges() >= 2 and A.PhoenixFlames:GetSpellCharges() >= 2 and (A.Meteor:GetCooldown() > 2 or not A.Meteor:IsTalentLearned()) and (A.Firestarter:IsTalentLearned() and Unit(unit):HealthPercent() < 90 or not A.Firestarter:IsTalentLearned()) and (Player:AreaTTD(40) >= 20 or Unit(unit):IsBoss()) then
+				if combatTime > 5 then
+					if Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 then
+						return A.Combustion:Show(icon)
+					end
+				elseif combatTime <= 5 then
+					return A.Combustion:Show(icon)
+				end
 			end
-	
-			if A.PhoenixFlames:IsReady(unitID) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) == 0 and Unit(player):HasBuffs(A.HeatingUp.ID, true) == 0 then
+		
+			if A.MirrorImage:IsReady(player) and BurstIsON(unit) and Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 then
+				return A.MirrorImage:Show(icon)
+			end
+		
+			if A.GreaterPyroblast:IsReady(unit) and not isMoving then
+				return A.GreaterPyroblast:Show(icon)
+			end
+		
+			if A.RuneofPower:IsReady(player) and Player:IsStayingTime() > 0.2 and Player:AreaTTD(40) > 12 and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and (A.Combustion:GetCooldown() >= 10 or A.Firestarter:IsTalentLearned() and Unit(unit):HealthPercent() > 90) then
+				return A.RuneofPower:Show(icon)
+			end
+
+			if A.Flamestrike:IsReady(player) and UseAoE and ((MultiUnits:GetActiveEnemies() >= 2 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 3) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Flamestrike!", "Keep your cursor on your enemies!", A.Flamestrike.ID)				
+				return A.Flamestrike:Show(icon)
+			end
+			
+			if A.Pyroblast:IsReady(unit) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
+				return A.Pyroblast:Show(icon)
+			end
+			
+			if A.DragonsBreath:IsReady(player) and UseAoE and MultiUnits:GetByRange(10, 3) >= 3 then
+				return A.DragonsBreath:Show(icon)
+			end
+			
+			if A.LivingBomb:IsReady(unit) and MultiUnits:GetActiveEnemies() >= 2 then
+				return A.LivingBomb:Show(icon)
+			end
+			
+			if A.Pyroblast:IsReady(unit) and not isMoving and Unit(player):HasBuffs(A.PyroclasmBuff.ID, true) > Player:Execute_Time(A.Pyroblast.ID) and Unit(unit):TimeToDie() > Player:Execute_Time(A.Pyroblast.ID) and A.LastPlayerCastID ~= A.Pyroblast.ID then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Hardcasting!", "Hardcasting Pyroblast with Pyroclasm!", A.Pyroblast.ID)
+				return A.Pyroblast:Show(icon)
+			end
+			
+			if A.Meteor:IsReady(player) and (Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) or A.Combustion:GetCooldown() < A.GetGCD()) and Player:AreaTTD(40) > 10 then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Meteor!", "Using Meteor!", A.Meteor.ID)			
+				return A.Meteor:Show(icon)
+			end
+		
+			if A.PhoenixFlames:IsReady(unit) and (A.PhoenixFlames:GetSpellChargesFullRechargeTime() <= 2 or A.PhoenixFlames:GetSpellCharges() == A.PhoenixFlames:GetSpellChargesMax()) then
 				return A.PhoenixFlames:Show(icon)
 			end
-
-			if A.Scorch:IsReady(unitID) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) == 0 then
+			
+			if A.FireBlast:IsReady(unit, nil, nil, true) and (A.FireBlast:GetSpellChargesFullRechargeTime() <= 2 or A.FireBlast:GetSpellChargesFullRechargeTime() <= 4 and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 or A.FireBlast:GetSpellCharges() == A.FireBlast:GetSpellChargesMax()) and A.LastPlayerCastName ~= A.FireBlast:Info() then
+				return A.FireBlast:Show(icon)
+			end
+			
+			if A.FireBlast:IsReady(unit, nil, nil, true) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.Combustion:GetCooldown() >= A.FireBlast:GetSpellChargesFullRechargeTime() and A.LastPlayerCastName ~= A.FireBlast:Info() then
+				return A.FireBlast:Show(icon)
+			end
+			
+			if A.Scorch:IsReady(unit) and A.SearingTouch:IsTalentLearned() and Unit(unit):HealthPercent() <= 30 then
 				return A.Scorch:Show(icon)
+			end
+			
+			if A.Flamestrike:IsReady(player) and UseAoE and A.FlamePatch:IsTalentLearned() and not isMoving and MultiUnits:GetActiveEnemies() >= 2 and Player:AreaTTD(40) >= 20 then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Hardcasting Flamestrike!", "Calculated to be worth it to hardcast right now!", A.Flamestrike.ID)	
+				return A.Flamestrike:Show(icon)
+			end
+			
+			if A.Fireball:IsReady(unit) and not isMoving then
+				return A.Fireball:Show(icon)
+			end 
+			
+			if A.Scorch:IsReady(unit) and isMoving then
+				return A.Scorch:Show(icon)
+			end
+			
+			if A.FrostBolt:IsReady(unit) and not isMoving then
+				return A.FrostBolt:Show(icon)
+			end
+		
+		end
+		
+		local function Combustion()
+		
+			if A.Trinket1:IsReady(unitID) then
+				return A.Trinket1:Show(icon)
+			end
+			
+			if A.Trinket2:IsReady(unitID) then
+				return A.Trinket2:Show(icon)
+			end
+			
+			if A.Berserking:IsReady(player) and UseRacial then
+				return A.Berserking:Show(icon)
+			end
+			
+			if A.BloodFury:IsReady(player) and UseRacial then
+				return A.BloodFury:Show(icon)
+			end
+
+			if A.AncestralCall:IsReady(player) and UseRacial then
+				return A.AncestralCall:Show(icon)
+			end			
+		
+			if A.Meteor:IsReady(player) and (Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) or A.Combustion:GetCooldown() < A.GetGCD()) and Player:AreaTTD(40) > 10 then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Meteor!", "Using Meteor!", A.Meteor.ID)			
+				return A.Meteor:Show(icon)
+			end
+			
+			if A.Pyroblast:IsReady(unit) and not isMoving and Unit(player):HasBuffs(A.PyroclasmBuff.ID, true) > Player:Execute_Time(A.Pyroblast.ID) and Unit(unit):TimeToDie() < Player:Execute_Time(A.Pyroblast.ID) then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Hardcasting!", "Hardcasting Pyroblast with Pyroclasm!", A.Pyroblast.ID)
+				return A.Pyroblast:Show(icon)
+			end
+			
+			if A.Flamestrike:IsReady(player) and UseAoE and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 and ((MultiUnits:GetActiveEnemies() >= 3 and A.FlamePatch:IsTalentLearned()) or MultiUnits:GetActiveEnemies() >= 6) then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Flamestrike!", "Keep your cursor on your enemies!", A.Flamestrike.ID)
+				return A.Flamestrike:Show(icon)
+			end			
+			
+			if A.Pyroblast:IsReady(unit) and Unit(player):HasBuffs(A.HotStreakBuff.ID, true) > 0 then
+				return A.Pyroblast:Show(icon)
+			end
+		
+			if A.FireBlast:IsReady(unit) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.FireBlast:GetSpellCharges() == A.FireBlast:GetSpellChargesMax() and A.LastPlayerCastName ~= A.FireBlast:Info() then
+				return A.FireBlast:Show(icon)
 			end	
 
+			if A.PhoenixFlames:IsReady(unit) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.PhoenixFlames:GetSpellCharges() == A.PhoenixFlames:GetSpellChargesMax() then
+				return A.PhoenixFlames:Show(icon)
+			end		
+			
+			if A.FireBlast:IsReady(unit) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 and A.LastPlayerCastName ~= A.FireBlast:Info() then
+				return A.FireBlast:Show(icon)
+			end	
 
+			if A.PhoenixFlames:IsReady(unit) and Unit(player):HasBuffs(A.HeatingUp.ID, true) > 0 then
+				return A.PhoenixFlames:Show(icon)
+			end				
+
+			if A.Scorch:IsReady(unit) then
+				return A.Scorch:Show(icon)
+			end
+
+			if A.FrostBolt:IsReady(unit) and not isMoving then
+				return A.FrostBolt:Show(icon)
+			end			
 		
 		end
-
-		if A.BlazingBarrier:IsReady(player) and not inCombat then
-			return A.BlazingBarrier:Show(icon)
-		end
-
-		-- Hardcast Pyroblast opener
-		if not inCombat and DBM and Pull <= 4 and not isMoving then
-			return A.Pyroblast:Show(icon)
-		end
 		
-		if not inCombat and not DBM and not isMoving then
+		local function CovenantCall()
+		
+			if A.RadiantSpark:IsReady(unit) and Unit(unit):TimeToDie() >= 10 then
+				return A.RadiantSpark:Show(icon)
+			end
+			
+			if A.MirrorsofTorment:IsReady(unit) and not isMoving and ((Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and ((A.Combustion:GetCooldown() <= 3 and BurstIsON(unit)) or not BurstIsON(unit)) and Unit(unit):TimeToDie() >= 15) or A.Combustion:GetCooldown() >= Unit(unit):TimeToDie() and Unit(unit):IsBoss()) then
+				return A.MirrorsofTorment:Show(icon)
+			end
+			
+			if A.ShiftingPower:IsReady(player) and Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and A.FireBlast:GetSpellCharges() < 1.5 and Unit(unit):GetRange() <= 15 then
+				return A.ShiftingPower:Show(icon)
+			end
+			
+			if A.Deathborne:IsReady(unit) and ((Unit(player):HasBuffs(A.Combustion.ID, true) > 0 and Unit(unit):TimeToDie() >= 10) or A.Combustion:GetCooldown() >= Unit(unit):TimeToDie() and Unit(unit):IsBoss()) then
+				return A.Deathborne:Show(icon)
+			end
+		
+		end
+	
+	if A.BlazingBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.BlazingBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+		return A.BlazingBarrier:Show(icon)
+	end
+	
+	if not inCombat then
+		if A.IsInPvP then
+			if A.GreaterPyroblast:IsReady(unit) then
+				return A.GreaterPyroblast:Show(icon)
+			end
+		end
+	
+		if DBM and Opener() then
+			return true
+		elseif not DBM then
 			return A.Fireball:Show(icon)
-		end	
-		
-		if Unit(player):HasBuffs(A.Combustion.ID, true) > 0 and YesCombust() and inCombat then
-			return true
 		end
+	end
+	
+	if A.IsUnitEnemy(unitID) and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+		if inCombat then
 		
-		if Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and NoCombust() and inCombat then
-			return true
+			if Interrupt() then
+				return true
+			end
+			
+			if UseCovenant then
+				if CovenantCall() then
+					return true
+				end
+			end
+			
+			if Unit(player):HasBuffs(A.Combustion.ID, true) == 0 then
+				return NoCombustion()
+			end
+			
+			if Unit(player):HasBuffs(A.Combustion.ID, true) > 0 then
+				return Combustion()
+			end
 		end
+	end
+		
+				
+	
 	
 	end
 
@@ -387,7 +555,7 @@ A[3] = function(icon, isMulti)
         unit = "target"
         if EnemyRotation(unit) then 
             return true
-        end 
+        end
 
     end
 end

@@ -2,193 +2,174 @@
 --##### TRIP'S FROST MAGE #####
 --#############################
 
---Credit to Taste
-
-local TMW                                       = TMW
+local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
-local CNDT                                      = TMW.CNDT
-local Env                                       = CNDT.Env
-local Action                                    = Action
-local Listener                                  = Action.Listener
-local Create                                    = Action.Create
-local GetToggle                                 = Action.GetToggle
-local SetToggle                                 = Action.SetToggle
-local GetGCD                                    = Action.GetGCD
-local GetCurrentGCD                             = Action.GetCurrentGCD
-local GetPing                                   = Action.GetPing
-local ShouldStop                                = Action.ShouldStop
-local BurstIsON                                 = Action.BurstIsON
-local AuraIsValid                               = Action.AuraIsValid
-local InterruptIsValid                          = Action.InterruptIsValid
+local Covenant									= _G.LibStub("Covenant")
+local TMW										= _G.TMW
+local Listener									= Action.Listener
+local Create									= Action.Create
+local GetToggle									= Action.GetToggle
+local SetToggle									= Action.SetToggle
+local GetGCD									= Action.GetGCD
+local GetCurrentGCD								= Action.GetCurrentGCD
+local GetPing									= Action.GetPing
+local ShouldStop								= Action.ShouldStop
+local BurstIsON									= Action.BurstIsON
+local CovenantIsON								= Action.CovenantIsON
+local AuraIsValid								= Action.AuraIsValid
+local InterruptIsValid							= Action.InterruptIsValid
 local FrameHasSpell                             = Action.FrameHasSpell
-local Azerite                                   = LibStub("AzeriteTraits")
-local Utils                                     = Action.Utils
-local TeamCache                                 = Action.TeamCache
-local EnemyTeam                                 = Action.EnemyTeam
-local FriendlyTeam                              = Action.FriendlyTeam
-local LoC                                       = Action.LossOfControl
-local Player                                    = Action.Player
-local MultiUnits                                = Action.MultiUnits
-local UnitCooldown                              = Action.UnitCooldown
-local Unit                                      = Action.Unit
-local IsUnitEnemy                               = Action.IsUnitEnemy
-local IsUnitFriendly                            = Action.IsUnitFriendly
-local HealingEngine                             = Action.HealingEngine
+local Utils										= Action.Utils
+local TeamCache									= Action.TeamCache
+local EnemyTeam									= Action.EnemyTeam
+local FriendlyTeam								= Action.FriendlyTeam
+local LoC										= Action.LossOfControl
+local Player									= Action.Player
+local Pet                                       = LibStub("PetLibrary") 
+local MultiUnits								= Action.MultiUnits
+local UnitCooldown								= Action.UnitCooldown
+local Unit										= Action.Unit 
+local IsUnitEnemy								= Action.IsUnitEnemy
+local IsUnitFriendly							= Action.IsUnitFriendly
 local ActiveUnitPlates                          = MultiUnits:GetActiveUnitPlates()
-local TeamCacheFriendly                         = TeamCache.Friendly
-local TeamCacheFriendlyIndexToPLAYERs           = TeamCacheFriendly.IndexToPLAYERs
 local IsIndoors, UnitIsUnit                     = IsIndoors, UnitIsUnit
-local TR                                        = Action.TasteRotation
-local Pet                                       = LibStub("PetLibrary")
-local next, pairs, type, print                  = next, pairs, type, print
-local math_floor                                = math.floor
-local math_ceil                                 = math.ceil
-local tinsert                                   = table.insert
-local select, unpack, table                     = select, unpack, table
-local CombatLogGetCurrentEventInfo              = _G.CombatLogGetCurrentEventInfo
-local UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower = UnitGUID, UnitIsUnit, UnitDamage, UnitAttackSpeed, UnitAttackPower
-local _G, setmetatable, select, math            = _G, setmetatable, select, math
-local huge                                      = math.huge
-local UIParent                                  = _G.UIParent
-local CreateFrame                               = _G.CreateFrame
-local wipe                                      = _G.wipe
-local IsUsableSpell                             = IsUsableSpell
-local UnitPowerType                             = UnitPowerType
+local pairs                                     = pairs
 
---- ============================ CONTENT =========================== ---
---- ======================= SPELLS DECLARATION ===================== ---
+--For Toaster
+local Toaster									= _G.Toaster
+local GetSpellTexture 							= _G.TMW.GetSpellTexture
+
+--- ============================ CONTENT ===========================
+--- ======= APL LOCALS =======
+-- luacheck: max_line_length 9999
 
 Action[ACTION_CONST_MAGE_FROST] = {
     -- Racial
-    ArcaneTorrent                          = Create({ Type = "Spell", ID = 50613     }),
-    BloodFury                              = Create({ Type = "Spell", ID = 20572      }),
-    Fireblood                              = Create({ Type = "Spell", ID = 265221     }),
-    AncestralCall                          = Create({ Type = "Spell", ID = 274738     }),
-    Berserking                             = Create({ Type = "Spell", ID = 26297    }),
-    ArcanePulse                            = Create({ Type = "Spell", ID = 260364    }),
-    QuakingPalm                            = Create({ Type = "Spell", ID = 107079     }),
-    Haymaker                               = Create({ Type = "Spell", ID = 287712     }), 
-    WarStomp                               = Create({ Type = "Spell", ID = 20549     }),
-    BullRush                               = Create({ Type = "Spell", ID = 255654     }),  
-    GiftofNaaru                            = Create({ Type = "Spell", ID = 59544    }),
-    Shadowmeld                             = Create({ Type = "Spell", ID = 58984    }), -- usable in Action Core 
-    Stoneform                              = Create({ Type = "Spell", ID = 20594    }), 
-    WilloftheForsaken                      = Create({ Type = "Spell", ID = 7744        }), -- not usable in APL but user can Queue it   
-    EscapeArtist                           = Create({ Type = "Spell", ID = 20589    }), -- not usable in APL but user can Queue it
-    EveryManforHimself                     = Create({ Type = "Spell", ID = 59752    }), -- not usable in APL but user can Queue it
-    -- Generics
-    ArcaneIntellectBuff                    = Create({ Type = "Spell", ID = 1459, Hidden = true }),
-    ArcaneIntellect                        = Create({ Type = "Spell", ID = 1459 }),
-    SummonWaterElemental                   = Create({ Type = "Spell", ID = 31687 }),
-    Frostbolt                              = Create({ Type = "Spell", ID = 116 }),
-    FrozenOrb                              = Create({ Type = "Spell", ID = 84714 }),
-    Blizzard                               = Create({ Type = "Spell", ID = 190356 }),
-    Flurry                                 = Create({ Type = "Spell", ID = 44614 }),
-    WintersChillDebuff                     = Create({ Type = "Spell", ID = 228358 }),
-    Ebonbolt                               = Create({ Type = "Spell", ID = 257537 }),
-    BrainFreezeBuff                        = Create({ Type = "Spell", ID = 190446 }),
-    FingersofFrostBuff                     = Create({ Type = "Spell", ID = 44544 }),
-    IceNova                                = Create({ Type = "Spell", ID = 157997 }),
-    CometStorm                             = Create({ Type = "Spell", ID = 153595 }),
-    IceLance                               = Create({ Type = "Spell", ID = 30455 }),
-    RadiantSpark                           = Create({ Type = "Spell", ID = 307443 }),
-    ShiftingPower                          = Create({ Type = "Spell", ID = 314791 }),
-    MirrorsofTorment                       = Create({ Type = "Spell", ID = 314793 }),
-    FrostNova                              = Create({ Type = "Spell", ID = 122 }),
-    GrislyIcicle                           = Create({ Type = "Spell", ID = 333393 }),
-    FireBlast                              = Create({ Type = "Spell", ID = 319836 }),
-    DisciplinaryCommand                    = Create({ Type = "Spell", ID = 327365 }),
-    BuffDisciplinaryCommand                = Create({ Type = "Spell", ID = 327365, Hidden = true }),
-    --DisciplinaryCommandFireBuff            = Create({ Type = "Spell", ID =  }),
-    ArcaneExplosion                        = Create({ Type = "Spell", ID = 1449 }),
-    ColdFront                              = Create({ Type = "Spell", ID = 327284 }),
-    FreezingWinds                          = Create({ Type = "Spell", ID = 327364 }),
-    FreezingWindsBuff                      = Create({ Type = "Spell", ID = 327364, Hidden = true }),
-    GlacialFragments                       = Create({ Type = "Spell", ID = 327492 }),
-    SplittingIce                           = Create({ Type = "Spell", ID = 56377 }),
-    IcyVeins                               = Create({ Type = "Spell", ID = 12472 }),
-    WastelandPropriety                     = Create({ Type = "Spell", ID = 319983 }),
-    Deathborne                             = Create({ Type = "Spell", ID = 324220 }),
-    RuneofPower                            = Create({ Type = "Spell", ID = 116011 }),
-    RuneofPowerBuff                        = Create({ Type = "Spell", ID = 116014 }),
-    BloodFury                              = Create({ Type = "Spell", ID = 20572 }),
-    Berserking                             = Create({ Type = "Spell", ID = 26297 }),
-    LightsJudgment                         = Create({ Type = "Spell", ID = 255647 }),
-    Fireblood                              = Create({ Type = "Spell", ID = 265221 }),
-    AncestralCall                          = Create({ Type = "Spell", ID = 274738 }),
-    BagofTricks                            = Create({ Type = "Spell", ID = 312411 }),
-    ReapingFlames                          = Create({ Type = "Spell", ID = 311195 }),
---    BlinkAny                               = Create({ Type = "Spell", ID =  }),
-    IceFloes                               = Create({ Type = "Spell", ID = 108839 }),
-    IceFloesBuff                           = Create({ Type = "Spell", ID = 108839, Hidden = true }),
-    GlacialSpike                           = Create({ Type = "Spell", ID = 199786 }),
-	LonelyWinter						   = Create({ Type = "Spell", ID = 205024, Hidden = true }), 
---    MirrorsofTormentDebuff                 = Create({ Type = "Spell", ID =  }),
-    ExpandedPotentialBuff                  = Create({ Type = "Spell", ID = 327495, Hidden = true }),
-    FreezingRainBuff                       = Create({ Type = "Spell", ID = 270232, Hidden = true }),
-    RayofFrost                             = Create({ Type = "Spell", ID = 205021 }),
-    GlacialSpikeBuff                       = Create({ Type = "Spell", ID = 199844 }),
-    CombatMeditation                       = Create({ Type = "Spell", ID = 328266 }),
-    FieldofBlossoms                        = Create({ Type = "Spell", ID = 319191 }),
-    GroveInvigoration                      = Create({ Type = "Spell", ID = 322721 }),
---    DisciplinaryCommandArcaneBuff          = Create({ Type = "Spell", ID =  })
-    -- Trinkets
-    TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }), 
-    TrinketTest2                           = Create({ Type = "Trinket", ID = 159611, QueueForbidden = true }), 
-    AzsharasFontofPower                    = Create({ Type = "Trinket", ID = 169314, QueueForbidden = true }), 
-    PocketsizedComputationDevice           = Create({ Type = "Trinket", ID = 167555, QueueForbidden = true }), 
-    RotcrustedVoodooDoll                   = Create({ Type = "Trinket", ID = 159624, QueueForbidden = true }), 
-    ShiverVenomRelic                       = Create({ Type = "Trinket", ID = 168905, QueueForbidden = true }), 
-    AquipotentNautilus                     = Create({ Type = "Trinket", ID = 169305, QueueForbidden = true }), 
-    TidestormCodex                         = Create({ Type = "Trinket", ID = 165576, QueueForbidden = true }), 
-    VialofStorms                           = Create({ Type = "Trinket", ID = 158224, QueueForbidden = true }), 
-    -- Potions
-    PotionofUnbridledFury                  = Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 
-    BattlePotionOfAgility                  = Create({ Type = "Potion", ID = 163223, QueueForbidden = true }), 
-    SuperiorBattlePotionOfAgility          = Create({ Type = "Potion", ID = 168489, QueueForbidden = true }), 
-    PotionTest                             = Create({ Type = "Potion", ID = 142117, QueueForbidden = true }), 
-    --[[ Trinkets
-    GenericTrinket1                        = Create({ Type = "Trinket", ID = 114616, QueueForbidden = true }),
-    GenericTrinket2                        = Create({ Type = "Trinket", ID = 114081, QueueForbidden = true }),
-    TrinketTest                            = Create({ Type = "Trinket", ID = 122530, QueueForbidden = true }),
-    TrinketTest2                           = Create({ Type = "Trinket", ID = 159611, QueueForbidden = true }), 
-    AzsharasFontofPower                    = Create({ Type = "Trinket", ID = 169314, QueueForbidden = true }),
-    PocketsizedComputationDevice           = Create({ Type = "Trinket", ID = 167555, QueueForbidden = true }),
-    RotcrustedVoodooDoll                   = Create({ Type = "Trinket", ID = 159624, QueueForbidden = true }),
-    ShiverVenomRelic                       = Create({ Type = "Trinket", ID = 168905, QueueForbidden = true }),
-    AquipotentNautilus                     = Create({ Type = "Trinket", ID = 169305, QueueForbidden = true }),
-    TidestormCodex                         = Create({ Type = "Trinket", ID = 165576, QueueForbidden = true }),
-    VialofStorms                           = Create({ Type = "Trinket", ID = 158224, QueueForbidden = true }),
-    GalecallersBoon                        = Create({ Type = "Trinket", ID = 159614, QueueForbidden = true }),
-    InvocationOfYulon                      = Create({ Type = "Trinket", ID = 165568, QueueForbidden = true }),
-    LustrousGoldenPlumage                  = Create({ Type = "Trinket", ID = 159617, QueueForbidden = true }),
-    ComputationDevice                      = Create({ Type = "Trinket", ID = 167555, QueueForbidden = true }),
-    VigorTrinket                           = Create({ Type = "Trinket", ID = 165572, QueueForbidden = true }),
-    FontOfPower                            = Create({ Type = "Trinket", ID = 169314, QueueForbidden = true }),
-    RazorCoral                             = Create({ Type = "Trinket", ID = 169311, QueueForbidden = true }),
-    AshvanesRazorCoral                     = Create({ Type = "Trinket", ID = 169311, QueueForbidden = true }),]]
-    -- Misc
-    Channeling                             = Create({ Type = "Spell", ID = 209274, Hidden = true     }),	-- Show an icon during channeling
-    TargetEnemy                            = Create({ Type = "Spell", ID = 44603, Hidden = true     }),	-- Change Target (Tab button)
-    StopCast                               = Create({ Type = "Spell", ID = 61721, Hidden = true     }),		-- spell_magic_polymorphrabbit
-    CyclotronicBlast                       = Create({ Type = "Spell", ID = 293491, Hidden = true}),
-    ConcentratedFlameBurn                  = Create({ Type = "Spell", ID = 295368, Hidden = true}),
-    RazorCoralDebuff                       = Create({ Type = "Spell", ID = 303568, Hidden = true     }),
-    ConductiveInkDebuff                    = Create({ Type = "Spell", ID = 302565, Hidden = true     }),
-	--Extra as replacement icons until loader updates
-	Regeneratin							   = Action.Create({ Type = "Spell", ID = 291944 }), -- used for Arcane Explosion
-	RocketJump							   = Action.Create({ Type = "Spell", ID = 69070 }), -- used for Mirror Image
-	SpatialRift							   = Action.Create({ Type = "Spell", ID = 256948 }), -- used for Fire Blast
-	Darkflight							   = Action.Create({ Type = "Spell", ID = 68992 }), -- used for Heart of Azeroth	
-};
+    ArcaneTorrent				= Action.Create({ Type = "Spell", ID = 50613	}),
+    BloodFury					= Action.Create({ Type = "Spell", ID = 20572	}),
+    Fireblood					= Action.Create({ Type = "Spell", ID = 265221	}),
+    AncestralCall				= Action.Create({ Type = "Spell", ID = 274738	}),
+    Berserking					= Action.Create({ Type = "Spell", ID = 26297	}),
+    ArcanePulse             	= Action.Create({ Type = "Spell", ID = 260364	}),
+    QuakingPalm           		= Action.Create({ Type = "Spell", ID = 107079	}),
+    Haymaker           			= Action.Create({ Type = "Spell", ID = 287712	}), 
+    BullRush           			= Action.Create({ Type = "Spell", ID = 255654	}),    
+    WarStomp        			= Action.Create({ Type = "Spell", ID = 20549	}),
+    GiftofNaaru   				= Action.Create({ Type = "Spell", ID = 59544	}),
+    Shadowmeld   				= Action.Create({ Type = "Spell", ID = 58984    }),
+    Stoneform 					= Action.Create({ Type = "Spell", ID = 20594    }), 
+    BagofTricks					= Action.Create({ Type = "Spell", ID = 312411	}),
+    WilloftheForsaken			= Action.Create({ Type = "Spell", ID = 7744		}),   
+    EscapeArtist				= Action.Create({ Type = "Spell", ID = 20589    }), 
+    EveryManforHimself			= Action.Create({ Type = "Spell", ID = 59752    }), 
+	
+	--Mage General
+    ArcaneExplosion	     		= Action.Create({ Type = "Spell", ID = 1449		}),
+    ArcaneIntellect	     		= Action.Create({ Type = "Spell", ID = 1459		}),
+    Blink			     		= Action.Create({ Type = "Spell", ID = 1953		}),	
+    ConjureRefreshment     		= Action.Create({ Type = "Spell", ID = 190336	}),
+    CounterSpell	     		= Action.Create({ Type = "Spell", ID = 2139		}),	
+    FrostNova		     		= Action.Create({ Type = "Spell", ID = 122		}),
+    Frostbolt		     		= Action.Create({ Type = "Spell", ID = 116		}),	
+    IceBlock		     		= Action.Create({ Type = "Spell", ID = 45438	}),	
+    Invisibility	     		= Action.Create({ Type = "Spell", ID = 66		}),
+    MirrorImage		     		= Action.Create({ Type = "Spell", ID = 55342	}),
+    Polymorph		     		= Action.Create({ Type = "Spell", ID = 118		}),	
+    RemoveCurse		     		= Action.Create({ Type = "Spell", ID = 475		}),
+    SlowFall		     		= Action.Create({ Type = "Spell", ID = 130		}),
+    Spellsteal		     		= Action.Create({ Type = "Spell", ID = 30449	}),
+    TimeWarp		     		= Action.Create({ Type = "Spell", ID = 80353	}),
+    AlterTime		     		= Action.Create({ Type = "Spell", ID = 108978	}),	
+    FireBlast		     		= Action.Create({ Type = "Spell", ID = 319836	}),		
+    Exhaustion		     		= Action.Create({ Type = "Spell", ID = 80354, Hidden = true	}),			
 
--- To create covenant use next code:
-Action:CreateEssencesFor(ACTION_CONST_MAGE_FROST)
+	--Frost Spells
+    Blizzard		     		= Action.Create({ Type = "Spell", ID = 190356	}),
+    ColdSnap		     		= Action.Create({ Type = "Spell", ID = 235219	}),	
+    ConeofCold		     		= Action.Create({ Type = "Spell", ID = 120		}),
+    Flurry			     		= Action.Create({ Type = "Spell", ID = 44614	}),
+    WintersChill	     		= Action.Create({ Type = "Spell", ID = 228358	}),	
+    FrozenOrb		     		= Action.Create({ Type = "Spell", ID = 84714	}),	
+    IceBarrier		     		= Action.Create({ Type = "Spell", ID = 11426	}),	
+    IceLance		     		= Action.Create({ Type = "Spell", ID = 30455	}),
+    IcyVeins		     		= Action.Create({ Type = "Spell", ID = 12472	}),
+	SummonWaterElemental		= Action.Create({ Type = "Spell", ID = 31687	}),
+    BrainFreeze		     		= Action.Create({ Type = "Spell", ID = 190447, Hidden = true	}),
+    BrainFreezeBuff	     		= Action.Create({ Type = "Spell", ID = 190446, Hidden = true	}),	
+    FingersofFrost	     		= Action.Create({ Type = "Spell", ID = 112965, Hidden = true	}),	
+    FingersofFrostBuff     		= Action.Create({ Type = "Spell", ID = 44544, Hidden = true		}),		
+    Icicles			     		= Action.Create({ Type = "Spell", ID = 205473, Hidden = true	}),	
+
+	--Normal Talents
+    Bonechilling	     		= Action.Create({ Type = "Spell", ID = 205027, Hidden = true	}),
+    LonelyWinter	     		= Action.Create({ Type = "Spell", ID = 205024, Hidden = true	}),	
+    IceNova			     		= Action.Create({ Type = "Spell", ID = 157997	}),
+    GlacialInsulation	   		= Action.Create({ Type = "Spell", ID = 235297, Hidden = true	}),
+    Shimmer			     		= Action.Create({ Type = "Spell", ID = 212653	}),		
+    IceFloes		     		= Action.Create({ Type = "Spell", ID = 108839	}),		
+    IncanctersFlow	     		= Action.Create({ Type = "Spell", ID = 1463, Hidden = true		}),	
+    FocusMagic		     		= Action.Create({ Type = "Spell", ID = 321358	}),
+    RuneofPower		     		= Action.Create({ Type = "Spell", ID = 116011	}),
+    RuneofPowerBuff    			= Action.Create({ Type = "Spell", ID = 116014, Hidden = true	}),		
+    FrozenTouch		     		= Action.Create({ Type = "Spell", ID = 205030, Hidden = true	}),	
+    ChainReaction	     		= Action.Create({ Type = "Spell", ID = 278309, Hidden = true	}),
+    Ebonbolt		     		= Action.Create({ Type = "Spell", ID = 257537	}),	
+    FrigidWinds		     		= Action.Create({ Type = "Spell", ID = 235224, Hidden = true	}),	
+    IceWard			     		= Action.Create({ Type = "Spell", ID = 205036, Hidden = true	}),	
+    RingofFrost		     		= Action.Create({ Type = "Spell", ID = 112965	}),	
+    FreezingRain	     		= Action.Create({ Type = "Spell", ID = 270233, Hidden = true	}),	
+    FreezingRainBuff     		= Action.Create({ Type = "Spell", ID = 270232, Hidden = true	}),		
+    SplittingIce	     		= Action.Create({ Type = "Spell", ID = 56377, Hidden = true	}),	
+    CometStorm		     		= Action.Create({ Type = "Spell", ID = 153595	}),		
+    ThermalVoid		     		= Action.Create({ Type = "Spell", ID = 155149, Hidden = true	}),	
+    RayofFrost		     		= Action.Create({ Type = "Spell", ID = 205021	}),		
+    GlacialSpike	     		= Action.Create({ Type = "Spell", ID = 199786	}),		
+
+	--PvP Talents	
+
+	--Covenant Abilities
+    RadiantSpark				= Action.Create({ Type = "Spell", ID = 307443	}),
+    SummonSteward				= Action.Create({ Type = "Spell", ID = 324739	}),
+    MirrorsofTorment			= Action.Create({ Type = "Spell", ID = 314793	}),
+    DoorofShadows				= Action.Create({ Type = "Spell", ID = 300728	}),
+    Deathborne					= Action.Create({ Type = "Spell", ID = 324220	}),
+    Fleshcraft					= Action.Create({ Type = "Spell", ID = 331180	}),
+    ShiftingPower				= Action.Create({ Type = "Spell", ID = 314791	}),
+    Soulshape					= Action.Create({ Type = "Spell", ID = 310143	}),
+    Flicker						= Action.Create({ Type = "Spell", ID = 324701	}),
+
+	-- Conduits
+
+
+	-- Legendaries
+	-- General Legendaries
+	DisciplinaryCommand			= Action.Create({ Type = "Spell", ID = 327365, Hidden = true	}),
+
+	-- Frost Legendaries
+	GlacialFragments			= Action.Create({ Type = "Spell", ID = 327492, Hidden = true	}),
+	SlickIce					= Action.Create({ Type = "Spell", ID = 327511, Hidden = true	}),	
+	TemporalWarp				= Action.Create({ Type = "Spell", ID = 327351, Hidden = true	}),		
+	FreezingWinds				= Action.Create({ Type = "Spell", ID = 327364, Hidden = true	}),			
+	
+	-- Anima Powers - to add later...
+	
+	
+	-- Trinkets
+	
+
+	-- Potions
+    PotionofUnbridledFury			= Action.Create({ Type = "Potion", ID = 169299, QueueForbidden = true }), 	
+    SuperiorPotionofUnbridledFury	= Action.Create({ Type = "Potion", ID = 168489, QueueForbidden = true }),
+    PotionofSpectralIntellect		= Action.Create({ Type = "Potion", ID = 171273, QueueForbidden = true }),
+    PotionofSpectralStamina			= Action.Create({ Type = "Potion", ID = 171274, QueueForbidden = true }),
+    PotionofEmpoweredExorcisms		= Action.Create({ Type = "Potion", ID = 171352, QueueForbidden = true }),
+    PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
+    PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
+    PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
+
+}
 local A = setmetatable(Action[ACTION_CONST_MAGE_FROST], { __index = Action })
-
-
-
-
 
 local function num(val)
     if val then return 1 else return 0 end
@@ -199,10 +180,8 @@ local function bool(val)
 end
 
 local player = "player"
-
-------------------------------------------
----------- FROST PRE APL SETUP -----------
-------------------------------------------
+local target = "target"
+local mouseover = "mouseover"
 
 local Temp = {
     TotalAndPhys                            = {"TotalImun", "DamagePhysImun"},
@@ -213,6 +192,7 @@ local Temp = {
     TotalAndPhysAndCCAndStun                = {"TotalImun", "DamagePhysImun", "CCTotalImun", "StunImun"},
     TotalAndMag                             = {"TotalImun", "DamageMagicImun"},
 	TotalAndMagKick                         = {"TotalImun", "DamageMagicImun", "KickImun"},
+    TotalAndMagAndCC                        = {"TotalImun", "DamageMagicImun", "CCTotalImun"},	
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
 }
@@ -220,7 +200,7 @@ local Temp = {
 local IsIndoors, UnitIsUnit = IsIndoors, UnitIsUnit
 
 local function IsSchoolFree()
-	return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "SHADOW") == 0
+	return LoC:IsMissed("SILENCE") and LoC:Get("SCHOOL_INTERRUPT", "FIRE") == 0
 end 
 
 local function InRange(unit)
@@ -229,54 +209,24 @@ local function InRange(unit)
 end 
 InRange = A.MakeFunctionCachedDynamic(InRange)
 
-local function GetByRange(count, range, isStrictlySuperior, isStrictlyInferior, isCheckEqual, isCheckCombat)
-	-- @return boolean 
-	local c = 0 
-	
-	if isStrictlySuperior == nil then
-	    isStrictlySuperior = false
-	end
+--Register Toaster
+Toaster:Register("TripToast", function(toast, ...)
+        local title, message, spellID = ...
+        toast:SetTitle(title or "nil")
+        toast:SetText(message or "nil")
+        if spellID then 
+            if type(spellID) ~= "number" then 
+                error(tostring(spellID) .. " (spellID) is not a number for TripToast!")
+                toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+            else 
+                toast:SetIconTexture((GetSpellTexture(spellID)))
+            end 
+        else 
+            toast:SetIconTexture("Interface\FriendsFrame\Battlenet-WoWicon")
+        end 
+        toast:SetUrgencyLevel("normal") 
+end)
 
-	if isStrictlyInferior == nil then
-	    isStrictlyInferior = false
-	end	
-	
-	for unit in pairs(ActiveUnitPlates) do 
-		if (not isCheckEqual or not UnitIsUnit("target", unit)) and (not isCheckCombat or Unit(unit):CombatTime() > 0) then 
-			if InRange(unit) then 
-				c = c + 1
-			elseif range then 
-				local r = Unit(unit):GetRange()
-				if r > 0 and r <= range then 
-					c = c + 1
-				end 
-			end 
-			-- Strictly superior than >
-			if isStrictlySuperior and not isStrictlyInferior then
-			    if c > count then
-				    return true
-				end
-			end
-			
-			-- Stryctly inferior <
-			if isStrictlyInferior and not isStrictlySuperior then
-			    if c < count then
-			        return true
-				end
-			end
-			
-			-- Classic >=
-			if not isStrictlyInferior and not isStrictlySuperior then
-			    if c >= count then 
-				    return true 
-			    end 
-			end
-		end 
-		
-	end
-	
-end  
-GetByRange = A.MakeFunctionCachedDynamic(GetByRange)
 
 -- Non GCD spell check
 local function countInterruptGCD(unit)
@@ -285,167 +235,25 @@ local function countInterruptGCD(unit)
 	end
 end
 
--- Interrupts spells
-local function Interrupts(unit)
-    if A.GetToggle(2, "TasteInterruptList") and (IsInRaid() or A.InstanceInfo.KeyStone > 1) then
-	    useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, "TasteBFAContent", true, countInterruptGCD(unit))
-	else
-        useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
-    end
+function Player:AreaTTD(range)
+    local ttdtotal = 0
+	local totalunits = 0
+    local r = range
     
-	if castRemainsTime >= A.GetLatency() then
-        -- CounterSpell
-        if useKick and not notInterruptable and A.CounterSpell:IsReady(unit) then 
-            return A.CounterSpell
-        end
-		    
-   	    if useRacial and A.QuakingPalm:AutoRacial(unit) then 
-   	        return A.QuakingPalm
-   	    end 
-    
-   	    if useRacial and A.Haymaker:AutoRacial(unit) then 
-            return A.Haymaker
-   	    end 
-    
-   	    if useRacial and A.WarStomp:AutoRacial(unit) then 
-            return A.WarStomp
-   	    end 
-    
-   	    if useRacial and A.BullRush:AutoRacial(unit) then 
-            return A.BullRush
-   	    end 
-    end
-end
-
--- Variables
-TR.IFST = {
-    CurrStacks = 0,
-    CurrStacksTime = 0,
-    OldStacks = 0,
-    OldStacksTime = 0,
-    Direction = 0
-}
-
-A.Listener:Add("ROTATION_VARS", "PLAYER_REGEN_ENABLED", function()
-    TR.IFST.CurrStacks = 0
-    TR.IFST.CurrStacksTime = 0
-    TR.IFST.OldStacks = 0
-    TR.IFST.OldStacksTime = 0
-    TR.IFST.Direction = 0
-end)
-
-local function IFTracker()
-    local TickDiff = TR.IFST.CurrStacksTime - TR.IFST.OldStacksTime
-    local CurrStacks = TR.IFST.CurrStacks
-    local CurrStacksTime = TR.IFST.CurrStacksTime
-    local OldStacks = TR.IFST.OldStacks
-	
-	if Unit(player):CombatTime() == 0 then 
-	    return
+	for _, unitID in pairs(ActiveUnitPlates) do 
+		if Unit(unitID):GetRange() <= r then 
+			local ttd = Unit(unitID):TimeToDie()
+			totalunits = totalunits + 1
+			ttdtotal = ttd + ttdtotal
+		end
 	end
-		
-    if Unit(player):HasBuffs(A.IncantersFlowBuff.ID, true) > 0 then
-        if (Unit(player):HasBuffsStacks(A.IncantersFlowBuff.ID, true) ~= CurrStacks or (Unit(player):HasBuffsStacks(A.IncantersFlowBuff.ID, true) == CurrStacks and TickDiff > 1)) then
-            TR.IFST.OldStacks = CurrStacks
-            TR.IFST.OldStacksTime = CurrStacksTime
-        end		
-        TR.IFST.CurrStacks = Unit(player):HasBuffsStacks(A.IncantersFlowBuff.ID, true)
-        TR.IFST.CurrStacksTime = Unit(player):CombatTime()		
-        if TR.IFST.CurrStacks > TR.IFST.OldStacks then
-            if TR.IFST.CurrStacks == 5 then
-                TR.IFST.Direction = 0
-            else
-                TR.IFST.Direction = 1
-            end
-        elseif TR.IFST.CurrStacks < TR.IFST.OldStacks then
-            if TR.IFST.CurrStacks == 1 then
-                TR.IFST.Direction = 0
-            else
-                TR.IFST.Direction = -1
-            end
-        else
-            if TR.IFST.CurrStacks == 1 then
-                TR.IFST.Direction = 1
-            else
-                TR.IFST.Direction = -1
-            end
-        end
-    else
-        TR.IFST.OldStacks = 0
-        TR.IFST.OldStacksTime = 0
-        TR.IFST.CurrStacks = 0
-        TR.IFST.CurrStacksTime = 0
-        TR.IFST.Direction = 0
-    end
-end
-
--- Implementation of IncantersFlow simc reference incanters_flow_time_to.COUNT.DIRECTION
--- @parameter: COUNT between "1 - 5" 
--- @parameter: DIRECTION "up", "down" or "any"
-local function IFTimeToX(count, direction)
-    local low
-    local high
-    local buff_position
-    if TR.IFST.Direction == -1 or (TR.IFST.Direction == 0 and TR.IFST.CurrStacks == 0) then
-      buff_position = 10 - TR.IFST.CurrStacks + 1
-    else
-      buff_position = TR.IFST.CurrStacks
-    end
-    if direction == "up" then
-        low = count
-        high = count
-    elseif direction == "down" then
-        low = 10 - count + 1
-        high = 10 - count + 1
-    else
-        low = count
-        high = 10 - count + 1
-    end
-    if low == buff_position or high == buff_position then
-        return 0
-    end
-    local ticks_low = (10 + low - buff_position) % 10
-    local ticks_high = (10 + high - buff_position) % 10
-    return (TR.IFST.CurrStacksTime - TR.IFST.OldStacksTime) + math.min(ticks_low, ticks_high) - 1
-end
-
-
-local FrozenOrbFirstHit = true
-local FrozenOrbHitTime = 0
-
-Action:RegisterForSelfCombatEvent(function(...)
-    local spellID = select(12, ...)
-    if spellID == 84721 and FrozenOrbFirstHit then
-        FrozenOrbFirstHit = false
-        FrozenOrbHitTime = TMW.time
-        C_Timer.After(10, function()
-            FrozenOrbFirstHit = true
-            FrozenOrbHitTime = 0
-        end)
-    end
-end, "SPELL_DAMAGE")
-
-function Player:FrozenOrbGroundAoeRemains()
-    return math.max(Action.OffsetRemains(FrozenOrbHitTime - (TMW.time - 10), "Auto"), 0)
-end
-
-local brain_freeze_active = false
-
-Action:RegisterForSelfCombatEvent(function(...)
-    local spellID = select(12, ...)
-    if spellID == A.Flurry.ID then
-        brain_freeze_active =   Unit("player"):HasBuffs(A.BrainFreezeBuff.ID, true) > 0
-                            --or  Spell.TR.Frost.BrainFreezeBuff:TimeSinceLastRemovedOnPlayer() < 0.1
-    end
-end, "SPELL_CAST_SUCCESS")
-
-function Player:BrainFreezeActive()
-    if self:CastRemains(A.Flurry.ID) > 0 then
-        return false
-    else
-        return brain_freeze_active
-    end
-end
+    
+	if totalunits == 0 then
+		return 0
+	end
+    
+	return ttdtotal / totalunits
+end	
 
 --- ======= ACTION LISTS =======
 -- [3] Single Rotation
@@ -460,485 +268,341 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit(player):CombatTime()
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods_Pulling()
-    local DBM = Action.GetToggle(1, "DBM")
-    local HeartOfAzeroth = Action.GetToggle(1, "HeartOfAzeroth")
-    local Racial = Action.GetToggle(1, "Racial")
-    local Potion = Action.GetToggle(1, "Potion")
-	local TrinketsAoE = Action.GetToggle(2, "TrinketsAoE")
-	local TrinketsMinTTD = Action.GetToggle(2, "TrinketsMinTTD")
-	local TrinketsUnitsRange = Action.GetToggle(2, "TrinketsUnitsRange")
-	local TrinketsMinUnits = Action.GetToggle(2, "TrinketsMinUnits")
-	local Trinket1IsAllowed, Trinket2IsAllowed = TR.TrinketIsAllowed()	
+    local DBM = A.GetToggle(1, "DBM")
+    local UseRacial = A.GetToggle(1, "Racial")
+    local UsePotion = A.GetToggle(1, "Potion")
+	local UseCovenant = A.GetToggle(1, "Covenant")
+	local UseAoE = A.GetToggle(2, "AoE")
+	local UseArcaneIntellect = A.GetToggle(2, "ArcaneIntellect")
 
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
-    local function EnemyRotation(unit)
+    local function EnemyRotation(unitID)
+	
+		local function Interrupt()
+		local EnemiesCasting = MultiUnits:GetByRangeCasting(10, 5, true)
 
-        --Precombat
-        local function Precombat(unit)
-        
-            -- flask
-            -- food
-            -- augmentation
-            -- arcane_intellect
-            if A.ArcaneIntellect:IsReady(unit) and Unit("player"):HasBuffsDown(A.ArcaneIntellectBuff.ID, true, true) then
-                return A.ArcaneIntellect:Show(icon)
-            end
-            
-            -- summon_water_elemental
-            if A.SummonWaterElemental:IsReady(unit) and not A.LonelyWinter:IsSpellLearned() then
-                return A.SummonWaterElemental:Show(icon)
-            end
-            
-            -- snapshot_stats
-            -- frostbolt
-            if A.Frostbolt:IsReady(unit) and Unit(unit):IsExists() and unit ~= "mouseover" then
-                return A.Frostbolt:Show(icon)
-            end
-            
-        end
-        
-        --Aoe
-        local function Aoe(unit)
-
-            --[[if A.RuneofPower:IsReady("player") and A.BurstIsON("target") and (A.IcyVeins:GetCooldown() > 15 and Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0) then
-                return A.RuneofPower:Show(icon)
-            end
-            
-            -- icy_veins,if=buff.rune_of_power.down
-            if A.IcyVeins:IsReady("player") and A.BurstIsON("target") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0) then
-                return A.IcyVeins:Show(icon)
-            end
-
-			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then 
-				return A.Trinket1:Show(icon)
-			end 		
-					
-			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then
-				return A.Trinket2:Show(icon) 	
-			end  ]]
-        
-            -- frozen_orb
-            if A.FrozenOrb:IsReady(unit) then
-                return A.FrozenOrb:Show(icon)
-            end
-            
-            -- blizzard
-            if A.Blizzard:IsReady(unit) then
-                return A.Blizzard:Show(icon)
-            end
-            
-            -- flurry,if=(Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)=0|debuff.winters_chill.down)&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&buff.fingers_of_frost.react=0)
-            if A.Flurry:IsReady(unit) and ((Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID) == 0 or Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) == 0) and (Player:PrevGCD(1, A.Ebonbolt) or Unit("player"):HasBuffsStacks(A.BrainFreezeBuff.ID, true) > 0 and Unit("player"):HasBuffsStacks(A.FingersofFrostBuff.ID, true) == 0)) then
-                return A.Flurry:Show(icon)
-            end
-            
-            -- ice_nova
-            if A.IceNova:IsReady(unit) then
-                return A.IceNova:Show(icon)
-            end
-            
-            -- comet_storm
-            if A.CometStorm:IsReady(unit) then
-                return A.CometStorm:Show(icon)
-            end
-            
-            -- ice_lance,if=buff.fingers_of_frost.react|debuff.frozen.remains>travel_time|Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)&debuff.winters_chill.remains>travel_time
-            if A.IceLance:IsReady(unit) and (Unit("player"):HasBuffsStacks(A.FingersofFrostBuff.ID, true) > 0 or Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > 0 and Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > 0) then
-                return A.IceLance:Show(icon)
-            end
-            
-            --[[ radiant_spark
-            if A.RadiantSpark:IsReady(unit) then
-                return A.RadiantSpark:Show(icon)
-            end
-            
-            -- shifting_power
-            if A.ShiftingPower:IsReady(unit) then
-                return A.ShiftingPower:Show(icon)
-            end
-            
-            -- mirrors_of_torment
-            if A.MirrorsofTorment:IsReady(unit) then
-                return A.MirrorsofTorment:Show(icon)
-            end]]
-            
-            --[[ frost_nova,if=runeforge.grisly_icicle.equipped&target.level<=level&debuff.frozen.down
-            if A.FrostNova:IsReady(unit) and (runeforge.grisly_icicle.equipped and target.level <= Unit("player"):level() and Unit(unit):HasDeBuffsDown(A.FrozenDebuff.ID, true)) then
-                return A.FrostNova:Show(icon)
-            end]]
-            
-            --[[ fire_blast,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
-            if A.FireBlast:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandFireBuff.ID, true)) then
-                return A.SpatialRift:Show(icon)
-            end]]
-            
-            --[[ arcane_explosion,if=mana.pct>30&!runeforge.cold_front.equipped&(!runeforge.freezing_winds.equipped|buff.freezing_winds.up)
-            if A.ArcaneExplosion:IsReady(unit) and (Player:ManaPercentageP() > 30 and not runeforge.cold_front.equipped and (not runeforge.freezing_winds.equipped or Unit("player"):HasBuffs(A.FreezingWindsBuff.ID, true))) then
-                return A.Regeneratin:Show(icon)
-            end]]
-            
-            -- ebonbolt
-            if A.Ebonbolt:IsReady(unit) then
-                return A.Ebonbolt:Show(icon)
-            end
-            
-            --[[ ice_lance,if=runeforge.glacial_fragments.equipped&talent.splitting_ice.enabled
-            if A.IceLance:IsReady(unit) and (runeforge.glacial_fragments.equipped and A.SplittingIce:IsSpellLearned()) then
-                return A.IceLance:Show(icon)
-            end]]
-            
-            -- frostbolt
-            if A.Frostbolt:IsReady(unit) then
-                return A.Frostbolt:Show(icon)
-            end
-            
-        end
-        
-        --Cds
-        local function Cds(unit)
-        
-            --[[ potion,if=prev_off_gcd.icy_veins|fight_remains<30
-            if A.PotionofSpectralIntellect:IsReady(unit) and Potion and (Unit("player"):PrevOffGCDP(1, A.IcyVeins) or fight_remains < 30) then
-                return A.PotionofSpectralIntellect:Show(icon)
-            end]]
-            
-            --[[ mirrors_of_torment,if=soulbind.wasteland_propriety.enabled
-            if A.MirrorsofTorment:IsReady(unit) and (A.WastelandPropriety:IsSoulbindLearned()) then
-                return A.MirrorsofTorment:Show(icon)
-            end]]
-            
-            -- deathborne
-            if A.Deathborne:IsReady(unit) then
-                return A.Deathborne:Show(icon)
-            end
-            
-            -- rune_of_power,if=cooldown.icy_veins.remains>15&buff.rune_of_power.down
-            if A.RuneofPower:IsReady("player") and A.IcyVeins:GetCooldown() > 15 and Unit("player"):HasBuffsDown(A.RuneofPowerBuff.ID, true) then
-                return A.RuneofPower:Show(icon)
-            end
-            
-            -- icy_veins,if=buff.rune_of_power.down
-            if A.IcyVeins:IsReady("player") and (Unit("player"):HasBuffsDown(A.RuneofPowerBuff.ID, true)) then
-                return A.IcyVeins:Show(icon)
-            end
-            
-            -- time_warp,if=runeforge.temporal_warp.equipped&buff.exhaustion.up&(prev_off_gcd.icy_veins|fight_remains<30)
-            -- use_items
-            -- blood_fury
-            if A.BloodFury:AutoRacial(unit) and Racial and A.BurstIsON(unit) then
-                return A.BloodFury:Show(icon)
-            end
-            
-            -- berserking
-            if A.Berserking:AutoRacial(unit) and Racial and A.BurstIsON(unit) then
-                return A.Berserking:Show(icon)
-            end
-            
-            -- lights_judgment
-            if A.LightsJudgment:IsReady(unit) and A.BurstIsON(unit) then
-                return A.LightsJudgment:Show(icon)
-            end
-            
-            -- fireblood
-            if A.Fireblood:AutoRacial(unit) and Racial and A.BurstIsON(unit) then
-                return A.Fireblood:Show(icon)
-            end
-            
-            -- ancestral_call
-            if A.AncestralCall:AutoRacial(unit) and Racial and A.BurstIsON(unit) then
-                return A.AncestralCall:Show(icon)
-            end
-            
-            -- bag_of_tricks
-            if A.BagofTricks:IsReady(unit) then
-                return A.BagofTricks:Show(icon)
-            end
-            
-        --end
-        
-        --Essences
-        --local function Essences(unit)
-        
-			-- guardian_of_azeroth
-			if A.GuardianofAzeroth:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+			useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
+			if castRemainsTime >= A.GetLatency() then
+				if useKick and not notInterruptable and A.CounterSpell:IsReady(unit) then 
+					return A.CounterSpell:Show(icon)
+				end	
+				
+				if useKick and A.CounterSpell:GetCooldown() > 0 and EnemiesCasting > 1 and A.DragonsBreath:AbsentImun(unit, Temp.TotalAndMagAndCC, true) then
+					return A.DragonsBreath:Show(icon)
+				end
+				
+			end
+		end	
+	
+		local function Defensives()
+		
+			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() and Unit(player):HasDeBuffs(A.CauterizeDebuff.ID, true) > 0 then
+				return A.IceBlock:Show(icon)
 			end
 			
-			-- focused_azerite_beam
-			if A.FocusedAzeriteBeam:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+			local AlterTimeActive = A.AlterTime:GetSpellTimeSinceLastCast() < 10
+			if combatTime > 2 and Unit(unit):HealthPercentLosePerSecond() >= 10 and not AlterTimeActive then
+				return A.AlterTime:Show(icon)
 			end
 			
-			-- memory_of_lucid_dreams
-			if A.MemoryofLucidDreams:IsReady(player) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
+			if AlterTimeActive and Unit(player):HealthPercent() <= 25 then
+				return A.AlterTime:Show(icon)
 			end
-			
-			-- blood_of_the_enemy
-			if A.BloodoftheEnemy:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- purifying_blast
-			if A.PurifyingBlast:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			--[[ ripple_in_space
-			if A.RippleInSpace:AutoHeartOfAzerothP(unit, true) and HeartOfAzeroth then
-				return A.Darkflight:Show(icon)
-			end]]
-			
-			-- concentrated_flame,line_cd=6
-			if A.ConcentratedFlame:IsReady("target") and A.BurstIsON("target") then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- reaping_flames
-			if A.ReapingFlames:IsReady(unit) and BurstIsON(unit) then
-				return A.Darkflight:Show(icon)
-			end
-			
-			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then 
-				return A.Trinket1:Show(icon)
-			end 		
-					
-			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then
-				return A.Trinket2:Show(icon) 	
-			end            
-			
-        end
-        
-        --Movement
-        local function Movement(unit)
-        
-            --[[ blink_any,if=movement.distance>10
-            if A.BlinkAny:IsReady(unit) and (Unit(unit):GetRange() > 10) then
-                return A.BlinkAny:Show(icon)
-            end]]
-            
-            -- ice_floes,if=buff.ice_floes.down
-            if A.IceFloes:IsReady("player") and (Unit("player"):HasBuffs(A.IceFloesBuff.ID, true) == 0 ) then
-                return A.IceFloes:Show(icon)
-            end
-            
-            -- arcane_explosion,if=mana.pct>30&active_enemies>=2
-            if A.ArcaneExplosion:IsReady("player") and Player:ManaPercentageP() > 30 and MultiUnits:GetByRange(10) >= 2 and Action.GetToggle(2, "AoE") then
-                return A.ArcaneExplosion:Show(icon)
-            end
-            
-            -- fire_blast
-            if A.FireBlast:IsReady(unit) then
-                return A.FireBlast:Show(icon)
-            end
-            
-            -- ice_lance
-            if A.IceLance:IsReady(unit) then
-                return A.IceLance:Show(icon)
-            end
-            
-        end
-        
-        --St
-        local function St(unit)
-
-            --[[if A.RuneofPower:IsReady("player") and A.BurstIsON("target") and (A.IcyVeins:GetCooldown() > 15 and Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0) then
-                return A.RuneofPower:Show(icon)
-            end
-            
-            -- icy_veins,if=buff.rune_of_power.down
-            if A.IcyVeins:IsReady("player") and A.BurstIsON("target") and (Unit("player"):HasBuffs(A.RuneofPowerBuff.ID, true) == 0) then
-                return A.IcyVeins:Show(icon)
-            end
-
-			-- Non SIMC Custom Trinket1
-			if A.Trinket1:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket1IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then 
-				return A.Trinket1:Show(icon)
-			end 		
-					
-			-- Non SIMC Custom Trinket2
-			if A.Trinket2:IsReady(unit) and ((TrinketOnlyBurst and A.BurstIsON(unit)) or (not TrinketOnlyBurst and not A.BurstIsON(unit))) and Trinket2IsAllowed and inCombat and CanCast and Unit(unit):GetRange() < 6 and	    
-			(
-				TrinketsAoE and GetByRange(TrinketsMinUnits, TrinketsUnitsRange) and Player:AreaTTD(TrinketsUnitsRange) > TrinketsMinTTD
-				or
-				not TrinketsAoE and Unit(unit):TimeToDie() >= TrinketsMinTTD 					
-			)
-			then
-				return A.Trinket2:Show(icon) 	
-			end  ]]
-        
-            -- flurry,if=(Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)=0|debuff.winters_chill.down)&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&(prev_gcd.1.radiant_spark|prev_gcd.1.glacial_spike|prev_gcd.1.frostbolt|(debuff.mirrors_of_torment.up|buff.expanded_potential.react|buff.freezing_winds.up)&buff.fingers_of_frost.react=0))
-            if A.Flurry:IsReady(unit) and ((Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID) == 0 or Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) == 0) and (Player:PrevGCD(1, A.Ebonbolt) or Unit("player"):HasBuffsStacks(A.BrainFreezeBuff.ID, true) > 0 and (Player:PrevGCD(1, A.RadiantSpark) or Player:PrevGCD(1, A.GlacialSpike) or Player:PrevGCD(1, A.Frostbolt) or (Unit("target"):HasDeBuffs(A.MirrorsofTorment.ID, true) > 0 or Unit("player"):HasBuffsStacks(A.ExpandedPotentialBuff.ID, true) > 0 or Unit("player"):HasBuffs(A.FreezingWindsBuff.ID, true) > 0) and Unit("player"):HasBuffsStacks(A.FingersofFrostBuff.ID, true) == 0))) then
-                return A.Flurry:Show(icon)
-            end
-            
-            -- frozen_orb
-            if A.FrozenOrb:IsReady(unit) then
-                return A.FrozenOrb:Show(icon)
-            end
-            
-            -- blizzard,if=buff.freezing_rain.up|active_enemies>=3|active_enemies>=2&!runeforge.cold_front.equipped
-            if A.Blizzard:IsReady(unit) and (Unit("player"):HasBuffs(A.FreezingRainBuff.ID, true) > 0 or MultiUnits:GetActiveEnemies() >= 3) --or MultiUnits:GetByRangeInCombat(35, 5, 10) >= 2 and not runeforge.cold_front.equipped) 
-			then
-                return A.Blizzard:Show(icon)
-            end
-            
-            -- ray_of_frost,if=Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)=1&debuff.winters_chill.remains
-            if A.RayofFrost:IsReady(unit) and Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > 0 then
-                return A.RayofFrost:Show(icon)
-            end
-            
-            -- glacial_spike,if=Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)&debuff.winters_chill.remains>cast_time+travel_time
-            if A.GlacialSpike:IsReady(unit) and Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > (A.GlacialSpike:GetSpellCastTime() + A.GlacialSpike:TravelTime()) then
-                return A.GlacialSpike:Show(icon)
-            end
-            
-            -- ice_lance,if=Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)&Unit(unit):HasDeBuffs(A.WintersChillDebuff.ID)>buff.fingers_of_frost.react&debuff.winters_chill.remains>travel_time
-            if A.IceLance:IsReady(unit) and Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > 0  and Unit("target"):HasDeBuffs(A.WintersChillDebuff.ID, true) > 0 then
-                return A.IceLance:Show(icon)
-            end
-            
-            -- comet_storm
-            if A.CometStorm:IsReady(unit) then
-                return A.CometStorm:Show(icon)
-            end
-            
-            -- ice_nova
-            if A.IceNova:IsReady(unit) then
-                return A.IceNova:Show(icon)
-            end
-            
-            -- radiant_spark,if=buff.freezing_winds.up&active_enemies=1
-            if A.RadiantSpark:IsReady(unit) and Unit("player"):HasBuffs(A.FreezingWindsBuff.ID, true) > 0 then
-                return A.RadiantSpark:Show(icon)
-            end
-            
-            -- ice_lance,if=buff.fingers_of_frost.react|debuff.frozen.remains>travel_time
-            if A.IceLance:IsReady(unit) and Unit("player"):HasBuffsStacks(A.FingersofFrostBuff.ID, true) > 0 then
-                return A.IceLance:Show(icon)
-            end
-            
-            -- ebonbolt
-            if A.Ebonbolt:IsReady(unit) then
-                return A.Ebonbolt:Show(icon)
-            end
-            
-            --[[ radiant_spark,if=(!runeforge.freezing_winds.equipped|active_enemies>=2)&(buff.brain_freeze.react|soulbind.combat_meditation.enabled)
-            if A.RadiantSpark:IsReady(unit) and ((not runeforge.freezing_winds.equipped or MultiUnits:GetByRangeInCombat(40, 5, 10) >= 2) and (Unit("player"):HasBuffsStacks(A.BrainFreezeBuff.ID, true) or A.CombatMeditation:IsSoulbindLearned())) then
-                return A.RadiantSpark:Show(icon)
-            end]]
-            
-            --[[ shifting_power,if=active_enemies>=3
-            if A.ShiftingPower:IsReady(unit) and (MultiUnits:GetByRangeInCombat(40, 5, 10) >= 3) then
-                return A.ShiftingPower:Show(icon)
-            end]]
-            
-            --[[ shifting_power,line_cd=60,if=(soulbind.field_of_blossoms.enabled|soulbind.grove_invigoration.enabled)&(!talent.rune_of_power.enabled|buff.rune_of_power.down&cooldown.rune_of_power.remains>16)
-            if A.ShiftingPower:IsReady(unit) and ((A.FieldofBlossoms:IsSoulbindLearned() or A.GroveInvigoration:IsSoulbindLearned()) and (not A.RuneofPower:IsSpellLearned() or Unit("player"):HasBuffsDown(A.RuneofPowerBuff.ID, true) and A.RuneofPower:GetCooldown() > 16)) then
-                return A.ShiftingPower:Show(icon)
-            end]]
-            
-            --[[ mirrors_of_torment
-            if A.MirrorsofTorment:IsReady(unit) then
-                return A.MirrorsofTorment:Show(icon)
-            end]]
-            
-            --[[ frost_nova,if=runeforge.grisly_icicle.equipped&target.level<=level&debuff.frozen.down
-            if A.FrostNova:IsReady(unit) and (runeforge.grisly_icicle.equipped and target.level <= Unit("player"):level() and Unit(unit):HasDeBuffsDown(A.FrozenDebuff.ID, true)) then
-                return A.FrostNova:Show(icon)
-            end]]
-            
-            --[[ arcane_explosion,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_arcane.down
-            if A.ArcaneExplosion:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand.ID:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandArcaneBuff.ID, true)) then
-                return A.Regeneratin:Show(icon)
-            end]]
-            
-            --[[ fire_blast,if=runeforge.disciplinary_command.equipped&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
-            if A.FireBlast:IsReady(unit) and (runeforge.disciplinary_command.equipped and A.BuffDisciplinaryCommand.ID:GetCooldown() == 0 and Unit("player"):HasBuffsDown(A.DisciplinaryCommandFireBuff.ID, true)) then
-                return A.SpatialRift:Show(icon)
-            end]]
-            
-            -- glacial_spike,if=buff.brain_freeze.react
-            if A.GlacialSpike:IsReady(unit) and Unit("player"):HasBuffsStacks(A.BrainFreezeBuff.ID, true) > 0 then
-                return A.GlacialSpike:Show(icon)
-            end
-            
-            -- frostbolt
-            if A.Frostbolt:IsReady(unit) then
-                return A.Frostbolt:Show(icon)
-            end
-            
-        end
-        
--- call precombat
-		if not inCombat and (not Player:IsCasting() or Player:IsCasting(A.SummonWaterElemental.ID)) then
-			return Precombat(unit)
+		
 		end
-	
-	
+
+		local function AoERotation()
+		
+			-- actions.aoe=frozen_orb
+			if A.FrozenOrb:IsReady(player) and Unit(unit):GetRange() <= 40 then
+				return A.FrozenOrb:Show(icon)
+			end
+			
+			-- actions.aoe+=/blizzard
+			if A.Blizzard:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingRainBuff.ID, true) > 0) and Unit(unit):GetRange() <= 40 then
+				return A.Blizzard:Show(icon)
+			end
+			
+			-- actions.aoe+=/flurry,if=(remaining_winters_chill=0|debuff.winters_chill.down)&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&buff.fingers_of_frost.react=0)
+			if A.Flurry:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) == 0 and (A.LastPlayerCastName == A.Ebonbolt:Info() or (Unit(player):HasBuffs(A.BrainFreezeBuff.ID, true) > 0 and Unit(player):HasBuffs(A.FingersofFrostBuff.ID, true) == 0)) then
+				return A.Flurry:Show(icon)
+			end
+			
+			-- actions.aoe+=/ice_nova
+			if A.IceNova:IsReady(player) and MultiUnits:GetByRange(10, 3) >= 3 then
+				return A.IceNova:Show(icon)
+			end
+			
+			-- actions.aoe+=/comet_storm
+			if A.CometStorm:IsReady(unit) then
+				return A.CometStorm:Show(icon)
+			end
+			
+			-- actions.aoe+=/ice_lance,if=buff.fingers_of_frost.react|debuff.frozen.remains>travel_time|remaining_winters_chill&debuff.winters_chill.remains>travel_time
+			if A.IceLance:IsReady(unit) and (Unit(player):HasBuffs(A.FingersofFrostBuff.ID, true) > 0 or Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > 1) then
+				return A.IceLance:Show(icon)
+			end
+			
+			-- actions.aoe+=/radiant_spark
+			if A.RadiantSpark:IsReady(unit) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and (Unit(unit):TimeToDie() > 10 or Unit(unit):IsBoss()) then
+				return A.RadiantSpark:Show(icon)
+			end
+			
+			-- actions.aoe+=/mirrors_of_torment
+			if A.MirrorsofTorment:IsReady(unit) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and (Unit(unit):TimeToDie() > 25 or Unit(unit):IsBoss()) then
+				return A.MirrorsofTorment:Show(icon)
+			end
+			
+			-- actions.aoe+=/shifting_power
+			if A.ShiftingPower:IsReady(player) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and MultiUnits:GetByRange(10, 3) >= 3 and Unit(unit):TimeToDie() > 4 then
+				return A.ShiftingPower:Show(icon)
+			end
+			
+			-- actions.aoe+=/fire_blast,if=runeforge.disciplinary_command&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
+			--if A.FireBlast:IsReady(unit) and A.DisciplinaryCommand:HasLegendaryCraftingPower()
+			
+			-- actions.aoe+=/arcane_explosion,if=mana.pct>30&active_enemies>=6&!runeforge.glacial_fragments
+			if A.ArcaneExplosion:IsReady(player) and Player:ManaPercent() > 30 and MultiUnits:GetByRange(10, 6) >= 6 and not A.GlacialFragments:HasLegendaryCraftingPower() then
+				return A.ArcaneExplosion:Show(icon)
+			end
+			
+			-- actions.aoe+=/ebonbolt
+			if A.Ebonbolt:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) then
+				return A.Ebonbolt:Show(icon)
+			end
+			
+			-- actions.aoe+=/ice_lance,if=runeforge.glacial_fragments&talent.splitting_ice&travel_time<ground_aoe.blizzard.remains
+			if IceLance:IsReady(unit) and A.GlacialFragments:HasLegendaryCraftingPower() and A.SplittingIce:IsTalentLearned() then
+				return A.IceLance:Show(icon)
+			end
+			
+			-- actions.aoe+=/wait,sec=0.1,if=runeforge.glacial_fragments&talent.splitting_ice
+			-- actions.aoe+=/frostbolt
+			if A.Frostbolt:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) then
+				return A.Frostbolt:Show(icon)
+			end
+
+		end
+
+		local function Cooldowns()
+		
+			-- actions.cds=potion,if=prev_off_gcd.icy_veins|fight_remains<30
+			-- actions.cds+=/deathborne
+			if A.Deathborne:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and (Unit(unit):TimeToDie() >= 25 or Unit(unit):IsBoss()) then
+				return A.Deathborne:Show(icon)
+			end
+			
+			-- actions.cds+=/mirrors_of_torment,if=active_enemies<3&(conduit.siphoned_malice|soulbind.wasteland_propriety)
+			if A.MirrorsofTorment:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and MultiUnits:GetActiveEnemies() < 3 and (Unit(unit):TimeToDie() >= 25 or Unit(unit):IsBoss()) then
+				return A.MirrorsofTorment:Show(icon)
+			end
+			
+			-- actions.cds+=/rune_of_power,if=cooldown.icy_veins.remains>12&buff.rune_of_power.down
+			if A.RuneofPower:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and A.IcyVeins:GetCooldown() > 12 and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 then
+				return A.RuneofPower:Show(icon)
+			end
+			
+			-- actions.cds+=/icy_veins,if=buff.rune_of_power.down&(buff.slick_ice.down|active_enemies>=2)
+			if A.IcyVeins:IsReady(player) and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and (Unit(player):HasBuffs(A.SlickIce.ID, true) == 0 or MultiUnits:GetActiveEnemies() >= 2) then
+				return A.IcyVeins:Show(icon)
+			end
+			
+			-- actions.cds+=/time_warp,if=runeforge.temporal_warp&buff.exhaustion.up&(prev_off_gcd.icy_veins|fight_remains<30)
+			if A.TimeWarp:IsReady(player) and A.TemporalWarp:HasLegendaryCraftingPower() and Unit(player):HasDeBuffs(A.Exhaustion.ID, true) > 0 and (Unit(player):HasBuffs(A.IcyVeins.ID, true) > 0) then
+				return A.TimeWarp:Show(icon)
+			end
+			
+			-- actions.cds+=/use_items
+			-- actions.cds+=/blood_fury
+			if A.BloodFury:IsReady(player) and UseRacial then
+				return A.BloodFury:Show(icon)
+			end
+			
+			-- actions.cds+=/berserking
+			if A.Berserking:IsReady(player) and UseRacial then
+				return A.Berserking:Show(icon)
+			end			
+			
+			-- actions.cds+=/lights_judgment
+		
+			
+			-- actions.cds+=/fireblood
+			if A.Fireblood:IsReady(player) and UseRacial then
+				return A.Fireblood:Show(icon)
+			end			
+			
+			-- actions.cds+=/ancestral_call
+			if A.AncestralCall:IsReady(player) and UseRacial then
+				return A.AncestralCall:Show(icon)
+			end			
+			
+			-- actions.cds+=/bag_of_tricks
+
+		end
+
+		local function Movement()
+		
+			-- actions.movement=blink_any,if=movement.distance>10
+			
+			
+			-- actions.movement+=/ice_floes,if=buff.ice_floes.down
+			if A.IceFloes:IsReady(player) and Unit(player):HasBuffs(A.IceFloes.ID, true) == 0 then
+				return A.IceFloes:Show(icon)
+			end
+			
+			-- actions.movement+=/arcane_explosion,if=mana.pct>30&active_enemies>=2
+			if A.ArcaneExplosion:IsReady(player) and Player:ManaPercent() > 30 and MultiUnits:GetByRange(10, 3) >= 2 then
+				return A.ArcaneExplosion:Show(icon)
+			end
+			
+			-- actions.movement+=/fire_blast
+			if A.FireBlast:IsReady(unit) then
+				return A.FireBlast:Show(icon)
+			end
+			
+			-- actions.movement+=/ice_lance
+			if A.IceLance:IsReady(unit) then
+				return A.IceLance:Show(icon)
+			end
+			
+
+		end
+
+		local function ST()
+		
+			-- actions.st=flurry,if=(remaining_winters_chill=0|debuff.winters_chill.down)&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&(prev_gcd.1.glacial_spike|prev_gcd.1.frostbolt&(!conduit.ire_of_the_ascended|cooldown.radiant_spark.remains|runeforge.freezing_winds)|prev_gcd.1.radiant_spark|buff.fingers_of_frost.react=0&(debuff.mirrors_of_torment.up|buff.freezing_winds.up|buff.expanded_potential.react)))
+			if A.Flurry:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) == 0 and (A.LastPlayerCastName == A.Ebonbolt:Info() or A.LastPlayerCastName == A.Frostbolt:Info() and (A.RadiantSpark:GetCooldown() > 0 or A.FreezingWinds:HasLegendaryCraftingPower()) or A.LastPlayerCastName == A.RadiantSpark:Info() or Unit(unit):HasBuffs(A.FingersofFrostBuff.ID, true) == 0 and (Unit(unit):HasDeBuffs(A.MirrorsofTorment.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingWinds.ID, true) > 0)) then
+				return A.Flurry:Show(icon)
+			end
+			
+			-- actions.st+=/frozen_orb
+			if A.FrozenOrb:IsReady(player) and Unit(unit):GetRange() <= 40 then
+				return A.FrozenOrb:Show(icon)
+			end
+			
+			-- actions.st+=/blizzard,if=buff.freezing_rain.up|active_enemies>=2|runeforge.glacial_fragments&remaining_winters_chill=2
+			if A.Blizzard:IsReady(player) and not (isMoving or Unit(unit):HasBuffs(A.IceFloes.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingRainBuff.ID, true) > 0) and Unit(unit):GetRange() <= 40  and (Unit(unit):HasBuffs(A.FreezingRainBuff.ID, true) > 0 or MultiUnits:GetActiveEnemies() >= 2 or (A.GlacialFragments:HasLegendaryCraftingPower() and Unit(unit):HasDeBuffsStacks(A.WintersChill.ID, true) == 2)) then
+				return A.Blizzard:Show(icon)
+			end
+			
+			-- actions.st+=/ray_of_frost,if=remaining_winters_chill=1&debuff.winters_chill.remains
+			if A.RayofFrost:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > 0 then
+				return A.RayofFrost:Show(icon)
+			end
+			
+			-- actions.st+=/glacial_spike,if=remaining_winters_chill&debuff.winters_chill.remains>cast_time+travel_time
+			if A.GlacialSpike:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > 2 then
+				return A.GlacialSpike:Show(icon)
+			end
+			
+			-- actions.st+=/ice_lance,if=remaining_winters_chill&remaining_winters_chill>buff.fingers_of_frost.react&debuff.winters_chill.remains>travel_time
+			if A.IceLance:IsReady(unit) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > Unit(unit):HasBuffs(A.FingersofFrostBuff.ID, true) then
+				return A.IceLance:Show(icon)
+			end
+			
+			-- actions.st+=/comet_storm
+			if A.CometStorm:IsReady(unit) then
+				return A.CometStorm:Show(icon)
+			end
+			
+			-- actions.st+=/ice_nova
+			if A.IceNova:IsReady(unit) and Unit(unit):GetRange() < 10 then
+				return A.IceNova:Show(icon)
+			end
+			
+			-- actions.st+=/radiant_spark,if=buff.freezing_winds.up&active_enemies=1
+			if A.RadiantSpark:IsReady(unit) and UseCovenant and Unit(player):HasBuffs(A.FreezingWinds.ID, true) > 0 and MultiUnits:GetActiveEnemies() == 1 then
+				return A.RadiantSpark:Show(icon)
+			end
+			
+			-- actions.st+=/ice_lance,if=buff.fingers_of_frost.react|debuff.frozen.remains>travel_time
+			if A.IceLance:IsReady(unit) and Unit(player):HasBuffs(A.FingersofFrostBuff.ID, true) > 1 then
+				return A.IceLance:Show(icon)
+			end
+			
+			-- actions.st+=/ebonbolt
+			if A.Ebonbolt:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) then
+				return A.Ebonbolt:Show(icon)
+			end
+			
+			-- actions.st+=/radiant_spark,if=(!runeforge.freezing_winds|active_enemies>=2)&buff.brain_freeze.react
+			if A.RadiantSpark:IsReady(unit) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and (not A.FreezingWinds:HasLegendaryCraftingPower() or MultiUnits:GetActiveEnemies() >= 2) and Unit(player):HasBuffs(A.BrainFreezeBuff.ID, true) > 0 then
+				return A.RadiantSpark:Show(icon)
+			end
+			
+			-- actions.st+=/mirrors_of_torment
+			if A.MirrorsofTorment:IsReady(unit) and BurstIsON(unit) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and (Unit(unit):TimeToDie() > 25 or Unit(unit):IsBoss()) then
+				return A.MirrorsofTorment:Show(icon)
+			end
+			
+			-- actions.st+=/shifting_power,if=buff.rune_of_power.down&(soulbind.grove_invigoration|soulbind.field_of_blossoms|active_enemies>=2)
+			if A.ShiftingPower:IsReady(player) and UseCovenant and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(player):HasBuffs(A.RuneofPowerBuff.ID, true) == 0 and MultiUnits:GetByRange(15, 2) >= 2 then
+				return A.ShiftingPower:Show(icon)
+			end
+			
+			-- actions.st+=/arcane_explosion,if=runeforge.disciplinary_command&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_arcane.down
+			--if A.ArcaneExplosion:IsReady(player) and 
+			
+			-- actions.st+=/fire_blast,if=runeforge.disciplinary_command&cooldown.buff_disciplinary_command.ready&buff.disciplinary_command_fire.down
+			
+			-- actions.st+=/glacial_spike,if=buff.brain_freeze.react
+			if A.GlacialSpike:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(player):HasBuffs(A.BrainFreezeBuff.ID, true) > 0 then
+				return A.GlacialSpike:Show(icon)
+			end
+			
+			-- actions.st+=/frostbolt
+			if A.Frostbolt:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) then
+				return A.Frostbolt:Show(icon)
+			end
+
+		end
+
+
+		-- actions.precombat+=/summon_water_elemental
+		if A.SummonWaterElemental:IsReady(player) and not A.LonelyWinter:IsTalentLearned() and not Pet:IsActive() then
+			return A.SummonWaterElemental:Show(icon)
+		end
+		
+		if A.BlazingBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.BlazingBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+			return A.BlazingBarrier:Show(icon)
+		end
+		
+		-- actions.precombat+=/frostbolt	
+		if A.Frostbolt:IsReady(unit) then
+			return A.Frostbolt:Show(icon)
+		end
+
+		-- actions+=/call_action_list,name=cds
+		if BurstIsON(unit) then
+			if Cooldowns() then
+				return true
+			end
+		end
+		
+		-- actions+=/call_action_list,name=aoe,if=active_enemies>=3
+		if MultiUnits:GetActiveEnemies() >= 3 and UseAoE then
+			if AoERotation() then
+				return true
+			end
+		end
+		
+		-- actions+=/call_action_list,name=st,if=active_enemies<3
+		if MultiUnits:GetActiveEnemies() > 0 and MultiUnits:GetActiveEnemies() < 3 then
+			if ST() then
+				return true
+			end
+		end
+		
+		-- actions+=/call_action_list,name=movement
 		if isMoving then
-			return Movement()
-		end	
-		
-		if A.BurstIsON("target") and not isMoving and Cds() then
-			return true
-		end	
-		
-		     -- call_action_list,name=aoe,if=active_enemies>=5
-            -- call_action_list,name=st,if=active_enemies<5	
-		if MultiUnits:GetActiveEnemies() >= 5 and not isMoving and Action.GetToggle(2, "AoE") then
-			return Aoe()
-			else
-			return St()
+			if Movement() then
+				return true
+			end
 		end	
 	
 	end
-
-
-
-    -- End on EnemyRotation()
-
-    -- Defensive
-    --local SelfDefensive = SelfDefensives()
-    if SelfDefensive then 
-        return SelfDefensive:Show(icon)
-    end 
 
     -- Mouseover
     if A.IsUnitEnemy("mouseover") then
@@ -953,68 +617,9 @@ A[3] = function(icon, isMulti)
         unit = "target"
         if EnemyRotation(unit) then 
             return true
-        end 
-
-    end
-end
--- Finished
-
--- [4] AoE Rotation
-A[4] = function(icon)
-    return A[3](icon, true)
-end
- -- [5] Trinket Rotation
--- No specialization trinket actions 
--- Passive 
---[[local function FreezingTrapUsedByEnemy()
-    if     UnitCooldown:GetCooldown("arena", 3355) > UnitCooldown:GetMaxDuration("arena", 3355) - 2 and
-    UnitCooldown:IsSpellInFly("arena", 3355) and 
-    Unit("player"):GetDR("incapacitate") >= 50 
-    then 
-        local Caster = UnitCooldown:GetUnitID("arena", 3355)
-        if Caster and Unit(Caster):GetRange() <= 40 then 
-            return true 
-        end 
-    end 
-end 
-local function ArenaRotation(icon, unit)
-    if A.IsInPvP and (A.Zone == "pvp" or A.Zone == "arena") and not Player:IsStealthed() and not Player:IsMounted() then
-        -- Note: "arena1" is just identification of meta 6
-        if (unit == "arena1" or unit == "arena2" or unit == "arena3") then 
-            -- Reflect Casting BreakAble CC
-            if A.NetherWard:IsReady() and A.NetherWard:IsSpellLearned() and Action.ShouldReflect(EnemyTeam()) and EnemyTeam():IsCastingBreakAble(0.25) then 
-                return A.NetherWard:Show(icon)
-            end 
         end
-    end 
-end 
-local function PartyRotation(unit)
-    if (unit == "party1" and not A.GetToggle(2, "PartyUnits")[1]) or (unit == "party2" and not A.GetToggle(2, "PartyUnits")[2]) then 
-        return false 
-    end
 
-  	-- SingeMagic
-    if A.SingeMagic:IsCastable() and A.SingeMagic:AbsentImun(unit, Temp.TotalAndMag) and IsSchoolFree() and Action.AuraIsValid(unit, "UseDispel", "Magic") and not Unit(unit):InLOS() then
-        return A.SingeMagic:Show(icon)
     end
-end 
-
-A[6] = function(icon)
-    return ArenaRotation(icon, "arena1")
 end
 
-A[7] = function(icon)
-    local Party = PartyRotation("party1") 
-    if Party then 
-        return Party:Show(icon)
-    end 
-    return ArenaRotation(icon, "arena2")
-end
 
-A[8] = function(icon)
-    local Party = PartyRotation("party2") 
-    if Party then 
-        return Party:Show(icon)
-    end     
-    return ArenaRotation(icon, "arena3")
-end]]--
