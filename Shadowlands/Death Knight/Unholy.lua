@@ -701,7 +701,7 @@ A[3] = function(icon, isMulti)
         end
 		
         -- Festering Strike auto target (credit to Taste for this)
-        if AutoSwitchFesteringStrike and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and A.Apocalypse:GetCooldown() > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
+        if AutoSwitchFesteringStrike and A.BurstIsON(unit) and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
         then
             local FesteringStrike_Nameplates = MultiUnits:GetActiveUnitPlates()
             if FesteringStrike_Nameplates then  
@@ -714,17 +714,17 @@ A[3] = function(icon, isMulti)
         end
 		
 		--Festering Switch with CD off
-		--if AutoSwitchFesteringStrike and not A.BurstIsON(unit) and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
-		-- then
-        --    local FesteringStrike_Nameplates = MultiUnits:GetActiveUnitPlates()
-        --    if FesteringStrike_Nameplates then  
-        --        for FesteringStrike_UnitID in pairs(FesteringStrike_Nameplates) do             
-        --            if Unit(FesteringStrike_UnitID):GetRange() < 6 and InMelee(FesteringStrike_UnitID) and not Unit(FesteringStrike_UnitID):InLOS() and Unit(FesteringStrike_UnitID):HasDeBuffsStacks(A.FesteringWound.ID, true) == 0 then 
-        --                return A:Show(icon, ACTION_CONST_AUTOTARGET)
-        --            end         
-        --        end 
-        --    end
-        --end
+		if AutoSwitchFesteringStrike and not A.BurstIsON(unit) and Unit(unit):HasDeBuffsStacks(A.FesteringWound.ID, true) > 0 and Player:AreaTTD(10) > 5 and Player:Rune() >= 2 and A.DeathandDecay:GetCooldown() <= 5 and currentTargets >= 2 and currentTargets <= 5 and (MissingFesteringWound > 0 and MissingFesteringWound < 5 or Unit(unit):IsDummy())
+		 then
+            local FesteringStrike_Nameplates = MultiUnits:GetActiveUnitPlates()
+            if FesteringStrike_Nameplates then  
+                for FesteringStrike_UnitID in pairs(FesteringStrike_Nameplates) do             
+                    if Unit(FesteringStrike_UnitID):GetRange() < 6 and InMelee(FesteringStrike_UnitID) and not Unit(FesteringStrike_UnitID):InLOS() and Unit(FesteringStrike_UnitID):HasDeBuffsStacks(A.FesteringWound.ID, true) == 0 then 
+                        return A:Show(icon, ACTION_CONST_AUTOTARGET)
+                   end         
+                end 
+            end
+        end
 		
 		--actions.cooldowns+=/raise_dead,if=!pet.ghoul.active
         if not Pet:IsActive() and A.RaiseDead:IsReady() then
@@ -1078,17 +1078,17 @@ A[3] = function(icon, isMulti)
 			end
 			
 			--actions.cooldowns+=/unholy_blight,if=variable.st_planning&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)&(!runeforge.deadliest_coil|!talent.army_of_the_damned|conduit.convocation_of_the_dead.rank<5)
-			if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and (not A.DeadliestCoil:HasLegendaryCraftingPower() or not A.ArmyoftheDamned:IsTalentLearned() or not A.ConvocationoftheDead:IsSoulbindLearned()) then
+			if A.UnholyBlight:IsReady(player) and Unit("target"):GetRange() < 10 and MultiUnits:GetByRange(10, AoETargets) < AoETargets and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and (not A.DeadliestCoil:HasLegendaryCraftingPower() or not A.ArmyoftheDamned:IsTalentLearned() or not A.ConvocationoftheDead:IsSoulbindLearned()) then
 				return A.UnholyBlight:Show(icon)
 			end
 			
             --actions.cooldowns+=/unholy_blight,if=variable.st_planning&runeforge.deadliest_coil&talent.army_of_the_damned&conduit.convocation_of_the_dead.rank>=5&cooldown.apocalypse.remains<3&(cooldown.dark_transformation.remains<gcd|buff.dark_transformation.up)
-            if A.UnholyBlight:IsReady(player) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.DeadliestCoil:HasLegendaryCraftingPower() and A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned() and A.Apocalypse:GetCooldown() < 3 and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) then
+            if A.UnholyBlight:IsReady(player) and Unit("target"):GetRange() < 10 and MultiUnits:GetByRange(10, AoETargets) < AoETargets and A.DeadliestCoil:HasLegendaryCraftingPower() and A.ArmyoftheDamned:IsTalentLearned() and A.ConvocationoftheDead:IsSoulbindLearned() and A.Apocalypse:GetCooldown() < 3 and (A.DarkTransformation:IsReadyByPassCastGCD() or Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) then
                 return A.UnholyBlight:Show(icon)
             end     
 		
 			--actions.cooldowns+=/unholy_blight,if=active_enemies>=2|fight_remains<21
-			if A.UnholyBlight:IsReady(player) and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets or Player:AreaTTD(10) < 21) then
+			if A.UnholyBlight:IsReady(player) and Unit("target"):GetRange() < 10 and (MultiUnits:GetByRange(10, AoETargets) >= AoETargets or Player:AreaTTD(10) < 21) then
 				return A.UnholyBlight:Show(icon)
 			end
             
@@ -1128,12 +1128,12 @@ A[3] = function(icon, isMulti)
             end    
             
             --actions.cooldowns+=/unholy_assault,if=variable.st_planning&debuff.festering_wound.stack<2&(pet.apoc_ghoul.active|conduit.convocation_of_the_dead&buff.dark_transformation.up&!pet.army_ghoul.active)
-            if A.UnholyAssault:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 2 and (A.Apocalypse:GetSpellTimeSinceLastCast() < 15 or (A.ConvocationoftheDead:IsSoulbindLearned() and Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and not A.ArmyoftheDead:GetSpellTimeSinceLastCast() > 30) then
+            if A.UnholyAssault:IsReady(unit) and Unit("target"):GetRange() < 10 and MultiUnits:GetByRange(10, AoETargets) < AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 2 and (A.Apocalypse:GetSpellTimeSinceLastCast() < 15 or (A.ConvocationoftheDead:IsSoulbindLearned() and Unit("pet"):HasBuffs(A.DarkTransformation.ID, true) > 0) and not A.ArmyoftheDead:GetSpellTimeSinceLastCast() > 30) then
                 return A.UnholyAssault:Show(icon)
             end    
             
             --actions.cooldowns+=/unholy_assault,target_if=min:debuff.festering_wound.stack,if=active_enemies>=2&debuff.festering_wound.stack<2
-            if A.UnholyAssault:IsReady(unit) and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 2 then
+            if A.UnholyAssault:IsReady(unit) and Unit("target"):GetRange() < 10 and MultiUnits:GetByRange(10, AoETargets) >= AoETargets and Unit("target"):HasDeBuffsStacks(A.FesteringWound.ID, true) < 2 then
                 return A.UnholyAssault:Show(icon)
             end    
             
