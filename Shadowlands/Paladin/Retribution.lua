@@ -551,7 +551,7 @@ local function Interrupts(unit)
     useKick, useCC, useRacial, notInterruptable, castRemainsTime, castDoneTime = Action.InterruptIsValid(unit, nil, nil, countInterruptGCD(unit))
     
     if castRemainsTime >= A.GetLatency() then
-        if useKick and A.Rebuke:IsReady(unit) and A.Rebuke:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
+        if useKick and A.Rebuke:IsReady(unit) and not notInterruptable and A.Rebuke:AbsentImun(unit, Temp.TotalAndMagKick, true) then 
             return A.Rebuke
         end 
         
@@ -570,6 +570,7 @@ A[3] = function(icon, isMulti)
     local inCombat = Unit("player"):CombatTime() > 0
     local combatTime = Unit("player"):CombatTime()
 	local HolyPower = Player:HolyPower()
+	local inRange = InRange()
 		
 	local UseRacial = A.GetToggle(1, "Racial")
 	local UseCovenant = A.GetToggle(1, "Covenant")
@@ -673,6 +674,16 @@ A[3] = function(icon, isMulti)
 				return A.TemplarsVerdict:Show(icon)
 			end		
 
+			--Basic safety net Divine Storm
+			if A.DivineStorm:IsReady(player) and MultiUnits:GetByRange(8, 2) >= 2 and HolyPower >= 5 then
+				return A.DivineStorm:Show(icon)
+			end
+
+			--Basic safety net Templars Verdict
+			if A.TemplarsVerdict:IsReady(unit) and HolyPower >= 5 then
+				return A.TemplarsVerdict:Show(icon)
+			end
+
 		end
 
 		local function Generators()
@@ -685,13 +696,19 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.generators+=/divine_toll,if=!debuff.judgment.up&(!raid_event.adds.exists|raid_event.adds.in>30)&(holy_power<=2|holy_power<=4&(cooldown.blade_of_justice.remains>gcd*2|debuff.execution_sentence.up|debuff.final_reckoning.up))&(!talent.final_reckoning.enabled|cooldown.final_reckoning.remains>gcd*10)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>gcd*10)
-			if A.DivineToll:IsReady(unit) and UseCovenant and Unit(unit):HasDeBuffs(A.JudgmentDebuff.ID, true) == 0 and (HolyPower <= 2 or HolyPower <= 4 and (A.BladeofJustice:GetCooldown() > A.GetGCD() * 2 or Unit(unit):HasDeBuffs(A.ExecutionSentence.ID, true) > 0 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true) > 0)) and (not A.FinalReckoning:IsTalentLearned() or A.FinalReckoning:GetCooldown() > A.GetGCD() * 10) and (not A.ExecutionSentence:IsTalentLearned() or A.ExecutionSentence:GetCooldown() > A.GetGCD() * 10 or Unit(unit):TimeToDie() <= 8) then
+			if A.DivineToll:IsReady(unit) and UseCovenant and Unit(unit):HasDeBuffs(A.JudgmentDebuff.ID, true) == 0 and (HolyPower <= 2 or HolyPower <= 4 and (A.BladeofJustice:GetCooldown() > A.GetGCD() * 2 or Unit(unit):HasDeBuffs(A.ExecutionSentence.ID, true) > 0 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true) > 0)) and (not A.FinalReckoning:IsTalentLearned() or A.FinalReckoning:GetCooldown() > A.GetGCD() * 10) and (not A.ExecutionSentence:IsTalentLearned() or A.ExecutionSentence:GetCooldown() > A.GetGCD() * 10 or Unit(unit):TimeToDie() <= 8) and (Unit(player):HasBuffs(A.Seraphim.ID, true) > 0 or not A.Seraphim:IsTalentLearned()) then
 				return A.DivineToll:Show(icon)
 			end
 			
 			-- actions.generators+=/wake_of_ashes,if=(holy_power=0|holy_power<=2&(cooldown.blade_of_justice.remains>gcd*2|debuff.execution_sentence.up|debuff.final_reckoning.up))&(!raid_event.adds.exists|raid_event.adds.in>20)&(!talent.execution_sentence.enabled|cooldown.execution_sentence.remains>15)&(!talent.final_reckoning.enabled|cooldown.final_reckoning.remains>15)
-			if A.WakeofAshes:IsReady(player) and Unit(unit):GetRange() <= 10 and (HolyPower == 0 or HolyPower <= 2 and (A.BladeofJustice:GetCooldown() > A.GetGCD() * 2 or Unit(unit):HasDeBuffs(A.ExecutionSentence.ID, true) > 0 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true) > 0)) and (not A.ExecutionSentence:IsTalentLearned() or A.ExecutionSentence:GetCooldown() > 15 or Unit(unit):TimeToDie() <= 8) and (not A.FinalReckoning:IsTalentLearned() or A.FinalReckoning:GetCooldown() > 15 or not BurstIsON(unit)) then
-				return A.WakeofAshes:Show(icon)
+			if A.WakeofAshes:IsReady(player) and inRange and (HolyPower == 0 or HolyPower <= 2 and (A.BladeofJustice:GetCooldown() > A.GetGCD() * 2 or Unit(unit):HasDeBuffs(A.ExecutionSentence.ID, true) > 0 or Unit(unit):HasDeBuffs(A.FinalReckoningDebuff.ID, true) > 0)) and (not A.ExecutionSentence:IsTalentLearned() or A.ExecutionSentence:GetCooldown() > 15 or Unit(unit):TimeToDie() <= 8) and (not A.FinalReckoning:IsTalentLearned() or A.FinalReckoning:GetCooldown() > 15 or not BurstIsON(unit)) then
+				if A.IsInPvP and (Unit(player):HasBuffs(A.Seraphim.ID, true) > 0 or not A.Seraphim:IsTalentLearned()) and ((Unit(player):HasBuffs(A.AvengingWrath.ID, true) > 0 or Unit(player):HasBuffs(A.Crusade.ID, true) > 0) or ((A.Crusade:GetCooldown() >= 20 and A.Crusade:IsTalentLearned()) or not A.Crusade:IsTalentLearned() and A.AvengingWrath:GetCooldown() >= 20)) then
+					return A.WakeofAshes:Show(icon)
+				end
+				
+				if not A.IsInPvP then
+					return A.WakeofAshes:Show(icon)
+				end
 			end
 			
 			-- actions.generators+=/hammer_of_wrath,if=holy_power<=4
@@ -727,7 +744,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.generators+=/consecration,if=!consecration.up
-			if A.Consecration:IsReady(player) and Unit(unit):GetRange() <= 10 and A.Consecration:GetSpellTimeSinceLastCast() >= 12 then
+			if A.Consecration:IsReady(player) and inRange and A.Consecration:GetSpellTimeSinceLastCast() >= 12 and not Unit(unit):IsDead() then
 				return A.Consecration:Show(icon)
 			end
 			
@@ -742,7 +759,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.generators+=/consecration,if=time_to_hpg>gcd	
-			if A.Consecration:IsReady(player) and Unit(unit):GetRange() <= 10 and not HPGReady then
+			if A.Consecration:IsReady(player) and inRange and not HPGReady and not Unit(unit):IsDead() then
 				return A.Consecration:Show(icon)
 			end
 			
@@ -896,7 +913,7 @@ local function PartyRotation(icon, unitID)
 	end
    
     -- BlessingofProtection
-	if A.BlessingofProtection:IsReady(unitID, nil, nil, true) and A.IsInPvP and ((Unit(unitID):HealthPercent() <= BlessingofProtection and Unit(unitID):IsFocused("MELEE", true)) or ((A.BlessingofSanctuary:GetCooldown() > 0 or not A.BlessingofSanctuary:IsTalentLearned()) and Unit(unitID):HasDeBuffs("Stuned") > 2)) and Unit(unitID):HasBuffs(A.TouchofKarma.ID, true) == 0 and Unit(unitID):HasBuffs(A.DieByTheSword.ID, true) == 0 then
+	if A.BlessingofProtection:IsReady(unitID, nil, nil, true) and A.IsInPvP and Unit(unitID):HealthPercent() <= BlessingofProtection and (A.BlessingofSanctuary:GetCooldown() > 0 or not A.BlessingofSanctuary:IsTalentLearned()) and Unit(unitID):HasDeBuffs("Stuned") > 2 and Unit(unitID):HasBuffs(A.TouchofKarma.ID, true) == 0 and Unit(unitID):HasBuffs(A.DieByTheSword.ID, true) == 0 then
 		return A.BlessingofProtection:Show(icon)
 	end
     
