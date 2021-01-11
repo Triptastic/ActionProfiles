@@ -227,12 +227,11 @@ local function SelfDefensives()
 			
     -- Ironfur (any role, whenever have physical damage)
 	local IronfurHPLost = GetToggle(2, "IronfurHPLost")
-	local IsTanking = Unit(player):IsTanking("target", 8) or Unit(player):IsTankingAoE(8)
     if Player:Rage() >= A.Ironfur:GetSpellPowerCost() and A.Ironfur:IsReady(player) and 
 	(
 	    HPLoosePerSecond >= IronfurHPLost
 		or
-        Unit(player):HealthPercent() < 99 and IsTanking
+        Unit(player):HealthPercent() <= 99
 	)
 	then 
         return A.Ironfur
@@ -506,7 +505,6 @@ A[3] = function(icon, isMulti)
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods:GetPullTimer()
     local ActiveMitigationNeeded = Player:ActiveMitigationNeeded()
-	local IsTanking = Unit("player"):IsTanking("target", 8) or Unit("player"):IsTankingAoE(8)
 	local HPLoosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
 	local Thrash = Thrash()
 	local Swipe = Swipe()
@@ -713,8 +711,7 @@ A[3] = function(icon, isMulti)
 			    A.Ironfur:GetSpellPowerCostCache() == 0 
 				or 
 				(
-				    Player:Rage() > A.Ironfur:GetSpellPowerCostCache() and 
-					A.LayeredMane:GetAzeriteRank() > 0 and 
+				    Player:Rage() > A.Ironfur:GetSpellPowerCostCache() and
 					MultiUnits:GetByRange(40, 5, 10) > 2
 				)
 			) 
