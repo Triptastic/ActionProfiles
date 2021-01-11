@@ -237,7 +237,7 @@ local function SelfDefensives(unit)
         end 
     end 
     
-    -- Emergency AntiMagicShell
+    -- Emergency AntiMagicShell (Thanks DeadSense)
     local AntiMagicShell = Action.GetToggle(2, "AntiMagicShellHP")
     local AntiMagicShell = Action.GetToggle(2, "AntiMagicShellTTDMagic")
     local AntiMagicShell = Action.GetToggle(2, "AntiMagicShellTTDMagicHP")
@@ -250,13 +250,10 @@ local function SelfDefensives(unit)
             AntiMagicShell >= 100 and 
             (
                 -- HP lose per sec >= 10
-                magic * 100 / Unit(player):HealthMax() >= 10 or 
-                RTmagic >= Unit(player):HealthMax() * 0.10 or 
+                Unit(player):GetDMG() * 100 / Unit(player):HealthMax() >= 15 or 
+                Unit(player):GetRealTimeDMG() >= Unit(player):HealthMax() * 0.15 or 
                 -- TTD Magic
-                Unit(player):TimeToDieMagicX(AntiMagicShellTTDMagicHP) < AntiMagicShellTTDMagic or 
-                -- GGL logic by Ayni on magic inc damage
-                Unit(player):GetDMG(4) > Unit(player):GetDMG() / 2 or
-                Unit(player):GetDMG(4) * 5 >= A.AntiMagicShell:GetSpellDescription()[1] or
+                Unit(player):TimeToDieMagicX(30) < 3 or 
                 
                 (
                     A.IsInPvP and 
@@ -275,11 +272,41 @@ local function SelfDefensives(unit)
         (    -- Custom
             AntiMagicShell < 100 and 
             Unit(player):HealthPercent() <= AntiMagicShell
+        ) or 
+        (    -- Custom 226512
+            Unit("player"):HasDeBuffs(226512, true)
+        ) or 
+        (    -- Custom 334852
+            Unit("player"):HasDeBuffs(334852, true)
+        ) or 
+        (    -- Custom 340860
+            Unit("player"):HasDeBuffs(340860, true)
+        ) or 
+        (    -- Custom 326271
+            Unit("player"):HasDeBuffs(326271, true)
+        ) or 
+        (    -- Custom 325873
+            Unit("player"):HasDeBuffs(325873, true)
+        ) or 
+        (    -- Custom 326538
+            Unit("player"):HasDeBuffs(326538, true)
+        ) or 
+        (    -- Custom 327619
+            Unit("player"):HasDeBuffs(327619, true)
+        ) or 
+        (    -- Custom 337110
+            Unit("player"):HasDeBuffs(337110, true)
+        ) or 
+        (    -- Custom 334765
+            Unit("player"):HasDeBuffs(334765, true)
+        ) or 
+        (    -- Custom 335873
+            Unit("player"):HasDeBuffs(335873, true)
         )
     ) 
     then 
         return A.AntiMagicShell
-    end 
+	end
     
     -- Icebound Fortitude    
     if A.IceboundFortitude:IsReadyByPassCastGCD(player) and (not A.GetToggle(2, "IceboundFortitudeIgnoreBigDeff") or Unit(player):HasBuffs(Temp.BigDeff, true) == 0) then 
@@ -809,7 +836,7 @@ A[3] = function(icon, isMulti)
         if inCombat and Unit(unit):IsExists() then
             
             -- Auto taunt logic by KhalDrogo1988  (THANKS MATE)
-            if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then
+           if A.GetToggle(2, "AutoTaunt") and combatTime > 0 then
                 if not Unit(unit):IsBoss() and
                 A.DarkCommand:IsReady(unit) or
                 A.DeathGrip:IsReady(unit) or
@@ -840,31 +867,6 @@ A[3] = function(icon, isMulti)
             if SelfDefensive then 
                 return SelfDefensive:Show(icon)
             end 
-            
-            -- Custom logic by KhalDrogo1988
-            if Unit(unit):GetRange() <= 30
-            and Unit(player):ThreatSituation(unit) ~= 3
-            and not Unit(unit):IsExplosives()
-            and not Unit(unit):IsDummy()
-            and not Unit(unit):IsPlayer()
-            and not Unit(unit):IsTotem() then
-                --  Try taunt enemy if no agro
-                if A.DarkCommand:IsReady(unit) then
-                    return A.DarkCommand:Show(icon)
-                end
-                -- Try grip emeny if no agro
-                if A.DeathGrip:IsReady(unit) then
-                    return A.DeathGrip:Show(icon)
-                end
-                -- Try CC Enemy if no agro
-                if A.Asphyxiate:IsReady(unit) then
-                    return A.Asphyxiate:Show(icon)
-                end
-                
-                if A.DeathCaress:IsReady(unit) and Unit(unit):GetRange() > 5 then
-                    return A.DeathCaress:Show(icon)
-                end
-            end
             
             -- SwarmingMistVenthyr
             if A.SwarmingMist:IsReady(Unit) and Unit(player):HasBuffs(A.SwarmingMist.ID,true) == 0 then
