@@ -1,0 +1,65 @@
+---------------------------------------------------
+---------------- CUSTOM PVP FUNCTIONS -------------
+---------------------------------------------------
+local TMW                                   = TMW
+local CNDT                                  = TMW.CNDT
+local Env                                   = CNDT.Env
+local Action                                = Action
+local MultiUnits                            = Action.MultiUnits
+local next, pairs, type, print              = next, pairs, type, print
+local IsActionInRange, GetActionInfo, PetHasActionBar, GetPetActionsUsable, GetSpellInfo = IsActionInRange, GetActionInfo, PetHasActionBar, GetPetActionsUsable, GetSpellInfo
+local UnitIsPlayer, UnitExists, UnitGUID    = UnitIsPlayer, UnitExists, UnitGUID
+local PetLib                                = LibStub("PetLibrary")
+local Unit                                  = Action.Unit 
+local huge                                  = math.huge
+
+---------------------------------------------------
+-------------------- CONSTANTS --------------------
+---------------------------------------------------
+--- Reflect Spells List
+local pvpReflect = {
+    161372, -- Poly
+    190319, -- Combustion
+    161372, -- Polymorph
+    203286, -- Greater Pyroblast
+    199786, --  Glacial Spike
+    257537, -- Ebonbolt
+    210714, -- Icefury
+    191634, -- Stormkeeper
+    116858, -- Chaos Bolt
+    118, -- Poly
+}
+
+---------------------------------------------------
+-------------------- FUNCTIONS --------------------
+---------------------------------------------------
+-- Local Randomizer
+local randomReflect = math.random(90, 100)
+
+-- Should Reflect behavior
+-- Parameter "unit" is mandatory
+-- @ return Boolean
+function Action.ShouldReflect(unit)    
+    
+    local GoodToReflect = false
+    -- Protect if nil parameter 
+    if not unit or unit == nil then 
+        unit = "target"
+    end
+    
+    for i = 1, #pvpReflect do 
+        local castingTime, castingLeftSec, castingDonePer, spellID, spellName = Unit(unit):CastTime()
+        if not spellID then 
+            break 
+        elseif pvpReflect[i] then 
+            if  castingDonePer >= randomReflect then
+                GoodToReflect = true
+            else
+                GoodToReflect = false
+            end
+        end 
+    end 
+    
+    return GoodToReflect
+end 
+
