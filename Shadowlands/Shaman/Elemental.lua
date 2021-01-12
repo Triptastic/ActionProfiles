@@ -149,8 +149,9 @@ Action[ACTION_CONST_SHAMAN_ELEMENTAL] = {
 	-- General Legendaries
 
 	-- Elemental Legendaries
-	EchoesofGreatSundering			= Action.Create({ Type = "Spell", ID = 336217	}),	
-
+	EchoesofGreatSundering			= Action.Create({ Type = "Spell", ID = 336215	}),	
+	EchoesofGreatSunderingBuff		= Action.Create({ Type = "Spell", ID = 336217	}),	
+	DeeptremorStone					= Action.Create({ Type = "Spell", ID = 336739	}),		
 
 	--Anima Powers - to add later...
 	
@@ -469,10 +470,6 @@ A[3] = function(icon, isMulti)
 	local ForceAoE = A.GetToggle(2, "ForceAoE")
 	local UseCovenant = A.GetToggle(1, "Covenant")
 	local UseRacial = A.GetToggle(1, "Racial")	
-	local SkybreakersFieryDemise = A.GetToggle(2, "SkybreakersFieryDemise")
-	local EchoesofGreatSundering = A.GetToggle(2, "EchoesofGreatSundering")
-	local DeeptremorStone = A.GetToggle(2, "DeeptremorStone")
-	--local ElementalEquilibrium = A.GetToggle(2, "ElementalEquilibrium")
 	local SpiritwalkersGraceTime = A.GetToggle(2, "SpiritwalkersGraceTime")
 
 	inRange = A.ChainLightning:IsInRange(unitID)
@@ -502,7 +499,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.precombat+=/lava_burst,if=!talent.elemental_blast.enabled
-			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and not A.ElementalBlast:IsTalentLearned() then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and not A.ElementalBlast:IsTalentLearned() then
 				return A.LavaBurst:Show(icon)
 			end
 
@@ -550,12 +547,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.aoe+=/earth_shock,if=runeforge.echoes_of_great_sundering.equipped&!buff.echoes_of_great_sundering.up
-			if A.EarthShock:IsReady(unitID) and EchoesofGreatSundering and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) == 0 then
+			if A.EarthShock:IsReady(unitID) and A.EchoesofGreatSundering:HasLegendaryCraftingPower() and Unit(player):HasBuffs(A.EchoesofGreatSunderingBuff.ID, true) == 0 then
 				return A.EarthShock:Show(icon)
 			end
 			
 			-- actions.aoe+=/earth_elemental,if=runeforge.deeptremor_stone.equipped&(!talent.primal_elementalist.enabled|(!pet.storm_elemental.active&!pet.fire_elemental.active))
-			if A.EarthElemental:IsReady(unitID) and BurstIsON(unitID) and DeeptremorStone and (not A.PrimalElementalist:IsTalentLearned() or (not StormElementalActive and not FireElementalActive)) then
+			if A.EarthElemental:IsReady(unitID) and BurstIsON(unitID) and A.DeeptremorStone:HasLegendaryCraftingPower() and (not A.PrimalElementalist:IsTalentLearned() or (not StormElementalActive and not FireElementalActive)) then
 				return A.EarthElemental:Show(icon)
 			end
 			
@@ -649,7 +646,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/earthquake,if=buff.echoes_of_great_sundering.up
-			if A.Earthquake:IsReady(player) and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0 and UseAoE then
+			if A.Earthquake:IsReady(player) and Unit(player):HasBuffs(A.EchoesofGreatSunderingBuff.ID, true) > 0 and UseAoE then
 				return A.Earthquake:Show(icon)
 			end
 			
@@ -674,12 +671,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.se_single_target+=/lava_burst,if=buff.ascendance.up
-			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0) and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and Unit(player):HasBuffs(A.Ascendance.ID, true) > 0 then
 				return A.LavaBurst:Show(icon)
 			end
 			
 			-- actions.se_single_target+=/lava_burst,if=cooldown_react&!talent.master_of_the_elements.enabled
-			if A.LavaBurst:IsReady(unitID) and not A.MasteroftheElements:IsTalentLearned() then
+			if A.LavaBurst:IsReady(unitID) and (not isMoving or Unit(player):HasBuffs(A.SpiritwalkersGrace.ID, true) > 0 or Unit(player):HasBuffs(A.LavaSurge.ID, true) > 0) and not A.MasteroftheElements:IsTalentLearned() then
 				return A.LavaBurst:Show(icon)
 			end
 			
@@ -775,12 +772,12 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/earthquake,if=buff.echoes_of_great_sundering.up&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up)
-			if A.Earthquake:IsReady(player) and UseAoE and Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0) then
+			if A.Earthquake:IsReady(player) and UseAoE and Unit(player):HasBuffs(A.EchoesofGreatSunderingBuff.ID, true) > 0 and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0) then
 				return A.Earthquake:Show(icon)
 			end
 			
 			-- actions.single_target+=/earthquake,if=spell_targets.chain_lightning>1&!dot.flame_shock.refreshable&!runeforge.echoes_of_great_sundering.equipped&(!talent.master_of_the_elements.enabled|buff.master_of_the_elements.up|cooldown.lava_burst.remains>0&maelstrom>=92)
-			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and not EchoesofGreatSundering and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92)) then
+			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and Unit(unitID):HasDeBuffs(A.FlameShock.ID, true) > 0 and not A.EchoesofGreatSundering:HasLegendaryCraftingPower() and (not A.MasteroftheElements:IsTalentLearned() or Unit(player):HasBuffs(A.MasteroftheElementsBuff.ID, true) > 0 or (A.LavaBurst:GetCooldown() > 0 and Maelstrom >= 92)) then
 				return A.Earthquake:Show(icon)
 			end
 			
@@ -835,7 +832,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.single_target+=/earthquake,if=spell_targets.chain_lightning>1&!runeforge.echoes_of_great_sundering.equipped|buff.echoes_of_great_sundering.up
-			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and (not EchoesofGreatSundering or Unit(player):HasBuffs(A.EchoesofGreatSundering.ID, true) > 0) then
+			if A.Earthquake:IsReady(player) and UseAoE and MultiUnits:GetActiveEnemies() > 1 and (not A.EchoesofGreatSundering:HasLegendaryCraftingPower() or Unit(player):HasBuffs(A.EchoesofGreatSunderingBuff.ID, true) > 0) then
 				return A.Earthquake:Show(icon)
 			end
 			

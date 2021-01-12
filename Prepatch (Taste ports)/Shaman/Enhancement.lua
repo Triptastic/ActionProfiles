@@ -2,7 +2,6 @@
 --##### TRIP'S ENHANCEMENT SHAMAN #####
 --#####################################
 
---Full credit to Taste
 
 local _G, setmetatable							= _G, setmetatable
 local A                         			    = _G.Action
