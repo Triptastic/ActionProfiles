@@ -159,7 +159,10 @@ Action[ACTION_CONST_MAGE_ARCANE] = {
     PotionofHardenedShadows			= Action.Create({ Type = "Potion", ID = 171271, QueueForbidden = true }),
     PotionofPhantomFire				= Action.Create({ Type = "Potion", ID = 171349, QueueForbidden = true }),
     PotionofDeathlyFixation			= Action.Create({ Type = "Potion", ID = 171351, QueueForbidden = true }),
-    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }),   
+    SpiritualHealingPotion			= Action.Create({ Type = "Potion", ID = 171267, QueueForbidden = true }), 
+
+	--Extra
+	StopCast                        = Action.Create({ Type = "Spell", ID = 61721, Hidden = true     }),	
 
 }
 local A = setmetatable(Action[ACTION_CONST_MAGE_ARCANE], { __index = Action })
@@ -188,6 +191,9 @@ local Temp = {
     TotalAndMagAndCC                        = {"TotalImun", "DamageMagicImun", "CCTotalImun"},	
     DisablePhys                             = {"TotalImun", "DamagePhysImun", "Freedom", "CCTotalImun"},
     DisableMag                              = {"TotalImun", "DamageMagicImun", "Freedom", "CCTotalImun"},
+	BurnPhase								= false,
+	MiniBurnPhase							= false,
+	ConservePhase							= false
 }
 
 local IsIndoors, UnitIsUnit = IsIndoors, UnitIsUnit
@@ -288,7 +294,7 @@ A[3] = function(icon, isMulti)
 	
 		local function Defensives()
 		
-			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() and Unit(player):HasDeBuffs(A.CauterizeDebuff.ID, true) > 0 then
+			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() then
 				return A.IceBlock:Show(icon)
 			end
 			
@@ -378,6 +384,10 @@ A[3] = function(icon, isMulti)
 			if A.ArcaneBlast:IsReady(unit) and (not isMoving or Unit(player):HasBuff(A.PresenceofMind.ID, true) > 0) then
 				return A.ArcaneBlast:Show(icon)
 			end
+			
+			if Player:ManaPercentage() < 15 then
+				Temp.BurnPhase = false
+			end
 		
 		end
 		
@@ -414,16 +424,16 @@ A[3] = function(icon, isMulti)
 			if A.ArcaneBlast:IsReady(unit) and (not isMoving or Unit(player):HasBuff(A.PresenceofMind.ID, true) > 0) then
 				return A.ArcaneBlast:Show(icon)
 			end
+			
+			if Player:ManaPercentage() < 30 then
+				Temp.MiniBurnPhase = false
+			end
 		
 		end
 		
 		local function ConservePhase()
-		
-			if A.Evocation:IsReady(player) and not isMoving and Player:ManaPercentage() < 15 then
-				return A.Evocation:Show(icon)
-			end
 			
-			if A.ShiftingPower:IsReady(player) and not isMoving and UseCovenant then
+			if A.ShiftingPower:IsReady(player) and not isMoving and UseCovenant and Unit(unit):GetRange() <= 15 and A.Evocation:GetCooldown() > 5 then
 				return A.ShiftingPower:Show(icon)
 			end
 			
@@ -456,53 +466,51 @@ A[3] = function(icon, isMulti)
 			end
 		
 		end
-		
-		local function CovenantCall()
-		
-			if A.RadiantSpark:IsReady(unit) and Unit(unit):TimeToDie() >= 10 then
-				return A.RadiantSpark:Show(icon)
-			end
-			
-			if A.MirrorsofTorment:IsReady(unit) and not isMoving and ((Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and ((A.Combustion:GetCooldown() <= 3 and BurstIsON(unit)) or not BurstIsON(unit)) and Unit(unit):TimeToDie() >= 15) or A.Combustion:GetCooldown() >= Unit(unit):TimeToDie() and Unit(unit):IsBoss()) then
-				return A.MirrorsofTorment:Show(icon)
-			end
-			
-			if A.ShiftingPower:IsReady(player) and Unit(player):HasBuffs(A.Combustion.ID, true) == 0 and A.FireBlast:GetSpellCharges() < 1.5 and Unit(unit):GetRange() <= 15 then
-				return A.ShiftingPower:Show(icon)
-			end
-			
-			if A.Deathborne:IsReady(unit) and ((Unit(player):HasBuffs(A.Combustion.ID, true) > 0 and Unit(unit):TimeToDie() >= 10) or A.Combustion:GetCooldown() >= Unit(unit):TimeToDie() and Unit(unit):IsBoss()) then
-				return A.Deathborne:Show(icon)
-			end
-		
-		end
-	
-	if A.PrismaticBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.PrismaticBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
-		return A.PrismaticBarrier:Show(icon)
-	end
-	
-	if A.IsUnitEnemy(unitID) and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
-	
-		if Interrupt() then
-			return true
+
+		if Player:IsCasting() == A.Evocation:Info() and Player:ManaPercentage() > 95 then
+			return A.StopCast:Show(icon)
 		end
 
 		if A.ArcanePower:GetCooldown() < 1 and A.TouchoftheMagi:GetCooldown() < 1 and ((A.RuneofPower:IsTalentLearned() and A.RuneofPower:GetCooldown() < 15) or not A.RuneofPower:IsTalentLearned()) and Player:ManaPercentage() > 15 and BurstIsON(unit) then
-			return BurnPhase()
+			Temp.BurnPhase = true
 		end
 		
 		if A.TouchoftheMagi:GetCooldown() < 1 and ((A.RuneofPower:IsTalentLearned() and A.RuneofPower:GetCooldown() < 1) or not A.RuneofPower:IsTalentLearned()) and Player:ManaPercentage() > 30 then
-			return MiniBurnPhase()
-		end
-		
-		if ConservePhase() then
-			return true
+			Temp.MiniBurnPhase = true
 		end
 
-	end
+		if A.PrismaticBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.PrismaticBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+			return A.PrismaticBarrier:Show(icon)
+		end
+
+		if A.Evocation:IsReady(player) and (not isMoving or A.Slipstream:IsTalentLearned()) and Player:ManaPercentage() < 15 then
+			return A.Evocation:Show(icon)
+		end
 		
-				
-	
+		if A.IsUnitEnemy(unitID) and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+		
+			if Interrupt() then
+				return true
+			end
+			
+			if Temp.BurnPhase then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Burn Phase!", "Burning!", A.ArcaneBlast.ID)
+				return BurnPhase()
+			end
+			
+			if Temp.MiniBurnPhase then
+				A.Toaster:SpawnByTimer("TripToast", 0, "Mini Burn Phase!", "Mini Burning!", A.ArcaneBarrage.ID)
+				return MiniBurnPhase()
+			end
+
+			if ConservePhase() then 
+				A.Toaster:SpawnByTimer("TripToast", 0, "Conserve Phase", "Conserving!", A.Evocation.ID)
+				return true
+			end
+
+
+		end
+
 	
 	end
 
