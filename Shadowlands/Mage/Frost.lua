@@ -289,16 +289,12 @@ A[3] = function(icon, isMulti)
 					return A.CounterSpell:Show(icon)
 				end	
 				
-				if useKick and A.CounterSpell:GetCooldown() > 0 and EnemiesCasting > 1 and A.DragonsBreath:AbsentImun(unit, Temp.TotalAndMagAndCC, true) then
-					return A.DragonsBreath:Show(icon)
-				end
-				
 			end
 		end	
 	
 		local function Defensives()
 		
-			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() and Unit(player):HasDeBuffs(A.CauterizeDebuff.ID, true) > 0 then
+			if Unit(player):HealthPercent() <= 40 and Unit(player):TimeToDie() <= Unit(unit):TimeToDie() then
 				return A.IceBlock:Show(icon)
 			end
 			
@@ -331,7 +327,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.aoe+=/ice_nova
-			if A.IceNova:IsReady(player) and MultiUnits:GetByRange(10, 3) >= 3 then
+			if A.IceNova:IsReady(unit) then
 				return A.IceNova:Show(icon)
 			end
 			
@@ -364,7 +360,7 @@ A[3] = function(icon, isMulti)
 			--if A.FireBlast:IsReady(unit) and A.DisciplinaryCommand:HasLegendaryCraftingPower()
 			
 			-- actions.aoe+=/arcane_explosion,if=mana.pct>30&active_enemies>=6&!runeforge.glacial_fragments
-			if A.ArcaneExplosion:IsReady(player) and Player:ManaPercent() > 30 and MultiUnits:GetByRange(10, 6) >= 6 and not A.GlacialFragments:HasLegendaryCraftingPower() then
+			if A.ArcaneExplosion:IsReady(player) and MultiUnits:GetByRange(10, 6) >= 6 and not A.GlacialFragments:HasLegendaryCraftingPower() then
 				return A.ArcaneExplosion:Show(icon)
 			end
 			
@@ -373,16 +369,36 @@ A[3] = function(icon, isMulti)
 				return A.Ebonbolt:Show(icon)
 			end
 			
-			-- actions.aoe+=/ice_lance,if=runeforge.glacial_fragments&talent.splitting_ice&travel_time<ground_aoe.blizzard.remains
+			--[[ actions.aoe+=/ice_lance,if=runeforge.glacial_fragments&talent.splitting_ice&travel_time<ground_aoe.blizzard.remains
 			if IceLance:IsReady(unit) and A.GlacialFragments:HasLegendaryCraftingPower() and A.SplittingIce:IsTalentLearned() then
 				return A.IceLance:Show(icon)
-			end
+			end]]
 			
 			-- actions.aoe+=/wait,sec=0.1,if=runeforge.glacial_fragments&talent.splitting_ice
 			-- actions.aoe+=/frostbolt
 			if A.Frostbolt:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) then
 				return A.Frostbolt:Show(icon)
 			end
+			
+			-- actions.movement+=/ice_floes,if=buff.ice_floes.down
+			if A.IceFloes:IsReady(player) and isMoving and Unit(player):HasBuffs(A.IceFloes.ID, true) == 0 then
+				return A.IceFloes:Show(icon)
+			end
+			
+			-- actions.movement+=/arcane_explosion,if=mana.pct>30&active_enemies>=2
+			if A.ArcaneExplosion:IsReady(player) and isMoving and MultiUnits:GetByRange(10, 3) >= 2 then
+				return A.ArcaneExplosion:Show(icon)
+			end
+			
+			-- actions.movement+=/fire_blast
+			if A.FireBlast:IsReady(unit) and isMoving then
+				return A.FireBlast:Show(icon)
+			end
+			
+			-- actions.movement+=/ice_lance
+			if A.IceLance:IsReady(unit) and isMoving then
+				return A.IceLance:Show(icon)
+			end			
 
 		end
 
@@ -440,32 +456,40 @@ A[3] = function(icon, isMulti)
 			
 			-- actions.cds+=/bag_of_tricks
 
+			if A.Trinket1:IsReady(unitID) then
+				return A.Trinket1:Show(icon)
+			end
+			
+			if A.Trinket2:IsReady(unitID) then
+				return A.Trinket2:Show(icon)
+			end
+
 		end
 
 		local function Movement()
 		
 			-- actions.movement=blink_any,if=movement.distance>10
-			
-			
 			-- actions.movement+=/ice_floes,if=buff.ice_floes.down
-			if A.IceFloes:IsReady(player) and Unit(player):HasBuffs(A.IceFloes.ID, true) == 0 then
+			if A.IceFloes:IsReady(player) and isMoving and Unit(player):HasBuffs(A.IceFloes.ID, true) == 0 then
 				return A.IceFloes:Show(icon)
 			end
 			
 			-- actions.movement+=/arcane_explosion,if=mana.pct>30&active_enemies>=2
-			if A.ArcaneExplosion:IsReady(player) and Player:ManaPercent() > 30 and MultiUnits:GetByRange(10, 3) >= 2 then
+			if A.ArcaneExplosion:IsReady(player) and isMoving and Player:ManaPercent() > 30 and MultiUnits:GetByRange(10, 3) >= 2 then
 				return A.ArcaneExplosion:Show(icon)
 			end
 			
 			-- actions.movement+=/fire_blast
-			if A.FireBlast:IsReady(unit) then
+			if A.FireBlast:IsReady(unit) and isMoving then
 				return A.FireBlast:Show(icon)
 			end
 			
 			-- actions.movement+=/ice_lance
-			if A.IceLance:IsReady(unit) then
+			if A.IceLance:IsReady(unit) and isMoving then
 				return A.IceLance:Show(icon)
-			end
+			end				
+			
+
 			
 
 		end
@@ -473,7 +497,7 @@ A[3] = function(icon, isMulti)
 		local function ST()
 		
 			-- actions.st=flurry,if=(remaining_winters_chill=0|debuff.winters_chill.down)&(prev_gcd.1.ebonbolt|buff.brain_freeze.react&(prev_gcd.1.glacial_spike|prev_gcd.1.frostbolt&(!conduit.ire_of_the_ascended|cooldown.radiant_spark.remains|runeforge.freezing_winds)|prev_gcd.1.radiant_spark|buff.fingers_of_frost.react=0&(debuff.mirrors_of_torment.up|buff.freezing_winds.up|buff.expanded_potential.react)))
-			if A.Flurry:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) == 0 and (A.LastPlayerCastName == A.Ebonbolt:Info() or A.LastPlayerCastName == A.Frostbolt:Info() and (A.RadiantSpark:GetCooldown() > 0 or A.FreezingWinds:HasLegendaryCraftingPower()) or A.LastPlayerCastName == A.RadiantSpark:Info() or Unit(unit):HasBuffs(A.FingersofFrostBuff.ID, true) == 0 and (Unit(unit):HasDeBuffs(A.MirrorsofTorment.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingWinds.ID, true) > 0)) then
+			if A.Flurry:IsReady(unit) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) == 0 and (A.LastPlayerCastName == A.Ebonbolt:Info() or Unit(player):HasBuffs(A.BrainFreezeBuff.ID, true) > 0 and (A.LastPlayerCastName == A.GlacialSpike:Info() or A.LastPlayerCastName == A.Frostbolt:Info() and (A.RadiantSpark:GetCooldown() > 0 or A.FreezingWinds:HasLegendaryCraftingPower()) or A.LastPlayerCastName == A.RadiantSpark:Info() or Unit(player):HasBuffs(A.FingersofFrostBuff.ID, true) == 0 and ((Unit(unit):HasDeBuffs(A.MirrorsofTorment.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingWinds.ID, true) > 0) or Player:GetCovenant() ~= 2))) then
 				return A.Flurry:Show(icon)
 			end
 			
@@ -483,7 +507,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.st+=/blizzard,if=buff.freezing_rain.up|active_enemies>=2|runeforge.glacial_fragments&remaining_winters_chill=2
-			if A.Blizzard:IsReady(player) and not (isMoving or Unit(unit):HasBuffs(A.IceFloes.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingRainBuff.ID, true) > 0) and Unit(unit):GetRange() <= 40  and (Unit(unit):HasBuffs(A.FreezingRainBuff.ID, true) > 0 or MultiUnits:GetActiveEnemies() >= 2 or (A.GlacialFragments:HasLegendaryCraftingPower() and Unit(unit):HasDeBuffsStacks(A.WintersChill.ID, true) == 2)) then
+			if A.Blizzard:IsReady(player) and (not isMoving or Unit(player):HasBuffs(A.IceFloes.ID, true) > 0 or Unit(player):HasBuffs(A.FreezingRainBuff.ID, true) > 0) and Unit(unit):GetRange() <= 40  and (Unit(player):HasBuffs(A.FreezingRainBuff.ID, true) > 0 or MultiUnits:GetActiveEnemies() >= 2 or (A.GlacialFragments:HasLegendaryCraftingPower() and Unit(unit):HasDeBuffsStacks(A.WintersChill.ID, true) == 2)) then
 				return A.Blizzard:Show(icon)
 			end
 			
@@ -498,7 +522,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.st+=/ice_lance,if=remaining_winters_chill&remaining_winters_chill>buff.fingers_of_frost.react&debuff.winters_chill.remains>travel_time
-			if A.IceLance:IsReady(unit) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > Unit(unit):HasBuffs(A.FingersofFrostBuff.ID, true) then
+			if A.IceLance:IsReady(unit) and Unit(unit):HasDeBuffs(A.WintersChill.ID, true) > Unit(player):HasBuffs(A.FingersofFrostBuff.ID, true) then
 				return A.IceLance:Show(icon)
 			end
 			
@@ -508,7 +532,7 @@ A[3] = function(icon, isMulti)
 			end
 			
 			-- actions.st+=/ice_nova
-			if A.IceNova:IsReady(unit) and Unit(unit):GetRange() < 10 then
+			if A.IceNova:IsReady(unit) then
 				return A.IceNova:Show(icon)
 			end
 			
@@ -557,25 +581,48 @@ A[3] = function(icon, isMulti)
 				return A.Frostbolt:Show(icon)
 			end
 
+			-- actions.movement+=/ice_floes,if=buff.ice_floes.down
+			if A.IceFloes:IsReady(player) and isMoving and Unit(player):HasBuffs(A.IceFloes.ID, true) == 0 then
+				return A.IceFloes:Show(icon)
+			end
+			
+			-- actions.movement+=/arcane_explosion,if=mana.pct>30&active_enemies>=2
+			if A.ArcaneExplosion:IsReady(player) and isMoving and MultiUnits:GetByRange(10, 3) >= 2 then
+				return A.ArcaneExplosion:Show(icon)
+			end
+			
+			-- actions.movement+=/fire_blast
+			if A.FireBlast:IsReady(unit) and isMoving then
+				return A.FireBlast:Show(icon)
+			end
+			
+			-- actions.movement+=/ice_lance
+			if A.IceLance:IsReady(unit) and isMoving then
+				return A.IceLance:Show(icon)
+			end	
+
 		end
 
+		if Interrupt() then
+			return true
+		end
 
 		-- actions.precombat+=/summon_water_elemental
 		if A.SummonWaterElemental:IsReady(player) and not A.LonelyWinter:IsTalentLearned() and not Pet:IsActive() then
 			return A.SummonWaterElemental:Show(icon)
 		end
 		
-		if A.BlazingBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.BlazingBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
-			return A.BlazingBarrier:Show(icon)
+		if A.IceBarrier:IsReady(player) and (not inCombat or Unit(player):HealthPercent() <= 70) and Unit(player):HasBuffs(A.IceBarrier.ID, true) < 2 and Unit(player):HasBuffs(A.Invisibility.ID, true) == 0 then
+			return A.IceBarrier:Show(icon)
 		end
 		
 		-- actions.precombat+=/frostbolt	
-		if A.Frostbolt:IsReady(unit) then
+		if A.Frostbolt:IsReady(unit) and not inCombat and Player:IsCasting() ~= A.Frostbolt:Info() then
 			return A.Frostbolt:Show(icon)
 		end
 
 		-- actions+=/call_action_list,name=cds
-		if BurstIsON(unit) then
+		if BurstIsON(unit) and inCombat then
 			if Cooldowns() then
 				return true
 			end
@@ -589,18 +636,18 @@ A[3] = function(icon, isMulti)
 		end
 		
 		-- actions+=/call_action_list,name=st,if=active_enemies<3
-		if MultiUnits:GetActiveEnemies() > 0 and MultiUnits:GetActiveEnemies() < 3 then
+		if inCombat or Player:IsCasting() == A.Frostbolt:Info() then
 			if ST() then
 				return true
 			end
 		end
 		
-		-- actions+=/call_action_list,name=movement
+		--[[ actions+=/call_action_list,name=movement
 		if isMoving then
 			if Movement() then
 				return true
 			end
-		end	
+		end	]]
 	
 	end
 
