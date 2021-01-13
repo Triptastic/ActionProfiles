@@ -545,7 +545,7 @@ local function SelfDefensives(unit)
     ) 
     then 
         return A.AntiMagicShell       
-    
+    end  
     -- Emergency Death Pact
     local DeathPact = GetToggle(2, "DeathPactHP")
     if     DeathPact >= 0 and A.DeathPact:IsReady(player) and A.DeathPact:IsSpellLearned() and 
