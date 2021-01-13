@@ -511,11 +511,40 @@ local function SelfDefensives(unit)
         (    -- Custom
             AntiMagicShell < 100 and 
             Unit(player):HealthPercent() <= AntiMagicShell
+        ) or 
+        (    -- Custom 226512
+            Unit("player"):HasDeBuffs(226512, true)
+        ) or 
+        (    -- Custom 334852
+            Unit("player"):HasDeBuffs(334852, true)
+        ) or 
+        (    -- Custom 340860
+            Unit("player"):HasDeBuffs(340860, true)
+        ) or 
+        (    -- Custom 326271
+            Unit("player"):HasDeBuffs(326271, true)
+        ) or 
+        (    -- Custom 325873
+            Unit("player"):HasDeBuffs(325873, true)
+        ) or 
+        (    -- Custom 326538
+            Unit("player"):HasDeBuffs(326538, true)
+        ) or 
+        (    -- Custom 327619
+            Unit("player"):HasDeBuffs(327619, true)
+        ) or 
+        (    -- Custom 337110
+            Unit("player"):HasDeBuffs(337110, true)
+        ) or 
+        (    -- Custom 334765
+            Unit("player"):HasDeBuffs(334765, true)
+        ) or 
+        (    -- Custom 335873
+            Unit("player"):HasDeBuffs(335873, true)
         )
     ) 
     then 
-        return A.AntiMagicShell
-    end          
+        return A.AntiMagicShell       
     
     -- Emergency Death Pact
     local DeathPact = GetToggle(2, "DeathPactHP")
