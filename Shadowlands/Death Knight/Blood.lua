@@ -592,7 +592,6 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit(player):CombatTime()
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods:GetPullTimer()
-    local ActiveMitigationNeeded = Player:ActiveMitigationNeeded()
     local IsTanking = Unit(player):IsTanking("target", 8) or Unit(player):IsTankingAoE(8)
     local HPLoosePerSecond = Unit(player):GetDMG() * 100 / Unit(player):HealthMax()
     local targetThreatSituation, targetThreatPercent = Unit(player):ThreatSituation()
@@ -604,8 +603,6 @@ A[3] = function(icon, isMulti)
     
     
     local PredictDS = PredictDS()
-    -- Trinkets vars
-    local Trinket1IsAllowed, Trinket2IsAllowed = TR:TrinketIsAllowed()
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
@@ -877,6 +874,11 @@ A[3] = function(icon, isMulti)
             if A.ShackletheUnworthy:IsReady(unit) and Unit(unit):GetRange() > 8 and Unit(unit):GetRange() <= 30 and Unit(unit):HasDeBuffs(A.ShackletheUnworthy.ID, true) == 0 then
                 return A.ShackletheUnworthy:Show(icon)
             end
+			
+			-- AbominationLimbNecroLord
+			if A.AbominationLimb:IsReady(unit) and MultiUnits:GetByRange(8) >= 4 then
+				return A.AbominationLimb:Show(icon)
+			end
             
             -- Taunt (Updated by KhalDrogo1988)
             if A.GetToggle(2, "AutoTaunt") and combatTime > 0
