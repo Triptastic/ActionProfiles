@@ -513,34 +513,34 @@ local function SelfDefensives(unit)
             Unit(player):HealthPercent() <= AntiMagicShell
         ) or 
         (    -- Custom 226512
-            Unit("player"):HasDeBuffs(226512, true)
+            Unit("player"):HasDeBuffs(226512, true) > 0
         ) or 
         (    -- Custom 334852
-            Unit("player"):HasDeBuffs(334852, true)
+            Unit("player"):HasDeBuffs(334852, true) > 0
         ) or 
         (    -- Custom 340860
-            Unit("player"):HasDeBuffs(340860, true)
+            Unit("player"):HasDeBuffs(340860, true) > 0
         ) or 
         (    -- Custom 326271
-            Unit("player"):HasDeBuffs(326271, true)
+            Unit("player"):HasDeBuffs(326271, true) > 0
         ) or 
         (    -- Custom 325873
-            Unit("player"):HasDeBuffs(325873, true)
+            Unit("player"):HasDeBuffs(325873, true) > 0
         ) or 
         (    -- Custom 326538
-            Unit("player"):HasDeBuffs(326538, true)
+            Unit("player"):HasDeBuffs(326538, true) > 0
         ) or 
         (    -- Custom 327619
-            Unit("player"):HasDeBuffs(327619, true)
+            Unit("player"):HasDeBuffs(327619, true) > 0
         ) or 
         (    -- Custom 337110
-            Unit("player"):HasDeBuffs(337110, true)
+            Unit("player"):HasDeBuffs(337110, true) > 0
         ) or 
         (    -- Custom 334765
-            Unit("player"):HasDeBuffs(334765, true)
+            Unit("player"):HasDeBuffs(334765, true) > 0
         ) or 
         (    -- Custom 335873
-            Unit("player"):HasDeBuffs(335873, true)
+            Unit("player"):HasDeBuffs(335873, true) > 0
         )
     ) 
     then 
