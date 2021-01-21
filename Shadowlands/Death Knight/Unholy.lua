@@ -642,6 +642,7 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit("player"):CombatTime()
     local RunicPower = Player:RunicPower()
     local RunicPowerDeficit = Player:RunicPowerDeficit()
+    local Pull = Action.BossMods:GetPullTimer(
     local VirulentPlagueTargets = Player:GetDeBuffsUnitCount(A.VirulentPlague.ID)
     local VirulentPlagueRefreshable = Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) < 4 or Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) == 0
 	local FrostFeverRefreshable = Unit("target"):HasDeBuffs(A.FrostFever.ID, true) < 4 or Unit("target"):HasDeBuffs(A.FrostFever.ID, true) == 0
@@ -675,7 +676,7 @@ A[3] = function(icon, isMulti)
     local function EnemyRotation(unit)
 
 		--LegoSwap
-		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) and not UnitIsDead("target") then
+		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) and not UnitIsDead("target") and (Pull > 0 and Pull <= 2) then
 			if A.DeadliestCoil:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 then 
 				return A.QuakingPalm:Show(icon)
 				else if A.FrenziedMonstrosity:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 and Unit("pet"):HasDeBuffs(A.ControlUndead.ID, true) == 0 then
