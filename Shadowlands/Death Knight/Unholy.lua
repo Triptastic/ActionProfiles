@@ -511,12 +511,41 @@ local function SelfDefensives(unit)
         (    -- Custom
             AntiMagicShell < 100 and 
             Unit(player):HealthPercent() <= AntiMagicShell
+        ) or 
+        (    -- Custom 226512
+            Unit("player"):HasDeBuffs(226512, true) > 0
+        ) or 
+        (    -- Custom 334852
+            Unit("player"):HasDeBuffs(334852, true) > 0
+        ) or 
+        (    -- Custom 340860
+            Unit("player"):HasDeBuffs(340860, true) > 0
+        ) or 
+        (    -- Custom 326271
+            Unit("player"):HasDeBuffs(326271, true) > 0
+        ) or 
+        (    -- Custom 325873
+            Unit("player"):HasDeBuffs(325873, true) > 0
+        ) or 
+        (    -- Custom 326538
+            Unit("player"):HasDeBuffs(326538, true) > 0
+        ) or 
+        (    -- Custom 327619
+            Unit("player"):HasDeBuffs(327619, true) > 0
+        ) or 
+        (    -- Custom 337110
+            Unit("player"):HasDeBuffs(337110, true) > 0
+        ) or 
+        (    -- Custom 334765
+            Unit("player"):HasDeBuffs(334765, true) > 0
+        ) or 
+        (    -- Custom 335873
+            Unit("player"):HasDeBuffs(335873, true) > 0
         )
     ) 
     then 
-        return A.AntiMagicShell
-    end          
-    
+        return A.AntiMagicShell       
+    end  
     -- Emergency Death Pact
     local DeathPact = GetToggle(2, "DeathPactHP")
     if     DeathPact >= 0 and A.DeathPact:IsReady(player) and A.DeathPact:IsSpellLearned() and 
@@ -613,6 +642,7 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit("player"):CombatTime()
     local RunicPower = Player:RunicPower()
     local RunicPowerDeficit = Player:RunicPowerDeficit()
+    local Pull = Action.BossMods:GetPullTimer()
     local VirulentPlagueTargets = Player:GetDeBuffsUnitCount(A.VirulentPlague.ID)
     local VirulentPlagueRefreshable = Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) < 4 or Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) == 0
 	local FrostFeverRefreshable = Unit("target"):HasDeBuffs(A.FrostFever.ID, true) < 4 or Unit("target"):HasDeBuffs(A.FrostFever.ID, true) == 0
@@ -646,7 +676,7 @@ A[3] = function(icon, isMulti)
     local function EnemyRotation(unit)
 
 		--LegoSwap
-		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) and not UnitIsDead("target") then
+		if Action.GetToggle(2,"LegoSwap") and not UnitAffectingCombat("player") and Pet:IsActive() and BurstIsON(unit) and not UnitIsDead("target") and (Pull > 0 and Pull <= 2) then
 			if A.DeadliestCoil:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 then 
 				return A.QuakingPalm:Show(icon)
 				else if A.FrenziedMonstrosity:HasLegendaryCraftingPower() and A.DarkTransformation:GetCooldown() == 0 and Unit("pet"):HasDeBuffs(A.ControlUndead.ID, true) == 0 then
