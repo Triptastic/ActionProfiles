@@ -642,7 +642,7 @@ A[3] = function(icon, isMulti)
     local combatTime = Unit("player"):CombatTime()
     local RunicPower = Player:RunicPower()
     local RunicPowerDeficit = Player:RunicPowerDeficit()
-    local Pull = Action.BossMods:GetPullTimer(
+    local Pull = Action.BossMods:GetPullTimer()
     local VirulentPlagueTargets = Player:GetDeBuffsUnitCount(A.VirulentPlague.ID)
     local VirulentPlagueRefreshable = Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) < 4 or Unit("target"):HasDeBuffs(A.VirulentPlague.ID, true) == 0
 	local FrostFeverRefreshable = Unit("target"):HasDeBuffs(A.FrostFever.ID, true) < 4 or Unit("target"):HasDeBuffs(A.FrostFever.ID, true) == 0
