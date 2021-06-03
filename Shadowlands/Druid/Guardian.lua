@@ -504,7 +504,6 @@ A[3] = function(icon, isMulti)
     local inStance = GetStance()
     local ShouldStop = Action.ShouldStop()
     local Pull = Action.BossMods:GetPullTimer()
-    local ActiveMitigationNeeded = Player:ActiveMitigationNeeded()
 	local HPLoosePerSecond = Unit("player"):GetDMG() * 100 / Unit("player"):HealthMax()
 	local Thrash = Thrash()
 	local Swipe = Swipe()
@@ -554,10 +553,7 @@ A[3] = function(icon, isMulti)
         --Cooldowns
         local function Cooldowns(unit)
             -- potion
-            if A.SuperiorSteelskinPotion:IsReady(unit) and Action.GetToggle(1, "Potion") and (ActiveMitigationNeeded or HPLoosePerSecond > 15) then
-                return A.SuperiorSteelskinPotion:Show(icon)
-            end
-						
+	
             -- blood_fury
             if A.BloodFury:AutoRacial(unit) and Action.GetToggle(1, "Racial") and A.BurstIsON(unit) then
                 return A.BloodFury:Show(icon)
