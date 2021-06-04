@@ -78,7 +78,7 @@ A.Data.ProfileUI = {
                 {
                     E = "Header",
                     L = {
-                        ANY = " l><><>< ROTATION STUFF ><><><l ",
+                        ANY = " l><><>< PvE STUFF ><><><l ",
                     },
                 },
             },
@@ -108,6 +108,69 @@ A.Data.ProfileUI = {
                     M = {},
                 },
 			},
+			{
+				{ -- FreezingTrapPvE
+                    E = "Checkbox", 
+                    DB = "FreezingTrapPvE",
+                    DBV = true,
+                    L = { 
+                        ANY = "Freezing Trap Aggro", 
+                    }, 
+                    TT = { 
+                        ANY = "Drop a Freezing Trap if you have aggro on an enemy in melee and in combat with multiple enemies.", 
+                    }, 
+                    M = {},
+                },
+				{ -- FreezingTrapPvE
+                    E = "Checkbox", 
+                    DB = "ProtectFreeze",
+                    DBV = true,
+                    L = { 
+                        ANY = "Untarget Frozen", 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically swap targets if accidentally targeting an enemy with Freezing Trap (only when in combat with mulitple enemies, make sure you're facing the other enemy you want to target).", 
+                    }, 
+                    M = {},
+                },				
+				{ -- ConcussiveShotPvE
+                    E = "Checkbox", 
+                    DB = "ConcussiveShotPvE",
+                    DBV = true,
+                    L = { 
+                        ANY = "Concussive Shot Aggro", 
+                    }, 
+                    TT = { 
+                        ANY = "Use Concussive Shot to slow target if aggro swaps to you.", 
+                    }, 
+                    M = {},
+                },				
+			},
+			--[[{
+				{
+					E = "Dropdown",                                                         
+					OT = {
+						{ text = "Aspect of the Hawk",		value = 1 },
+						{ text = "Aspect of the Cheetah",	value = 2 },
+						{ text = "Aspect of the Viper",		value = 3 },
+					},
+					MULT     = true,    
+					SetPlaceholder = { ANY = "OFF" },
+					DB         = "AutoAspect",
+					DBV     = {
+						[1] = true, 
+						[2] = true,
+						[3] = true,
+					}, 
+                    L = { 
+                        ANY = "Automatic Aspects", 
+                    }, 
+                    TT = { 
+                        ANY = "Automatically use Aspects", 
+                    }, 
+					M = {},                                    
+				}, 						
+			},	]]	
 			{
                 { -- Mana Value
                     E = "Slider",                                                     

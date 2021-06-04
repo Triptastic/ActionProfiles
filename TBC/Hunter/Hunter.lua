@@ -121,7 +121,7 @@ Action[Action.PlayerClass]                     = {
     SilencingShot							= Create({ Type = "Spell", ID = 34490		}),	
     SteadyShot								= Create({ Type = "Spell", ID = 34120		}),	
     TrueshotAura							= Create({ Type = "Spell", ID = 19506		}),	
-    ViperString								= Create({ Type = "Spell", ID = 3034		}),	
+    ViperSting								= Create({ Type = "Spell", ID = 3034		}),	
     Volley									= Create({ Type = "Spell", ID = 1510		}),
 
 	--Survival
@@ -131,6 +131,7 @@ Action[Action.PlayerClass]                     = {
     ExplosiveTrap							= Create({ Type = "Spell", ID = 13813		}),
     FeignDeath								= Create({ Type = "Spell", ID = 5384		}),
     FreezingTrap							= Create({ Type = "Spell", ID = 1499		}),
+	FreezingTrapDebuff						= Create({ Type = "Spell", ID = 3355 or 14308 }),
     FrostTrap								= Create({ Type = "Spell", ID = 13809		}),
     ImmolationTrap							= Create({ Type = "Spell", ID = 13795		}),
     Misdirection							= Create({ Type = "Spell", ID = 34477		}),	
@@ -205,11 +206,6 @@ local function InMelee(unit)
 end 
 InMelee = A.MakeFunctionCachedDynamic(InMelee)
 
-local function HoldSkills()
-	
-
-end
-
 --- ======= ACTION LISTS =======
 -- [3] Single Rotation
 A[3] = function(icon, isMulti)
@@ -223,26 +219,56 @@ A[3] = function(icon, isMulti)
 	local AutoSyncCDs = A.GetToggle(2, "AutoSyncCDs")
 	local ManaSave = A.GetToggle(2, "ManaSave")
 	local MendPet = A.GetToggle(2, "MendPet")
-	local AutoAspect = A.GetToggle(2, "AutoAspect")
+	local FreezingTrapPvE = A.GetToggle(2, "FreezingTrapPvE")
+	local ConcussiveShotPvE = A.GetToggle(2, "ConcussiveShotPvE")	
+	local ProtectFreeze = A.GetToggle(2, "ProtectFreeze")
 	
-	local BurnPhase = Unit(player):HasBuffs(A.Heroism.ID) or Unit(player):HasBuffs(A.Bloodlust.ID) or Unit(player):HasBuffs(A.Drums.ID)
+	--local AutoAspect = A.GetToggle(2, "AutoAspect")
+		--AutoAspect[1] = Hawk
+		--AutoAspect[2] = Cheetah
+		--AutoAspect[3] = Viper
+	
+	local BurnPhase = Unit(player):HasBuffs(A.Heroism.ID) > 0 or Unit(player):HasBuffs(A.Bloodlust.ID) > 0 or Unit(player):HasBuffs(A.Drums.ID) > 0
+	local CheetahBuff = Unit(player):HasBuffs(A.AspectoftheCheetah.ID, true) > 0 or Unit(player):HasBuffs(A.AspectofthePack.ID, true) > 0
+
+
+
+	--[[if AutoAspect[3] then 
+		if Unit(player):HasBuffs(A.AspectoftheViper.ID, true) == 0 and Player:ManaPercentage() < 95 and not inCombat then
+			return A.AspectoftheViper:Show(icon)
+		end
+	end
+	
+	if AutoAspect[2] then
+		if Unit(player):HasBuffs(A.AspectoftheCheetah.ID, true) == 0 and ((Player:ManaPercentage() > 95 and AutoAspect[3]) or not AutoAspect[3]) and not inCombat then
+			return A.AspectoftheCheetah:Show(icon)
+		end
+	end]]
+
+	if A.CallPet:IsReady(player) and not Pet:IsActive() then
+		return A.CallPet:Show(icon)
+	end
 	
     ------------------------------------------------------
     ---------------- ENEMY UNIT ROTATION -----------------
     ------------------------------------------------------
     local function EnemyRotation(unit)
 
-		if AutoAspect then
-			if A.AspectoftheHawk:IsReady(player) and Unit(player):HasBuffs(A.AspectoftheHawk.ID, true) == 0 and (Player:ManaPercentage() >= 95 or inCombat) then
-				return A.AspectoftheHawk:Show(icon)
-			end
-			
-		
+		if ProtectFreeze and Unit(target):HasDeBuffs(A.FreezingTrapDebuff.ID) > 0 and A.MultiUnits:GetActiveEnemies() >= 2 then
+			return A:Show(icon, CONST.AUTOTARGET)
 		end
 
-		if A.CallPet:IsReady(player) and not Pet:IsActive() then
-            return A.CallPet:Show(icon)
-        end
+		--[[if AutoAspect[1] then
+			if (CheetahBuff and inCombat) or (not C`heetahBuff) then
+				if A.AspectoftheHawk:IsReady(player) and Unit(player):HasBuffs(A.AspectoftheHawk.ID, true) == 0 and ((Player:ManaPercentage() >= 95 and AutoAspect[3]) or inCombat) then
+					return A.AspectoftheHawk:Show(icon)
+				end	
+			end
+		end]]
+
+		if A.FreezingTrap:IsReady(player) and FreezingTrapPvE and A.MultiUnits:GetActiveEnemies() >= 2 and A.MultiUnits:GetByRange(1, 5) then
+			return A.FreezingTrap:Show(icon)
+		end
 
 		if A.MendPet:IsReady(player) and Unit(pet):HealthPercent() < MendPet and Pet:IsActive() and Pet:HasBuffs(A.MendPet.ID, true) == 0 then
 			return A.MendPet:Show(icon)
@@ -261,6 +287,10 @@ A[3] = function(icon, isMulti)
 				return A:Show(icon, CONST.AUTOSHOOT)
 			end	
 			
+			if A.ConcussiveShot:IsReady(unit) and ConcussiveShotPvE and UnitIsUnit(targettarget, player) then
+				return A.ConcussiveShot:Show(icon)
+			end
+			
 			if BurstIsON(unit) or (not BurstIsON(unit) and AutoSyncCDs) then
 				if (AutoSyncCDs and BurnPhase) or not AutoSyncCDs then
 					if A.BestialWrath:IsReady(player) and (Unit(unit):TimeToDie() > 5 or Unit(unit):IsBoss()) then
@@ -270,11 +300,22 @@ A[3] = function(icon, isMulti)
 					if A.RapidFire:IsReady(player) and (Unit(unit):TimeToDie() > 5 or Unit(unit):IsBoss()) then
 						return A.RapidFire:Show(icon)
 					end
+
+					--Trinket 1
+					if A.Trinket1:IsReady(unit) then
+						return A.Trinket1:Show(icon)    
+					end
+					
+					--Trinket 2
+					if A.Trinket2:IsReady(unit) then
+						return A.Trinket2:Show(icon)    
+					end					
+					
 				end					
 			end
  
 			local ShootTimer = Player:GetSwingShoot()
-			print(ShootTimer)
+			--print(ShootTimer)
 			if ShootTimer >= Player:Execute_Time(A.SteadyShot.ID) and Player:ManaPercentage() > ManaSave then
 				if A.SteadyShot:IsReady(unit) then
 					return A.SteadyShot:Show(icon)
